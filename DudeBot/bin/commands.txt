@@ -1,0 +1,6 @@
+!kappa	Kappa
+!uptime	$streamer has been live for $uptime
+!shoutout	$shoutout
+!love	There is $randomnumber3% <3 between $user and $input!
+!8ball	$8ball
+!hug	$user gives $input a hug!

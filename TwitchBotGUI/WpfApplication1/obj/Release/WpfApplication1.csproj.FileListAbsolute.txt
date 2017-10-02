@@ -1,0 +1,104 @@
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\WpfApplication1.csprojResolveAssemblyReference.cache
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\MainWindow.g.cs
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\App.g.cs
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\MainWindow.baml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\WpfApplication1.csproj.GenerateResource.Cache
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\DudeBot.exe.config
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\DudeBot.exe
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\DudeBot.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot_MarkupCompile.cache
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot_MarkupCompile.lref
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.g.resources
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.exe
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.Properties.Resources.resources
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\MahApps.Metro.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\System.Windows.Interactivity.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\MahApps.Metro.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\MahApps.Metro.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\App.baml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\Resources\Icons.baml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\Resources\IconsNonShared.baml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\youtubevideoplayer.g.cs
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\youtubevideoplayer.baml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Core.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.PlatformServices.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.GData.Client.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.GData.Extensions.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.GData.YouTube.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\log4net.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Newtonsoft.Json.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Zlib.Portable.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Core.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Core.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.PlatformServices.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.PlatformServices.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\log4net.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Newtonsoft.Json.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Zlib.Portable.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Auth.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Auth.PlatformServices.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.YouTube.v3.dll
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Auth.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Auth.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Auth.PlatformServices.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.Auth.PlatformServices.xml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.YouTube.v3.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Google.Apis.YouTube.v3.xml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\DudeBot.exe.config
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\DudeBot.exe
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\DudeBot.pdb
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\log4net.dll
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\MahApps.Metro.dll
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Newtonsoft.Json.dll
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\System.Windows.Interactivity.dll
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Zlib.Portable.dll
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\log4net.xml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\MahApps.Metro.pdb
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\MahApps.Metro.xml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Newtonsoft.Json.xml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Release\Zlib.Portable.xml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\Resources\Icons.baml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\Resources\IconsNonShared.baml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\App.baml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\MainWindow.g.cs
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\App.g.cs
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot_MarkupCompile.cache
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot_MarkupCompile.lref
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\MainWindow.baml
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.g.resources
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.Properties.Resources.resources
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\WpfApplication1.csproj.GenerateResource.Cache
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.exe
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\DudeBot.pdb
+F:\Documents\Visual Studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Release\WpfApplication1.csprojResolveAssemblyReference.cache
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\DudeBot.exe.config
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\DudeBot.exe
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\DudeBot.pdb
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\log4net.dll
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\MahApps.Metro.dll
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\Newtonsoft.Json.dll
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\System.Windows.Interactivity.dll
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\Zlib.Portable.dll
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\log4net.xml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\MahApps.Metro.pdb
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\MahApps.Metro.xml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\Newtonsoft.Json.xml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\bin\Release\Zlib.Portable.xml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\WpfApplication1.csprojResolveAssemblyReference.cache
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\Resources\Icons.baml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\Resources\IconsNonShared.baml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\App.baml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\MainWindow.g.cs
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\App.g.cs
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot_MarkupCompile.cache
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot_MarkupCompile.lref
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\MainWindow.baml
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot.g.resources
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot.Properties.Resources.resources
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\WpfApplication1.csproj.GenerateResource.Cache
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot.exe
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot.pdb

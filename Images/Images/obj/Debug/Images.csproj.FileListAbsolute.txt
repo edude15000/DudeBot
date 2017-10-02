@@ -1,0 +1,14 @@
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\bin\Debug\Images.exe.config
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\bin\Debug\Images.exe
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\bin\Debug\Images.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\MainWindow.g.cs
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\App.g.cs
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images_MarkupCompile.cache
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images_MarkupCompile.lref
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\MainWindow.baml
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images.g.resources
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images.Properties.Resources.resources
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images.csproj.GenerateResource.Cache
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images.exe
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images.pdb
+C:\Users\Evan\Documents\Visual Studio 2015\Projects\Images\Images\obj\Debug\Images.csprojResolveAssemblyReference.cache

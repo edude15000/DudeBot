@@ -1,0 +1,1 @@
+!kappa	Kappa!love	There is $randomnumber3% <3 between $user and $input!!8ball	$8ball!uptime	$uptime!shoutout	$shoutout
