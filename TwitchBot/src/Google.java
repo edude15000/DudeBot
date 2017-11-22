@@ -31,8 +31,8 @@ public class Google {
 	private final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	static HttpTransport HTTP_TRANSPORT;
 	final List<String> SCOPES = Arrays.asList(SheetsScopes.SPREADSHEETS);
-	String spreadsheetId;
 	Sheets service;
+	String spreadsheetId;
 	static {
 		try {
 			HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();

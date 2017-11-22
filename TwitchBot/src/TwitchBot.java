@@ -1,11 +1,12 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.nio.charset.Charset;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,90 +27,189 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.annotations.Expose;
+
 public class TwitchBot extends PircBot {
-	private String botName;
-	String streamer;
-	private String minigameEndMessage;
-	private String giveawaycommandname;
-	private String followersTextFile, subTextFile, followerMessage, subMessage;
-	private int counter1, counter2, counter3, counter4, counter5;
-	private int minigameTimer;
-	private long gameStartTime;
-	private boolean minigameTriggered = false;
-	private boolean timeFinished = false;
-	private boolean minigameOn;
-	private boolean amountResult;
-	private boolean adventureToggle;
-	private boolean startAdventure = false;
-	private boolean waitForAdventureCoolDown = false;
-	private boolean raffleInProgress = false;
-	private boolean autoShoutoutOnHost;
+	@Expose(serialize = true, deserialize = true)
+	String oauth, streamer, channel, botName, followersTextFile, subTextFile, followerMessage, subMessage,
+			minigameEndMessage, giveawaycommandname, spreadsheetId, botColor, endMessage, startupMessage;
+	@Expose(serialize = true, deserialize = true)
+	int counter1, counter2, counter3, counter4, counter5, minigameTimer;
+	@Expose(serialize = true, deserialize = true)
+	long gameStartTime;
+	@Expose(serialize = true, deserialize = true)
+	boolean minigameTriggered = false, timeFinished = false, minigameOn, amountResult, adventureToggle,
+			startAdventure = false, waitForAdventureCoolDown = false, raffleInProgress = false, autoShoutoutOnHost,
+			gambleToggle, currencyToggle;
+	@Expose(serialize = true, deserialize = true)
 	Youtube youtube;
+	@Expose(serialize = true, deserialize = true)
 	Google google;
+	@Expose(serialize = true, deserialize = true)
 	TextAdventure textAdventure;
+	@Expose(serialize = true, deserialize = true)
 	Currency currency;
+	@Expose(serialize = true, deserialize = true)
 	Image image;
+	@Expose(serialize = true, deserialize = true)
 	SoundEffect soundEffect;
+	@Expose(serialize = true, deserialize = true)
 	Quote quote;
+	@Expose(serialize = true, deserialize = true)
 	RequestSystem requestSystem;
-	ArrayList<String> extraCommandNames = new ArrayList<>();
-	ArrayList<Command> sfxCommandList = new ArrayList<Command>();
-	ArrayList<Command> userCommandList = new ArrayList<Command>();
-	ArrayList<Command> timerCommandList = new ArrayList<Command>();
-	ArrayList<Command> botCommandList = new ArrayList<Command>();
-	ArrayList<Command> imageCommandList = new ArrayList<Command>();
+	@Expose(serialize = true, deserialize = true)
+	ArrayList<Command> sfxCommandList = new ArrayList<Command>(), userCommandList = new ArrayList<Command>(),
+			timerCommandList = new ArrayList<Command>(), botCommandList = new ArrayList<Command>(),
+			imageCommandList = new ArrayList<Command>(), commandList = new ArrayList<Command>();
+	@Expose(serialize = true, deserialize = true)
 	ArrayList<BotUser> users = new ArrayList<BotUser>();
-	ArrayList<String> gameUser = new ArrayList<String>();
+	@Expose(serialize = true, deserialize = true)
 	ArrayList<Double> gameGuess = new ArrayList<Double>();
-	ArrayList<String> raffleUsers = new ArrayList<String>();
-	ArrayList<String> allHosts = new ArrayList<String>();
+	@Expose(serialize = true, deserialize = true)
+	ArrayList<String> raffleUsers = new ArrayList<String>(), allHosts = new ArrayList<String>(),
+			gameUser = new ArrayList<String>(), extraCommandNames = new ArrayList<>();
+	@Expose(serialize = true, deserialize = true)
 	Map<String, String> events = new HashMap<String, String>();
-	ArrayList<Command> commandList = new ArrayList<Command>();
+	@Expose(serialize = true, deserialize = true)
 	Command getViewerComm;
 
-	public TwitchBot() throws IOException {
-		botStartUp();
+	public void botStartUp() throws IOException { // Starts bot up, calls necessary threads and methods
+		this.setName(botName);
+		this.isConnected();
+		setClasses();
+		System.out.println("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
+		Utils.writeVersion();
+		textAdventure.startAdventuring(new ArrayList<String>(), (int) textAdventure.adventureStartTime * 1000);
 		threads();
+		this.channel = "#" + streamer;
 	}
 
-	public void botStartUp() throws IOException {
-		requestSystem = new RequestSystem(this);
-		youtube = new Youtube();
+	public void setClasses() { // Resets classes within bot using bot as passed variables to request system and
+								// quote, resets google
+		requestSystem.bot = this;
+		quote.bot = this;
+		currency.users = users;
 		google = new Google();
-		currency = new Currency(users);
-		soundEffect = new SoundEffect();
-		quote = new Quote(this);
-		image = new Image();
-		textAdventure = new TextAdventure();
-		read();
+		youtube = new Youtube();
+		google.spreadsheetId = spreadsheetId;
+	}
+
+	public void resetAllCommands() { // Sets all command types for quicker type checking, sets all command names
 		botCommandList = getCommands("bot");
 		sfxCommandList = getCommands("sfx");
 		userCommandList = getCommands("user");
 		timerCommandList = getCommands("timer");
 		imageCommandList = getCommands("image");
 		extraCommandNames = setExtraCommandNames();
-		if (google.spreadsheetId != null) {
-			google.service = google.getSheetsService();
+	}
+
+	public void save() { // This may be unnecessary, cannot use 'this' within thread so calls this method
+							// instead
+		try {
+			Utils.saveData(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+			Utils.errorReport(e);
 		}
-		this.setName(botName);
-		this.isConnected();
-		System.out.println("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
-		Utils.writeVersion();
 	}
 
 	public void threads() {
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+					Utils.errorReport(e1);
+				}
+				int count = 0, timerTotal = 20;
+				File f = new File(System.getProperty("java.io.tmpdir") + "dudebotkeyboardcontroller.txt");
+				File f2 = new File(System.getProperty("java.io.tmpdir") + "dudebotsyncbot.txt");
+				double start_time = System.currentTimeMillis();
+				int i = 0;
+				while (true) {
+					try {
+						String reader; // This section checks to see if GUI is still running. If not, closes bot.jar
+						String pidInfo = "";
+						Process p = Runtime.getRuntime()
+								.exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
+						BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+						while ((reader = input.readLine()) != null) {
+							pidInfo += reader;
+						}
+						input.close();
+
+						if (!pidInfo.contains("DudeBot.exe")) {
+							if (endMessage != null) {
+								sendRawLine("PRIVMSG " + channel + " : /me " + endMessage);
+							} else {
+								sendRawLine("PRIVMSG " + channel + " : /me Goodbye!");
+							}
+							clearUpTempData();
+							save();
+							System.exit(1);
+						}
+
+						BufferedReader br = new BufferedReader(new FileReader(f)); // Clears autonextsong file and calls
+																					// next
+																					// song if needed
+						if (br.readLine() != null) {
+							br.close();
+							requestSystem.nextSongAuto(channel, false);
+							PrintWriter writer = new PrintWriter(f);
+							writer.print("");
+							writer.close();
+						}
+						br.close();
+						BufferedReader br2 = new BufferedReader(new FileReader(f2)); // Clears sync file and reads GUI
+																						// updated
+																						// data (if new data exists)
+						if (br2.readLine() != null) {
+							br2.close();
+							requestSystem.writeToCurrentSong(channel, false);
+							PrintWriter writer2 = new PrintWriter(f2);
+							writer2.print("");
+							writer2.close();
+							read();
+						}
+						br2.close();
+						if ((System.currentTimeMillis() - start_time) >= (timerTotal * 60000)) { // Prints timed
+																									// commands when
+																									// needed
+							start_time = System.currentTimeMillis();
+							if (timerCommandList.get(i).output.equals("$songlist")) {
+								try {
+									requestSystem.songlistTimer(channel);
+								} catch (NumberFormatException | IOException e) {
+									Utils.errorReport(e);
+									e.printStackTrace();
+								}
+							} else {
+								sendRawLine("PRIVMSG " + channel + " :" + timerCommandList.get(i).output);
+							}
+							i++;
+							if (i >= count) {
+								i = 0;
+							}
+						}
+						Thread.sleep(1000);
+					} catch (Exception e) {
+						Utils.errorReport(e);
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
 		if (currency.toggle) {
-			new Thread(new Runnable() {
+			new Thread(new Runnable() { // Thread for calling bonus all every minute if currency is toggled
 				public void run() {
 					while (currency.toggle) {
 						try {
 							if (!currency.toggle) {
 								break;
 							}
-							Thread.sleep(30000);
+							Thread.sleep(60000);
 							currency.bonusall(currency.currencyPerMinute, Utils.getAllViewers(streamer), true);
-							Thread.sleep(30000);
-							currency.copyToCurrencyFile();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 							Utils.errorReport(e);
@@ -118,9 +218,8 @@ public class TwitchBot extends PircBot {
 				}
 			}).start();
 		}
-		textAdventure.startAdventuring(new ArrayList<String>(), (int) textAdventure.adventureStartTime * 1000);
 		if (autoShoutoutOnHost) {
-			new Thread(new Runnable() {
+			new Thread(new Runnable() { // Thread for shouting out hosts every 5 seconds
 
 				public void run() {
 					int count = 0;
@@ -153,7 +252,8 @@ public class TwitchBot extends PircBot {
 
 			}).start();
 		}
-		new Thread(new Runnable() {
+		new Thread(new Runnable() { // Thread for writing all viewer names to text file for GUI to use every 8
+									// seconds
 			public void run() {
 				while (true) {
 					try {
@@ -170,7 +270,7 @@ public class TwitchBot extends PircBot {
 				}
 			}
 		}).start();
-		new Thread(new Runnable() {
+		new Thread(new Runnable() { // Thread for displaying new follower, checks every 5 seconds
 			public void run() {
 				ArrayList<String> users = new ArrayList<String>();
 				String lastFollower = "", currentFollower = "";
@@ -203,7 +303,7 @@ public class TwitchBot extends PircBot {
 				}
 			}
 		}).start();
-		new Thread(new Runnable() {
+		new Thread(new Runnable() { // Thread for displaying new sub, checks every 5 seconds
 			public void run() {
 				String lastSub = "", currentSub = "";
 				ArrayList<String> subList = new ArrayList<>();
@@ -242,6 +342,41 @@ public class TwitchBot extends PircBot {
 				}
 			}
 		}).start();
+		new Thread(new Runnable() { // Thread for saving all data every 10 seconds
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(10000);
+						save();
+					} catch (Exception e) {
+					}
+				}
+			}
+		}).start();
+
+	}
+
+	public void clearUpTempData() { // Resets all bot startup data
+		gameStartTime = 0;
+		waitForAdventureCoolDown = false;
+		minigameTriggered = false;
+		startAdventure = false;
+		textAdventure.allowUserAdds = true;
+		textAdventure.enoughPlayers = false;
+		textAdventure.startTimerInMS = 0;
+		image.imageStartTime = (long) 0;
+		image.userCoolDowns.clear();
+		soundEffect.SFXstartTime = 0;
+		soundEffect.userCoolDowns.clear();
+		requestSystem.favSongsPlayedThisStream.clear();
+		requestSystem.doNotWriteToHistory = true;
+		gameGuess.clear();
+		for (BotUser botUser : users) {
+			botUser.gaveSpot = false;
+			botUser.vipCoolDown = 0;
+			botUser.gambleCoolDown = 0;
+		}
+
 	}
 
 	public ArrayList<Command> getCommands(String type) {
@@ -266,495 +401,7 @@ public class TwitchBot extends PircBot {
 		// ADD TO AS NEEDED
 	}
 
-	public void readFromImages() {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.imagesFile))) {
-			while ((line = br.readLine()) != null) {
-				String command = line.substring(0, line.lastIndexOf('\t')).trim();
-				String url = line.substring(line.lastIndexOf('\t') + 1, line.length()).trim();
-				String[] c = { command };
-				commandList.add(new Command(c, 0, url, "image", true));
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromSFX() {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.sfxFile))) {
-			while ((line = br.readLine()) != null) {
-				String command = line.substring(0, line.lastIndexOf('\t')).trim();
-				String url = line.substring(line.lastIndexOf('\t') + 1, line.length()).trim();
-				String[] c = { command };
-				commandList.add(new Command(c, 0, url, "sfx", true));
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromEvents() {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.eventFile))) {
-			while ((line = br.readLine()) != null) {
-				events.put(line.substring(0, line.lastIndexOf('\t')).trim(),
-						line.substring(line.lastIndexOf('\t') + 1, line.length()).trim());
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromOthers() {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.othersFile))) {
-			while ((line = br.readLine()) != null) {
-				if (line.contains("counter1=")) {
-					counter1 = Integer.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("counter2=")) {
-					counter2 = Integer.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("counter3=")) {
-					counter3 = Integer.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("counter4=")) {
-					counter4 = Integer.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("counter5=")) {
-					counter5 = Integer.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				}
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromUsers() {
-		String line;
-		boolean addNewFlag;
-		try (BufferedReader br2 = new BufferedReader(new FileReader(Utils.usersFile))) {
-			while ((line = br2.readLine()) != null) {
-				addNewFlag = true;
-				int num = Integer.parseInt(line.substring(line.lastIndexOf('\t') + 1, line.length()).trim());
-				String name = line.substring(0, line.lastIndexOf('\t')).trim();
-				for (BotUser botUser : users) {
-					if (botUser.username.equalsIgnoreCase(name)) {
-						botUser.numRequests = num;
-						addNewFlag = false;
-						break;
-					}
-				}
-				if (addNewFlag) {
-					BotUser u = new BotUser(name, num, false, false, false, 0, 0, null, 0, 0, 0);
-					users.add(u);
-				}
-			}
-			br2.close();
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromConfig() {
-		if (requestSystem.bannedKeywords != null) {
-			requestSystem.bannedKeywords = null;
-		}
-		if (requestSystem.favSongs != null) {
-			requestSystem.favSongs = null;
-		}
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.configFile))) {
-			while ((line = br.readLine()) != null) {
-				if (line.contains("channel")) {
-					streamer = line.substring(line.lastIndexOf('#') + 1, line.length()).trim();
-				} else if (line.contains("maxSonglistLength")) {
-					requestSystem.maxSonglistLength = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("botName")) {
-					botName = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-				} else if (line.contains("numOfSongsToDisplay")) {
-					requestSystem.numOfSongsToDisplay = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("numOfSongsInQueuePerUser")) {
-					requestSystem.numOfSongsInQueuePerUser = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("regulars=")) {
-					String regularStr = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					String[] subs = regularStr.split(",");
-					for (int i = 0; i < subs.length; i++) {
-						for (BotUser botUser : users) {
-							if (botUser.username.toLowerCase().equals(subs[i].toLowerCase())) {
-								botUser.sub = true;
-								break;
-							}
-						}
-					}
-				} else if (line.contains("mustFollowToRequest")) {
-					requestSystem.mustFollowToRequest = Boolean
-							.parseBoolean(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("requestsOn=")) {
-					if (line.contains("true")) {
-						requestSystem.requestsTrigger = true;
-					} else if (line.contains("false")) {
-						requestSystem.requestsTrigger = false;
-					}
-				} else if (line.contains("displaySonglistOneLine=")) {
-					if (line.contains("true")) {
-						requestSystem.displayOneLine = true;
-					} else if (line.contains("false")) {
-						requestSystem.displayOneLine = false;
-					}
-				} else if (line.contains("requestsTrigger=")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.triggerRequestsComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.triggerRequestsComm);
-				} else if (line.contains("displayIfUserIsHere")) {
-					requestSystem.displayIfUserIsHere = Boolean
-							.parseBoolean(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("requestCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.requestComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.requestComm);
-				} else if (line.contains("songlistCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.songlistComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.songlistComm);
-				} else if (line.contains("getTotalSongsCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.getTotalComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.getTotalComm);
-				} else if (line.contains("getViewerCountCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					getViewerComm = new Command(commands.split(","), line.charAt(line.indexOf('=') + 1) - '0', null,
-							"bot", true);
-					commandList.add(getViewerComm);
-				} else if (line.contains("editCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.editComm = new Command(commands.split(","), line.charAt(line.indexOf('=') + 1) - '0',
-							null, "bot", true);
-					commandList.add(requestSystem.editComm);
-				} else if (line.contains("nextCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.nextComm = new Command(commands.split(","), line.charAt(line.indexOf('=') + 1) - '0',
-							null, "bot", true);
-					commandList.add(requestSystem.nextComm);
-				} else if (line.contains("addvipCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.addvipComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.addvipComm);
-				} else if (line.contains("addtopCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.addtopComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.addtopComm);
-				} else if (line.contains("clearCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.clearComm = new Command(commands.split(","), line.charAt(line.indexOf('=') + 1) - '0',
-							null, "bot", true);
-					commandList.add(requestSystem.clearComm);
-				} else if (line.contains("getCurrentCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.getCurrentComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.getCurrentComm);
-				} else if (line.contains("backupRequestAdd")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.backupRequestAddComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.backupRequestAddComm);
-				} else if (line.contains("getNextSongCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.getNextComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.getNextComm);
-				} else if (line.contains("randomNextSong")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.randomComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.randomComm);
-				} else if (line.contains("favSongs")) {
-					String songs = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					if (songs.endsWith("!") || songs.endsWith(",")) {
-						songs = songs.substring(0, songs.length() - 1);
-						requestSystem.favSongs = null;
-					}
-					if (!songs.equalsIgnoreCase("")) {
-						requestSystem.favSongs = songs.split(",");
-						for (int i = 0; i < requestSystem.favSongs.length; i++) {
-							requestSystem.favSongs[i] = requestSystem.favSongs[i].trim();
-						}
-					}
-				} else if (line.contains("favSongCommand")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.favSongComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.favSongComm);
-				} else if (line.contains("editMySong")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.editSongComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.editSongComm);
-				} else if (line.contains("removeMySong")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.removeSongComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.removeSongComm);
-				} else if (line.contains("adddonatorCommands")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.adddonatorComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.adddonatorComm);
-				} else if (line.contains("bannedKeywords")) {
-					String words = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					if (words.endsWith("!") || words.endsWith(",")) {
-						words = words.substring(0, words.length() - 1);
-						requestSystem.bannedKeywords = null;
-					}
-					if (!words.equalsIgnoreCase("")) {
-						requestSystem.bannedKeywords = words.split(",");
-						for (int i = 0; i < requestSystem.bannedKeywords.length; i++) {
-							requestSystem.bannedKeywords[i] = requestSystem.bannedKeywords[i].toLowerCase().trim();
-						}
-					}
-				} else if (line.contains("mySongPosition")) {
-					String commands = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					requestSystem.songPositionComm = new Command(commands.split(","),
-							line.charAt(line.indexOf('=') + 1) - '0', null, "bot", true);
-					commandList.add(requestSystem.songPositionComm);
-				} else if (line.contains("whispersOn=")) {
-					if (line.contains("true")) {
-						requestSystem.whisperToUser = true;
-					} else if (line.contains("false")) {
-						requestSystem.whisperToUser = false;
-					}
-				} else if (line.contains("quotesOn=")) {
-					if (line.contains("true")) {
-						quote.quotesOn = true;
-					} else if (line.contains("false")) {
-						quote.quotesOn = false;
-					}
-				} else if (line.contains("minigameOn=")) {
-					if (line.contains("true")) {
-						minigameOn = true;
-					} else if (line.contains("false")) {
-						minigameOn = false;
-					}
-				} else if (line.contains("googleSheet=")) {
-					if (!line.trim().equals("googleSheet=")) {
-						google.spreadsheetId = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					}
-				} else if (line.contains("sfxTimer")) {
-					soundEffect.sfxTimer = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("amountResult=")) {
-					if (line.contains("true")) {
-						amountResult = true;
-					} else if (line.contains("false")) {
-						amountResult = false;
-					}
-				} else if (line.contains("minigameTimer=")) {
-					minigameTimer = Integer.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim())
-							* 1000;
-				} else if (line.contains("minigameEndMessage=")) {
-					minigameEndMessage = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-				} else if (line.contains("subOnlyRequests=")) {
-					requestSystem.subOnlyRequests = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-				} else if (line.contains("directInputRequests=")) {
-					if (line.contains("true")) {
-						requestSystem.direquests = true;
-					} else if (line.contains("false")) {
-						requestSystem.direquests = false;
-					}
-				} else if (line.contains("youtubeLinkRequests=")) {
-					if (line.contains("true")) {
-						requestSystem.ylrequests = true;
-					} else if (line.contains("false")) {
-						requestSystem.ylrequests = false;
-					}
-				} else if (line.contains("maxSongLimitOn=")) {
-					if (line.contains("true")) {
-						requestSystem.maxSongLength = true;
-					} else if (line.contains("false")) {
-						requestSystem.maxSongLength = false;
-					}
-				} else if (line.contains("maxSongDuration=")) {
-					requestSystem.maxSongLengthInMinutes = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("adventureUserJoinTime=")) {
-					textAdventure.adventureStartTime = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("adventureCoolDownTime=")) {
-					textAdventure.adventureCoolDown = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("adventureMinReward=")) {
-					textAdventure.adventurePointsMin = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("adventureMaxReward=")) {
-					textAdventure.adventurePointsMax = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("giveawaycommandname=")) {
-					giveawaycommandname = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					if (!giveawaycommandname.startsWith("!")) {
-						giveawaycommandname = "!" + giveawaycommandname;
-					}
-				} else if (line.contains("currencyName=")) {
-					currency.currencyName = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					if (currency.currencyName.startsWith("!")) {
-						currency.currencyName = currency.currencyName.substring(1);
-					}
-				} else if (line.contains("currencyPerMinute=")) {
-					currency.currencyPerMinute = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("maxGamble=")) {
-					currency.maxGamble = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("currencyCoolDownMinutes=")) {
-					currency.gambleCoolDownMinutes = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("currencyToggle=")) {
-					if (line.contains("true")) {
-						currency.toggle = true;
-					} else if (line.contains("false")) {
-						currency.toggle = false;
-					}
-				} else if (line.contains("currencyCommandName=")) {
-					currency.currencyCommand = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					if (!currency.currencyCommand.startsWith("!")) {
-						currency.currencyCommand = "!" + currency.currencyCommand;
-					}
-				} else if (line.contains("vipSongCost=")) {
-					currency.vipSongCost = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("vipSongToggle=")) {
-					if (line.contains("true")) {
-						currency.vipSongToggle = true;
-					} else if (line.contains("false")) {
-						currency.vipSongToggle = false;
-					}
-				} else if (line.contains("gambleToggle=")) {
-					if (line.contains("true")) {
-						currency.gambleToggle = true;
-					} else if (line.contains("false")) {
-						currency.gambleToggle = false;
-					}
-				} else if (line.contains("adventureToggle=")) {
-					if (line.contains("true")) {
-						adventureToggle = true;
-					} else if (line.contains("false")) {
-						adventureToggle = false;
-					}
-				} else if (line.contains("vipRedeemCoolDownMinutes=")) {
-					currency.vipRedeemCoolDownMinutes = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("autoShoutoutOnHost=")) {
-					if (line.contains("true")) {
-						autoShoutoutOnHost = true;
-					} else if (line.contains("false")) {
-						autoShoutoutOnHost = false;
-					}
-				} else if (line.contains("quotesModOnly=")) {
-					if (line.contains("true")) {
-						quote.quotesModOnly = true;
-					} else if (line.contains("false")) {
-						quote.quotesModOnly = false;
-					}
-				} else if (line.contains("imageCoolDown=")) {
-					image.imageCoolDown = Long
-							.parseLong(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("sfxOverallCoolDown=")) {
-					soundEffect.SFXOverallCoolDown = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("imagesOverallCoolDown=")) {
-					image.imageOverallCoolDown = Long
-							.parseLong(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("followersTextFile=")) {
-					followersTextFile = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-				} else if (line.contains("subTextFile=")) {
-					subTextFile = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-				} else if (line.contains("followerMessage=")) {
-					followerMessage = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-				} else if (line.contains("subMessage=")) {
-					subMessage = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-				} else if (line.contains("rankupUnitCost=")) {
-					currency.rankupUnitCost = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("subCreditRedeemCost=")) {
-					currency.subCreditRedeemCost = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				} else if (line.contains("creditsPerSub=")) {
-					currency.creditsPerSub = Integer
-							.parseInt(line.substring(line.lastIndexOf('=') + 1, line.length()).trim());
-				}
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromCommandList() {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.userCommandsFile))) {
-			while ((line = br.readLine()) != null) {
-				String[] temp = line.split("\t");
-				String response = temp[1].trim();
-				int level = 0;
-				if (line.endsWith("\t0") || line.endsWith("\t1") || line.endsWith("\t2") || line.endsWith("\t3")) {
-					level = Integer.parseInt(temp[2].trim());
-				}
-				String[] c = { temp[0].trim() };
-				commandList.add(new Command(c, level, response, "user", true));
-			}
-		} catch (Exception e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromTimersList() {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.userTimersFile))) {
-			while ((line = br.readLine()) != null) {
-				String[] temp = line.split("\t");
-				String response = temp[1].trim();
-				boolean toggle = true;
-				if (line.endsWith("\t0") || line.endsWith("\t1") || line.endsWith("\t2") || line.endsWith("\t3")) {
-					if (Integer.parseInt(temp[2].trim()) == 0) {
-						toggle = false;
-					}
-				}
-				String[] c = { temp[0].trim() };
-				commandList.add(new Command(c, 0, response, "user", toggle));
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void readFromQuotes() {
-		String line;
-		try (BufferedReader br2 = new BufferedReader(new FileReader(Utils.quotesFile))) {
-			quote.quotes = new ArrayList<String>();
-			while ((line = br2.readLine()) != null) {
-				quote.quotes.add(line + " ");
-			}
-			br2.close();
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-	}
-
-	public void addUserToList(String sender, boolean operator) throws FileNotFoundException, IOException {
+	public void addUserRequestAmount(String sender, boolean operator) throws FileNotFoundException, IOException {
 		for (BotUser botUser : users) {
 			if (botUser.username.equalsIgnoreCase(sender)) {
 				if (operator) {
@@ -765,22 +412,10 @@ public class TwitchBot extends PircBot {
 						botUser.numRequests = 0;
 					}
 				}
-				Path path = Paths.get(Utils.usersFile);
-				List<String> fileContent = new ArrayList<>(Files.readAllLines(path, StandardCharsets.UTF_8));
-				for (int j = 0; j < fileContent.size(); j++) {
-					if (fileContent.get(j).startsWith(sender + "\t")) {
-						fileContent.set(j, sender + "\t" + botUser.numRequests);
-						break;
-					}
-				}
-				Files.write(path, fileContent, StandardCharsets.UTF_8);
-				return;
+				break;
 			}
 		}
-		Writer output;
-		output = new BufferedWriter(new FileWriter(Utils.usersFile, true));
-		output.append(sender + "\t" + 1 + "\r");
-		output.close();
+		Utils.saveData(this);
 	}
 
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
@@ -1013,10 +648,8 @@ public class TwitchBot extends PircBot {
 									if (!currency.toggle) {
 										break;
 									}
-									Thread.sleep(30000);
+									Thread.sleep(60000);
 									currency.bonusall(currency.currencyPerMinute, Utils.getAllViewers(streamer), true);
-									Thread.sleep(30000);
-									currency.copyToCurrencyFile();
 								} catch (InterruptedException e) {
 									Utils.errorReport(e);
 									e.printStackTrace();
@@ -1669,22 +1302,8 @@ public class TwitchBot extends PircBot {
 			if (Utils.checkIfUserIsOP(sender, channel, streamer, users) || sender.equals(Utils.botMaker)
 					|| sender.equals(streamer)) {
 				if (!adventureToggle) {
-					try {
-						Path path = Paths.get(Utils.configFile);
-						List<String> fileContent = new ArrayList<>(Files.readAllLines(path, StandardCharsets.UTF_8));
-						for (int j = 0; j < fileContent.size(); j++) {
-							if (fileContent.get(j).startsWith("adventureToggle=")) {
-								fileContent.set(j, "adventureToggle=true");
-								break;
-							}
-						}
-						Files.write(path, fileContent, StandardCharsets.UTF_8);
-						read();
-						sendRawLine("PRIVMSG " + channel + " :" + "Adventure system turned on!");
-					} catch (Exception e) {
-						Utils.errorReport(e);
-						e.printStackTrace();
-					}
+					adventureToggle = true;
+					sendRawLine("PRIVMSG " + channel + " :" + "Adventure system turned on!");
 				} else {
 					sendRawLine("PRIVMSG " + channel + " :" + "Adventure system is already on!");
 				}
@@ -1695,22 +1314,8 @@ public class TwitchBot extends PircBot {
 			if (Utils.checkIfUserIsOP(sender, channel, streamer, users) || sender.equals(Utils.botMaker)
 					|| sender.equals(streamer)) {
 				if (adventureToggle) {
-					try {
-						Path path = Paths.get(Utils.configFile);
-						List<String> fileContent = new ArrayList<>(Files.readAllLines(path, StandardCharsets.UTF_8));
-						for (int j = 0; j < fileContent.size(); j++) {
-							if (fileContent.get(j).startsWith("adventureToggle=")) {
-								fileContent.set(j, "adventureToggle=false");
-								break;
-							}
-						}
-						Files.write(path, fileContent, StandardCharsets.UTF_8);
-						read();
-						sendRawLine("PRIVMSG " + channel + " :" + "Adventure system turned off!");
-					} catch (Exception e) {
-						Utils.errorReport(e);
-						e.printStackTrace();
-					}
+					adventureToggle = false;
+					sendRawLine("PRIVMSG " + channel + " :" + "Adventure system turned off!");
 				} else {
 					sendRawLine("PRIVMSG " + channel + " :" + "Adventure system is already off!");
 				}
@@ -1826,22 +1431,7 @@ public class TwitchBot extends PircBot {
 					return;
 				}
 				sendRawLine("PRIVMSG " + channel + " :" + "/color " + Utils.getFollowingText(message).trim());
-				try {
-					List<String> fileContent = new ArrayList<>(
-							Files.readAllLines(Paths.get(Utils.configFile), StandardCharsets.UTF_8));
-					for (int i = 0; i < fileContent.size(); i++) {
-						if (fileContent.get(i).startsWith("botColor=")) {
-							fileContent.set(i, "botColor=" + color);
-							break;
-						}
-					}
-					Files.write(Paths.get(Utils.configFile), fileContent, StandardCharsets.UTF_8);
-					return;
-				} catch (Exception e) {
-					e.printStackTrace();
-					Utils.errorReport(e);
-					return;
-				}
+				botColor = color;
 			}
 		}
 		// Others
@@ -1906,25 +1496,10 @@ public class TwitchBot extends PircBot {
 				}
 				for (Command command : commandList) {
 					if (comm.equalsIgnoreCase(command.input[0])) {
-						try {
-							Path path = Paths.get(Utils.userCommandsFile);
-							List<String> fileContent = new ArrayList<>(
-									Files.readAllLines(path, StandardCharsets.UTF_8));
-							for (int j = 0; j < fileContent.size(); j++) {
-								if (fileContent.get(j).startsWith(comm)) {
-									fileContent.set(j, comm + "\t" + response);
-									Files.write(path, fileContent, StandardCharsets.UTF_8);
-									sendRawLine(
-											"PRIVMSG " + channel + " :" + comm + " has been edited, " + sender + "!");
-									readFromCommandList();
-									setExtraCommandNames();
-									return;
-								}
-							}
-						} catch (Exception e) {
-							Utils.errorReport(e);
-							e.printStackTrace();
-						}
+						command.output = response;
+						resetAllCommands();
+						sendRawLine("PRIVMSG " + channel + " :" + comm + " has been edited, " + sender + "!");
+						return;
 					}
 				}
 				sendRawLine("PRIVMSG " + channel + " :" + comm + " does not exist, " + sender + "!");
@@ -1946,25 +1521,10 @@ public class TwitchBot extends PircBot {
 				}
 				for (Command command : commandList) {
 					if (comm.equalsIgnoreCase(command.input[0])) {
-						try {
-							Path path = Paths.get(Utils.userCommandsFile);
-							List<String> fileContent = new ArrayList<>(
-									Files.readAllLines(path, StandardCharsets.UTF_8));
-							for (int j = 0; j < fileContent.size(); j++) {
-								if (fileContent.get(j).startsWith(comm)) {
-									fileContent.remove(j);
-									Files.write(path, fileContent, StandardCharsets.UTF_8);
-									sendRawLine(
-											"PRIVMSG " + channel + " :" + comm + " has been removed, " + sender + "!");
-									readFromCommandList();
-									setExtraCommandNames();
-									return;
-								}
-							}
-						} catch (Exception e) {
-							Utils.errorReport(e);
-							e.printStackTrace();
-						}
+						commandList.remove(command);
+						resetAllCommands();
+						sendRawLine("PRIVMSG " + channel + " :" + comm + " has been removed, " + sender + "!");
+						return;
 					}
 				}
 				sendRawLine("PRIVMSG " + channel + " :" + comm + " does not exist, " + sender + "!");
@@ -1991,19 +1551,10 @@ public class TwitchBot extends PircBot {
 						return;
 					}
 				}
-				try {
-					Writer output;
-					output = new BufferedWriter(new FileWriter(Utils.userCommandsFile, true));
-					output.append(comm + "\t" + response + "\r");
-					output.close();
-					sendRawLine("PRIVMSG " + channel + " :" + comm + " has been added, " + sender + "!");
-				} catch (IOException e) {
-					e.printStackTrace();
-					Utils.errorReport(e);
-					return;
-				}
-				readFromCommandList();
-				setExtraCommandNames();
+				String[] str = { comm };
+				commandList.add(new Command(str, 0, response, "user", true));
+				sendRawLine("PRIVMSG " + channel + " :" + comm + " has been added, " + sender + "!");
+				resetAllCommands();
 				return;
 			}
 		}
@@ -2124,54 +1675,25 @@ public class TwitchBot extends PircBot {
 
 	public void read() {
 		try {
-			readFromOthers();
-			readFromCommandList();
-			readFromTimersList();
-			readFromConfig();
-			readFromQuotes();
-			readFromSFX();
-			readFromImages();
-			readFromUsers();
-			readFromEvents();
-		} catch (Exception e) {
+			Config.bot = Utils.loadData();
+		} catch (IOException e) {
 			Utils.errorReport(e);
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 	}
 
 	public void setCounter(String message, String channel, String sender, int counter, int value) {
-		String line;
-		String val = "";
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(Utils.othersFile));
-			while ((line = br.readLine()) != null) {
-				if (line.contains("counter" + counter + "=")) {
-					val = line.substring(line.lastIndexOf('=') + 1, line.length()).trim();
-					break;
-				}
-			}
-			br.close();
-			Path path = Paths.get(Utils.othersFile);
-			Charset charset = StandardCharsets.UTF_8;
-			String content;
-			content = new String(Files.readAllBytes(path), charset);
-			content = content.replaceAll("counter" + counter + "=" + val, "counter" + counter + "=" + value);
-			Files.write(path, content.getBytes(charset));
-			sendRawLine("PRIVMSG " + channel + " :" + "Counter" + counter + " has been set to " + value + "!");
-			if (counter == 1) {
-				counter1 = value;
-			} else if (counter == 2) {
-				counter2 = value;
-			} else if (counter == 3) {
-				counter3 = value;
-			} else if (counter == 4) {
-				counter4 = value;
-			} else if (counter == 5) {
-				counter5 = value;
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
+		sendRawLine("PRIVMSG " + channel + " :" + "Counter" + counter + " has been set to " + value + "!");
+		if (counter == 1) {
+			counter1 = value;
+		} else if (counter == 2) {
+			counter2 = value;
+		} else if (counter == 3) {
+			counter3 = value;
+		} else if (counter == 4) {
+			counter4 = value;
+		} else if (counter == 5) {
+			counter5 = value;
 		}
 	}
 
@@ -2311,47 +1833,33 @@ public class TwitchBot extends PircBot {
 	}
 
 	public void triggerCurrency(boolean trigger, String channel) throws FileNotFoundException, IOException {
-		Path path = Paths.get(Utils.configFile);
-		Charset charset = StandardCharsets.UTF_8;
-		String content = new String(Files.readAllBytes(path), charset);
 		if (trigger) {
-			content = content.replaceAll("currencyToggle=false", "currencyToggle=true");
+			currencyToggle = true;
+			sendRawLine("PRIVMSG " + channel + " :" + "Currency system turned on!");
 		} else {
-			content = content.replaceAll("currencyToggle=true", "currencyToggle=false");
+			currencyToggle = false;
 			sendRawLine("PRIVMSG " + channel + " :" + "Currency system turned off!");
 		}
-		Files.write(path, content.getBytes(charset));
-		read();
 	}
 
 	public void triggerMiniGame(boolean trigger, String channel) throws FileNotFoundException, IOException {
-		Path path = Paths.get(Utils.configFile);
-		Charset charset = StandardCharsets.UTF_8;
-		String content = new String(Files.readAllBytes(path), charset);
 		if (trigger) {
-			content = content.replaceAll("minigameOn=false", "minigameOn=true");
+			minigameOn = true;
 			sendRawLine("PRIVMSG " + channel + " :" + "Minigame turned on!");
 		} else {
-			content = content.replaceAll("minigameOn=true", "minigameOn=false");
+			minigameOn = false;
 			sendRawLine("PRIVMSG " + channel + " :" + "Minigame turned off!");
 		}
-		Files.write(path, content.getBytes(charset));
-		read();
 	}
 
 	public void triggerGamble(boolean trigger, String channel) throws FileNotFoundException, IOException {
-		Path path = Paths.get(Utils.configFile);
-		Charset charset = StandardCharsets.UTF_8;
-		String content = new String(Files.readAllBytes(path), charset);
 		if (trigger) {
-			content = content.replaceAll("currencyToggle=false", "currencyToggle=true");
+			gambleToggle = true;
 			sendRawLine("PRIVMSG " + channel + " :" + "Gambling has been turned on!");
 		} else {
-			content = content.replaceAll("currencyToggle=true", "currencyToggle=false");
+			gambleToggle = false;
 			sendRawLine("PRIVMSG " + channel + " :" + "Gambling has been turned off!");
 		}
-		Files.write(path, content.getBytes(charset));
-		read();
 	}
 
 	public void viewerCOMMAND(String message, String channel, String sender) {
@@ -2584,27 +2092,16 @@ public class TwitchBot extends PircBot {
 	}
 
 	public void updateValue(String counter, int val) {
-		Path path = Paths.get(Utils.othersFile);
-		Charset charset = StandardCharsets.UTF_8;
-		String content;
-		try {
-			content = new String(Files.readAllBytes(path), charset);
-			content = content.replaceAll(counter + "=" + val, counter + "=" + (val + 1));
-			Files.write(path, content.getBytes(charset));
-			if (counter == "counter1") {
-				counter1 = val + 1;
-			} else if (counter == "counter2") {
-				counter2 = val + 1;
-			} else if (counter == "counter3") {
-				counter3 = val + 1;
-			} else if (counter == "counter4") {
-				counter4 = val + 1;
-			} else if (counter == "counter5") {
-				counter5 = val + 1;
-			}
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
+		if (counter == "counter1") {
+			counter1 = val + 1;
+		} else if (counter == "counter2") {
+			counter2 = val + 1;
+		} else if (counter == "counter3") {
+			counter3 = val + 1;
+		} else if (counter == "counter4") {
+			counter4 = val + 1;
+		} else if (counter == "counter5") {
+			counter5 = val + 1;
 		}
 	}
 

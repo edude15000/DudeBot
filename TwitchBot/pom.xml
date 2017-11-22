@@ -35,6 +35,11 @@
      <artifactId>google-api-services-sheets</artifactId>
      <version>v4-rev26-1.22.0</version>
    </dependency>
+   <dependency>
+  		<groupId>com.google.code.gson</groupId>
+  		<artifactId>gson</artifactId>
+  		<version>1.7.2</version>
+	</dependency>
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>

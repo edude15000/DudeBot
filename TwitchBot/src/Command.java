@@ -1,10 +1,15 @@
+import com.google.gson.annotations.Expose;
+
 public class Command {
 
-	String output;
+	@Expose(serialize = true, deserialize = true)
+	String output, commandType;
+	@Expose(serialize = true, deserialize = true)
 	int level;
+	@Expose(serialize = true, deserialize = true)
 	String[] input;
+	@Expose(serialize = true, deserialize = true)
 	boolean toggle;
-	String commandType;
 
 	public Command(String[] input, int level, String output, String commandType, boolean toggle) {
 		this.input = input;

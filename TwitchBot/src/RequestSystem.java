@@ -8,11 +8,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,53 +17,38 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import com.google.api.services.youtube.model.Video;
+import com.google.gson.annotations.Expose;
 
 public class RequestSystem {
 	TwitchBot bot;
-	String subOnlyRequests;
-	String lastSong;
-	int maxSonglistLength;
-	int numOfSongsToDisplay;
-	int numOfSongsInQueuePerUser;
-	int maxSongLengthInMinutes;
-	boolean mustFollowToRequest;
-	boolean requestsTrigger;
-	boolean displayIfUserIsHere;
-	boolean displayOneLine;
-	boolean whisperToUser;
-	boolean direquests;
-	boolean ylrequests;
-	boolean maxSongLength;
-	String[] favSongs;
-	String[] bannedKeywords;
+	@Expose(serialize = true, deserialize = true)
+	boolean vipSongToggle, mustFollowToRequest, requestsTrigger, displayIfUserIsHere, displayOneLine, whisperToUser,
+			direquests, ylrequests, maxSongLength, doNotWriteToHistory = false;;
+	@Expose(serialize = true, deserialize = true)
+	String subOnlyRequests, lastSong;
+	@Expose(serialize = true, deserialize = true)
+	int maxSonglistLength, numOfSongsToDisplay, numOfSongsInQueuePerUser, maxSongLengthInMinutes;
+	@Expose(serialize = true, deserialize = true)
+	String[] favSongs, bannedKeywords;
+	@Expose(serialize = true, deserialize = true)
 	ArrayList<String> favSongsPlayedThisStream = new ArrayList<String>();
-	boolean doNotWriteToHistory = false;
+	@Expose(serialize = true, deserialize = true)
 	Command requestComm, songlistComm, getTotalComm, editComm, nextComm, addvipComm, addtopComm, adddonatorComm,
 			getCurrentComm, clearComm, triggerRequestsComm, backupRequestAddComm, getNextComm, randomComm, favSongComm,
 			editSongComm, removeSongComm, songPositionComm;
 
-	public RequestSystem(TwitchBot bot) {
-		this.bot = bot;
-	}
-
 	public int getNumRequests(String sender) {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.usersFile))) {
-			while ((line = br.readLine()) != null) {
-				if (line.startsWith(sender + "\t")) {
-					return Integer.parseInt(line.substring(line.lastIndexOf('\t') + 1, line.length()).trim());
-				}
+		for (BotUser user : bot.users) {
+			if (user.username.equalsIgnoreCase(sender)) {
+				return user.numRequests;
 			}
-			br.close();
-			return -1;
-		} catch (Exception e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-			return -1;
 		}
+		return 0;
 	}
 
-	public void giveSpot(String message, String channel, String sender) throws FileNotFoundException, IOException {
+	public void giveSpot(String message, String channel, String sender) throws FileNotFoundException, IOException { // TODO
+																													// :
+																													// FIX
 		for (BotUser u : bot.users) {
 			if (u.username.equalsIgnoreCase(sender) && !sender.equalsIgnoreCase(bot.streamer)) {
 				if (u.gaveSpot) {
@@ -264,7 +244,7 @@ public class RequestSystem {
 								bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '" + input
 										+ "' has been added to the song list, " + requester + "!");
 							}
-							bot.addUserToList(requester, true);
+							bot.addUserRequestAmount(requester, true);
 							writeToCurrentSong(channel, false);
 						} else {
 							if (ytvid != null) {
@@ -321,7 +301,7 @@ public class RequestSystem {
 									bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '" + input
 											+ "' has been added to the song list, " + requester + "!");
 								}
-								bot.addUserToList(requester, true);
+								bot.addUserRequestAmount(requester, true);
 								writeToCurrentSong(channel, false);
 							} else {
 								if (ytvid != null) {
@@ -471,7 +451,7 @@ public class RequestSystem {
 				bot.sendRawLine("PRIVMSG " + channel + " :" + "Your next request '"
 						+ songToDelete.substring(0, songToDelete.lastIndexOf("\t")) + "' has been removed, " + sender
 						+ "!");
-				bot.addUserToList(sender, false);
+				bot.addUserRequestAmount(sender, false);
 			} else {
 				bot.sendRawLine("PRIVMSG " + channel + " :" + "You have no requests in the list, " + sender + "!");
 			}
@@ -679,19 +659,13 @@ public class RequestSystem {
 	}
 
 	public void triggerRequests(boolean trigger, String channel) throws FileNotFoundException, IOException {
-		Path path = Paths.get(Utils.configFile);
-		Charset charset = StandardCharsets.UTF_8;
-		String content = new String(Files.readAllBytes(path), charset);
 		if (trigger) {
-			content = content.replaceAll("requestsOn=false", "requestsOn=true");
 			requestsTrigger = true;
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "Requests turned on!");
 		} else {
-			content = content.replaceAll("requestsOn=true", "requestsOn=false");
 			requestsTrigger = false;
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "Requests turned off!");
 		}
-		Files.write(path, content.getBytes(charset));
 	}
 
 	public void randomizer(String channel) throws NumberFormatException, FileNotFoundException, IOException {
@@ -818,8 +792,7 @@ public class RequestSystem {
 		}
 		output2.write(line2);
 		output2.close();
-		bot.read();
-		if (bot.google.spreadsheetId != null) {
+		if (bot.spreadsheetId != null) {
 			bot.google.writeToGoogleSheets(nextCom, Utils.songlistfile, Utils.lastPlayedSongsFile);
 		}
 	}
@@ -959,11 +932,11 @@ public class RequestSystem {
 					user = line.substring(line.lastIndexOf('\t')).trim();
 					user = user.replace(")", "");
 					user = user.replace("(", "");
-					bot.addUserToList(user, false);
+					bot.addUserRequestAmount(user, false);
 				}
 				i++;
 			}
-			bot.readFromUsers();
+			bot.read();
 			br.close();
 		} catch (IOException e) {
 			Utils.errorReport(e);
@@ -1017,18 +990,13 @@ public class RequestSystem {
 	}
 
 	public void triggerVIPs(boolean trigger, String channel) throws FileNotFoundException, IOException {
-		Path path = Paths.get(Utils.configFile);
-		Charset charset = StandardCharsets.UTF_8;
-		String content = new String(Files.readAllBytes(path), charset);
 		if (trigger) {
-			content = content.replaceAll("vipSongToggle=false", "vipSongToggle=true");
+			vipSongToggle = true;
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP songs turned on!");
 		} else {
-			content = content.replaceAll("vipSongToggle=true", "vipSongToggle=false");
+			vipSongToggle = false;
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP songs turned off!");
 		}
-		Files.write(path, content.getBytes(charset));
-		bot.read();
 	}
 
 	public void nextRegularCOMMAND(String message, String channel, String sender)
@@ -1190,7 +1158,7 @@ public class RequestSystem {
 							}
 							bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP Song '" + input
 									+ "' has been added to the song list, " + requester + "!");
-							bot.addUserToList(requester, true);
+							bot.addUserRequestAmount(requester, true);
 							writeToCurrentSong(channel, false);
 						} else {
 							if (ytvid != null) {
@@ -1257,7 +1225,7 @@ public class RequestSystem {
 								}
 								bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP Song '" + input
 										+ "' has been added to the song list, " + requester + "!");
-								bot.addUserToList(requester, true);
+								bot.addUserRequestAmount(requester, true);
 								writeToCurrentSong(channel, false);
 							} else {
 								if (ytvid != null) {
@@ -1335,7 +1303,7 @@ public class RequestSystem {
 								bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + input
 										+ "' has been added to the top of the song list, " + requester + "!");
 							}
-							bot.addUserToList(requester, true);
+							bot.addUserRequestAmount(requester, true);
 							writeToCurrentSong(channel, false);
 						} else {
 							if (ytvid != null) {
@@ -1404,7 +1372,7 @@ public class RequestSystem {
 									bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + input
 											+ "' has been added to the top of the song list, " + requester + "!");
 								}
-								bot.addUserToList(requester, true);
+								bot.addUserRequestAmount(requester, true);
 								writeToCurrentSong(channel, false);
 							} else {
 								if (ytvid != null) {
@@ -1473,10 +1441,10 @@ public class RequestSystem {
 							String text = "The next " + numOfSongsToDisplay + " songs in the song list: ";
 							songlist(channel, text);
 						}
-						if (bot.google.spreadsheetId != null) {
+						if (bot.spreadsheetId != null) {
 							bot.sendRawLine("PRIVMSG " + channel + " :"
 									+ "The full setlist can be found here: https://docs.google.com/spreadsheets/d/"
-									+ bot.google.spreadsheetId);
+									+ bot.spreadsheetId);
 						}
 					} catch (IOException e) {
 						try {
@@ -1496,10 +1464,10 @@ public class RequestSystem {
 								String text = "The next " + numOfSongsToDisplay + " songs in the song list: ";
 								songlist(channel, text);
 							}
-							if (bot.google.spreadsheetId != null) {
+							if (bot.spreadsheetId != null) {
 								bot.sendRawLine("PRIVMSG " + channel + " :"
 										+ "The full setlist can be found here: https://docs.google.com/spreadsheets/d/"
-										+ bot.google.spreadsheetId);
+										+ bot.spreadsheetId);
 							}
 						} catch (IOException e1) {
 							Utils.errorReport(e1);
@@ -1959,7 +1927,7 @@ public class RequestSystem {
 		output.close();
 		bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + song + "' has been added to the song list, "
 				+ requestedby + "!");
-		bot.addUserToList(requestedby, true);
+		bot.addUserRequestAmount(requestedby, true);
 		writeToCurrentSong(channel, false);
 	}
 

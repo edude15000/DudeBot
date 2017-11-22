@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +21,11 @@ import java.util.TimeZone;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 public class Utils {
 	static String version = "2.12.1"; // UPDATE AS NECESSARY
 	static String releaseDate = "7/17/2017"; // UPDATE AS NECESSARY
@@ -27,20 +33,40 @@ public class Utils {
 	static String botMaker = "edude15000";
 	static String songlistfile = "song.txt";
 	static String templistfile = "temp.txt";
-	static String configFile = "config.txt";
 	static String currentSongFile = "currentsong.txt";
 	static String currentRequesterFile = "currentrequester.txt";
-	static String userCommandsFile = "commands.txt";
-	static String userTimersFile = "timedcommands.txt";
-	static String quotesFile = "quotes.txt";
-	static String othersFile = "others.txt";
-	static String sfxFile = "sfx.txt";
-	static String usersFile = "users.txt";
-	static String eventFile = "events.txt";
-	static String imagesFile = "images.txt";
-	static String ranksFile = "ranks.txt";
-	static String purchasedRanksFile = "purchasedranks.txt";
 	static String lastPlayedSongsFile = System.getProperty("java.io.tmpdir") + "lastsongsplayed.txt";
+
+	public static TwitchBot loadData() throws IOException {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+
+		Gson gson = gsonBuilder.create();
+		BufferedReader br = new BufferedReader(new FileReader("UserData.json"));
+		JsonParser parser = new JsonParser();
+		try {
+			JsonObject json = parser.parse(br).getAsJsonObject();
+			br.close();
+			return gson.fromJson(json, TwitchBot.class);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return null;
+	}
+
+	public static void saveData(TwitchBot twitchBot) throws IOException {
+		try {
+			Writer writer = new FileWriter("UserData.json");
+			GsonBuilder gsonBuilder = new GsonBuilder();
+
+			gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+			gsonBuilder.setPrettyPrinting();
+			gsonBuilder.create().toJson(twitchBot, writer);
+			writer.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
 
 	public static void errorReport(Exception e) {
 		Writer output;
@@ -386,5 +412,5 @@ public class Utils {
 	public static String getFollowingText(String message) {
 		return message.substring(message.indexOf(" ") + 1);
 	}
-	
+
 }

@@ -1,12 +1,3 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,96 +8,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import com.google.gson.annotations.Expose;
+
 public class Currency {
-	String currencyName;
-	String currencyCommand;
-	int currencyPerMinute;
-	int maxGamble;
-	int gambleCoolDownMinutes;
-	int vipRedeemCoolDownMinutes;
-	boolean toggle;
-	boolean vipSongToggle;
-	boolean gambleToggle;
-	int vipSongCost;
-	int subCreditRedeemCost = 1;
-	int creditsPerSub = 1;
-	String currencyFile = "currency.txt";
-	public LinkedHashMap<String, Integer> ranks = new LinkedHashMap<String, Integer>();
-	public String purchasedranksFile = "purchasedranks.txt";
-	public int rankupUnitCost;
+	@Expose(serialize = true, deserialize = true)
+	String currencyName, currencyCommand;
+	@Expose(serialize = true, deserialize = true)
+	int currencyPerMinute, maxGamble, gambleCoolDownMinutes, vipRedeemCoolDownMinutes, vipSongCost,
+			subCreditRedeemCost = 1, creditsPerSub = 1, rankupUnitCost;
+	@Expose(serialize = true, deserialize = true)
+	boolean toggle, vipSongToggle, gambleToggle;
+	@Expose(serialize = true, deserialize = true)
+	LinkedHashMap<String, Integer> ranks = new LinkedHashMap<String, Integer>();
 	List<BotUser> users;
 
 	public Currency(List<BotUser> users) {
 		this.users = users;
-		readFromCurrency();
-		readFromRanks();
-	}
-
-	public void readFromCurrency() {
-		String line;
-		ArrayList<String> user = new ArrayList<>();
-		ArrayList<Integer> points = new ArrayList<>();
-		ArrayList<Integer> time = new ArrayList<>();
-		ArrayList<Integer> subCredit = new ArrayList<>();
-		Map<String, String> purchasedRanks = new HashMap<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(currencyFile))) {
-			while ((line = br.readLine()) != null) {
-				String[] temp = line.split("\t");
-				user.add(temp[0].trim());
-				points.add(Integer.parseInt(temp[1].trim()));
-				time.add(Integer.parseInt(temp[2].trim()));
-				if (temp.length < 4) {
-					subCredit.add(0);
-				} else {
-					subCredit.add(Integer.parseInt(temp[3]));
-				}
-			}
-			br.close();
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.purchasedRanksFile))) {
-			while ((line = br.readLine()) != null) {
-				purchasedRanks.put(line.substring(0, line.lastIndexOf('\t')).trim(),
-						line.substring(line.lastIndexOf('\t') + 1, line.length()).trim());
-			}
-			br.close();
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
-		}
-		int userSize = user.size();
-		for (int i = 0; i < userSize; i++) {
-			if (TwitchBot.containsUser(users, user.get(i))) {
-				BotUser botUser = getBotUser(user.get(i));
-				botUser.points = points.get(i);
-				botUser.time = time.get(i);
-				if (purchasedRanks.get(user.get(i)) != null) {
-					botUser.rank = purchasedRanks.get(user.get(i));
-				}
-				botUser.subCredits = subCredit.get(i);
-				break;
-			} else {
-				BotUser u = new BotUser(user.get(i), 0, false, false, false, points.get(i), time.get(i),
-						purchasedRanks.get(user.get(i)), 0, 0, 0);
-				users.add(u);
-			}
-		}
-
-	}
-
-	public void readFromRanks() {
-		String line;
-		try (BufferedReader br = new BufferedReader(new FileReader(Utils.ranksFile))) {
-			while ((line = br.readLine()) != null) {
-				ranks.put(line.substring(0, line.lastIndexOf('\t')).trim(),
-						Integer.parseInt(line.substring(line.lastIndexOf('\t') + 1, line.length()).trim()));
-			}
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public String getSubCredits(String user) {
@@ -192,25 +109,14 @@ public class Currency {
 	}
 
 	public boolean writeToRanks(String user, String rankToBuy) {
-		Path path = Paths.get(purchasedranksFile);
-		List<String> fileContent;
-		try {
-			fileContent = new ArrayList<>(Files.readAllLines(path, StandardCharsets.UTF_8));
-			for (int j = 0; j < fileContent.size(); j++) {
-				if (fileContent.get(j).startsWith(user + "\t")) {
-					fileContent.set(j, user + "\t" + rankToBuy);
-					Files.write(path, fileContent, StandardCharsets.UTF_8);
-					return true;
-				}
+		for (BotUser u : users) {
+			if (u.username.equalsIgnoreCase(user)) {
+				u.rank = rankToBuy;
+				return true;
 			}
-			fileContent.add(user + "\t" + rankToBuy);
-			Files.write(path, fileContent, StandardCharsets.UTF_8);
-			readFromCurrency();
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
 		}
+		users.add(new BotUser(user, 0, false, false, false, 0, 0, rankToBuy, 0, 0, 0));
+		return true;
 	}
 
 	public int vipsong(String user) {
@@ -435,31 +341,6 @@ public class Currency {
 			}
 		} else {
 			return "";
-		}
-	}
-
-	public void copyToCurrencyFile() {
-		String output = "";
-		for (BotUser botUser : users) {
-			if (botUser.subCredits < 0) {
-				botUser.subCredits = 0;
-			}
-			output += botUser.username + "\t" + botUser.points + "\t" + botUser.time + "\t" + botUser.subCredits + "\r";
-		}
-		try {
-			FileWriter fileWriter = new FileWriter(new File(currencyFile));
-			fileWriter.write(output);
-			fileWriter.close();
-		} catch (IOException e) {
-			try {
-				Thread.sleep(1000);
-				FileWriter fileWriter = new FileWriter(new File(currencyFile));
-				fileWriter.write(output);
-				fileWriter.close();
-			} catch (IOException | InterruptedException e1) {
-				Utils.errorReport(e1);
-				e1.printStackTrace();
-			}
 		}
 	}
 

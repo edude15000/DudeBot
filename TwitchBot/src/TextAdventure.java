@@ -1,19 +1,20 @@
 import java.util.*;
 
-public class TextAdventure {
-	ArrayList<String> users = new ArrayList<String>();
-	HashMap<String, String[]> text = new HashMap<String, String[]>();
-	String choice = null;
-	long startTimerInMS;
-	boolean allowUserAdds = true;
-	boolean enoughPlayers = false;
-	int adventurePointsMin;
-	int adventurePointsMax;
-	int adventureCoolDown;
-	long adventureStartTime;
+import com.google.gson.annotations.Expose;
 
-	public TextAdventure() {
-	}
+public class TextAdventure {
+	@Expose(serialize = true, deserialize = true)
+	ArrayList<String> users = new ArrayList<String>();
+	@Expose(serialize = true, deserialize = true)
+	HashMap<String, String[]> text = new HashMap<String, String[]>();
+	@Expose(serialize = true, deserialize = true)
+	String choice = null;
+	@Expose(serialize = true, deserialize = true)
+	long startTimerInMS, adventureStartTime;
+	@Expose(serialize = true, deserialize = true)
+	boolean allowUserAdds = true, enoughPlayers = false;
+	@Expose(serialize = true, deserialize = true)
+	int adventurePointsMin, adventurePointsMax, adventureCoolDown;
 
 	public void startAdventuring(ArrayList<String> users, int startTimerInMS) {
 		allowUserAdds = true;

@@ -2,12 +2,16 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gson.annotations.Expose;
+
 import javazoom.jl.player.Player;
 
 public class SoundEffect {
-	int sfxTimer;
-	int SFXOverallCoolDown;
-	private long SFXstartTime = 0;
+	@Expose(serialize = true, deserialize = true)
+	int sfxTimer, SFXOverallCoolDown;
+	@Expose(serialize = true, deserialize = true)
+	long SFXstartTime = 0;
+	@Expose(serialize = true, deserialize = true)
 	public HashMap<String, Long> userCoolDowns = new HashMap<String, Long>();
 
 	public void sfxCOMMANDS(String message, String channel, String sender, ArrayList<Command> comList) {

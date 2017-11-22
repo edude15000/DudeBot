@@ -3,10 +3,12 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gson.annotations.Expose;
+
 public class Image {
-	Long imageStartTime = (long) 0;
-	Long imageOverallCoolDown;
-	Long imageCoolDown;
+	@Expose(serialize = true, deserialize = true)
+	Long imageStartTime = (long) 0, imageOverallCoolDown, imageCoolDown;
+	@Expose(serialize = true, deserialize = true)
 	public HashMap<String, Long> userCoolDowns = new HashMap<String, Long>();
 
 	public void imageCOMMANDS(String message, String channel, String sender, ArrayList<Command> comList) {

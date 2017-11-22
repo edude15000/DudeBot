@@ -1,43 +1,25 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.gson.annotations.Expose;
+
 public class Quote {
 
-	boolean quotesModOnly;
-	boolean quotesOn;
+	@Expose(serialize = true, deserialize = true)
+	boolean quotesModOnly, quotesOn;
+	@Expose(serialize = true, deserialize = true)
 	ArrayList<String> quotes = new ArrayList<String>();
 	TwitchBot bot;
-
-	public Quote(TwitchBot bot) {
-		this.bot = bot;
-	}
 
 	public void triggerQuotes(String message, String channel, String sender) throws IOException {
 		if (message.equalsIgnoreCase("!quotes off")
 				&& (sender.equalsIgnoreCase(bot.streamer) || sender.equals(Utils.botMaker))) {
 			quotesOn = false;
-			Path path = Paths.get(Utils.configFile);
-			Charset charset = StandardCharsets.UTF_8;
-			String content = new String(Files.readAllBytes(path), charset);
-			content = content.replaceAll("quotesOn=true", "quotesOn=false");
-			Files.write(path, content.getBytes(charset));
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote system turned off!");
 		} else if (message.equalsIgnoreCase("!quotes on") && sender.equalsIgnoreCase(bot.streamer)) {
 			quotesOn = false;
-			Path path = Paths.get(Utils.configFile);
-			Charset charset = StandardCharsets.UTF_8;
-			String content = new String(Files.readAllBytes(path), charset);
-			content = content.replaceAll("quotesOn=false", "quotesOn=true");
-			Files.write(path, content.getBytes(charset));
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote system turned on!");
 		}
 		bot.read();
@@ -111,11 +93,7 @@ public class Quote {
 			return;
 		}
 		try {
-			Path path = Paths.get(Utils.quotesFile);
-			List<String> fileContent = new ArrayList<>(Files.readAllLines(path, StandardCharsets.UTF_8));
-			fileContent.remove(number);
-			Files.write(path, fileContent, StandardCharsets.UTF_8);
-			bot.read();
+			quotes.remove(number);
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote #" + number + " has been removed, " + sender + "!");
 			return;
 		} catch (Exception e) {
@@ -147,15 +125,10 @@ public class Quote {
 			return;
 		}
 		try {
-			Path path = Paths.get(Utils.quotesFile);
-			List<String> fileContent = new ArrayList<>(Files.readAllLines(path, StandardCharsets.UTF_8));
-			System.out.println(number + " : " + newQuote);
 			if (newQuote.contains("\r")) {
 				newQuote = newQuote.replace("\r", "");
 			}
-			fileContent.set(number, newQuote);
-			Files.write(path, fileContent, StandardCharsets.UTF_8);
-			bot.read();
+			quotes.set(number, newQuote);
 			bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote #" + number + " has been updated, " + sender + "!");
 			return;
 		} catch (Exception e) {
@@ -167,22 +140,14 @@ public class Quote {
 	}
 
 	public void addQuote(String quote, String channel, String sender) throws InterruptedException {
-		try {
-			quote = formatQuote(quote);
-			if (quote == null) {
-				bot.sendRawLine(
-						"PRIVMSG " + channel + " :" + "Failed to add quote, please try again later, " + sender + "!");
-				return;
-			}
-			BufferedWriter writer = new BufferedWriter(new FileWriter(Utils.quotesFile, true));
-			writer.write(quote);
-			writer.close();
-			bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote " + quote + " has been added, " + sender + "!");
-			bot.read();
-		} catch (IOException e) {
-			Utils.errorReport(e);
-			e.printStackTrace();
+		quote = formatQuote(quote);
+		if (quote == null) {
+			bot.sendRawLine(
+					"PRIVMSG " + channel + " :" + "Failed to add quote, please try again later, " + sender + "!");
+			return;
 		}
+		quotes.add(quote);
+		bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote " + quote + " has been added, " + sender + "!");
 	}
 
 	public String formatQuote(String quote) {

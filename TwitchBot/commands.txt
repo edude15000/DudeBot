@@ -1,6 +1,1 @@
-!kappa	Kappa
-!uptime	$streamer has been live for $uptime
-!shoutout	$shoutout
-!love	There is $randomnumber3% <3 between $user and $input!
-!8ball	$8ball
-!hug	$user gives $input a hug!
+!harambe	Harambe would have loved $currentsong!	0!dstrings	#dstringsoutforharambe	0!8ball	$8ball	0!hug	$user gives $input a hug!	0!following	$user has been following the stream for $following	0!start	$streamer joined Twitch on $start	0!xfiles	deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati	0!love	There is $randomnumber3% <3 between $user and $input!	0!uptime	$streamer has been live for $uptime	0!shoutout	$shoutout	0!roulette	$roulette	0!moist	$user is moist!	0!ohoh	Kreygasm $counter1 OHOH's! Kreygasm	0!kappa	Kappa	0!santa	Christmas isn't Christmas without ho's...	0
