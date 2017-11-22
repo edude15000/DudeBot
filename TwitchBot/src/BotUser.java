@@ -2,29 +2,13 @@ import com.google.gson.annotations.Expose;
 
 public class BotUser {
 	@Expose(serialize = true, deserialize = true)
-	String username;
+	String username, rank;
 	@Expose(serialize = true, deserialize = true)
-	int numRequests;
+	boolean follower, sub, mod, gaveSpot = false;
 	@Expose(serialize = true, deserialize = true)
-	boolean gaveSpot = false;
+	int time, subCredits, points, numRequests;
 	@Expose(serialize = true, deserialize = true)
-	boolean mod;
-	@Expose(serialize = true, deserialize = true)
-	boolean follower;
-	@Expose(serialize = true, deserialize = true)
-	boolean sub;
-	@Expose(serialize = true, deserialize = true)
-	int points;
-	@Expose(serialize = true, deserialize = true)
-	int time;
-	@Expose(serialize = true, deserialize = true)
-	String rank;
-	@Expose(serialize = true, deserialize = true)
-	long vipCoolDown;
-	@Expose(serialize = true, deserialize = true)
-	long gambleCoolDown;
-	@Expose(serialize = true, deserialize = true)
-	int subCredits;
+	long gambleCoolDown, vipCoolDown;
 
 	public BotUser(String username, int numRequests, boolean mod, boolean follower, boolean regular, int points,
 			int time, String rank, long vipCoolDown, long gambleCoolDown, int subCredits) {

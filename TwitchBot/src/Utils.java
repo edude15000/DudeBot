@@ -256,17 +256,7 @@ public class Utils {
 							return true;
 						}
 					} catch (Exception E) {
-						try {
-							Thread.sleep(100);
-							info = callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
-							String info2 = info.substring(info.indexOf('['), info.indexOf(']'));
-							if (info2.contains(user)) {
-								u.mod = true;
-								return true;
-							}
-						} catch (Exception E1) {
-							return false;
-						}
+						return false;
 					}
 				}
 			}
@@ -412,5 +402,4 @@ public class Utils {
 	public static String getFollowingText(String message) {
 		return message.substring(message.indexOf(" ") + 1);
 	}
-
 }

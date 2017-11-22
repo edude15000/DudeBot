@@ -138,9 +138,7 @@ public class Currency {
 					return 1;
 				}
 			}
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			Utils.errorReport(e);
 			e.printStackTrace();
 		}

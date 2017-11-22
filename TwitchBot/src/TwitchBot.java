@@ -92,6 +92,11 @@ public class TwitchBot extends PircBot {
 		google = new Google();
 		youtube = new Youtube();
 		google.spreadsheetId = spreadsheetId;
+		try {
+			google.service = google.getSheetsService();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void resetAllCommands() { // Sets all command types for quicker type checking, sets all command names
@@ -371,6 +376,7 @@ public class TwitchBot extends PircBot {
 		requestSystem.favSongsPlayedThisStream.clear();
 		requestSystem.doNotWriteToHistory = true;
 		gameGuess.clear();
+		allHosts.clear();
 		for (BotUser botUser : users) {
 			botUser.gaveSpot = false;
 			botUser.vipCoolDown = 0;

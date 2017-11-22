@@ -46,9 +46,7 @@ public class RequestSystem {
 		return 0;
 	}
 
-	public void giveSpot(String message, String channel, String sender) throws FileNotFoundException, IOException { // TODO
-																													// :
-																													// FIX
+	public void giveSpot(String message, String channel, String sender) throws FileNotFoundException, IOException {
 		for (BotUser u : bot.users) {
 			if (u.username.equalsIgnoreCase(sender) && !sender.equalsIgnoreCase(bot.streamer)) {
 				if (u.gaveSpot) {
@@ -144,30 +142,8 @@ public class RequestSystem {
 						bot.sendRawLine(
 								"PRIVMSG " + channel + " :" + "Y" + response.toLowerCase().substring(1) + sender + "!");
 					} catch (Exception e) {
-						try {
-							Thread.sleep(1000);
-							String response = "";
-							ArrayList<Integer> spots = checkPosition(message, channel, sender);
-							if (spots.size() < 1) {
-								bot.sendRawLine("PRIVMSG " + channel + " :"
-										+ "You do not have any requests in the song list, " + sender + "!");
-								return;
-							}
-							for (int j = 0; j < spots.size(); j++) {
-								if (spots.get(j) == 0) {
-									response += "You have a song playing right now, ";
-								} else if (spots.get(j) == 1) {
-									response += "You have a request next in line, ";
-								} else {
-									response += "You have a request in place # " + (spots.get(j) + 1) + ", ";
-								}
-							}
-							bot.sendRawLine("PRIVMSG " + channel + " :" + "Y" + response.toLowerCase().substring(1)
-									+ sender + "!");
-						} catch (Exception e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -260,66 +236,8 @@ public class RequestSystem {
 							writeToCurrentSong(channel, false);
 						}
 					} catch (IOException e) {
-						try {
-							Thread.sleep(1000);
-							String input = Utils.getFollowingText(message);
-							String youtubeID = null;
-							Video ytvid = null;
-							if (message.contains("www.") || message.contains("http://")
-									|| message.contains("http://www.") || message.contains(".com")
-									|| message.contains("https://")) {
-								if (message.contains("www.youtube.com/watch?v=")
-										|| message.contains("www.youtube.com/watch?v=")) {
-									youtubeID = message.substring(message.indexOf("=") + 1);
-									try {
-										ytvid = bot.youtube.searchYoutubeByID(youtubeID);
-										if (ytvid == null) {
-											bot.sendRawLine(
-													"PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-											return;
-										}
-									} catch (NoSuchElementException e1) {
-										bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-										return;
-									}
-								} else {
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
-									return;
-								}
-							}
-							if (input.endsWith(")")) {
-								String requester = input.substring(input.lastIndexOf("(") + 1, input.length() - 1)
-										.trim();
-								input = input.substring(0, input.lastIndexOf("(")).trim();
-								if (ytvid != null) {
-									addDonator(channel, ytvid.getSnippet().getTitle(), requester);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '"
-											+ ytvid.getSnippet().getTitle() + "' has been added to the song list, "
-											+ requester + "!");
-								} else {
-									addDonator(channel, input, requester);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '" + input
-											+ "' has been added to the song list, " + requester + "!");
-								}
-								bot.addUserRequestAmount(requester, true);
-								writeToCurrentSong(channel, false);
-							} else {
-								if (ytvid != null) {
-									addDonator(channel, ytvid.getSnippet().getTitle(), sender);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '"
-											+ ytvid.getSnippet().getTitle() + "' has been added to the song list, "
-											+ sender + "!");
-								} else {
-									addDonator(channel, input, sender);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '" + input
-											+ "' has been added to the song list, " + sender + "!");
-								}
-								writeToCurrentSong(channel, false);
-							}
-						} catch (IOException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -858,6 +776,8 @@ public class RequestSystem {
 			output.write(Utils.getDate() + " " + df.format(date) + " - " + lastSong + "\r");
 			output.close();
 		} catch (Exception e) {
+			Utils.errorReport(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -908,14 +828,8 @@ public class RequestSystem {
 						bot.sendRawLine("PRIVMSG " + channel + " :" + "Song list has been cleared!");
 						writeToCurrentSong(channel, false);
 					} catch (IOException e) {
-						try {
-							Thread.sleep(1000);
-							clear(channel, Utils.songlistfile);
-							writeToCurrentSong(channel, false);
-						} catch (InterruptedException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -957,20 +871,9 @@ public class RequestSystem {
 							bot.sendRawLine("PRIVMSG " + channel + " :" + "There are no songs currently in the queue!");
 						}
 						writeToCurrentSong(channel, true);
-					} catch (NumberFormatException | IOException e) {
-						try {
-							Thread.sleep(1000);
-							if (nextSong(channel)) {
-								bot.sendRawLine("PRIVMSG " + channel + " :" + getNextSong(channel));
-							} else {
-								bot.sendRawLine(
-										"PRIVMSG " + channel + " :" + "There are no songs currently in the queue!");
-							}
-							writeToCurrentSong(channel, true);
-						} catch (InterruptedException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+					} catch (Exception e) {
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -979,14 +882,8 @@ public class RequestSystem {
 
 	public void nextRegular(String message, String channel, String sender)
 			throws NumberFormatException, FileNotFoundException, IOException, InterruptedException {
-		try {
-			nextRegularCOMMAND(message, channel, sender);
-			writeToCurrentSong(channel, true);
-		} catch (NumberFormatException | IOException e) {
-			Thread.sleep(1000);
-			nextRegularCOMMAND(message, channel, sender);
-			writeToCurrentSong(channel, true);
-		}
+		nextRegularCOMMAND(message, channel, sender);
+		writeToCurrentSong(channel, true);
 	}
 
 	public void triggerVIPs(boolean trigger, String channel) throws FileNotFoundException, IOException {
@@ -1057,23 +954,8 @@ public class RequestSystem {
 			}
 			writeToCurrentSong(channel, true);
 		} catch (NumberFormatException | IOException e) {
-			try {
-				Thread.sleep(1000);
-				if (nextSong(channel)) {
-					if (check) {
-						bot.sendRawLine("PRIVMSG " + channel + " :" + "There are no standard requests in the list. "
-								+ getNextSong(channel));
-					} else {
-						bot.sendRawLine("PRIVMSG " + channel + " :" + getNextSong(channel));
-					}
-				} else {
-					bot.sendRawLine("PRIVMSG " + channel + " :" + "There are no songs currently in the queue!");
-				}
-				writeToCurrentSong(channel, true);
-			} catch (InterruptedException e1) {
-				Utils.errorReport(e1);
-				e1.printStackTrace();
-			}
+			Utils.errorReport(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -1091,16 +973,8 @@ public class RequestSystem {
 							writeToCurrentSong(channel, false);
 						}
 					} catch (IOException e) {
-						try {
-							Thread.sleep(1000);
-							if (editCurrent(channel, Utils.getFollowingText(message), sender)) {
-								bot.sendRawLine("PRIVMSG " + channel + " :" + "Current song has been edited!");
-								writeToCurrentSong(channel, false);
-							}
-						} catch (IOException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1174,76 +1048,8 @@ public class RequestSystem {
 							writeToCurrentSong(channel, false);
 						}
 					} catch (IOException e) {
-						try {
-							Thread.sleep(1000);
-							String input = Utils.getFollowingText(message);
-							String youtubeID = null;
-							Video ytvid = null;
-							if (message.contains("www.") || message.contains("http://")
-									|| message.contains("http://www.") || message.contains(".com")
-									|| message.contains("https://")) {
-								if (message.contains("www.youtube.com/watch?v=")
-										|| message.contains("www.youtube.com/watch?v=")) {
-									youtubeID = message.substring(message.indexOf("=") + 1);
-									try {
-										ytvid = bot.youtube.searchYoutubeByID(youtubeID);
-										if (ytvid == null) {
-											bot.sendRawLine(
-													"PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-											return;
-										}
-									} catch (NoSuchElementException e1) {
-										bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-										return;
-									}
-								} else if (message.contains("https://youtu.be/")) {
-									youtubeID = message.substring(message.lastIndexOf("/") + 1);
-									try {
-										ytvid = bot.youtube.searchYoutubeByID(youtubeID);
-										if (ytvid == null) {
-											bot.sendRawLine(
-													"PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-											return;
-										}
-									} catch (NoSuchElementException f) {
-										bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-										return;
-									}
-								} else {
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
-									return;
-								}
-							}
-							if (input.endsWith(")")) {
-								String requester = input.substring(input.lastIndexOf("(") + 1, input.length() - 1)
-										.trim();
-								input = input.substring(0, input.lastIndexOf("(")).trim();
-								if (ytvid != null) {
-									addVip(channel, ytvid.getSnippet().getTitle(), requester);
-								} else {
-									addVip(channel, input, requester);
-								}
-								bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP Song '" + input
-										+ "' has been added to the song list, " + requester + "!");
-								bot.addUserRequestAmount(requester, true);
-								writeToCurrentSong(channel, false);
-							} else {
-								if (ytvid != null) {
-									addVip(channel, ytvid.getSnippet().getTitle(), sender);
-									bot.sendRawLine(
-											"PRIVMSG " + channel + " :" + "VIP Song '" + ytvid.getSnippet().getTitle()
-													+ "' has been added to the song list, " + sender + "!");
-								} else {
-									addVip(channel, input, sender);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP Song '" + input
-											+ "' has been added to the song list, " + sender + "!");
-								}
-								writeToCurrentSong(channel, false);
-							}
-						} catch (IOException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1318,79 +1124,8 @@ public class RequestSystem {
 							writeToCurrentSong(channel, false);
 						}
 					} catch (IOException e) {
-						try {
-							Thread.sleep(1000);
-							String input = Utils.getFollowingText(message);
-							String youtubeID = null;
-							Video ytvid = null;
-							if (message.contains("www.") || message.contains("http://")
-									|| message.contains("http://www.") || message.contains(".com")
-									|| message.contains("https://")) {
-								if (message.contains("www.youtube.com/watch?v=")
-										|| message.contains("www.youtube.com/watch?v=")) {
-									youtubeID = message.substring(message.indexOf("=") + 1);
-									try {
-										ytvid = bot.youtube.searchYoutubeByID(youtubeID);
-										if (ytvid == null) {
-											bot.sendRawLine(
-													"PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-											return;
-										}
-									} catch (NoSuchElementException e1) {
-										bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-										return;
-									}
-								} else if (message.contains("https://youtu.be/")) {
-									youtubeID = message.substring(message.lastIndexOf("/") + 1);
-									try {
-										ytvid = bot.youtube.searchYoutubeByID(youtubeID);
-										if (ytvid == null) {
-											bot.sendRawLine(
-													"PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-											return;
-										}
-									} catch (NoSuchElementException f) {
-										bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
-										return;
-									}
-								} else {
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
-									return;
-								}
-							}
-							if (input.endsWith(")")) {
-								String requester = input.substring(input.lastIndexOf("(") + 1, input.length() - 1)
-										.trim();
-								input = input.substring(0, input.lastIndexOf("(")).trim();
-								if (ytvid != null) {
-									addTop(channel, ytvid.getSnippet().getTitle(), requester);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '"
-											+ ytvid.getSnippet().getTitle()
-											+ "' has been added to the top of the song list, " + requester + "!");
-								} else {
-									addTop(channel, input, requester);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + input
-											+ "' has been added to the top of the song list, " + requester + "!");
-								}
-								bot.addUserRequestAmount(requester, true);
-								writeToCurrentSong(channel, false);
-							} else {
-								if (ytvid != null) {
-									addTop(channel, ytvid.getSnippet().getTitle(), sender);
-									bot.sendRawLine(
-											"PRIVMSG " + channel + " :" + "Song '" + ytvid.getSnippet().getTitle()
-													+ "' has been added to the top of the song list, " + sender + "!");
-								} else {
-									addTop(channel, input, sender);
-									bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + input
-											+ "' has been added to the top of the song list, " + sender + "!");
-								}
-								writeToCurrentSong(channel, false);
-							}
-						} catch (IOException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1406,14 +1141,8 @@ public class RequestSystem {
 						bot.sendRawLine("PRIVMSG " + channel + " :" + "The total number of songs in the queue is: "
 								+ getNumberOfSongs());
 					} catch (IOException e) {
-						try {
-							Thread.sleep(1000);
-							bot.sendRawLine("PRIVMSG " + channel + " :" + "The total number of songs in the queue is: "
-									+ getNumberOfSongs());
-						} catch (IOException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1447,32 +1176,8 @@ public class RequestSystem {
 									+ bot.spreadsheetId);
 						}
 					} catch (IOException e) {
-						try {
-							Thread.sleep(1000);
-							if (Integer.parseInt(getNumberOfSongs()) == 0) {
-								bot.sendRawLine("PRIVMSG " + channel + " :" + "The song list is empty!");
-							} else if (numOfSongsToDisplay > Integer.parseInt(getNumberOfSongs())) {
-								if (Integer.parseInt(getNumberOfSongs()) == 1) {
-									String text = "The next song in the song list: ";
-									songlist(channel, text);
-								} else {
-									String text = "The next " + Integer.parseInt(getNumberOfSongs())
-											+ " songs in the song list: ";
-									songlist(channel, text);
-								}
-							} else {
-								String text = "The next " + numOfSongsToDisplay + " songs in the song list: ";
-								songlist(channel, text);
-							}
-							if (bot.spreadsheetId != null) {
-								bot.sendRawLine("PRIVMSG " + channel + " :"
-										+ "The full setlist can be found here: https://docs.google.com/spreadsheets/d/"
-										+ bot.spreadsheetId);
-							}
-						} catch (IOException e1) {
-							Utils.errorReport(e1);
-							e1.printStackTrace();
-						}
+						Utils.errorReport(e);
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1630,55 +1335,8 @@ public class RequestSystem {
 													}
 												}
 											} catch (IOException e) {
-												try {
-													Thread.sleep(1000);
-													if (maxSongLength) {
-														String time;
-														if (ytvid != null) {
-															time = ytvid.getContentDetails().getDuration();
-															temp = ytvid.getSnippet().getTitle();
-														} else {
-															Video v = bot.youtube.searchYoutubeByTitle(
-																	Utils.getFollowingText(message));
-															time = v.getContentDetails().getDuration();
-															temp = v.getSnippet().getTitle();
-														}
-														time = time.replace("PT", "");
-														int minutes = Integer
-																.parseInt(time.substring(0, time.indexOf('M')));
-														int seconds = Integer.parseInt(time
-																.substring(time.indexOf('M') + 1, time.indexOf('S')));
-														bot.sendRawLine(
-																"PRIVMSG " + channel + " :" + String.valueOf(minutes)
-																		+ " " + String.valueOf(seconds));
-														int songlengthmaxseconds = maxSongLengthInMinutes * 60;
-														if (songlengthmaxseconds < ((minutes * 60) + seconds)) {
-															bot.sendRawLine("PRIVMSG " + channel + " :" + temp
-																	+ " is longer than " + maxSongLengthInMinutes
-																	+ " minutes, which is the limit for standard requests, "
-																	+ sender);
-															return;
-														}
-													}
-													if (ytvid != null) {
-														addSong(channel, ytvid.getSnippet().getTitle(), sender);
-														return;
-													} else {
-														if (direquests) {
-															addSong(channel, Utils.getFollowingText(message), sender);
-														} else {
-															bot.sendRawLine("PRIVMSG " + channel + " :"
-																	+ "Only youtube link requests are allowed, "
-																	+ sender);
-														}
-													}
-												} catch (InterruptedException e1) {
-													bot.sendRawLine("PRIVMSG " + channel + " :"
-															+ "Request could not go through, please try again in 30 seconds, "
-															+ sender + "!");
-													Utils.errorReport(e1);
-													e1.printStackTrace();
-												}
+												Utils.errorReport(e);
+												e.printStackTrace();
 											}
 										} else {
 											bot.sendRawLine("PRIVMSG " + channel + " :"
