@@ -49,7 +49,8 @@ public class Utils {
 			br.close();
 			return gson.fromJson(json, TwitchBot.class);
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
+			errorReport(e);
 		}
 		return null;
 	}
@@ -64,7 +65,8 @@ public class Utils {
 			gsonBuilder.create().toJson(twitchBot, writer);
 			writer.close();
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
+			errorReport(e);
 		}
 	}
 

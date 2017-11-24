@@ -9,6 +9,10 @@ public class Image {
 	@Expose(serialize = true, deserialize = true)
 	Long imageStartTime = (long) 0, imageOverallCoolDown, imageCoolDown;
 	@Expose(serialize = true, deserialize = true)
+	int imageDisplayTimeSeconds;
+	@Expose(serialize = true, deserialize = true)
+	boolean openImageWindowOnStart;
+	@Expose(serialize = true, deserialize = true)
 	public HashMap<String, Long> userCoolDowns = new HashMap<String, Long>();
 
 	public void imageCOMMANDS(String message, String channel, String sender, ArrayList<Command> comList) {

@@ -10,7 +10,6 @@
   "minigameEndMessage": "Time has run out for the current game, guesses cannot be added now, $user!",
   "giveawaycommandname": "!raffle",
   "spreadsheetId": "1jLNPhuJ0Cwmd3xL64YXAb1FwYcPBmh5FMw16O33TUZk",
-  "botColor": "chocolate",
   "endMessage": "BYE FAM",
   "startupMessage": "SEXY TIME",
   "counter1": 1,
@@ -18,7 +17,8 @@
   "counter3": 3,
   "counter4": 0,
   "counter5": 0,
-  "minigameTimer": 90000,
+  "minigameTimer": 90,
+  "timerTotal": 10,
   "gameStartTime": 0,
   "minigameTriggered": false,
   "timeFinished": false,
@@ -29,8 +29,6 @@
   "waitForAdventureCoolDown": false,
   "raffleInProgress": false,
   "autoShoutoutOnHost": true,
-  "gambleToggle": true,
-  "currencyToggle": true,
   "youtube": {},
   "google": {},
   "textAdventure": {
@@ -87,7 +85,7 @@
         "$users deciced to go to the pub instead while everyone else was decimated but it was free ale night so it wasn\u0027t all bad."
       ]
     },
-    "startTimerInMS": 120000,
+    "startTimerInMS": 0,
     "adventureStartTime": 120,
     "allowUserAdds": true,
     "enoughPlayers": false,
@@ -109,20 +107,14 @@
     "toggle": true,
     "vipSongToggle": true,
     "gambleToggle": true,
-    "ranks": {
-      "Bronze": 100,
-      "Iron": 250,
-      "Steel": 500,
-      "Mithril": 1000,
-      "Adamantite": 5000,
-      "Rune": 10000,
-      "Dragon": 25000
-    }
+    "ranks": {}
   },
   "image": {
     "imageStartTime": 0,
     "imageOverallCoolDown": 0,
     "imageCoolDown": 60,
+    "imageDisplayTimeSeconds": 10,
+    "openImageWindowOnStart": false,
     "userCoolDowns": {}
   },
   "soundEffect": {
@@ -159,7 +151,7 @@
       "\"My friend got his nipple pierced.\" -edude15000 9/3/2016 ",
       "\"I feel like a stripper\" -edude15000 9/12/2016 ",
       "\"I was there with my buddies, and these two girls talked to us, we were having a conversation, and one of them just kissed me, and I was like What The Hell?!\" -edude15000 2/16/2016 ",
-      "\"Sassy sisters? I wanna be a sassy sister. I was a sassy sister when I was younger.\"-edude15000 2/7/2016 ",
+      "\"Sassy sisters? I wanna be a sassy sister. I was a sassy sister when I was younger.\" -edude15000 2/7/2016 ",
       "\"I would show my true colors, but I\u0027d get banned from twitch\" -edude15000 9/23/2016 ",
       "\"Went down the wrong hole....like last night! That was a horrible joke.\" -edude15000 9/23/2016 ",
       "\"I wish I was doing the solo... FeelsBadMan\" -edude15000 9/25/2016 ",
@@ -168,24 +160,24 @@
       "\" I got a new tinder match. Oh wow \" -edude15000 10/23/2016 ",
       "\" That really hurt, my guitar cord got stuck in my junk when I pulled it back. Now my junk doesn\u0027t feel good \" -edude15000 12/29/2016 ",
       "\"This tone makes me more moist than a moist towelette.\" -edude15000 2/4/2016 ",
-      "\"Just some awkward quiet sexy sex\"  -edude15000 2/5/2016 ",
+      "\"Just some awkward quiet sexy sex\" -edude15000 2/5/2016 ",
       "\"I always break the D. I always break my D.\" -edude15000 2/7/2016 ",
       "\"This song is about getting semen on the seat.\" -edude15000 2/5/2016 ",
       "\"My favorite super bowl was when the singer girl\u0027s boob popped out\" -edude15000 2/7/2016 ",
-      "\"That\u0027d be fast sex. A fast Sexy sex.\"  -edude15000 2/13/2016 ",
-      "\"Cornhub.com, where real men go to get corn.\"  -edude15000 2/7/2016 ",
+      "\"That\u0027d be fast sex. A fast Sexy sex.\" -edude15000 2/13/2016 ",
+      "\"Cornhub.com, where real men go to get corn.\" -edude15000 2/7/2016 ",
       "\" mate \" -mate 3/11/2017 ",
       "\" Hollybombay, you had sex to Barney the Dinosaur? I feel guilty knocking one out when the dog is in the room \" -spookyone_1 3/11/2017 ",
       "\" Apple Juice is gone..... \" -edude15000 3/11/2017 ",
       "\" can we get !ass in the chat? Not saying I\u0027m eating *** or anything \" -edude15000 3/11/2017 ",
       "\" y\u0027all eat ass? \" -edude15000 3/11/2017 ",
-      "\" I love everyone...just don\u0027t want to have everyone\u0027s children \" - Hollybombay  3/11/2017 ",
+      "\" I love everyone...just don\u0027t want to have everyone\u0027s children \" - Hollybombay 3/11/2017 ",
       "\" There\u0027s nothing sexier than a man blowing his nose, let me tell you. \" -edude15000 3/11/2017 ",
       "\" Alright Alright Alright Alright Alright Alright Alright Alright \" -Outkast 3/11/2017 "
     ]
   },
   "requestSystem": {
-    "vipSongToggle": false,
+    "vipSongToggle": true,
     "mustFollowToRequest": true,
     "requestsTrigger": true,
     "displayIfUserIsHere": true,
@@ -200,6 +192,8 @@
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
     "maxSongLengthInMinutes": 10,
+    "favSongs": [],
+    "bannedKeywords": [],
     "favSongsPlayedThisStream": [],
     "requestComm": {
       "commandType": "bot",
@@ -922,6 +916,7 @@
   ],
   "botCommandList": [
     {
+      "output": "favSongComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -932,6 +927,7 @@
       "toggle": true
     },
     {
+      "output": "triggerRequestsComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -940,6 +936,7 @@
       "toggle": true
     },
     {
+      "output": "requestComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -951,6 +948,7 @@
       "toggle": true
     },
     {
+      "output": "songlistComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -961,6 +959,7 @@
       "toggle": true
     },
     {
+      "output": "getTotalComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -971,6 +970,7 @@
       "toggle": true
     },
     {
+      "output": "getViewerCountCommands",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -979,6 +979,7 @@
       "toggle": true
     },
     {
+      "output": "addtopComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -987,6 +988,7 @@
       "toggle": true
     },
     {
+      "output": "addvipComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -995,6 +997,7 @@
       "toggle": true
     },
     {
+      "output": "adddonatorComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -1003,6 +1006,7 @@
       "toggle": true
     },
     {
+      "output": "editComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -1012,6 +1016,7 @@
       "toggle": true
     },
     {
+      "output": "nextComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -1021,6 +1026,7 @@
       "toggle": true
     },
     {
+      "output": "clearComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -1029,6 +1035,7 @@
       "toggle": true
     },
     {
+      "output": "getCurrentComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -1039,6 +1046,7 @@
       "toggle": true
     },
     {
+      "output": "getNextComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -1047,6 +1055,7 @@
       "toggle": true
     },
     {
+      "output": "randomComm",
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -1057,6 +1066,7 @@
       "toggle": true
     },
     {
+      "output": "editSongComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -1065,6 +1075,7 @@
       "toggle": true
     },
     {
+      "output": "removeSongComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -1074,6 +1085,7 @@
       "toggle": true
     },
     {
+      "output": "songPositionComm",
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -1114,411 +1126,6 @@
     }
   ],
   "commandList": [
-    {
-      "output": "Harambe would have loved $currentsong!",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!harambe"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "#dstringsoutforharambe",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!dstrings"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$8ball",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!8ball"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$user gives $input a hug!",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!hug"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$user has been following the stream for $following",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!following"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$streamer joined Twitch on $start",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!start"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!xfiles"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "There is $randomnumber3% \u003c3 between $user and $input!",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!love"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$streamer has been live for $uptime",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!uptime"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$shoutout",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!shoutout"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$roulette",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!roulette"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "$user is moist!",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!moist"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Kreygasm $counter1 OHOH\u0027s! Kreygasm",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!ohoh"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Kappa",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!kappa"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Christmas isn\u0027t Christmas without ho\u0027s...",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!santa"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it\u0027s available, request it! I\u0027ll play it if it works! :D",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!customs"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!inlays"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Type !quote for a random quote!",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!quoteinfo"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here\u0027s the link: https://www.twitch.tv/edude15000",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!share"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Join my discord here: https://discord.gg/9TcVCmY",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!discord"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!noteinfo"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called \u0027Shadyview Boulevard\u0027! OHOH! :)",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!story"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Type: !request \u0027artist_name - song_name\u0027 to request a song, !songrequest \u0027artist_name - song_name\u0027 for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!songinfo"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!social"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Type \u0027!position\u0027 to display your song\u0027s position in the song list!",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!positioninfo"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!game"
-      ],
-      "toggle": true
-    },
-    {
-      "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
-      "commandType": "timer",
-      "level": 0,
-      "input": [
-        "!donate"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!requestfav",
-        "!songfav",
-        "!playfav"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!requests"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!request",
-        "!song",
-        "!play",
-        "!songrequest"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!songlist",
-        "!list",
-        "!playlist"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!queue",
-        "!length",
-        "!total"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!viewers"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!addtop"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!addvip"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!adddonator"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!edit",
-        "!change"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!next",
-        "!skip"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!clear"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!current",
-        "!playing",
-        "!currentsong"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!nextsong"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 2,
-      "input": [
-        "!randomnext",
-        "!nextrandom",
-        "!randomsong!songrandom"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!editsong"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!removesong",
-        "!wrongsong"
-      ],
-      "toggle": true
-    },
-    {
-      "commandType": "bot",
-      "level": 0,
-      "input": [
-        "!mysong",
-        "!position",
-        "!songposition"
-      ],
-      "toggle": true
-    },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ass.mp3",
       "commandType": "sfx",
@@ -1831,6 +1438,429 @@
       "level": 0,
       "input": [
         "!yell"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Harambe would have loved $currentsong!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!harambe"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "#dstringsoutforharambe",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!dstrings"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$8ball",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!8ball"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$user gives $input a hug!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!hug"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$user has been following the stream for $following",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!following"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$streamer joined Twitch on $start",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!start"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!xfiles"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "There is $randomnumber3% \u003c3 between $user and $input!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!love"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$streamer has been live for $uptime",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!uptime"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$shoutout",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!shoutout"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$roulette",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!roulette"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "$user is moist!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!moist"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Kreygasm $counter1 OHOH\u0027s! Kreygasm",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!ohoh"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Kappa",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!kappa"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Christmas isn\u0027t Christmas without ho\u0027s...",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!santa"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it\u0027s available, request it! I\u0027ll play it if it works! :D",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!customs"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!inlays"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Type !quote for a random quote!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!quoteinfo"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here\u0027s the link: https://www.twitch.tv/edude15000",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!share"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Join my discord here: https://discord.gg/9TcVCmY",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!discord"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!noteinfo"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called \u0027Shadyview Boulevard\u0027! OHOH! :)",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!story"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Type: !request \u0027artist_name - song_name\u0027 to request a song, !songrequest \u0027artist_name - song_name\u0027 for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!songinfo"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!social"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Type \u0027!position\u0027 to display your song\u0027s position in the song list!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!positioninfo"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!game"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!donate"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "favSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!requestfav",
+        "!songfav",
+        "!playfav"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "triggerRequestsComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!requests"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "requestComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!request",
+        "!song",
+        "!play",
+        "!songrequest"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "songlistComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!songlist",
+        "!list",
+        "!playlist"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "getTotalComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!queue",
+        "!length",
+        "!total"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "getViewerCountCommands",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!viewers"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "addtopComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addtop"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "addvipComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addvip"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "adddonatorComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!adddonator"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "editComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!edit",
+        "!change"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "nextComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!next",
+        "!skip"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "clearComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!clear"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "getCurrentComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!current",
+        "!playing",
+        "!currentsong"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "getNextComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!nextsong"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "randomComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!randomnext",
+        "!nextrandom",
+        "!randomsong!songrandom"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "editSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!editsong"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "removeSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!removesong",
+        "!wrongsong"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "songPositionComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!mysong",
+        "!position",
+        "!songposition"
       ],
       "toggle": true
     },
@@ -2314,7 +2344,7 @@
       "time": 163,
       "subCredits": 0,
       "points": 260,
-      "numRequests": 6,
+      "numRequests": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3841,15 +3871,14 @@
     },
     {
       "username": "edude15000",
-      "rank": "Bronze",
       "follower": false,
       "sub": false,
-      "mod": true,
+      "mod": false,
       "gaveSpot": false,
-      "time": 66,
+      "time": 59,
       "subCredits": 0,
-      "points": 15,
-      "numRequests": 141,
+      "points": 59,
+      "numRequests": 125,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3950,9 +3979,9 @@
       "sub": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 288,
+      "time": 289,
       "subCredits": 0,
-      "points": 288,
+      "points": 289,
       "numRequests": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0

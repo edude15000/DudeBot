@@ -34,13 +34,12 @@ public class TwitchBot extends PircBot {
 	String oauth, streamer, channel, botName, followersTextFile, subTextFile, followerMessage, subMessage,
 			minigameEndMessage, giveawaycommandname, spreadsheetId, botColor, endMessage, startupMessage;
 	@Expose(serialize = true, deserialize = true)
-	int counter1, counter2, counter3, counter4, counter5, minigameTimer;
+	int counter1, counter2, counter3, counter4, counter5, minigameTimer, timerTotal;
 	@Expose(serialize = true, deserialize = true)
 	long gameStartTime;
 	@Expose(serialize = true, deserialize = true)
 	boolean minigameTriggered = false, timeFinished = false, minigameOn, amountResult, adventureToggle,
-			startAdventure = false, waitForAdventureCoolDown = false, raffleInProgress = false, autoShoutoutOnHost,
-			gambleToggle, currencyToggle;
+			startAdventure = false, waitForAdventureCoolDown = false, raffleInProgress = false, autoShoutoutOnHost;
 	@Expose(serialize = true, deserialize = true)
 	Youtube youtube;
 	@Expose(serialize = true, deserialize = true)
@@ -80,6 +79,7 @@ public class TwitchBot extends PircBot {
 		System.out.println("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
 		Utils.writeVersion();
 		textAdventure.startAdventuring(new ArrayList<String>(), (int) textAdventure.adventureStartTime * 1000);
+		resetAllCommands();
 		threads();
 		this.channel = "#" + streamer;
 	}
@@ -97,9 +97,17 @@ public class TwitchBot extends PircBot {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		textAdventure.setUpText();
 	}
 
 	public void resetAllCommands() { // Sets all command types for quicker type checking, sets all command names
+		ArrayList<Command> commands = new ArrayList<>(); // Removes any null commands that come up due to early bugs
+		for (Command command : commandList) {
+			if (command != null) {
+				commands.add(command);
+			}
+		}
+		commandList = commands;
 		botCommandList = getCommands("bot");
 		sfxCommandList = getCommands("sfx");
 		userCommandList = getCommands("user");
@@ -127,7 +135,7 @@ public class TwitchBot extends PircBot {
 					e1.printStackTrace();
 					Utils.errorReport(e1);
 				}
-				int count = 0, timerTotal = 20;
+				int count = 0;
 				File f = new File(System.getProperty("java.io.tmpdir") + "dudebotkeyboardcontroller.txt");
 				File f2 = new File(System.getProperty("java.io.tmpdir") + "dudebotsyncbot.txt");
 				double start_time = System.currentTimeMillis();
@@ -385,7 +393,7 @@ public class TwitchBot extends PircBot {
 
 	}
 
-	public ArrayList<Command> getCommands(String type) {
+	public ArrayList<Command> getCommands(String type) { // Gets a list of all 'type' commands
 		ArrayList<Command> list = new ArrayList<>();
 		for (Command c : commandList) {
 			if (c.commandType.equals(type)) {
@@ -395,6 +403,7 @@ public class TwitchBot extends PircBot {
 		return list;
 	}
 
+	// Sets all commands for !addcom, !editcom, !removecom
 	public ArrayList<String> setExtraCommandNames() {
 		String[] result = { "!givespot", "!regnext", "!nextreg", "!regularnext", "!nextregular", "!quote", "!addquote",
 				"!quotes", "!minigame", "!startgame", "!guess", "!endgame", "!sfx", "!images", "!totalrequests",
@@ -407,6 +416,7 @@ public class TwitchBot extends PircBot {
 		// ADD TO AS NEEDED
 	}
 
+	// Increments or decrements user's request amount
 	public void addUserRequestAmount(String sender, boolean operator) throws FileNotFoundException, IOException {
 		for (BotUser botUser : users) {
 			if (botUser.username.equalsIgnoreCase(sender)) {
@@ -1840,10 +1850,10 @@ public class TwitchBot extends PircBot {
 
 	public void triggerCurrency(boolean trigger, String channel) throws FileNotFoundException, IOException {
 		if (trigger) {
-			currencyToggle = true;
+			currency.toggle = true;
 			sendRawLine("PRIVMSG " + channel + " :" + "Currency system turned on!");
 		} else {
-			currencyToggle = false;
+			currency.toggle = false;
 			sendRawLine("PRIVMSG " + channel + " :" + "Currency system turned off!");
 		}
 	}
@@ -1860,10 +1870,10 @@ public class TwitchBot extends PircBot {
 
 	public void triggerGamble(boolean trigger, String channel) throws FileNotFoundException, IOException {
 		if (trigger) {
-			gambleToggle = true;
+			currency.gambleToggle = true;
 			sendRawLine("PRIVMSG " + channel + " :" + "Gambling has been turned on!");
 		} else {
-			gambleToggle = false;
+			currency.gambleToggle = false;
 			sendRawLine("PRIVMSG " + channel + " :" + "Gambling has been turned off!");
 		}
 	}

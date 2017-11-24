@@ -1,0 +1,30 @@
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Release\DudeBotConfigUpdater.exe.config
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Release\DudeBotConfigUpdater.exe
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Release\DudeBotConfigUpdater.pdb
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.csprojResolveAssemblyReference.cache
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\MainWindow.g.cs
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\App.g.cs
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater_MarkupCompile.cache
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater_MarkupCompile.lref
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\MainWindow.baml
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.g.resources
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.Properties.Resources.resources
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.csproj.GenerateResource.Cache
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.csproj.CoreCompileInputs.cache
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.exe
+C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.pdb
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Release\DudeBotConfigUpdater.exe.config
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Release\DudeBotConfigUpdater.exe
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Release\DudeBotConfigUpdater.pdb
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.csprojResolveAssemblyReference.cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\MainWindow.g.cs
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\App.g.cs
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater_MarkupCompile.cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater_MarkupCompile.lref
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\MainWindow.baml
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.g.resources
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.Properties.Resources.resources
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.csproj.GenerateResource.Cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.csproj.CoreCompileInputs.cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.exe
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Release\DudeBotConfigUpdater.pdb

@@ -23,7 +23,7 @@ public class RequestSystem {
 	TwitchBot bot;
 	@Expose(serialize = true, deserialize = true)
 	boolean vipSongToggle, mustFollowToRequest, requestsTrigger, displayIfUserIsHere, displayOneLine, whisperToUser,
-			direquests, ylrequests, maxSongLength, doNotWriteToHistory = false;;
+			direquests, ylrequests, maxSongLength, doNotWriteToHistory = false;
 	@Expose(serialize = true, deserialize = true)
 	String subOnlyRequests, lastSong;
 	@Expose(serialize = true, deserialize = true)

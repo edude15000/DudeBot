@@ -1,1 +1,0 @@
-Bronze	100Iron	250Steel	500Mithril	1000Adamantite	5000Rune	10000Dragon	25000
