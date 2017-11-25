@@ -102,3 +102,4 @@ C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot.Propert
 C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\WpfApplication1.csproj.GenerateResource.Cache
 C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot.exe
 C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\DudeBot.pdb
+C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\Release\WpfApplication1.csproj.CoreCompileInputs.cache
