@@ -72,12 +72,20 @@ namespace DudeBotConfigUpdater
 
         private String writeToString(String output, String name, String content)
         {
-            return output += "\"" + name + "\": " + formatType(content) + ",\r";
+            if (content != null && content != "")
+            {
+                return output += "\"" + name + "\": " + formatType(content) + ",\r";
+            }
+            return output += "";
         }
 
         private String writeToStringNoComma(String output, String name, String content)
         {
-            return output += "\"" + name + "\": " + formatType(content) + "\r";
+            if (content != null && content != "")
+            {
+                return output += "\"" + name + "\": " + formatType(content) + "\r";
+            }
+            return output += "";
         }
 
         private String formatType(String str)
