@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 public class Image
@@ -38,7 +39,7 @@ public class Image
                                     catch (Exception e)
                                     {
                                         Utils.errorReport(e);
-                                        e.ToString();
+                                        Debug.WriteLine(e.ToString());
                                     }
                                     return;
                                 }
@@ -59,7 +60,7 @@ public class Image
                         catch (Exception e)
                         {
                             Utils.errorReport(e);
-                            e.ToString();
+                            Debug.WriteLine(e.ToString());
                         }
                         return;
                     }
@@ -69,7 +70,7 @@ public class Image
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
     }
 }

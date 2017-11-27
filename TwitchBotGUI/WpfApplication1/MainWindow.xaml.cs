@@ -21,13 +21,7 @@ namespace WpfApplication1
 {
     public partial class MainWindow
     {
-        static String channel;
-        static String oauth;
-        static String startupMessage;
-        static String line;
-        static String botColor = "cadetblue";
-        static TwitchBot bot;
-        static String endMessage;
+        public static TwitchBot bot = new TwitchBot();
         String configFile = @"bin\config.txt";
         String versionFile = @"bin\version.txt";
         String commandsFile = @"bin\commands.txt";
@@ -106,39 +100,17 @@ namespace WpfApplication1
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         private LowLevelKeyboardListener _listener;
-    
+
         void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
         {
             if (e.KeyPressed.ToString().Equals("F7"))
             {
                 try
                 {
-                    System.IO.StreamWriter writer = new System.IO.StreamWriter(System.IO.Path.GetTempPath() + "dudebotkeyboardcontroller.txt");
-                    writer.Write("a");
-                    writer.Close();
+                    bot.requestSystem.nextSongAuto(bot.channel, false);
                 }
                 catch (Exception)
                 {
-                    System.Threading.Thread.Sleep(500);
-                    try
-                    {
-                        System.IO.StreamWriter writer = new System.IO.StreamWriter(System.IO.Path.GetTempPath() + "dudebotkeyboardcontroller.txt");
-                        writer.Write("a");
-                        writer.Close();
-                    }
-                    catch (Exception)
-                    {
-                        System.Threading.Thread.Sleep(500);
-                        try
-                        {
-                            System.IO.StreamWriter writer = new System.IO.StreamWriter(System.IO.Path.GetTempPath() + "dudebotkeyboardcontroller.txt");
-                            writer.Write("a");
-                            writer.Close();
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
                 }
             }
         }
@@ -162,55 +134,23 @@ namespace WpfApplication1
                 }
                 userlistheader.Text = "User List (" + count + ")";
                 userlist.Text = users;
-            } catch (Exception)
-            {
-
-            }
-
-        }
-
-        void syncUpdatesWithBot()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(System.IO.Path.GetTempPath() + "dudebotsyncbot.txt");
-                writer.Write("a");
-                writer.Close();
             }
             catch (Exception)
             {
-                System.Threading.Thread.Sleep(500);
-                try
-                {
-                    System.IO.StreamWriter writer = new System.IO.StreamWriter(System.IO.Path.GetTempPath() + "dudebotsyncbot.txt");
-                    writer.Write("a");
-                    writer.Close();
-                }
-                catch (Exception)
-                {
-                    System.Threading.Thread.Sleep(500);
-                    try
-                    {
-                        System.IO.StreamWriter writer = new System.IO.StreamWriter(System.IO.Path.GetTempPath() + "dudebotsyncbot.txt");
-                        writer.Write("a");
-                        writer.Close();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
+
             }
         }
 
-        public void copyFile() {
+        public void copyFile()
+        {
             string fileName = "dudebotupdater.exe";
             string sourcePath = @"bin";
             string targetPath = System.IO.Path.GetDirectoryName(System.IO.Path.GetTempPath() + @"\dudebot");
             string sourceFile = System.IO.Path.Combine(sourcePath, fileName);
             string destFile = System.IO.Path.Combine(targetPath, fileName);
             System.IO.File.Copy(sourceFile, destFile, true);
-       }
-        
+        }
+
         public async void openChat(Object sender, RoutedEventArgs e)
         {
 
@@ -234,80 +174,31 @@ namespace WpfApplication1
 
         public void killBot(Object sender, RoutedEventArgs e)
         {
-            if (proc != null) { 
-                proc.Kill();
-                proc = null;
-                console.Text = "BOT DISCONNECTED";
-                open.IsEnabled = true;
-                kill.IsEnabled = false;
+            // TODO send bye message
+            try
+            {
+                bot.clearUpTempData();
+                Utils.saveData(bot);
+                bot.botDisconnect();
+            }
+            catch (Exception e1)
+            {
+                Utils.errorReport(e1);
+                Debug.WriteLine(e1.ToString());
             }
         }
 
         public void openBot(Object sender, RoutedEventArgs e)
         {
-            /*
-            if (proc == null)
-            {
-                proc = new Process();
-                {
-                    console.Text = "";
-                    proc.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "\\bin";
-                    proc.StartInfo.FileName = "javaw";
-                    proc.StartInfo.Arguments = "-jar bot.jar";
-                    proc.StartInfo.UseShellExecute = false;
-                    proc.StartInfo.RedirectStandardOutput = true;
-                    proc.OutputDataReceived += proc_OutputDataReceived;
-                    proc.Start();
-                    proc.BeginOutputReadLine();
-                    open.IsEnabled = false;
-                    kill.IsEnabled = true;
-                   
-                }
-            }
-            */
-
-            // TODO : pircbot -> c#
             bot = Utils.loadData(); // Sets up and connects bot object
+            MessageBox.Show(Directory.GetCurrentDirectory());
+            if (bot == null)
+            {
+                MessageBox.Show("Missing or corrupt 'userData.json' file. If you are updating from DudeBot 2 to DudeBot 3," +
+                    " please run 'DudeBotConfigUpdater.exe' in the bin folder, this will create an updated configuration file. To restore DudeBot and fix the configuration file, press 'reset dudebot'.", "Notice");
+                return;
+            }
             bot.botStartUp();
-            bot.setVerbose(true);
-            channel = bot.channel;
-            oauth = bot.oauth;
-            startupMessage = bot.startupMessage;
-            endMessage = bot.endMessage;
-            bot.connect("irc.twitch.tv", 6667, oauth);
-            bot.joinChannel(channel);
-            if (startupMessage != null)
-            {
-                bot.sendRawLine("PRIVMSG " + channel + " : /me " + startupMessage);
-            }
-            else
-            {
-                bot.sendRawLine("PRIVMSG " + channel + " : /me Hello!");
-            }
-            if (botColor != null)
-            {
-                bot.sendRawLine("PRIVMSG " + channel + " :" + "/color " + botColor);
-            }
-            File f = new File("song.txt");
-            if (!f.exists())
-            {
-                PrintWriter writer = new PrintWriter("song.txt", "UTF-8");
-                writer.close();
-            }
-            File f2 = new File("temp.txt");
-            if (!f2.exists())
-            {
-                PrintWriter writer = new PrintWriter("temp.txt", "UTF-8");
-                writer.close();
-            }
-            File f3 = new File("currentsong.txt");
-            if (!f3.exists())
-            {
-                PrintWriter writer = new PrintWriter("currentsong.txt", "UTF-8");
-                writer.close();
-            }
-            bot.sendRawLine("CAP REQ :twitch.tv/membership");
-
         }
 
         public MainWindow()
@@ -315,7 +206,7 @@ namespace WpfApplication1
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
             this.Show();
-           
+
             String fileName = System.IO.Path.GetTempPath() + "backupGUI.txt";
             try
             {
@@ -367,11 +258,6 @@ namespace WpfApplication1
                 {
                     File.Create(System.IO.Path.GetTempPath() + "dudebotkeyboardcontroller.txt").Close();
                 }
-
-                if (!File.Exists(System.IO.Path.GetTempPath() + "dudebotsyncbot.txt"))
-                {
-                    File.Create(System.IO.Path.GetTempPath() + "dudebotkeyboardcontroller.txt").Close();
-                }
                 if (songduration.IsChecked != true)
                 {
                     songdurationlimit.IsEnabled = false;
@@ -381,12 +267,12 @@ namespace WpfApplication1
                 writer.Write(location.Substring(0, location.IndexOf(@"DudeBot\DudeBot.exe")));
                 writer.Close();
                 copyFile();
-                
+
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
-            
+
         }
 
         public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
@@ -448,7 +334,6 @@ namespace WpfApplication1
                 maxGamble.IsEnabled = false;
                 gambleCoolDown.IsEnabled = false;
             }
-            syncUpdatesWithBot();
         }
 
         public void minigame_changed(object sender, RoutedEventArgs e)
@@ -466,7 +351,6 @@ namespace WpfApplication1
                 amountResult.IsEnabled = false;
                 minigametimer.IsEnabled = false;
             }
-            syncUpdatesWithBot();
         }
 
         public void adventure_changed(object sender, RoutedEventArgs e)
@@ -486,7 +370,6 @@ namespace WpfApplication1
                 adventureminreward.IsEnabled = false;
                 adventuremaxreward.IsEnabled = false;
             }
-            syncUpdatesWithBot();
         }
 
         public void currency_changed(object sender, RoutedEventArgs e)
@@ -516,7 +399,6 @@ namespace WpfApplication1
                 vipsongtoggle.IsEnabled = false;
                 vipRedeemCoolDownMinutes.IsEnabled = false;
             }
-            syncUpdatesWithBot();
         }
 
         public void vipsongcheck(object sender, RoutedEventArgs e)
@@ -532,7 +414,6 @@ namespace WpfApplication1
                 vipsongcost.IsEnabled = false;
                 vipRedeemCoolDownMinutes.IsEnabled = false;
             }
-            syncUpdatesWithBot();
         }
 
         public void amountResult_changed(object sender, RoutedEventArgs e)
@@ -541,11 +422,11 @@ namespace WpfApplication1
             if ((bool)cb.IsChecked)
             {
                 revloReward.IsEnabled = false;
-            } else
+            }
+            else
             {
                 revloReward.IsEnabled = true;
             }
-            syncUpdatesWithBot();
         }
 
         public void songduration_changed(object sender, RoutedEventArgs e)
@@ -559,9 +440,7 @@ namespace WpfApplication1
             {
                 songdurationlimit.IsEnabled = false;
             }
-            syncUpdatesWithBot();
         }
-
 
         public void textColorChange_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -573,7 +452,7 @@ namespace WpfApplication1
             this.Foreground = brush;
             foreach (DataGrid t in FindLogicalChildren<DataGrid>(this))
             {
-              // t.Foreground = brush;
+                // t.Foreground = brush;
             }
             foreach (MahApps.Metro.Controls.NumericUpDown t in FindLogicalChildren<MahApps.Metro.Controls.NumericUpDown>(this))
             {
@@ -650,7 +529,6 @@ namespace WpfApplication1
             writeGUI();
         }
 
-
         private void fontStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as ComboBox;
@@ -679,7 +557,8 @@ namespace WpfApplication1
             SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
             foreach (Button tb in FindLogicalChildren<Button>(this))
             {
-                if (!tb.Name.Equals("kill") && !tb.Name.Equals("open") && !tb.Name.Equals("flyoutbutton") && !tb.Name.Equals("b_a") && !tb.Name.Equals("b_b") && !tb.Name.Equals("b_c") && !tb.Name.Equals("b_d") && !tb.Name.Equals("b_e") && !tb.Name.Equals("b_f") && !tb.Name.Equals("websitebutton") && !tb.Name.Equals("discordbutton")) { 
+                if (!tb.Name.Equals("kill") && !tb.Name.Equals("open") && !tb.Name.Equals("flyoutbutton") && !tb.Name.Equals("b_a") && !tb.Name.Equals("b_b") && !tb.Name.Equals("b_c") && !tb.Name.Equals("b_d") && !tb.Name.Equals("b_e") && !tb.Name.Equals("b_f") && !tb.Name.Equals("websitebutton") && !tb.Name.Equals("discordbutton"))
+                {
                     tb.Background = brush;
                 }
             }
@@ -761,21 +640,6 @@ namespace WpfApplication1
             }
         }
 
-        public void openBot()
-        {
-            proc = new Process();
-            {
-                proc.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory() + "\\bin";
-                proc.StartInfo.FileName = "javaw";
-                proc.StartInfo.Arguments = "-jar bot.jar";
-                proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardOutput = true;
-                proc.OutputDataReceived += proc_OutputDataReceived;
-                proc.Start();
-                proc.BeginOutputReadLine();
-            }
-        }
-
         void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             this.Dispatcher.Invoke((Action)(() =>
@@ -784,7 +648,7 @@ namespace WpfApplication1
                 console.ScrollToEnd();
             }));
         }
-        
+
         public void getReady()
         {
             readConfig();
@@ -877,7 +741,7 @@ namespace WpfApplication1
                                 {
                                     System.Diagnostics.Process.Start(System.IO.Path.GetTempPath() + @"\dudebotupdater.exe");
                                 }
-                                catch (Exception f)
+                                catch (Exception)
                                 {
                                 }
                                 Application.Current.Shutdown();
@@ -885,7 +749,7 @@ namespace WpfApplication1
                         }
                     }
                 }
-                catch (Exception E)
+                catch (Exception)
                 {
                 }
                 DispatcherTimer timer;
@@ -893,9 +757,9 @@ namespace WpfApplication1
                 timer.Interval = TimeSpan.FromMilliseconds(5000);
                 timer.Tick += new EventHandler(timer_Tick);
                 timer.Start();
-                
-                openBot();
-                
+
+                openBot(null, null);
+
 
                 if (openImageWindowOnStart.IsChecked == true)
                 {
@@ -918,7 +782,7 @@ namespace WpfApplication1
                 }
             }
             try
-            { 
+            {
                 imageWindow = new Process();
                 imageWindow.StartInfo.FileName = "bin\\images.exe";
                 imageWindow.Start();
@@ -994,7 +858,8 @@ namespace WpfApplication1
                     {
                         return 1;
                     }
-                } catch (Exception)
+                }
+                catch (Exception)
                 {
                     return -1;
                 }
@@ -1019,7 +884,7 @@ namespace WpfApplication1
                         startInfo.UseShellExecute = false;
                         Process.Start(startInfo);
                     }
-                    catch (Exception f)
+                    catch (Exception)
                     {
                     }
                     Application.Current.Shutdown();
@@ -1116,7 +981,7 @@ namespace WpfApplication1
             {
                 return false;
             }
-            return true;
+            return false;
         }
 
         private void getBackupConfig()
@@ -1137,13 +1002,13 @@ namespace WpfApplication1
                         || line.Contains("getCurrentCommands=") || line.Contains("getNextSongCommands=") || line.Contains("randomNextSong=") || line.Contains("editMySong=") || line.Contains("removeMySong=")
                         || line.Contains("adddonatorCommands=") || line.Contains("bannedKeywords=") || line.Contains("mySongPosition=") || line.Contains("timer=") || line.Contains("whispersOn=")
                         || line.Contains("quotesOn=") || line.Contains("minigameOn=") || line.Contains("googleSheet=") || line.Contains("sfxTimer=") || line.Contains("revloReward=") || line.Contains("amountResult=")
-                        || line.Contains("minigameTimer=") || line.Contains("startupMessage=") || line.Contains("minigameEndMessage=") || line.Contains("subOnlyRequests=") 
+                        || line.Contains("minigameTimer=") || line.Contains("startupMessage=") || line.Contains("minigameEndMessage=") || line.Contains("subOnlyRequests=")
                         || line.Contains("directInputRequests=") || line.Contains("youtubeLinkRequests=") || line.Contains("maxSongLimitOn=") || line.Contains("maxSongDuration=") || line.Contains("adventureUserJoinTime=")
                         || line.Contains("adventureCoolDownTime=") || line.Contains("adventureMinReward=") || line.Contains("adventureMaxReward=") || line.Contains("giveawaycommandname=")
                         || line.Contains("currencyName=") || line.Contains("currencyPerMinute=") || line.Contains("maxGamble=") || line.Contains("currencyCoolDownMinutes=") || line.Contains("currencyToggle=")
                         || line.Contains("currencyCommandName=") || line.Contains("vipSongCost") || line.Contains("vipSongToggle=") || line.Contains("gambleToggle=") || line.Contains("adventureToggle=")
                         || line.Contains("endMessage=") || line.Contains("vipRedeemCoolDownMinutes=") || line.Contains("autoShoutoutOnHost=") || line.Contains("quotesModOnly=") || line.Contains("imageDisplayTimeSeconds=")
-                        || line.Contains("imageCoolDown=") || line.Contains("openImagesWindowOnStart=") || line.Contains("sfxOverallCoolDown=") || line.Contains("imagesOverallCoolDown=") 
+                        || line.Contains("imageCoolDown=") || line.Contains("openImagesWindowOnStart=") || line.Contains("sfxOverallCoolDown=") || line.Contains("imagesOverallCoolDown=")
                         || line.Contains("followersTextFile=") || line.Contains("subTextFile=") || line.Contains("followerMessage=") || line.Contains("subMessage") || line.Contains("rankupUnitCost=") || line.Contains("subCreditRedeemCost=")
                         || line.Contains("creditsPerSub="))
                     {
@@ -1492,7 +1357,7 @@ namespace WpfApplication1
         }
 
         private void preset()
-        { 
+        {
             refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             numberSongsSongListDisplays.Value = 8;
             maxNumberSongsPerUser.Value = 1;
@@ -1581,7 +1446,7 @@ namespace WpfApplication1
             subCreditRedeemCost.Value = 1;
             creditsPerSub.Value = 1;
         }
-        
+
         public void fileCopy(String f1, String f2)
         {
             try
@@ -1609,7 +1474,7 @@ namespace WpfApplication1
                     writer.Close();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }
@@ -1945,7 +1810,7 @@ namespace WpfApplication1
                         }
                     }
                     else if (line.Contains("currencyCommandName="))
-                    { 
+                    {
                         currencyCommand.Text = getFollowingText(line);
                     }
                     else if (line.Contains("vipSongCost="))
@@ -2102,7 +1967,7 @@ namespace WpfApplication1
         private void writeToConfigAndReset(Object sender, RoutedEventArgs e)
         {
             writeToConfig(sender, e);
-           
+
         }
 
         private async void writeToConfig(Object sender, RoutedEventArgs e)
@@ -2633,7 +2498,6 @@ namespace WpfApplication1
                 await this.ShowMessageAsync("", "Changes Applied!");
             }
             readTextFile();
-            syncUpdatesWithBot();
             if (writeAndReset)
             {
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
@@ -2646,7 +2510,7 @@ namespace WpfApplication1
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
-        
+
         private String getFollowingText(String line)
         {
             try
@@ -2758,7 +2622,6 @@ namespace WpfApplication1
                     songArray = new String[1000];
                     typeArray = new String[1000];
                     requesterArray = new String[1000];
-                    syncUpdatesWithBot();
                     return;
                 }
                 catch
@@ -2802,7 +2665,7 @@ namespace WpfApplication1
                         }
                         tb4.Uid = i.ToString();
                         songinfoArray[i] = new SongInfo(tb, tb2, tb4, tb3);
-                       
+
                     }
                     songdatagrid.ItemsSource = songinfoArray;
                 }
@@ -2814,10 +2677,11 @@ namespace WpfApplication1
                     songinfoArray[0] = new SongInfo(tb, null, null, null);
                     songdatagrid.ItemsSource = songinfoArray;
                 }
-            } catch (Exception f)
+            }
+            catch (Exception)
             {
             }
-          
+
         }
 
         public class SongInfo
@@ -2948,7 +2812,8 @@ namespace WpfApplication1
                     CurrencyArray[i] = currencySorted[i];
                 }
                 writeToCurrency();
-            } catch (Exception)
+            }
+            catch (Exception)
             {
             }
         }
@@ -3019,7 +2884,6 @@ namespace WpfApplication1
                         requester = requester.Replace("\t", "");
                     }
                     moveupSong(song, requester);
-                    syncUpdatesWithBot();
                     readTextFile();
                 }
             }
@@ -3190,9 +3054,9 @@ namespace WpfApplication1
                 {
                     DeleteFromList(song, requesterArray[Int32.Parse(a.Uid)]);
                 }
-                syncUpdatesWithBot();
                 readTextFile();
-            } catch (Exception)
+            }
+            catch (Exception)
             {
             }
         }
@@ -3269,6 +3133,7 @@ namespace WpfApplication1
             catch (Exception)
             {
             }
+            killBot(null, null);
         }
 
         public void readFromCurrency()
@@ -3288,14 +3153,16 @@ namespace WpfApplication1
                     if (temp[2] != null)
                     {
                         time = temp[2];
-                    } else
+                    }
+                    else
                     {
                         time = "0";
                     }
                     if (temp.Length > 3)
                     {
                         subCredits = temp[3];
-                    } else
+                    }
+                    else
                     {
                         subCredits = "0";
                     }
@@ -3315,7 +3182,7 @@ namespace WpfApplication1
                     currencyamount.Insert(count, amount);
                     currencytime.Insert(count, time);
                     currencysubcredits.Insert(count, subCredits);
-                    
+
                     CurrencyArray.Add(new Currency(tb, tb2, tb3, tb4));
                     count++;
                 }
@@ -3377,7 +3244,8 @@ namespace WpfApplication1
                 while ((line = reader.ReadLine()) != null)
                 {
                     String commandName = line.Substring(0, line.IndexOf("\t"));
-                    if (line.EndsWith("\t0") || line.EndsWith("\t1") || line.EndsWith("\t2") || line.EndsWith("\t3")) {
+                    if (line.EndsWith("\t0") || line.EndsWith("\t1") || line.EndsWith("\t2") || line.EndsWith("\t3"))
+                    {
                         String[] temp = line.Split('\t');
                         response = temp[1];
                         level = temp[2];
@@ -3402,11 +3270,11 @@ namespace WpfApplication1
                     {
                         tb3.Text = "Subs, Mods, Streamer";
                     }
-                    else if(level.Equals("2"))
+                    else if (level.Equals("2"))
                     {
                         tb3.Text = "Mods, Streamer";
                     }
-                    else if(level.Equals("3"))
+                    else if (level.Equals("3"))
                     {
                         tb3.Text = "Streamer";
                     }
@@ -3622,7 +3490,8 @@ namespace WpfApplication1
             editCommand.Text = commandArray[Int32.Parse(line.Uid)].commandName.Text;
             editResponse.Text = commandArray[Int32.Parse(line.Uid)].commandResponse.Text;
             String level = commandArray[Int32.Parse(line.Uid)].commandLevel.Text;
-            if (level.Equals("Everyone")) {
+            if (level.Equals("Everyone"))
+            {
                 editCommandLevel.SelectedIndex = 0;
             }
             else if (level.Equals("Subs, Mods, Streamer"))
@@ -3804,7 +3673,7 @@ namespace WpfApplication1
                 followersTextFile.Text = filename;
             }
         }
-        
+
         public void uploadSub(object sender, System.EventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -4026,7 +3895,6 @@ namespace WpfApplication1
                 writeToSFX();
                 editCommandSFX.Text = "";
                 editResponseSFX.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4051,7 +3919,6 @@ namespace WpfApplication1
                 writeToImages();
                 editCommandImage.Text = "";
                 editResponseImage.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4076,7 +3943,6 @@ namespace WpfApplication1
                 writeToEvents();
                 editEventUser.Text = "";
                 editEventMessage.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4101,7 +3967,6 @@ namespace WpfApplication1
                 editCommand.Text = "";
                 editResponse.Text = "";
                 editCommandLevel.SelectedIndex = 0;
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4172,7 +4037,6 @@ namespace WpfApplication1
                 }
                 writeToQuotes();
                 quoteEdit.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4198,7 +4062,6 @@ namespace WpfApplication1
                 editCommandTimed.Text = "";
                 editResponseTimed.Text = "";
                 editToggleTimed.IsChecked = false;
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4228,7 +4091,6 @@ namespace WpfApplication1
                 writeToSFX();
                 editCommandSFX.Text = "";
                 editResponseSFX.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4258,7 +4120,6 @@ namespace WpfApplication1
                 writeToImages();
                 editCommandImage.Text = "";
                 editResponseImage.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4288,7 +4149,6 @@ namespace WpfApplication1
                 writeToEvents();
                 editEventUser.Text = "";
                 editEventMessage.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4321,7 +4181,7 @@ namespace WpfApplication1
                 {
                     tb3.Text = "Streamer";
                 }
-                
+
                 for (int i = 0; i < commandArray.Count; i++)
                 {
                     var item = commandArray[i].commandName as TextBlock;
@@ -4338,7 +4198,6 @@ namespace WpfApplication1
                 editCommand.Text = "";
                 editResponse.Text = "";
                 editCommandLevel.SelectedIndex = 0;
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4443,7 +4302,7 @@ namespace WpfApplication1
                 {
                     if (text.Count == 0)
                     {
-                            text.Insert(0, editSong.Text + "\t(" + uName + ")");
+                        text.Insert(0, editSong.Text + "\t(" + uName + ")");
                     }
                     else
                     {
@@ -4468,7 +4327,7 @@ namespace WpfApplication1
                             return;
                         }
                     }
-                    
+
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -4482,14 +4341,13 @@ namespace WpfApplication1
                 editSong.Text = "";
                 editRequester.Text = "";
                 songplace.Value = 1;
-                syncUpdatesWithBot();
             }
             else
             {
                 await this.ShowMessageAsync("Warning", "Please enter the song name!");
             }
         }
-        
+
         public async void editsong(object sender, RoutedEventArgs e)
         {
             String uName = "";
@@ -4511,7 +4369,7 @@ namespace WpfApplication1
                         await this.ShowMessageAsync("Warning", "Place # " + songplace.Value + " does not exist!");
                         return;
                     }
-                    String temp = text[(Int32) songplace.Value - 1];
+                    String temp = text[(Int32)songplace.Value - 1];
                     if (temp != null)
                     {
                         if (temp.StartsWith("$$$\t"))
@@ -4537,7 +4395,6 @@ namespace WpfApplication1
                     editSong.Text = "";
                     editRequester.Text = "";
                     songplace.Value = 1;
-                    syncUpdatesWithBot();
                 }
                 catch (Exception)
                 {
@@ -4570,7 +4427,6 @@ namespace WpfApplication1
                 writeToQuotes();
                 readFromQuotes();
                 quoteEdit.Text = "";
-                syncUpdatesWithBot();
             }
             else
             {
@@ -4610,14 +4466,13 @@ namespace WpfApplication1
                 editCommandTimed.Text = "";
                 editResponseTimed.Text = "";
                 editToggleTimed.IsChecked = false;
-                syncUpdatesWithBot();
             }
             else
             {
                 await this.ShowMessageAsync("Warning", "Please enter the timed command name and response!");
             }
         }
-        
+
 
         public String formatCommand(String str)
         {
@@ -4711,7 +4566,7 @@ namespace WpfApplication1
                 writeToConfig(sender, e);
                 // Restart Bot
                 await this.ShowMessageAsync("No Previous Data Found!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, and Bot Oauth, then press 'APPLY' and restart DudeBot!");
-               customization.Focus();
+                customization.Focus();
             }
         }
 

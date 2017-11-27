@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Quote
 {
@@ -13,12 +14,12 @@ public class Quote
                 && (sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase)))
         {
             quotesOn = false;
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote system turned off!");
+            bot.client.SendMessage("Quote system turned off!");
         }
         else if (message.Equals("!quotes on", StringComparison.InvariantCultureIgnoreCase) && sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase))
         {
             quotesOn = false;
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote system turned on!");
+            bot.client.SendMessage("Quote system turned on!");
         }
         bot.read();
     }
@@ -33,16 +34,15 @@ public class Quote
             {
                 if (quotes.Count < 1)
                 {
-                    bot.sendRawLine("PRIVMSG " + channel + " :" + "There are currently no quotes in this stream!");
+                    bot.client.SendMessage("There are currently no quotes in this stream!");
                 }
                 else if (quotes.Count == 1)
                 {
-                    bot.sendRawLine("PRIVMSG " + channel + " :"
-                            + "There is 1 quote in this stream. Type '!quote 0' to display it!");
+                    bot.client.SendMessage("There is 1 quote in this stream. Type '!quote 0' to display it!");
                 }
                 else
                 {
-                    bot.sendRawLine("PRIVMSG " + channel + " :" + "There are " + quotes.Count
+                    bot.client.SendMessage("There are " + quotes.Count
                             + " quotes in this stream (quotes #0 - #" + (quotes.Count - 1) + ")!");
                 }
                 return;
@@ -107,31 +107,31 @@ public class Quote
             number = Int32.Parse(Utils.getFollowingText(message));
             if (quotes.Count < 1)
             {
-                bot.sendRawLine("PRIVMSG " + channel + " : There are no quotes in this stream, " + sender + "!");
+                bot.client.SendMessage("There are no quotes in this stream, " + sender + "!");
                 return;
             }
             if (quotes.Count < number || number < 0)
             {
-                bot.sendRawLine("PRIVMSG " + channel + " : Quote #" + number + " does not exist, " + sender + "!");
+                bot.client.SendMessage("Quote #" + number + " does not exist, " + sender + "!");
                 return;
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "To remove a quote, it must be in the form '!removequote #'");
+            bot.client.SendMessage("To remove a quote, it must be in the form '!removequote #'");
             return;
         }
         try
         {
             quotes.RemoveAt(number);
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote #" + number + " has been removed, " + sender + "!");
+            bot.client.SendMessage("Quote #" + number + " has been removed, " + sender + "!");
             return;
         }
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Failed to remove quote, please try again.");
+            Debug.WriteLine(e.ToString());
+            bot.client.SendMessage("Failed to remove quote, please try again.");
         }
         return;
     }
@@ -144,22 +144,21 @@ public class Quote
         {
             number = Int32.Parse(message.Substring(0, message.IndexOf(" ")));
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Please type in the format '!editquote quote# new quote'");
+            bot.client.SendMessage("Please type in the format '!editquote quote# new quote'");
             return;
         }
         if (number >= quotes.Count || number < 0)
         {
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote #" + number + " does not exist, " + sender + "!");
+            bot.client.SendMessage("Quote #" + number + " does not exist, " + sender + "!");
             return;
         }
         String newQuote = message.Substring(message.IndexOf(" ") + 1);
         newQuote = formatQuote(newQuote);
         if (newQuote == null)
         {
-            bot.sendRawLine(
-                    "PRIVMSG " + channel + " :" + "Failed to add quote, please try again later, " + sender + "!");
+            bot.client.SendMessage("Failed to add quote, please try again later, " + sender + "!");
             return;
         }
         try
@@ -169,14 +168,14 @@ public class Quote
                 newQuote = newQuote.Replace("\r", "");
             }
             quotes.Insert(number, newQuote);
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote #" + number + " has been updated, " + sender + "!");
+            bot.client.SendMessage("Quote #" + number + " has been updated, " + sender + "!");
             return;
         }
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Failed to edit quote, please try again.");
+            Debug.WriteLine(e.ToString());
+            bot.client.SendMessage("Failed to edit quote, please try again.");
         }
         return;
     }
@@ -186,12 +185,11 @@ public class Quote
         quote = formatQuote(quote);
         if (quote == null)
         {
-            bot.sendRawLine(
-                    "PRIVMSG " + channel + " :" + "Failed to add quote, please try again later, " + sender + "!");
+            bot.client.SendMessage("Failed to add quote, please try again later, " + sender + "!");
             return;
         }
         quotes.Add(quote);
-        bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote " + quote + " has been added, " + sender + "!");
+        bot.client.SendMessage("Quote " + quote + " has been added, " + sender + "!");
     }
 
 
@@ -222,7 +220,7 @@ public class Quote
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return null;
     }
@@ -235,14 +233,14 @@ public class Quote
         }
         Random rand = new Random();
         int index = rand.Next(quotes.Count);
-        bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote #" + index + ": " + quotes.get(index));
+        bot.client.SendMessage("Quote #" + index + ": " + quotes[index]);
     }
 
     public void getQuoteByID(int ID, String channel)
     {
         if (ID <= quotes.Count - 1)
         {
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Quote #" + ID + ": " + quotes.get(ID));
+            bot.client.SendMessage("Quote #" + ID + ": " + quotes[ID]);
         }
     }
 }

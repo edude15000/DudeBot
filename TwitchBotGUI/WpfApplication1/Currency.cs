@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 public class Currency
 {
@@ -119,7 +121,7 @@ public class Currency
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return "";
     }
@@ -169,7 +171,7 @@ public class Currency
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return 0;
     }
@@ -191,35 +193,35 @@ public class Currency
         Dictionary<String, Int32> hoursSorted = sortHashMapByValuesMax(hours);
         Dictionary<String, Int32> currencySorted = sortHashMapByValuesMax(currencies);
         String result = "";
-        if (hours.isEmpty)
+        if (hours.Count == 0)
         {
             return "No one has gained any time in the stream yet!";
         }
         List<String> userHoursList = new List<String>();
-        foreach (Map.Entry<String, Int32> entry in hoursSorted.entrySet())
+        foreach (KeyValuePair<String, Int32> entry in hoursSorted)
         {
-            userHoursList.Add(entry.getKey());
+            userHoursList.Add(entry.Key.ToString());
         }
         List<String> userCurrencyList = new List<String>();
-        foreach (Map.Entry<String, Int32> entry in currencySorted.entrySet())
+        foreach (KeyValuePair<String, Int32> entry in currencySorted)
         {
-            userCurrencyList.Add(entry.getKey());
+            userCurrencyList.Add(entry.Key.ToString());
         }
         result += "TIME: ";
         if (hours.Count < 5)
         {
             for (int i = 0; i < hours.Count; i++)
             {
-                result += "#" + (i + 1) + " " + userHoursList.get(i) + " ("
-                        + convertToTime(String.valueOf(hoursSorted.get(userHoursList.get(i)))) + ") ";
+                result += "#" + (i + 1) + " " + userHoursList[i] + " ("
+                        + convertToTime(hoursSorted[userHoursList[i]].ToString()) + ") ";
             }
         }
         else
         {
             for (int i = 0; i < 5; i++)
             {
-                result += "#" + (i + 1) + " " + userHoursList.get(i) + " ("
-                        + convertToTime(String.valueOf(hoursSorted.get(userHoursList.get(i)))) + ") ";
+                result += "#" + (i + 1) + " " + userHoursList[i] + " ("
+                        + convertToTime(hoursSorted[userHoursList[i]].ToString()) + ") ";
             }
         }
         result += ", " + currencyName.ToUpper() + ": ";
@@ -227,81 +229,31 @@ public class Currency
         {
             for (int i = 0; i < hours.Count; i++)
             {
-                result += "#" + (i + 1) + " " + userCurrencyList.get(i) + " ("
-                        + currencySorted.get(userCurrencyList.get(i)) + ") ";
+                result += "#" + (i + 1) + " " + userCurrencyList[i] + " ("
+                        + currencySorted[userCurrencyList[i]] + ") ";
             }
         }
         else
         {
             for (int i = 0; i < 5; i++)
             {
-                result += "#" + (i + 1) + " " + userCurrencyList.get(i) + " ("
-                        + currencySorted.get(userCurrencyList.get(i)) + ") ";
+                result += "#" + (i + 1) + " " + userCurrencyList[i] + " ("
+                        + currencySorted[userCurrencyList[i]] + ") ";
             }
         }
         return result;
     }
 
-    public Dictionary<String, Int32> sortHashMapByValuesMax(Dictionary<String, Int32> passedMap)
+    public Dictionary<String, Int32> sortHashMapByValuesMax(Dictionary<String, Int32> passedMap) // TODO : TEST!
     {
-        List<String> mapKeys = new List<String>(passedMap.keySet());
-        List<Int32> mapValues = new List<Int32>(passedMap.values());
-        Collections.sort(mapValues);
-        Collections.reverse(mapValues);
-        Collections.sort(mapKeys);
-        Collections.reverse(mapKeys);
-        Dictionary<String, Int32> sortedMap = new Dictionary<String, Int32>();
-        Iterator<Int32> valueIt = mapValues.iterator();
-        while (valueIt.hasNext())
-        {
-            int val = valueIt.next();
-            Iterator<String> keyIt = mapKeys.iterator();
-
-            while (keyIt.hasNext())
-            {
-                String key = keyIt.next();
-                int comp1 = passedMap.get(key);
-                int comp2 = val;
-
-                if (comp1.Equals(comp2))
-                {
-                    keyIt.remove();
-                    sortedMap.put(key, val);
-                    break;
-                }
-            }
-        }
-        return sortedMap;
+        var sortedDict = from entry in passedMap orderby entry.Value descending select entry;
+        return sortedDict.ToDictionary(pair => pair.Key, pair => pair.Value);
     }
 
-    public Dictionary<String, Int32> sortHashMapByValuesMin(Dictionary<String, Int32> passedMap)
+    public Dictionary<String, Int32> sortHashMapByValuesMin(Dictionary<String, Int32> passedMap) // TODO : TEST!
     {
-        List<String> mapKeys = new List<String>(passedMap.keySet());
-        List<Int32> mapValues = new List<Int32>(passedMap.values());
-        Collections.sort(mapValues);
-        Collections.sort(mapKeys);
-        Dictionary<String, Int32> sortedMap = new Dictionary<String, Int32>();
-        Iterator<Int32> valueIt = mapValues.iterator();
-        while (valueIt.hasNext())
-        {
-            int val = valueIt.next();
-            Iterator<String> keyIt = mapKeys.iterator();
-
-            while (keyIt.hasNext())
-            {
-                String key = keyIt.next();
-                int comp1 = passedMap.get(key);
-                int comp2 = val;
-
-                if (comp1.Equals(comp2))
-                {
-                    keyIt.remove();
-                    sortedMap.put(key, val);
-                    break;
-                }
-            }
-        }
-        return sortedMap;
+        var sortedDict = from entry in passedMap orderby entry.Value ascending select entry;
+        return sortedDict.ToDictionary(pair => pair.Key, pair => pair.Value);
     }
 
     public String getRank(String user, String streamer, String botname)
@@ -326,14 +278,14 @@ public class Currency
         {
             return user + " has yet to gain points in the stream!";
         }
-        Collections.sort(currencies);
-        Collections.reverse(currencies);
-        Collections.sort(hours);
-        Collections.reverse(hours);
+        currencies.Sort();
+        currencies.Reverse();
+        hours.Sort();
+        hours.Reverse();
         int countCurrency = 1;
         for (int i = 0; i < currencies.Count; i++)
         {
-            if (currencies.get(i).equals(currentUserCurrency))
+            if (currencies[i].Equals(currentUserCurrency))
             {
                 break;
             }
@@ -342,7 +294,7 @@ public class Currency
         int countHours = 1;
         for (int i = 0; i < hours.Count; i++)
         {
-            if (hours.get(i).equals(currentUserHours))
+            if (hours[i].Equals(currentUserHours))
             {
                 break;
             }
@@ -350,7 +302,7 @@ public class Currency
         }
         return user + " is in place #" + countCurrency + " in " + currencyName + " with " + currentUserCurrency + " "
                 + currencyName + " and in place #" + countHours + " in time spent in the stream with "
-                + convertToTime(String.valueOf(currentUserHours)) + "!";
+                + convertToTime(currentUserHours.ToString()) + "!";
     }
 
     public String bonus(String user, int amount)
@@ -367,6 +319,7 @@ public class Currency
                 }
                 else
                 {
+                    amount *= -1;
                     return amount + " " + currencyName + " has been taken away from " + user + "!";
                 }
             }
@@ -447,12 +400,12 @@ public class Currency
                 result = "[" + getRankName(points, (time / 60)) + "]";
             }
             return result + " " + user + " has " + points + " " + currencyName + " and "
-                    + convertToTime(String.valueOf(time)) + " spent in stream!";
+                    + convertToTime(time.ToString()) + " spent in stream!";
         }
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return "An error has occurred trying to retrieve currency values for " + user;
     }
@@ -472,7 +425,7 @@ public class Currency
             String[] arr = null;
             if (currrank != null)
             {
-                arr = getNextRankName(ranks.get(currrank), 0);
+                arr = getNextRankName(ranks[currrank], 0);
             }
             else
             {
@@ -507,7 +460,7 @@ public class Currency
         }
         catch (Exception e)
         {
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return "Failed to buy rank, please try again later.";
     }
@@ -518,7 +471,7 @@ public class Currency
         String result = "unranked";
         if (rankupUnitCost == 0)
         {
-            foreach (int v in sorted.values())
+            foreach (int v in sorted.Values)
             {
                 if (points >= v)
                 {
@@ -528,7 +481,7 @@ public class Currency
         }
         else
         {
-            foreach (int v in sorted.values())
+            foreach (int v in sorted.Values)
             {
                 if (hours >= v)
                 {
@@ -541,23 +494,23 @@ public class Currency
 
     public static String getKeyFromValue(Dictionary<String, Int32> hm, int value)
     {
-        foreach (Object o in hm.keySet())
+        foreach (String o in hm.Keys)
         {
-            if (hm.get(o).equals(value))
+            if (hm[o].Equals(value))
             {
-                return (String)o;
+                return o;
             }
         }
         return null;
     }
 
-    public String[] getNextRankName(int points, int hours)
+    public String[] getNextRankName(int points, int hours) // TODO : TEST!
     {
         Dictionary<String, Int32> sorted = sortHashMapByValuesMin(ranks);
         int cost = 0;
         if (rankupUnitCost == 0 || rankupUnitCost == 1)
         {
-            foreach (int v in sorted.values())
+            foreach (int v in sorted.Values)
             {
                 if (points >= v)
                 {
@@ -567,7 +520,7 @@ public class Currency
         }
         else
         {
-            foreach (int v in sorted.values())
+            foreach (int v in sorted.Values)
             {
                 if (hours >= v)
                 {
@@ -575,36 +528,36 @@ public class Currency
                 }
             }
         }
-        Iterator<Entry<String, Int32>> it = sorted.entrySet().iterator();
-        Entry<String, Int32> a = null;
-        while (it.hasNext())
+        KeyValuePair<String, Int32>[] list = sorted.ToArray();
+        KeyValuePair<String, Int32> a = new KeyValuePair<string, int>();
+        for (int i = 0; i < list.Length; i++)
         {
-            a = it.next();
             if (cost == 0)
             {
                 break;
             }
-            if (a.getValue() == cost)
+            if (list[i].Value == cost)
             {
-                if (it.hasNext())
+                if (list.Length - 1 > i)
                 {
-                    a = it.next();
+                    a = list[i + 1];
                 }
                 else
                 {
-                    a = null;
+                    a = new KeyValuePair<string, int>("null", 0);
+
                 }
                 break;
             }
         }
-        if (a == null)
+        if (a.Key == "null" && a.Value == 0)
         {
             String[] arr = { "MAX_VAL", "0" };
             return arr;
         }
         else
         {
-            String[] arr = { a.getKey(), String.valueOf(a.getValue()) };
+            String[] arr = { a.Key, a.Value.ToString() };
             return arr;
         }
     }
@@ -684,7 +637,7 @@ public class Currency
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return "Could not gamble right now. Please try again later.";
     }

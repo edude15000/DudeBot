@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 public class Utils
 {
@@ -8,20 +14,41 @@ public class Utils
     public static String releaseDate = "7/17/2017"; // UPDATE AS NECESSARY
     public static String clientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
-    public static String songlistfile = "song.txt";
-    public static String currentSongFile = "currentsong.txt";
-    public static String currentRequesterFile = "currentrequester.txt";
-    public static String lastPlayedSongsFile = System.getProperty("java.io.tmpdir") + "lastsongsplayed.txt";
+    public static String songlistfile = @"bin\song.txt";
+    public static String currentSongFile = @"bin\currentsong.txt";
+    public static String currentRequesterFile = @"bin\currentrequester.txt";
+    public static String templistfile = @"bin\temp.txt";
+    public static String userDataFile = @"bin\userData.json"; // TODO : FIX!
+    public static String lastPlayedSongsFile = Path.GetTempPath() + "lastsongsplayed.txt";
 
     public static TwitchBot loadData()
     {
-        // TODO
-        return new TwitchBot();
+        if (!File.Exists(userDataFile))
+        {
+            return null;
+        }
+        try
+        {
+            return JsonConvert.DeserializeObject<dynamic>(userDataFile);
+        }
+        catch (Exception e)
+        {
+            errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+        return null;
     }
 
     public static void saveData(TwitchBot twitchBot)
     {
-        //TODO
+        JsonSerializer serializer = new JsonSerializer();
+        serializer.Converters.Add(new JavaScriptDateTimeConverter());
+        serializer.NullValueHandling = NullValueHandling.Ignore;
+        using (StreamWriter sw = new StreamWriter(userDataFile))
+        using(JsonWriter writer = new JsonTextWriter(sw))
+        {
+            serializer.Serialize(writer, twitchBot);
+        }
     }
 
     public static void errorReport(Exception e)
@@ -36,7 +63,7 @@ public class Utils
         }
         catch (IOException e1)
         {
-            e1.ToString();
+            Debug.WriteLine(e1.ToString());
         }
     }
 
@@ -67,7 +94,7 @@ public class Utils
         {
             Int32.Parse(s);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return false;
         }
@@ -84,14 +111,14 @@ public class Utils
         {
             Double.Parse(s);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return false;
         }
         return true;
     }
 
-    static double closest(double of, List<Double> i)
+    public static double closest(double of, List<Double> i)
     {
         double min = Int32.MaxValue;
         double closest = of;
@@ -107,7 +134,7 @@ public class Utils
         return closest;
     }
 
-    static String timeConversion(int totalSeconds)
+    public static String timeConversion(int totalSeconds)
     {
         int MINUTES_IN_AN_HOUR = 60;
         int SECONDS_IN_A_MINUTE = 60;
@@ -182,7 +209,7 @@ public class Utils
         }
     }
 
-    static String timeConversionYears(long inputSeconds)
+    public static String timeConversionYears(long inputSeconds)
     {
         long days = (inputSeconds / (3600 * 24));
         if (days < 1)
@@ -297,7 +324,7 @@ public class Utils
                             return true;
                         }
                     }
-                    catch (Exception E)
+                    catch (Exception)
                     {
                         return false;
                     }
@@ -334,7 +361,7 @@ public class Utils
                         {
                             if (line.Contains("Bad Request"))
                             {
-                                System.out.println(
+                                Debug.WriteLine(
                                         "WARNING TWITCH KRAKEN API IS DOWN, CANNOT CHECK IF USER IS FOLLOWING! (ADDED SONG IF POSSIBLE ANYWAY)");
                                 reader.Close();
                                 return true;
@@ -347,9 +374,9 @@ public class Utils
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        System.out.println(
+                        Debug.WriteLine(
                                 "WARNING TWITCH KRAKEN API IS DOWN, CANNOT CHECK IF USER IS FOLLOWING! (ADDED SONG IF POSSIBLE ANYWAY)");
                         return true;
                     }
@@ -359,130 +386,116 @@ public class Utils
         return false;
     }
 
-    public static String callURL(String myURL)
+    public static String callURL(String uri) // TODO : TEST!
     {
-        StringBuilder sb = new StringBuilder();
-        URLConnection urlConn = null;
-        InputStreamReader in = null;
         try
         {
-            URL url = new URL(myURL);
-            urlConn = url.openConnection();
-            if (myURL.toLowerCase().Contains("kraken"))
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
             {
-                urlConn.setRequestProperty("Client-ID", Utils.clientID);
+                return reader.ReadToEnd();
             }
-            if (urlConn != null)
-                urlConn.setReadTimeout(4000);
-            if (urlConn != null && urlConn.getInputStream() != null)
-            {
-				in = new InputStreamReader(urlConn.getInputStream(), Charset.defaultCharset());
-                BufferedReader bufferedReader = new BufferedReader(in);
-                if (bufferedReader != null)
-                {
-                    int cp;
-                    while ((cp = bufferedReader.read()) != -1)
-                    {
-                        sb.append((char)cp);
-                    }
-                    bufferedReader.close();
-                }
-            }
-			in.close();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return "";
         }
-        return sb.toString();
     }
 
     public static String getNumberOfUsers(String channel, String streamer)
     {
         String info = callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
-        Scanner sc = new Scanner(info);
+        StreamReader sc = new StreamReader(info);
         String line;
-        while ((line = sc.nextLine()) != null)
+        while ((line = sc.ReadLine()) != null)
         {
             if (line.Contains("chatter_count"))
             {
                 break;
             }
         }
-        sc.close();
-        line = line.Substring(line.IndexOf(":") + 1, line.length() - 1);
+        sc.Close();
+        line = line.Substring(line.IndexOf(":") + 1, line.Length - 1);
         return line;
     }
 
-    public static List<String> getAllViewers(String streamer)
+    public static List<String> getAllViewers(String streamer) // TODO : TEST!
     {
         List<String> users = new List<String>();
         String info = callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
         try
         {
-            JSONObject a = new JSONObject(info).getJSONObject("chatters");
-            JSONArray viewers = a.getJSONArray("viewers");
-            JSONArray staff = a.getJSONArray("staff");
-            JSONArray admins = a.getJSONArray("admins");
-            JSONArray global_mods = a.getJSONArray("global_mods");
-            JSONArray moderators = a.getJSONArray("moderators");
+            dynamic a = new JObject(info)["chatters"];
+            JArray viewers = a["viewers"];
+            JArray staff = a["staff"];
+            JArray admins = a["admins"];
+            JArray global_mods = a["global_mods"];
+            JArray moderators = a["moderators"];
             if (moderators != null)
             {
-                int len = moderators.length();
+                int len = moderators.Count;
+                String[] items = moderators.Select(jv => (String)jv).ToArray();
                 for (int i = 0; i < len; i++)
                 {
-                    if (!users.Contains(moderators.get(i)))
+                    if (!users.Contains(items[i]))
                     {
-                        users.Add(moderators.get(i).toString());
+                        users.Add(items[i].ToString());
                     }
                 }
             }
             if (viewers != null)
             {
-                int len = viewers.length();
+                int len = viewers.Count;
+                String[] items = viewers.Select(jv => (String)jv).ToArray();
                 for (int i = 0; i < len; i++)
                 {
-                    if (!users.Contains(viewers.get(i)))
+                    if (!users.Contains(items[i]))
                     {
-                        users.Add(viewers.get(i).toString());
+                        users.Add(items[i].ToString());
                     }
                 }
             }
             if (staff != null)
             {
-                int len = staff.length();
+                int len = staff.Count;
+                String[] items = staff.Select(jv => (String)jv).ToArray();
                 for (int i = 0; i < len; i++)
                 {
-                    if (!users.Contains(staff.get(i)))
+                    if (!users.Contains(items[i]))
                     {
-                        users.Add(staff.get(i).toString());
+                        users.Add(items[i].ToString());
                     }
                 }
             }
             if (admins != null)
             {
-                int len = admins.length();
+                int len = admins.Count;
+                String[] items = admins.Select(jv => (String)jv).ToArray();
                 for (int i = 0; i < len; i++)
                 {
-                    if (!users.Contains(admins.get(i)))
+                    if (!users.Contains(items[i]))
                     {
-                        users.Add(admins.get(i).toString());
+                        users.Add(items[i].ToString());
                     }
                 }
             }
             if (global_mods != null)
             {
-                int len = global_mods.length();
+                int len = global_mods.Count;
+                String[] items = global_mods.Select(jv => (String)jv).ToArray();
                 for (int i = 0; i < len; i++)
                 {
-                    if (!users.Contains(global_mods.get(i)))
+                    if (!users.Contains(items[i]))
                     {
-                        users.Add(global_mods.get(i).toString());
+                        users.Add(items[i].ToString());
                     }
                 }
             }
         }
-        catch (Exception ioe)
+        catch (Exception)
         {
         }
         return users;

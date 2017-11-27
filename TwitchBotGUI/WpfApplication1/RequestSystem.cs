@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Google.Apis.YouTube.v3.Data;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 public class RequestSystem
@@ -27,6 +29,19 @@ public class RequestSystem
         return 0;
     }
 
+    public void copyFile(String f1, String f2)
+    {
+        try
+        {
+            File.Copy(f1, f2);
+        }
+        catch (IOException e)
+        {
+            Utils.errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+    }
+
     public void giveSpot(String message, String channel, String sender)
     {
         foreach (BotUser u in bot.users)
@@ -35,8 +50,7 @@ public class RequestSystem
             {
                 if (u.gaveSpot)
                 {
-                    bot.sendRawLine(
-                            "PRIVMSG " + channel + " :" + "You can only give another user your spot once per stream!");
+                    bot.client.SendMessage("You can only give another user your spot once per stream!");
                     return;
                 }
                 try
@@ -47,8 +61,7 @@ public class RequestSystem
                     Boolean noSong = false;
                     if (Int32.Parse(getNumberOfSongs()) == 0)
                     {
-                        bot.sendRawLine(
-                                "PRIVMSG " + channel + " :" + "You have no requests in the list, " + sender + "!");
+                        bot.client.SendMessage("You have no requests in the list, " + sender + "!");
                         return;
                     }
                     String toWrite = "";
@@ -77,7 +90,7 @@ public class RequestSystem
                     br.Close();
                     if (!noSong)
                     {
-                        StreamWriter StreamWriter = new StreamWriter(Utils.templistfile);
+                        StreamWriter StreamWriter = new StreamWriter(Utils.templistfile); // TODO
                         StreamReader reader = new StreamReader(Utils.songlistfile);
                         for (int i = 0; i < count - 1; i++)
                         {
@@ -99,21 +112,21 @@ public class RequestSystem
 
                         clear(channel, Utils.songlistfile);
 
-                        copyFile(Utils.templistfile, Utils.songlistfile);
+                        copyFile(Utils.templistfile, Utils.songlistfile); // TODO
 
-                        clear(channel, Utils.templistfile);
+                        clear(channel, Utils.templistfile); // TODO
                         if (previousSong.StartsWith("$$$\t") || previousSong.StartsWith("VIP\t"))
                         {
                             previousSong = previousSong.Substring(previousSong.IndexOf(' ') + 1);
                         }
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Your next request '" + previousSong
+                        bot.client.SendMessage("Your next request '" + previousSong
                                 + "' has been changed to 'Place Holder' FOR " + newUser.ToLower() + "!");
                         u.gaveSpot = true;
                         return;
                     }
                     else
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + "You have no regular requests in the list, "
+                        bot.client.SendMessage("You have no regular requests in the list, "
                                 + sender + "!");
                         return;
                     }
@@ -121,7 +134,7 @@ public class RequestSystem
                 catch (Exception e)
                 {
                     Utils.errorReport(e);
-                    e.ToString();
+                    Debug.WriteLine(e.ToString());
                 }
             }
         }
@@ -142,32 +155,30 @@ public class RequestSystem
                         List<Int32> spots = checkPosition(message, channel, sender);
                         if (spots.Count < 1)
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :"
-                                    + "You do not have any requests in the song list, " + sender + "!");
+                            bot.client.SendMessage("You do not have any requests in the song list, " + sender + "!");
                             return;
                         }
                         for (int j = 0; j < spots.Count; j++)
                         {
-                            if (spots.get(j) == 0)
+                            if (spots[j] == 0)
                             {
                                 response += "You have a song playing right now, ";
                             }
-                            else if (spots.get(j) == 1)
+                            else if (spots[j] == 1)
                             {
                                 response += "You have a request next in line, ";
                             }
                             else
                             {
-                                response += "You have a request in place # " + (spots.get(j) + 1) + ", ";
+                                response += "You have a request in place # " + (spots[j] + 1) + ", ";
                             }
                         }
-                        bot.sendRawLine(
-                                "PRIVMSG " + channel + " :" + "Y" + response.ToLower().Substring(1) + sender + "!");
+                        bot.client.SendMessage(response.ToLower().Substring(1) + sender + "!");
                     }
                     catch (Exception e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -194,7 +205,7 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return songs;
     }
@@ -213,7 +224,7 @@ public class RequestSystem
                         String input = Utils.getFollowingText(message);
                         String youtubeID = null;
                         Video ytvid = null;
-                        if (message.Contains("www.") || message.Contains("http://") || message.cCntains("http://www.")
+                        if (message.Contains("www.") || message.Contains("http://") || message.Contains("http://www.")
                                 || message.Contains(".com") || message.Contains("https://"))
                         {
                             if (message.Contains("www.youtube.com/watch?v=")
@@ -225,13 +236,13 @@ public class RequestSystem
                                     ytvid = bot.youtube.searchYoutubeByID(youtubeID);
                                     if (ytvid == null)
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                        bot.client.SendMessage("Invalid youtube URL, " + sender);
                                         return;
                                     }
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
                                     return;
                                 }
                             }
@@ -243,19 +254,19 @@ public class RequestSystem
                                     ytvid = bot.youtube.searchYoutubeByID(youtubeID);
                                     if (ytvid == null)
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                        bot.client.SendMessage("Invalid youtube URL, " + sender);
                                         return;
                                     }
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
                                     return;
                                 }
                             }
                             else
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
+                                bot.client.SendMessage("Invalid Request, " + sender);
                                 return;
                             }
                         }
@@ -265,15 +276,14 @@ public class RequestSystem
                             input = input.Substring(0, input.LastIndexOf("(")).Trim();
                             if (ytvid != null)
                             {
-                                addDonator(channel, ytvid.getSnippet().getTitle(), requester);
-                                bot.sendRawLine(
-                                        "PRIVMSG " + channel + " :" + "Donator Song '" + ytvid.getSnippet().getTitle()
+                                addDonator(channel, ytvid.Snippet.Title, requester);
+                                bot.client.SendMessage("Donator Song '" + ytvid.Snippet.Title
                                                 + "' has been added to the song list, " + requester + "!");
                             }
                             else
                             {
                                 addDonator(channel, input, requester);
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '" + input
+                                bot.client.SendMessage("Donator Song '" + input
                                         + "' has been added to the song list, " + requester + "!");
                             }
                             bot.addUserRequestAmount(requester, true);
@@ -283,15 +293,14 @@ public class RequestSystem
                         {
                             if (ytvid != null)
                             {
-                                addDonator(channel, ytvid.getSnippet().getTitle(), sender);
-                                bot.sendRawLine(
-                                        "PRIVMSG " + channel + " :" + "Donator Song '" + ytvid.getSnippet().getTitle()
+                                addDonator(channel, ytvid.Snippet.Title, sender);
+                                bot.client.SendMessage("Donator Song '" + ytvid.Snippet.Title
                                                 + "' has been added to the song list, " + sender + "!");
                             }
                             else
                             {
                                 addDonator(channel, input, sender);
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Donator Song '" + input
+                                bot.client.SendMessage("Donator Song '" + input
                                         + "' has been added to the song list, " + sender + "!");
                             }
                             writeToCurrentSong(channel, false);
@@ -300,7 +309,7 @@ public class RequestSystem
                     catch (IOException e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -320,8 +329,8 @@ public class RequestSystem
         {
             try
             {
-                StreamReader br2 = new StreamReader(Utils.templistfile);
-                copyToTemp(channel);
+                StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
+                copyFile(Utils.songlistfile, Utils.templistfile); // TODO
                 String line2 = br2.ReadLine();
                 StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
                 if (line2.StartsWith("VIP\t"))
@@ -339,29 +348,29 @@ public class RequestSystem
                 }
                 br2.ReadLine();
                 StreamWriter.Write("$$$\t" + song + "\t(" + requestedby + ")\r");
-                clear(channel, Utils.templistfile);
+                clear(channel, Utils.templistfile); // TODO
                 br2.Close();
                 StreamWriter.Close();
             }
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                e.ToString();
+                Debug.WriteLine(e.ToString());
             }
         }
         else
         {
             try
             {
-                StreamReader br3 = new StreamReader(Utils.templistfile);
-                copyToTemp(channel);
+                StreamReader br3 = new StreamReader(Utils.templistfile); // TODO
+                copyFile(Utils.songlistfile, Utils.templistfile);// TODO
                 String line2, line3, line4;
                 line4 = br3.ReadLine();
                 br3.Close();
                 if (line4.StartsWith("$$$\t"))
                 {
-                    StreamReader br = new StreamReader(Utils.templistfile);
-                    StreamReader br2 = new StreamReader(Utils.templistfile);
+                    StreamReader br = new StreamReader(Utils.templistfile);// TODO
+                    StreamReader br2 = new StreamReader(Utils.templistfile);// TODO
                     StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
                     int count = 0;
                     while ((line2 = br.ReadLine()) != null)
@@ -381,14 +390,14 @@ public class RequestSystem
                     {
                         StreamWriter.Write(line3 + "\r");
                     }
-                    clear(channel, Utils.templistfile);
+                    clear(channel, Utils.templistfile);// TODO
                     br.Close();
                     br2.Close();
                     StreamWriter.Close();
                 }
                 else
                 {
-                    StreamReader br = new StreamReader(Utils.templistfile);
+                    StreamReader br = new StreamReader(Utils.templistfile);// TODO
                     StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
                     line2 = br.ReadLine();
                     if (line2.Contains("VIP\t"))
@@ -404,7 +413,7 @@ public class RequestSystem
                     {
                         StreamWriter.Write(line2 + "\r");
                     }
-                    clear(channel, Utils.templistfile);
+                    clear(channel, Utils.templistfile);// TODO
                     br.Close();
                     StreamWriter.Close();
                 }
@@ -412,7 +421,7 @@ public class RequestSystem
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                e.ToString();
+                Debug.WriteLine(e.ToString());
             }
         }
     }
@@ -442,8 +451,7 @@ public class RequestSystem
             Boolean noSong = false;
             if (Int32.Parse(getNumberOfSongs()) == 0)
             {
-                bot.sendRawLine(
-                        "PRIVMSG " + channel + " :" + "You have no regular requests in the list, " + sender + "!");
+                bot.client.SendMessage("You have no regular requests in the list, " + sender + "!");
                 return;
             }
             while ((line = br.ReadLine()) != null)
@@ -479,20 +487,20 @@ public class RequestSystem
                 clear(channel, Utils.songlistfile);
                 copyFile(Utils.templistfile, Utils.songlistfile);
                 clear(channel, Utils.templistfile);
-                bot.sendRawLine("PRIVMSG " + channel + " :" + "Your next request '"
+                bot.client.SendMessage("Your next request '"
                         + songToDelete.Substring(0, songToDelete.LastIndexOf("\t")) + "' has been removed, " + sender
                         + "!");
                 bot.addUserRequestAmount(sender, false);
             }
             else
             {
-                bot.sendRawLine("PRIVMSG " + channel + " :" + "You have no requests in the list, " + sender + "!");
+                bot.client.SendMessage("You have no requests in the list, " + sender + "!");
             }
         }
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
     }
 
@@ -505,8 +513,7 @@ public class RequestSystem
                 String temp = message.ToLower();
                 if (temp.Equals(editSongComm.input[i], StringComparison.InvariantCultureIgnoreCase))
                 {
-                    bot.sendRawLine("PRIVMSG " + channel + " :"
-                            + "Please type an artist and song name after the command, " + sender);
+                    bot.client.SendMessage("Please type an artist and song name after the command, " + sender);
                 }
                 else if (temp.StartsWith(editSongComm.input[i]) && temp.Contains(editSongComm.input[i] + " "))
                 {
@@ -516,7 +523,7 @@ public class RequestSystem
                         {
                             if (temp.ToLower().Contains(bannedKeywords[j].ToLower()))
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Song request contains a banned keyword '"
+                                bot.client.SendMessage("Song request contains a banned keyword '"
                                         + bannedKeywords[j] + "' and cannot be added, " + sender + "!");
                                 return;
                             }
@@ -539,7 +546,7 @@ public class RequestSystem
             Boolean writeVIP = false, writeDon = false;
             if (Int32.Parse(getNumberOfSongs()) == 0)
             {
-                bot.sendRawLine("PRIVMSG " + channel + " :" + "You have no requests in the list, " + sender + "!");
+                bot.client.SendMessage("You have no requests in the list, " + sender + "!");
                 return;
             }
             while ((line = br.ReadLine()) != null)
@@ -551,8 +558,7 @@ public class RequestSystem
                         if (!Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users)
                                 && !sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) && !sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :"
-                                    + "Your song is currently playing. Please have a mod edit it, " + sender + "!");
+                            bot.client.SendMessage("Your song is currently playing. Please have a mod edit it, " + sender + "!");
                             return;
                         }
                     }
@@ -613,20 +619,20 @@ public class RequestSystem
                 {
                     previousSong = previousSong.Replace("$$$\t", "");
                 }
-                bot.sendRawLine("PRIVMSG " + channel + " :" + "Your next request '"
+                bot.client.SendMessage("Your next request '"
                         + previousSong.Substring(0, previousSong.LastIndexOf("\t")) + "' has been changed to '"
                         + Utils.getFollowingText(message) + "', " + sender + "!");
                 writeToCurrentSong(channel, false);
             }
             else
             {
-                bot.sendRawLine("PRIVMSG " + channel + " :" + "You have no requests in the list, " + sender + "!");
+                bot.client.SendMessage("You have no requests in the list, " + sender + "!");
             }
         }
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
     }
 
@@ -675,7 +681,7 @@ public class RequestSystem
                                             catch (IOException e)
                                             {
                                                 Utils.errorReport(e);
-                                                e.ToString();
+                                                Debug.WriteLine(e.ToString());
                                             }
                                         }
                                         else
@@ -685,20 +691,18 @@ public class RequestSystem
                                     }
                                     else
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :"
-                                                + "You must follow the stream to request a song, " + sender);
+                                        bot.client.SendMessage("You must follow the stream to request a song, " + sender);
                                     }
                                 }
                                 else
                                 {
                                     if (numOfSongsInQueuePerUser == 1)
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :"
-                                                + "You may only have 1 song in the queue at a time, " + sender + "!");
+                                        bot.client.SendMessage("You may only have 1 song in the queue at a time, " + sender + "!");
                                     }
                                     else
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :" + "You may only have "
+                                        bot.client.SendMessage("You may only have "
                                                 + numOfSongsInQueuePerUser + " songs in the queue at a time, " + sender
                                                 + "!");
                                     }
@@ -707,17 +711,17 @@ public class RequestSystem
                             catch (IOException e1)
                             {
                                 Utils.errorReport(e1);
-                                e1.ToString();
+                                Debug.WriteLine(e1.ToString());
                             }
                         }
                         else
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + "Requests are currently off!");
+                            bot.client.SendMessage("Requests are currently off!");
                         }
                     }
                     else
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Song limit of " + maxSonglistLength
+                        bot.client.SendMessage("Song limit of " + maxSonglistLength
                                 + " has been reached, please try again later.");
                     }
                 }
@@ -735,12 +739,12 @@ public class RequestSystem
                 {
                     try
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + getNextSongTitle(channel));
+                        bot.client.SendMessage(getNextSongTitle(channel));
                     }
                     catch (Exception e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -772,9 +776,13 @@ public class RequestSystem
                     }
                 }
             }
+            catch (Exception e)
+            {
+                Utils.errorReport(e);
+                Debug.WriteLine(e.ToString());
+            }
         return "Next up: " + line;
         }
-
     }
 
     public void triggerRequests(Boolean trigger, String channel)
@@ -782,12 +790,12 @@ public class RequestSystem
         if (trigger)
         {
             requestsTrigger = true;
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Requests turned on!");
+            bot.client.SendMessage("Requests turned on!");
         }
         else
         {
             requestsTrigger = false;
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Requests turned off!");
+            bot.client.SendMessage("Requests turned off!");
         }
     }
 
@@ -832,7 +840,7 @@ public class RequestSystem
                     line = secondReader.ReadLine();
                     secondReader.Close();
                 }
-                copyToTemp(channel);
+                copyFile(Utils.songlistfile, Utils.templistfile);
                 StreamReader br2 = new StreamReader(Utils.templistfile);
                 StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
                 if (writeVIP == true)
@@ -884,18 +892,17 @@ public class RequestSystem
                 StreamWriter.Close();
                 br2.Close();
                 clear(channel, Utils.templistfile);
-                bot.sendRawLine("PRIVMSG " + channel + " :" + getNextSong(channel));
+                bot.client.SendMessage(getNextSong(channel));
             }
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                e.ToString();
+                Debug.WriteLine(e.ToString());
             }
         }
         else
         {
-            bot.sendRawLine(
-                    "PRIVMSG " + channel + " :" + "Song list must have 3 or more songs to choose a random one!");
+            bot.client.SendMessage("Song list must have 3 or more songs to choose a random one!");
         }
     }
 
@@ -912,10 +919,10 @@ public class RequestSystem
                         randomizer(channel);
                         writeToCurrentSong(channel, false);
                     }
-                    catch (Exception e) 
+                    catch (Exception e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -978,14 +985,14 @@ public class RequestSystem
         {
             StreamWriter output;
             output = new StreamWriter(Utils.lastPlayedSongsFile, true);
-            
+
             output.Write(Utils.getDate() + " " + Utils.getTime() + " - " + lastSong + "\r");
             output.Close();
         }
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
     }
 
@@ -999,12 +1006,12 @@ public class RequestSystem
                 {
                     try
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Playing: " + getCurrentSongTitle(channel));
+                        bot.client.SendMessage("Playing: " + getCurrentSongTitle(channel));
                     }
                     catch (Exception e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1046,13 +1053,13 @@ public class RequestSystem
                     try
                     {
                         clear(channel, Utils.songlistfile);
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Song list has been cleared!");
+                        bot.client.SendMessage("Song list has been cleared!");
                         writeToCurrentSong(channel, false);
                     }
                     catch (IOException e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1064,7 +1071,8 @@ public class RequestSystem
         String line;
         int i = 0;
         String user = "";
-        try {
+        try
+        {
             StreamReader br = new StreamReader(Utils.songlistfile);
             while ((line = br.ReadLine()) != null)
             {
@@ -1079,10 +1087,11 @@ public class RequestSystem
             }
             bot.read();
             br.Close();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
     }
 
@@ -1099,11 +1108,11 @@ public class RequestSystem
                     {
                         if (nextSong(channel))
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + getNextSong(channel));
+                            bot.client.SendMessage(getNextSong(channel));
                         }
                         else
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + "There are no songs currently in the queue!");
+                            bot.client.SendMessage("There are no songs currently in the queue!");
                         }
 
                         writeToCurrentSong(channel, true);
@@ -1111,7 +1120,7 @@ public class RequestSystem
                     catch (Exception e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1129,12 +1138,12 @@ public class RequestSystem
         if (trigger)
         {
             vipSongToggle = true;
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP songs turned on!");
+            bot.client.SendMessage("VIP songs turned on!");
         }
         else
         {
             vipSongToggle = false;
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP songs turned off!");
+            bot.client.SendMessage("VIP songs turned off!");
         }
     }
 
@@ -1142,12 +1151,12 @@ public class RequestSystem
     {
         if ((Int32.Parse(getNumberOfSongs()) == 0))
         {
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "There are no songs in the list!");
+            bot.client.SendMessage("There are no songs in the list!");
             return;
         }
         else
         {
-            copyToTemp(channel);
+            copyFile(Utils.songlistfile, Utils.templistfile);
             StreamReader br = new StreamReader(Utils.templistfile);
             br.ReadLine();
             String line, song = "";
@@ -1178,7 +1187,7 @@ public class RequestSystem
                 }
                 StreamWriter.Close();
                 br2.Close();
-                bot.sendRawLine("PRIVMSG " + channel + " :" + getNextSong(channel));
+                bot.client.SendMessage(getNextSong(channel));
                 return;
             }
             else
@@ -1199,17 +1208,17 @@ public class RequestSystem
             {
                 if (check)
                 {
-                    bot.sendRawLine("PRIVMSG " + channel + " :" + "There are no standard requests in the list. "
+                    bot.client.SendMessage("There are no standard requests in the list. "
                             + getNextSong(channel));
                 }
                 else
                 {
-                    bot.sendRawLine("PRIVMSG " + channel + " :" + getNextSong(channel));
+                    bot.client.SendMessage(getNextSong(channel));
                 }
             }
             else
             {
-                bot.sendRawLine("PRIVMSG " + channel + " :" + "There are no songs currently in the queue!");
+                bot.client.SendMessage("There are no songs currently in the queue!");
             }
 
             writeToCurrentSong(channel, true);
@@ -1217,7 +1226,7 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
     }
 
@@ -1230,8 +1239,7 @@ public class RequestSystem
                 String temp = message.ToLower();
                 if (temp.Equals(editComm.input[i], StringComparison.InvariantCultureIgnoreCase))
                 {
-                    bot.sendRawLine("PRIVMSG " + channel + " :"
-                            + "Please type an artist and song name after the command, " + sender);
+                    bot.client.SendMessage("Please type an artist and song name after the command, " + sender);
                 }
                 else if (temp.StartsWith(editComm.input[i]) && temp.Contains(editComm.input[i] + " "))
                 {
@@ -1239,14 +1247,14 @@ public class RequestSystem
                     {
                         if (editCurrent(channel, Utils.getFollowingText(message), sender))
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + "Current song has been edited!");
+                            bot.client.SendMessage("Current song has been edited!");
                             writeToCurrentSong(channel, false);
                         }
                     }
                     catch (IOException e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1279,13 +1287,13 @@ public class RequestSystem
                                     ytvid = bot.youtube.searchYoutubeByID(youtubeID);
                                     if (ytvid == null)
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                        bot.client.SendMessage("Invalid youtube URL, " + sender);
                                         return;
                                     }
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
                                     return;
                                 }
                             }
@@ -1297,19 +1305,19 @@ public class RequestSystem
                                     ytvid = bot.youtube.searchYoutubeByID(youtubeID);
                                     if (ytvid == null)
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                        bot.client.SendMessage("Invalid youtube URL, " + sender);
                                         return;
                                     }
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
                                     return;
                                 }
                             }
                             else
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
+                                bot.client.SendMessage("Invalid Request, " + sender);
                                 return;
                             }
                         }
@@ -1319,13 +1327,13 @@ public class RequestSystem
                             input = input.Substring(0, input.LastIndexOf("(")).Trim();
                             if (ytvid != null)
                             {
-                                addVip(channel, ytvid.getSnippet().getTitle(), requester);
+                                addVip(channel, ytvid.Snippet.Title, requester);
                             }
                             else
                             {
                                 addVip(channel, input, requester);
                             }
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP Song '" + input
+                            bot.client.SendMessage("VIP Song '" + input
                                     + "' has been added to the song list, " + requester + "!");
                             bot.addUserRequestAmount(requester, true);
                             writeToCurrentSong(channel, false);
@@ -1334,15 +1342,14 @@ public class RequestSystem
                         {
                             if (ytvid != null)
                             {
-                                addVip(channel, ytvid.getSnippet().getTitle(), sender);
-                                bot.sendRawLine(
-                                        "PRIVMSG " + channel + " :" + "VIP Song '" + ytvid.getSnippet().getTitle()
+                                addVip(channel, ytvid.Snippet.Title, sender);
+                                bot.client.SendMessage("VIP Song '" + ytvid.Snippet.Title
                                                 + "' has been added to the song list, " + sender + "!");
                             }
                             else
                             {
                                 addVip(channel, input, sender);
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "VIP Song '" + input
+                                bot.client.SendMessage("VIP Song '" + input
                                         + "' has been added to the song list, " + sender + "!");
                             }
                             writeToCurrentSong(channel, false);
@@ -1351,7 +1358,7 @@ public class RequestSystem
                     catch (IOException e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1384,37 +1391,37 @@ public class RequestSystem
                                     ytvid = bot.youtube.searchYoutubeByID(youtubeID);
                                     if (ytvid == null)
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                        bot.client.SendMessage("Invalid youtube URL, " + sender);
                                         return;
                                     }
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
                                     return;
                                 }
                             }
                             else if (message.Contains("https://youtu.be/"))
                             {
-                                youtubeID = message.Substring(message.lastIndexOf("/") + 1);
+                                youtubeID = message.Substring(message.LastIndexOf("/") + 1);
                                 try
                                 {
                                     ytvid = bot.youtube.searchYoutubeByID(youtubeID);
                                     if (ytvid == null)
                                     {
-                                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                        bot.client.SendMessage("Invalid youtube URL, " + sender);
                                         return;
                                     }
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
                                     return;
                                 }
                             }
                             else
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
+                                bot.client.SendMessage("Invalid Request, " + sender);
                                 return;
                             }
                         }
@@ -1424,14 +1431,14 @@ public class RequestSystem
                             input = input.Substring(0, input.LastIndexOf("(")).Trim();
                             if (ytvid != null)
                             {
-                                addTop(channel, ytvid.getSnippet().getTitle(), requester);
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + ytvid.getSnippet().getTitle()
+                                addTop(channel, ytvid.Snippet.Title, requester);
+                                bot.client.SendMessage("Song '" + ytvid.Snippet.Title
                                         + "' has been added to the top of the song list, " + requester + "!");
                             }
                             else
                             {
                                 addTop(channel, input, requester);
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + input
+                                bot.client.SendMessage("Song '" + input
                                         + "' has been added to the top of the song list, " + requester + "!");
                             }
                             bot.addUserRequestAmount(requester, true);
@@ -1441,14 +1448,14 @@ public class RequestSystem
                         {
                             if (ytvid != null)
                             {
-                                addTop(channel, ytvid.getSnippet().getTitle(), sender);
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + ytvid.getSnippet().getTitle()
+                                addTop(channel, ytvid.Snippet.Title, sender);
+                                bot.client.SendMessage("Song '" + ytvid.Snippet.Title
                                         + "' has been added to the top of the song list, " + sender + "!");
                             }
                             else
                             {
                                 addTop(channel, input, sender);
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + input
+                                bot.client.SendMessage("Song '" + input
                                         + "' has been added to the top of the song list, " + sender + "!");
                             }
                             writeToCurrentSong(channel, false);
@@ -1457,7 +1464,7 @@ public class RequestSystem
                     catch (IOException e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1475,13 +1482,13 @@ public class RequestSystem
                 {
                     try
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + "The total number of songs in the queue is: "
+                        bot.client.SendMessage("The total number of songs in the queue is: "
                                 + getNumberOfSongs());
                     }
                     catch (IOException e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1501,7 +1508,7 @@ public class RequestSystem
                     {
                         if (Int32.Parse(getNumberOfSongs()) == 0)
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + "The song list is empty!");
+                            bot.client.SendMessage("The song list is empty!");
                         }
                         else if (numOfSongsToDisplay > Int32.Parse(getNumberOfSongs()))
                         {
@@ -1524,15 +1531,14 @@ public class RequestSystem
                         }
                         if (bot.spreadsheetId != null)
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :"
-                                    + "The full setlist can be found here: https://docs.google.com/spreadsheets/d/"
+                            bot.client.SendMessage("The full setlist can be found here: https://docs.google.com/spreadsheets/d/"
                                     + bot.spreadsheetId);
                         }
                     }
                     catch (IOException e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                 }
             }
@@ -1543,7 +1549,7 @@ public class RequestSystem
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "The song list is empty!");
+            bot.client.SendMessage("The song list is empty!");
         }
         else if (numOfSongsToDisplay > Int32.Parse(getNumberOfSongs()))
         {
@@ -1600,7 +1606,7 @@ public class RequestSystem
                     {
                         result = "To request a song, type: " + commList + " [artist - song]";
                     }
-                    bot.sendRawLine("PRIVMSG " + channel + " :" + result);
+                    bot.client.SendMessage(result);
                 }
                 else if (temp.StartsWith(requestComm.input[i]) && temp.Contains(requestComm.input[i] + " "))
                 {
@@ -1614,7 +1620,7 @@ public class RequestSystem
                         {
                             if (!ylrequests)
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
+                                bot.client.SendMessage("Invalid Request, " + sender);
                                 return;
                             }
                             if (message.Contains("https://youtu.be/"))
@@ -1630,19 +1636,19 @@ public class RequestSystem
                                 ytvid = bot.youtube.searchYoutubeByID(youtubeID);
                                 if (ytvid == null)
                                 {
-                                    bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
                                     return;
                                 }
                             }
-                            catch (Exception e)
+                            catch (Exception)
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid youtube URL, " + sender);
+                                bot.client.SendMessage("Invalid youtube URL, " + sender);
                                 return;
                             }
                         }
                         else
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + "Invalid Request, " + sender);
+                            bot.client.SendMessage("Invalid Request, " + sender);
                             return;
                         }
                     }
@@ -1652,11 +1658,11 @@ public class RequestSystem
                         {
                             if (ytvid != null)
                             {
-                                temp = ytvid.getSnippet().getTitle();
+                                temp = ytvid.Snippet.Title;
                             }
-                            if (temp.ToLower().contains(bannedKeywords[j].ToLower()))
+                            if (temp.ToLower().Contains(bannedKeywords[j].ToLower()))
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :" + "Song request contains a banned keyword '"
+                                bot.client.SendMessage("Song request contains a banned keyword '"
                                         + bannedKeywords[j] + "' and cannot be added, " + sender + "!");
                                 return;
                             }
@@ -1666,7 +1672,7 @@ public class RequestSystem
                     {
                         if (requestsTrigger)
                         {
-                            if (Utils.getFollowingText(message).length < 100)
+                            if (Utils.getFollowingText(message).Length < 100)
                             {
                                 try
                                 {
@@ -1692,20 +1698,20 @@ public class RequestSystem
                                                         String time;
                                                         if (ytvid != null)
                                                         {
-                                                            time = ytvid.getContentDetails().getDuration();
-                                                            temp = ytvid.getSnippet().getTitle();
+                                                            time = ytvid.ContentDetails.Duration;
+                                                            temp = ytvid.Snippet.Title;
                                                         }
                                                         else
                                                         {
                                                             Video v = bot.youtube.searchYoutubeByTitle(
                                                                     Utils.getFollowingText(message));
-                                                            time = v.getContentDetails().getDuration();
-                                                            temp = v.getSnippet().getTitle();
+                                                            time = v.ContentDetails.Duration;
+                                                            temp = v.Snippet.Title;
                                                         }
                                                         time = time.Replace("PT", "");
                                                         if (time.Contains("H"))
                                                         {
-                                                            bot.sendRawLine("PRIVMSG " + channel + " :" + temp
+                                                            bot.client.SendMessage(temp
                                                                     + " is longer than " + maxSongLengthInMinutes
                                                                     + " minutes, which is the limit for standard requests, "
                                                                     + sender);
@@ -1718,7 +1724,7 @@ public class RequestSystem
                                                         int songlengthmaxseconds = maxSongLengthInMinutes * 60;
                                                         if (songlengthmaxseconds < ((minutes * 60) + seconds))
                                                         {
-                                                            bot.sendRawLine("PRIVMSG " + channel + " :" + temp
+                                                            bot.client.SendMessage(temp
                                                                     + " is longer than " + maxSongLengthInMinutes
                                                                     + " minutes, which is the limit for standard requests, "
                                                                     + sender);
@@ -1727,16 +1733,15 @@ public class RequestSystem
                                                     }
                                                     catch (Exception e)
                                                     {
-                                                        bot.sendRawLine("PRIVMSG " + channel + " :"
-                                                                + "Failed to get video, please try again later.");
-                                                        System.out.println(e);
+                                                        bot.client.SendMessage("Failed to get video, please try again later.");
+                                                        Debug.WriteLine(e);
                                                         Utils.errorReport(e);
                                                         return;
                                                     }
                                                 }
                                                 if (ytvid != null)
                                                 {
-                                                    addSong(channel, ytvid.getSnippet().getTitle(), sender);
+                                                    addSong(channel, ytvid.Snippet.Title, sender);
                                                     return;
                                                 }
                                                 else
@@ -1747,34 +1752,31 @@ public class RequestSystem
                                                     }
                                                     else
                                                     {
-                                                        bot.sendRawLine("PRIVMSG " + channel + " :"
-                                                                + "Only youtube link requests are allowed, " + sender);
+                                                        bot.client.SendMessage("Only youtube link requests are allowed, " + sender);
                                                     }
                                                 }
                                             }
                                             catch (IOException e)
                                             {
                                                 Utils.errorReport(e);
-                                                e.ToString();
+                                                Debug.WriteLine(e.ToString());
                                             }
                                         }
                                         else
                                         {
-                                            bot.sendRawLine("PRIVMSG " + channel + " :"
-                                                    + "You must follow the stream to request a song, " + sender);
+                                            bot.client.SendMessage("You must follow the stream to request a song, " + sender);
                                         }
                                     }
                                     else
                                     {
                                         if (numOfSongsInQueuePerUser == 1)
                                         {
-                                            bot.sendRawLine("PRIVMSG " + channel + " :"
-                                                    + "You may only have 1 song in the queue at a time, " + sender
+                                            bot.client.SendMessage("You may only have 1 song in the queue at a time, " + sender
                                                     + "!");
                                         }
                                         else
                                         {
-                                            bot.sendRawLine("PRIVMSG " + channel + " :" + "You may only have "
+                                            bot.client.SendMessage("You may only have "
                                                     + numOfSongsInQueuePerUser + " songs in the queue at a time, "
                                                     + sender + "!");
                                         }
@@ -1783,23 +1785,22 @@ public class RequestSystem
                                 catch (IOException e1)
                                 {
                                     Utils.errorReport(e1);
-                                    e1.ToString();
+                                    Debug.WriteLine(e1.ToString());
                                 }
                             }
                             else
                             {
-                                bot.sendRawLine("PRIVMSG " + channel + " :"
-                                        + "Request input too long, please shorten request input, " + sender + "!");
+                                bot.client.SendMessage("Request input too long, please shorten request input, " + sender + "!");
                             }
                         }
                         else
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :" + "Requests are currently off!");
+                            bot.client.SendMessage("Requests are currently off!");
                         }
                     }
                     else
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + "Song limit of " + maxSonglistLength
+                        bot.client.SendMessage("Song limit of " + maxSonglistLength
                                 + " has been reached, please try again later.");
                     }
                 }
@@ -1823,11 +1824,11 @@ public class RequestSystem
                 {
                     if (subOnlyRequests.Contains("$user"))
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + subOnlyRequests.Replace("$user", sender));
+                        bot.client.SendMessage(subOnlyRequests.Replace("$user", sender));
                     }
                     else
                     {
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + subOnlyRequests);
+                        bot.client.SendMessage(subOnlyRequests);
                     }
                 }
             }
@@ -1843,7 +1844,8 @@ public class RequestSystem
         else
         {
             String line = "";
-            try {
+            try
+            {
                 StreamReader br = new StreamReader(Utils.songlistfile);
                 if ((line = br.ReadLine()) != null)
                 {
@@ -1860,32 +1862,33 @@ public class RequestSystem
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                e.ToString();
+                Debug.WriteLine(e.ToString());
             }
             return line;
         }
-	}
+    }
 
-	public void songlist(String channel, String text)
+    public void songlist(String channel, String text)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "The song list is empty!");
+            bot.client.SendMessage("The song list is empty!");
         }
         if (!displayOneLine)
         {
-            try {
+            try
+            {
                 StreamReader br = new StreamReader(Utils.songlistfile);
                 String line;
                 String temp = "";
                 int count = 1;
-                bot.sendRawLine("PRIVMSG " + channel + " :" + text);
+                bot.client.SendMessage(text);
                 while ((line = br.ReadLine()) != null)
                 {
                     if (count < numOfSongsToDisplay + 1)
                     {
                         temp = count + ". " + line + " ";
-                        bot.sendRawLine("PRIVMSG " + channel + " :" + temp);
+                        bot.client.SendMessage(temp);
                         count++;
                     }
                 }
@@ -1894,11 +1897,14 @@ public class RequestSystem
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                e.ToString();
+                Debug.WriteLine(e.ToString());
             }
-        } else {
+        }
+        else
+        {
             String temp2 = "";
-            try {
+            try
+            {
                 StreamReader br = new StreamReader(Utils.songlistfile);
                 String line;
                 String temp = "";
@@ -1912,13 +1918,13 @@ public class RequestSystem
                         count++;
                     }
                 }
-                bot.sendRawLine("PRIVMSG " + channel + " :" + text + " " + temp2);
+                bot.client.SendMessage(text + " " + temp2);
                 br.Close();
             }
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                e.ToString();
+                Debug.WriteLine(e.ToString());
             }
         }
     }
@@ -1937,9 +1943,10 @@ public class RequestSystem
 
                 appendToLastSongs(channel, lastSong);
             }
-            copyToTemp(channel);
+            copyFile(Utils.songlistfile, Utils.templistfile);
             doNotWriteToHistory = false;
-            try {
+            try
+            {
                 StreamReader br = new StreamReader(Utils.templistfile); // TODO
                 br.ReadLine();
                 String line;
@@ -1955,16 +1962,17 @@ public class RequestSystem
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                e.ToString();
+                Debug.WriteLine(e.ToString());
             }
             return true;
-        }   
+        }
     }
 
     public String getNextSong(String channel)
     {
         String line = null, song = null, requestedby = null;
-        try {
+        try
+        {
             StreamReader br = new StreamReader(Utils.songlistfile);
             if ((line = br.ReadLine()) != null)
             {
@@ -1982,7 +1990,7 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         if (song == null)
         {
@@ -1999,7 +2007,7 @@ public class RequestSystem
                         String toWhisper = requestedby.Substring(1, requestedby.Length - 1);
                         if (!bot.streamer.ToLower().Equals(toWhisper.ToLower()))
                         {
-                            bot.sendRawLine("PRIVMSG " + channel + " :/w " + toWhisper + " Your request '" + song
+                            bot.client.SendMessage("/w " + toWhisper + " Your request '" + song
                                     + "' is being played next in " + bot.streamer + "'s stream!");
                         }
                     }
@@ -2019,7 +2027,8 @@ public class RequestSystem
 
     public String getNumberOfSongs()
     {
-        try {
+        try
+        {
             StreamReader br = new StreamReader(Utils.songlistfile);
             int count = 0;
             while ((br.ReadLine()) != null)
@@ -2031,7 +2040,7 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return "0";
     }
@@ -2046,12 +2055,13 @@ public class RequestSystem
             output = new StreamWriter(Utils.songlistfile, true);
             output.Write(newSong + "\t(" + sender + ")\r");
             output.Close();
-            bot.sendRawLine("PRIVMSG " + channel + " :" + "Since there are no songs in the song list, song '" + newSong
+            bot.client.SendMessage("Since there are no songs in the song list, song '" + newSong
                     + "' has been added to the song list, " + sender + "!");
             writeToCurrentSong(channel, false);
             return false;
         }
-        try {
+        try
+        {
             StreamReader br = new StreamReader(Utils.songlistfile);
             if ((line = br.ReadLine()) != null)
             {
@@ -2069,10 +2079,11 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
-        copyToTemp(channel);
-        try {
+        copyFile(Utils.songlistfile, Utils.templistfile);
+        try
+        {
             StreamReader br = new StreamReader(Utils.templistfile); // TODO
             br.ReadLine();
             String line2;
@@ -2096,19 +2107,20 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         writeToCurrentSong(channel, false);
         return true;
     }
-    
+
     public Boolean checkIfUserAlreadyHasSong(String user)
     {
         if (user.Equals(bot.streamer))
         {
             return false;
         }
-        try {
+        try
+        {
             StreamReader br = new StreamReader(Utils.songlistfile);
             String line;
             int count = 0;
@@ -2128,7 +2140,7 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
         return false;
     }
@@ -2139,7 +2151,7 @@ public class RequestSystem
         output = new StreamWriter(Utils.songlistfile, true);
         output.Write(song + "\t(" + requestedby + ")\r");
         output.Close();
-        bot.sendRawLine("PRIVMSG " + channel + " :" + "Song '" + song + "' has been added to the song list, "
+        bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
                 + requestedby + "!");
         bot.addUserRequestAmount(requestedby, true);
         writeToCurrentSong(channel, false);
@@ -2147,8 +2159,9 @@ public class RequestSystem
 
     public void addTop(String channel, String song, String requestedby)
     {
-        copyToTemp(channel);
-        try {
+        copyFile(Utils.songlistfile, Utils.templistfile);
+        try
+        {
             StreamReader br = new StreamReader(Utils.templistfile); // TODO
             StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
             String line2;
@@ -2166,7 +2179,7 @@ public class RequestSystem
         catch (Exception e)
         {
             Utils.errorReport(e);
-            e.ToString();
+            Debug.WriteLine(e.ToString());
         }
     }
 
@@ -2181,9 +2194,10 @@ public class RequestSystem
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            try {
+            try
+            {
                 StreamReader br = new StreamReader(Utils.templistfile); // TODO
-                copyToTemp(channel);
+                copyFile(Utils.songlistfile, Utils.templistfile);
                 StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
                 String line2 = br2.ReadLine();
                 StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
@@ -2205,15 +2219,16 @@ public class RequestSystem
             catch (Exception ioe)
             {
                 Utils.errorReport(ioe);
-                ioe.ToString();
+                Debug.WriteLine(ioe.ToString());
             }
         }
         else
         {
-            try {
+            try
+            {
                 StreamReader br3 = new StreamReader(Utils.templistfile); // TODO
                 String line2, line4;
-                copyToTemp(channel);
+                copyFile(Utils.songlistfile, Utils.templistfile);
                 line4 = br3.ReadLine();
                 br3.Close();
                 if (line4.StartsWith("$$$\t"))
@@ -2324,7 +2339,7 @@ public class RequestSystem
             catch (Exception ioe)
             {
                 Utils.errorReport(ioe);
-                ioe.ToString();
+                Debug.WriteLine(ioe.ToString());
             }
         }
     }

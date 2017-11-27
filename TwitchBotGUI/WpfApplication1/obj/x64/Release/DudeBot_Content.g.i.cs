@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dllsasresource/libcef.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dllsasresource/zlib.portable.dll")]
 
 

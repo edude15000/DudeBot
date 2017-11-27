@@ -1,8 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using WMPLib;
 
-public class SoundEffect
+public class SoundEffect // TODO : TEST!
 {
     public int sfxTimer, SFXOverallCoolDown;
     public long SFXstartTime = 0;
@@ -13,28 +14,28 @@ public class SoundEffect
         for (int i = 0; i < comList.Count; i++)
         {
             String temp = message.ToLower();
-            if (temp.StartsWith(comList.get(i).input[0]))
+            if (temp.StartsWith(comList[i].input[0]))
             {
-                if (SFXstartTime == 0 || (System.currentTimeMillis() >= SFXstartTime + (SFXOverallCoolDown * 1000)))
+                if (SFXstartTime == 0 || (Environment.TickCount >= SFXstartTime + (SFXOverallCoolDown * 1000)))
                 {
-                    for (int j = 0; j < userCoolDowns.size(); j++)
+                    for (int j = 0; j < userCoolDowns.Count; j++)
                     {
-                        if (userCoolDowns.get(sender) != null)
+                        if (userCoolDowns[sender] != 0)
                         {
-                            if (System.currentTimeMillis() >= userCoolDowns.get(sender) + (sfxTimer * 1000))
+                            if (Environment.TickCount >= userCoolDowns[sender] + (sfxTimer * 1000))
                             {
                                 try
                                 {
-                                    FileInputStream fis = new FileInputStream(comList.get(i).output);
-                                    Player playMP3 = new Player(fis);
-                                    playMP3.play();
-                                    userCoolDowns.put(sender, System.currentTimeMillis());
-                                    SFXstartTime = System.currentTimeMillis();
+                                    WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
+                                    myplayer.URL = comList[i].output;
+                                    myplayer.controls.play();
+                                    userCoolDowns.Add(sender, Environment.TickCount);
+                                    SFXstartTime = Environment.TickCount;
                                 }
                                 catch (Exception e)
                                 {
                                     Utils.errorReport(e);
-                                    e.ToString();
+                                    Debug.WriteLine(e.ToString());
                                 }
                                 return;
                             }
@@ -46,16 +47,16 @@ public class SoundEffect
                     }
                     try
                     {
-                        FileInputStream fis = new FileInputStream(comList.get(i).output);
-                        Player playMP3 = new Player(fis);
-                        playMP3.play();
-                        userCoolDowns.put(sender, System.currentTimeMillis());
-                        SFXstartTime = System.currentTimeMillis();
+                        WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
+                        myplayer.URL = comList[i].output;
+                        myplayer.controls.play();
+                        userCoolDowns.Add(sender, Environment.TickCount);
+                        SFXstartTime = Environment.TickCount;
                     }
                     catch (Exception e)
                     {
                         Utils.errorReport(e);
-                        e.ToString();
+                        Debug.WriteLine(e.ToString());
                     }
                     return;
                 }

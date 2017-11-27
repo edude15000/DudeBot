@@ -104,6 +104,9 @@
     <Reference Include="Google.Apis.Sheets.v4, Version=1.30.0.1050, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.Sheets.v4.1.30.0.1050\lib\net45\Google.Apis.Sheets.v4.dll</HintPath>
     </Reference>
+    <Reference Include="Google.Apis.YouTube.v3, Version=1.30.0.1035, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.YouTube.v3.1.30.0.1035\lib\net45\Google.Apis.YouTube.v3.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -113,8 +116,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SuperSocket.ClientEngine, Version=0.8.0.13, Culture=neutral, PublicKeyToken=ee9af13f57f00acc, processorArchitecture=MSIL">
+      <HintPath>..\packages\SuperSocket.ClientEngine.Core.0.8.0.13\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -132,6 +137,12 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TwitchLib, Version=1.5.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TwitchLib.1.5.9\lib\net452\TwitchLib.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSocket4Net, Version=0.15.0.9, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocket4Net.0.15.0\lib\net45\WebSocket4Net.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -152,7 +163,7 @@
     <Compile Include="TextAdventure.cs" />
     <Compile Include="TwitchBot.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Youtube.cs" />
+    <Compile Include="YoutubeHandler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -164,7 +175,7 @@
     <Compile Include="BotUser.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Currency.cs" />
-    <Compile Include="Google.cs" />
+    <Compile Include="GoogleHandler.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -246,6 +257,30 @@
   <ItemGroup>
     <EmbeddedResource Include="DllsAsResource\log4net.dll" />
     <EmbeddedResource Include="DllsAsResource\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DllsAsResource\Google.Apis.Auth.dll" />
+    <EmbeddedResource Include="DllsAsResource\Google.Apis.Auth.PlatformServices.dll" />
+    <EmbeddedResource Include="DllsAsResource\Google.Apis.Core.dll" />
+    <EmbeddedResource Include="DllsAsResource\Google.Apis.dll" />
+    <EmbeddedResource Include="DllsAsResource\Google.Apis.PlatformServices.dll" />
+    <EmbeddedResource Include="DllsAsResource\Google.Apis.Sheets.v4.dll" />
+    <EmbeddedResource Include="DllsAsResource\Google.Apis.YouTube.v3.dll" />
+    <EmbeddedResource Include="DllsAsResource\SuperSocket.ClientEngine.dll" />
+    <EmbeddedResource Include="DllsAsResource\TwitchLib.dll" />
+    <EmbeddedResource Include="DllsAsResource\WebSocket4Net.dll" />
+    <EmbeddedResource Include="DllsAsResource\Zlib.Portable.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
