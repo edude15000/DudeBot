@@ -51,6 +51,19 @@ public class Utils
         }
     }
 
+    public static void copyFile(String f1, String f2)
+    {
+        try
+        {
+            File.Copy(f1, f2);
+        }
+        catch (IOException e)
+        {
+            Utils.errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+    }
+
     public static void errorReport(Exception e)
     {
         StreamWriter output;
@@ -335,7 +348,6 @@ public class Utils
     }
 
     public static Boolean checkIfUserIsFollowing(String channel, String user, String streamer, List<BotUser> users)
-
     {
         if (user.Equals(streamer) || user.Equals(Utils.botMaker))
         {

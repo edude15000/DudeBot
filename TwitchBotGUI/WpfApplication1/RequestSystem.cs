@@ -29,19 +29,6 @@ public class RequestSystem
         return 0;
     }
 
-    public void copyFile(String f1, String f2)
-    {
-        try
-        {
-            File.Copy(f1, f2);
-        }
-        catch (IOException e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
-    }
-
     public void giveSpot(String message, String channel, String sender)
     {
         foreach (BotUser u in bot.users)
@@ -112,7 +99,7 @@ public class RequestSystem
 
                         clear(channel, Utils.songlistfile);
 
-                        copyFile(Utils.templistfile, Utils.songlistfile); // TODO
+                        Utils.copyFile(Utils.templistfile, Utils.songlistfile); // TODO
 
                         clear(channel, Utils.templistfile); // TODO
                         if (previousSong.StartsWith("$$$\t") || previousSong.StartsWith("VIP\t"))
@@ -330,7 +317,7 @@ public class RequestSystem
             try
             {
                 StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
-                copyFile(Utils.songlistfile, Utils.templistfile); // TODO
+                Utils.copyFile(Utils.songlistfile, Utils.templistfile); // TODO
                 String line2 = br2.ReadLine();
                 StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
                 if (line2.StartsWith("VIP\t"))
@@ -363,7 +350,7 @@ public class RequestSystem
             try
             {
                 StreamReader br3 = new StreamReader(Utils.templistfile); // TODO
-                copyFile(Utils.songlistfile, Utils.templistfile);// TODO
+                Utils.copyFile(Utils.songlistfile, Utils.templistfile);// TODO
                 String line2, line3, line4;
                 line4 = br3.ReadLine();
                 br3.Close();
@@ -485,7 +472,7 @@ public class RequestSystem
                 StreamWriter.Close();
                 reader.Close();
                 clear(channel, Utils.songlistfile);
-                copyFile(Utils.templistfile, Utils.songlistfile);
+                Utils.copyFile(Utils.templistfile, Utils.songlistfile);
                 clear(channel, Utils.templistfile);
                 bot.client.SendMessage("Your next request '"
                         + songToDelete.Substring(0, songToDelete.LastIndexOf("\t")) + "' has been removed, " + sender
@@ -609,7 +596,7 @@ public class RequestSystem
                 StreamWriter.Close();
                 reader.Close();
                 clear(channel, Utils.songlistfile);
-                copyFile(Utils.templistfile, Utils.songlistfile);
+                Utils.copyFile(Utils.templistfile, Utils.songlistfile);
                 clear(channel, Utils.templistfile);
                 if (previousSong.StartsWith("VIP\t"))
                 {
@@ -781,7 +768,7 @@ public class RequestSystem
                 Utils.errorReport(e);
                 Debug.WriteLine(e.ToString());
             }
-        return "Next up: " + line;
+            return "Next up: " + line;
         }
     }
 
@@ -840,7 +827,7 @@ public class RequestSystem
                     line = secondReader.ReadLine();
                     secondReader.Close();
                 }
-                copyFile(Utils.songlistfile, Utils.templistfile);
+                Utils.copyFile(Utils.songlistfile, Utils.templistfile);
                 StreamReader br2 = new StreamReader(Utils.templistfile);
                 StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
                 if (writeVIP == true)
@@ -1156,7 +1143,7 @@ public class RequestSystem
         }
         else
         {
-            copyFile(Utils.songlistfile, Utils.templistfile);
+            Utils.copyFile(Utils.songlistfile, Utils.templistfile);
             StreamReader br = new StreamReader(Utils.templistfile);
             br.ReadLine();
             String line, song = "";
@@ -1192,7 +1179,7 @@ public class RequestSystem
             }
             else
             {
-                copyFile(Utils.templistfile, Utils.songlistfile);
+                Utils.copyFile(Utils.templistfile, Utils.songlistfile);
                 nextSongAuto(channel, true);
                 clear(channel, Utils.templistfile);
                 return;
@@ -1943,7 +1930,7 @@ public class RequestSystem
 
                 appendToLastSongs(channel, lastSong);
             }
-            copyFile(Utils.songlistfile, Utils.templistfile);
+            Utils.copyFile(Utils.songlistfile, Utils.templistfile);
             doNotWriteToHistory = false;
             try
             {
@@ -2081,7 +2068,7 @@ public class RequestSystem
             Utils.errorReport(e);
             Debug.WriteLine(e.ToString());
         }
-        copyFile(Utils.songlistfile, Utils.templistfile);
+        Utils.copyFile(Utils.songlistfile, Utils.templistfile);
         try
         {
             StreamReader br = new StreamReader(Utils.templistfile); // TODO
@@ -2159,7 +2146,7 @@ public class RequestSystem
 
     public void addTop(String channel, String song, String requestedby)
     {
-        copyFile(Utils.songlistfile, Utils.templistfile);
+        Utils.copyFile(Utils.songlistfile, Utils.templistfile);
         try
         {
             StreamReader br = new StreamReader(Utils.templistfile); // TODO
@@ -2197,7 +2184,7 @@ public class RequestSystem
             try
             {
                 StreamReader br = new StreamReader(Utils.templistfile); // TODO
-                copyFile(Utils.songlistfile, Utils.templistfile);
+                Utils.copyFile(Utils.songlistfile, Utils.templistfile);
                 StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
                 String line2 = br2.ReadLine();
                 StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
@@ -2228,7 +2215,7 @@ public class RequestSystem
             {
                 StreamReader br3 = new StreamReader(Utils.templistfile); // TODO
                 String line2, line4;
-                copyFile(Utils.songlistfile, Utils.templistfile);
+                Utils.copyFile(Utils.songlistfile, Utils.templistfile);
                 line4 = br3.ReadLine();
                 br3.Close();
                 if (line4.StartsWith("$$$\t"))

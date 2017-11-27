@@ -22,39 +22,10 @@ namespace WpfApplication1
     public partial class MainWindow
     {
         public static TwitchBot bot = new TwitchBot();
-        String configFile = @"bin\config.txt";
-        String versionFile = @"bin\version.txt";
-        String commandsFile = @"bin\commands.txt";
-        String timersFile = @"bin\timedcommands.txt";
-        String quotesFile = @"bin\quotes.txt";
-        String currencyFile = @"bin\currency.txt";
-        String othersFile = @"bin\others.txt";
-        string currentsongFile = @"bin\currentsong.txt";
-        string currentrequesterFile = @"bin\currentrequester.txt";
-        String tempFile = @"bin\temp.txt";
-        string songsFile = @"bin\song.txt";
-        string sfxFile = @"bin\sfx.txt";
-        string usersFile = @"bin\users.txt";
-        string eventsFile = @"bin\events.txt";
-        string imagesFile = @"bin\images.txt";
-        string ranksFile = @"bin\ranks.txt";
-        string purchasedranksFile = @"bin\purchasedranks.txt";
+        String dudebotdirectory = Path.GetTempPath() + "dudebotdirectory.txt";
+        String dudebotupdateinfo = Path.GetTempPath() + "dudebotupdateinfo.txt";
 
-        String backupcommandsfile = System.IO.Path.GetTempPath() + "backupdudebotcommands.txt";
-        String backuptimersfile = System.IO.Path.GetTempPath() + "backupdudebottimers.txt";
-        String backupbotfile = System.IO.Path.GetTempPath() + "backupdudebot.txt";
-        String backupquotesfile = System.IO.Path.GetTempPath() + "backupdudebotquotes.txt";
-        String backupothersfile = System.IO.Path.GetTempPath() + "backupothers.txt";
-        String backupsfxfile = System.IO.Path.GetTempPath() + "backupsfx.txt";
-        String backupusersfile = System.IO.Path.GetTempPath() + "backupusers.txt";
-        String backupguifile = System.IO.Path.GetTempPath() + "backupGUI.txt";
-        String dudebotdirectory = System.IO.Path.GetTempPath() + "dudebotdirectory.txt";
-        String dudebotupdateinfo = System.IO.Path.GetTempPath() + "dudebotupdateinfo.txt";
-        String backupeventsfile = System.IO.Path.GetTempPath() + "backupevents.txt";
-        String backupcurrencyfile = System.IO.Path.GetTempPath() + "backupcurrency.txt";
-        String backupimagesfile = System.IO.Path.GetTempPath() + "backupimages.txt";
-        string backupranksfile = System.IO.Path.GetTempPath() + "backupranks.txt";
-        string backuppurchasedranksfile = System.IO.Path.GetTempPath() + "backuppurchasedranks.txt";
+        // TODO : Backup JSON file!
 
         public int[] numberArray;
         public String[] typeArray;
@@ -115,7 +86,7 @@ namespace WpfApplication1
             }
         }
 
-        private void getUserList()
+        private void getUserList() // TODO : read from method instead of file!
         {
             if (proc == null)
             {
@@ -139,16 +110,6 @@ namespace WpfApplication1
             {
 
             }
-        }
-
-        public void copyFile()
-        {
-            string fileName = "dudebotupdater.exe";
-            string sourcePath = @"bin";
-            string targetPath = System.IO.Path.GetDirectoryName(System.IO.Path.GetTempPath() + @"\dudebot");
-            string sourceFile = System.IO.Path.Combine(sourcePath, fileName);
-            string destFile = System.IO.Path.Combine(targetPath, fileName);
-            System.IO.File.Copy(sourceFile, destFile, true);
         }
 
         public async void openChat(Object sender, RoutedEventArgs e)
@@ -266,7 +227,7 @@ namespace WpfApplication1
                 String location = System.Reflection.Assembly.GetExecutingAssembly().Location.ToString();
                 writer.Write(location.Substring(0, location.IndexOf(@"DudeBot\DudeBot.exe")));
                 writer.Close();
-                copyFile();
+                Utils.copyFile(Path.Combine(@"bin", "dudebotupdater.exe"), Path.Combine(Path.GetDirectoryName(Path.GetTempPath() + @"\dudebot"), "dudebotupdater.exe"));
 
             }
             catch (Exception)
@@ -594,45 +555,7 @@ namespace WpfApplication1
             {
                 try
                 {
-                    fileCopy(timersFile, backuptimersfile);
-                    fileCopy(commandsFile, backupcommandsfile);
-                    fileCopy(quotesFile, backupquotesfile);
-                    fileCopy(othersFile, backupothersfile);
-                    fileCopy(sfxFile, backupsfxfile);
-                    fileCopy(usersFile, backupusersfile);
-                    fileCopy(eventsFile, backupeventsfile);
-                    if (!File.Exists(currencyFile))
-                    {
-                        File.Create(currencyFile).Close();
-                    }
-                    if (!File.Exists(backupcurrencyfile))
-                    {
-                        File.Create(backupcurrencyfile).Close();
-                    }
-                    fileCopy(currencyFile, backupcurrencyfile);
-                    if (!File.Exists(imagesFile))
-                    {
-                        File.Create(imagesFile).Close();
-                    }
-                    if (!File.Exists(backupimagesfile))
-                    {
-                        File.Create(backupimagesfile).Close();
-                    }
-                    fileCopy(imagesFile, backupimagesfile);
-                    if (!File.Exists(purchasedranksFile))
-                    {
-                        File.Create(purchasedranksFile).Close();
-                    }
-                    if (!File.Exists(backuppurchasedranksfile))
-                    {
-                        File.Create(backuppurchasedranksfile).Close();
-                    }
-                    fileCopy(purchasedranksFile, backuppurchasedranksfile);
-                    readFromCommands();
-                    readFromQuotes();
-
-                    getUserList();
-
+                    getUserList(); // TODO : needed???
                 }
                 catch (Exception)
                 {
@@ -653,14 +576,6 @@ namespace WpfApplication1
         {
             readConfig();
             readTextFile();
-            readFromCommands();
-            readFromTimers();
-            readFromQuotes();
-            readFromSFX();
-            readFromEvents();
-            readFromImages();
-            readFromCurrency();
-            readFromRanks();
             refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
 
@@ -678,54 +593,10 @@ namespace WpfApplication1
                 try
                 {
                     getReady();
-                    fileCopy(timersFile, backuptimersfile);
-                    fileCopy(commandsFile, backupcommandsfile);
-                    fileCopy(quotesFile, backupquotesfile);
-                    fileCopy(othersFile, backupothersfile);
-                    fileCopy(sfxFile, backupsfxfile);
-                    fileCopy(usersFile, backupusersfile);
-                    fileCopy(eventsFile, backupeventsfile);
-                    if (!File.Exists(currencyFile))
-                    {
-                        File.Create(currencyFile).Close();
-                    }
-                    if (!File.Exists(backupcurrencyfile))
-                    {
-                        File.Create(backupcurrencyfile).Close();
-                    }
-                    fileCopy(currencyFile, backupcurrencyfile);
-                    if (!File.Exists(imagesFile))
-                    {
-                        File.Create(imagesFile).Close();
-                    }
-                    if (!File.Exists(backupimagesfile))
-                    {
-                        File.Create(backupimagesfile).Close();
-                    }
-                    fileCopy(imagesFile, backupimagesfile);
-                    if (!File.Exists(ranksFile))
-                    {
-                        File.Create(ranksFile).Close();
-                    }
-                    if (!File.Exists(backupranksfile))
-                    {
-                        File.Create(backupranksfile).Close();
-                    }
-                    fileCopy(ranksFile, backupranksfile);
-                    if (!File.Exists(purchasedranksFile))
-                    {
-                        File.Create(purchasedranksFile).Close();
-                    }
-                    if (!File.Exists(backuppurchasedranksfile))
-                    {
-                        File.Create(backuppurchasedranksfile).Close();
-                    }
-                    fileCopy(purchasedranksFile, backuppurchasedranksfile);
 
                     _listener = new LowLevelKeyboardListener();
                     _listener.OnKeyPressed += _listener_OnKeyPressed;
                     _listener.HookKeyboard();
-
 
                     if (!checkinfo())
                     {
@@ -759,7 +630,6 @@ namespace WpfApplication1
                 timer.Start();
 
                 openBot(null, null);
-
 
                 if (openImageWindowOnStart.IsChecked == true)
                 {
@@ -825,26 +695,7 @@ namespace WpfApplication1
 
         private int checkUpdate()
         {
-            var backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += (s, e) =>
-            {
-                Thread.Sleep(250);
-            };
-            if (new FileInfo(versionFile).Length == 0)
-            {
-                backgroundWorker.DoWork += (s, e) =>
-                {
-                    Thread.Sleep(250);
-                };
-                if (new FileInfo(versionFile).Length == 0)
-                {
-                    return 0;
-                }
-            }
-            System.IO.StreamReader reader = new System.IO.StreamReader(versionFile);
-            String version = reader.ReadLine();
-            reader.Close();
-
+            String version = Utils.version;
             using (MyWebClient client = new MyWebClient())
             {
                 try
@@ -902,461 +753,11 @@ namespace WpfApplication1
 
         private Boolean checkPrereqs()
         {
-            string line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(configFile);
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (line.Equals("channel=") || line.Equals("channel=#"))
-                    {
-                        reader.Close();
-                        try
-                        {
-                            System.IO.StreamReader reader2 = new System.IO.StreamReader(backupbotfile);
-                            while ((line = reader2.ReadLine()) != null)
-                            {
-                                if (!reader2.ReadLine().Equals("channel=") || !reader2.ReadLine().Equals("channel=#"))
-                                {
-                                    getBackupConfig();
-                                    fileCopy(backupcommandsfile, commandsFile);
-                                    fileCopy(backuptimersfile, timersFile);
-                                    fileCopy(backupquotesfile, quotesFile);
-                                    fileCopy(backupothersfile, othersFile);
-                                    fileCopy(backupsfxfile, sfxFile);
-                                    fileCopy(backupusersfile, usersFile);
-                                    fileCopy(backupeventsfile, eventsFile);
-                                    if (!File.Exists(currencyFile))
-                                    {
-                                        File.Create(currencyFile).Close();
-                                    }
-                                    if (!File.Exists(backupcurrencyfile))
-                                    {
-                                        File.Create(backupcurrencyfile).Close();
-                                    }
-                                    fileCopy(backupcurrencyfile, currencyFile);
-                                    if (!File.Exists(imagesFile))
-                                    {
-                                        File.Create(imagesFile).Close();
-                                    }
-                                    if (!File.Exists(backupimagesfile))
-                                    {
-                                        File.Create(backupimagesfile).Close();
-                                    }
-                                    fileCopy(backupimagesfile, imagesFile);
-                                    if (!File.Exists(ranksFile))
-                                    {
-                                        File.Create(ranksFile).Close();
-                                    }
-                                    if (!File.Exists(backupranksfile))
-                                    {
-                                        File.Create(backupranksfile).Close();
-                                    }
-                                    fileCopy(backupranksfile, ranksFile);
-                                    if (!File.Exists(purchasedranksFile))
-                                    {
-                                        File.Create(purchasedranksFile).Close();
-                                    }
-                                    if (!File.Exists(backuppurchasedranksfile))
-                                    {
-                                        File.Create(backuppurchasedranksfile).Close();
-                                    }
-                                    fileCopy(backuppurchasedranksfile, purchasedranksFile);
-                                    reader2.Close();
-                                    return true;
-                                }
-                            }
-                            reader2.Close();
-                        }
-                        catch (Exception)
-                        {
-                            return false;
-                        }
-                        break;
-                    }
-                }
-                reader.Close();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            // TODO : check streamer and oauth in json
             return false;
         }
 
-        private void getBackupConfig()
-        {
-            try
-            {
-                String line;
-                String input = "";
-                System.IO.StreamReader reader = new System.IO.StreamReader(backupbotfile);
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(tempFile);
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (line.Contains("channel=") || line.Contains("oauth=") || line.Contains("botName=") || line.Contains("regulars=") || line.Contains("favSongs=") || line.Contains("numOfSongsToDisplay=")
-                        || line.Contains("numOfSongsInQueuePerUser=") || line.Contains("maxSonglistLength=") || line.Contains("mustFollowToRequest=") || line.Contains("displayIfUserIsHere=")
-                        || line.Contains("displaySonglistOneLine=") || line.Contains("requestsOn=") || line.Contains("requestCommands=") || line.Contains("favSongCommand=") || line.Contains("requestsTrigger=")
-                        || line.Contains("requestCommands=") || line.Contains("songlistCommands=") || line.Contains("getTotalSongsCommands=") || line.Contains("getViewerCountCommands=")
-                        || line.Contains("addtopCommands=") || line.Contains("addvipCommands=") || line.Contains("editCommands=") || line.Contains("nextCommands=") || line.Contains("clearCommands=")
-                        || line.Contains("getCurrentCommands=") || line.Contains("getNextSongCommands=") || line.Contains("randomNextSong=") || line.Contains("editMySong=") || line.Contains("removeMySong=")
-                        || line.Contains("adddonatorCommands=") || line.Contains("bannedKeywords=") || line.Contains("mySongPosition=") || line.Contains("timer=") || line.Contains("whispersOn=")
-                        || line.Contains("quotesOn=") || line.Contains("minigameOn=") || line.Contains("googleSheet=") || line.Contains("sfxTimer=") || line.Contains("revloReward=") || line.Contains("amountResult=")
-                        || line.Contains("minigameTimer=") || line.Contains("startupMessage=") || line.Contains("minigameEndMessage=") || line.Contains("subOnlyRequests=")
-                        || line.Contains("directInputRequests=") || line.Contains("youtubeLinkRequests=") || line.Contains("maxSongLimitOn=") || line.Contains("maxSongDuration=") || line.Contains("adventureUserJoinTime=")
-                        || line.Contains("adventureCoolDownTime=") || line.Contains("adventureMinReward=") || line.Contains("adventureMaxReward=") || line.Contains("giveawaycommandname=")
-                        || line.Contains("currencyName=") || line.Contains("currencyPerMinute=") || line.Contains("maxGamble=") || line.Contains("currencyCoolDownMinutes=") || line.Contains("currencyToggle=")
-                        || line.Contains("currencyCommandName=") || line.Contains("vipSongCost") || line.Contains("vipSongToggle=") || line.Contains("gambleToggle=") || line.Contains("adventureToggle=")
-                        || line.Contains("endMessage=") || line.Contains("vipRedeemCoolDownMinutes=") || line.Contains("autoShoutoutOnHost=") || line.Contains("quotesModOnly=") || line.Contains("imageDisplayTimeSeconds=")
-                        || line.Contains("imageCoolDown=") || line.Contains("openImagesWindowOnStart=") || line.Contains("sfxOverallCoolDown=") || line.Contains("imagesOverallCoolDown=")
-                        || line.Contains("followersTextFile=") || line.Contains("subTextFile=") || line.Contains("followerMessage=") || line.Contains("subMessage") || line.Contains("rankupUnitCost=") || line.Contains("subCreditRedeemCost=")
-                        || line.Contains("creditsPerSub="))
-                    {
-                        writer.Write(line + "\r");
-                    }
-                }
-                reader.Close();
-                writer.Close();
-                System.IO.StreamReader reader2 = new System.IO.StreamReader(backupbotfile);
-                while ((line = reader2.ReadLine()) != null)
-                {
-                    input += line;
-                }
-                reader2.Close();
-
-                System.IO.StreamWriter writer2 = new System.IO.StreamWriter(tempFile, true);
-                if (!input.Contains("channel=#"))
-                {
-                    writer2.Write("channel=#\r");
-                }
-                if (!input.Contains("oauth="))
-                {
-                    writer2.Write("oauth=\r");
-                }
-                if (!input.Contains("oauth="))
-                {
-                    writer2.Write("oauth=\r");
-                }
-                if (!input.Contains("botName="))
-                {
-                    writer2.Write("botName=\r");
-                }
-                if (!input.Contains("regulars="))
-                {
-                    writer2.Write("regulars=\r");
-                }
-                if (!input.Contains("favSongs="))
-                {
-                    writer2.Write("favSongs=\r");
-                }
-                if (!input.Contains("numOfSongsToDisplay="))
-                {
-                    writer2.Write("numOfSongsToDisplay=8\r");
-                }
-                if (!input.Contains("numOfSongsInQueuePerUser="))
-                {
-                    writer2.Write("numOfSongsInQueuePerUser=1\r");
-                }
-                if (!input.Contains("maxSonglistLength="))
-                {
-                    writer2.Write("maxSonglistLength=100\r");
-                }
-                if (!input.Contains("mustFollowToRequest="))
-                {
-                    writer2.Write("mustFollowToRequest=true\r");
-                }
-                if (!input.Contains("displayIfUserIsHere="))
-                {
-                    writer2.Write("displayIfUserIsHere=true\r");
-                }
-                if (!input.Contains("displaySonglistOneLine="))
-                {
-                    writer2.Write("displaySonglistOneLine=true\r");
-                }
-                if (!input.Contains("requestsOn="))
-                {
-                    writer2.Write("requestsOn=true\r");
-                }
-                if (!input.Contains("favSongCommand="))
-                {
-                    writer2.Write("favSongCommand=0=!requestfav,!songfav,!playfav\r");
-                }
-                if (!input.Contains("requestsTrigger="))
-                {
-                    writer2.Write("requestsTrigger=2=!requests\r");
-                }
-                if (!input.Contains("requestCommands="))
-                {
-                    writer2.Write("requestCommands=0=!request,!song,!play\r");
-                }
-                if (!input.Contains("songlistCommands="))
-                {
-                    writer2.Write("songlistCommands=0=!songlist,!list,!playlist\r");
-                }
-                if (!input.Contains("getTotalSongsCommands="))
-                {
-                    writer2.Write("getTotalSongsCommands=0=!queue,!length,!total\r");
-                }
-                if (!input.Contains("getViewerCountCommands="))
-                {
-                    writer2.Write("getViewerCountCommands=0=!viewers\r");
-                }
-                if (!input.Contains("addtopCommands="))
-                {
-                    writer2.Write("addtopCommands=2=!addtop\r");
-                }
-                if (!input.Contains("addvipCommands="))
-                {
-                    writer2.Write("addvipCommands=2=!addvip\r");
-                }
-                if (!input.Contains("editCommands="))
-                {
-                    writer2.Write("editCommands=2=!edit,!change\r");
-                }
-                if (!input.Contains("nextCommands="))
-                {
-                    writer2.Write("nextCommands=2=!next,!skip\r");
-                }
-                if (!input.Contains("clearCommands="))
-                {
-                    writer2.Write("clearCommands=2=!clear\r");
-                }
-                if (!input.Contains("getCurrentCommands="))
-                {
-                    writer2.Write("getCurrentCommands=0=!current,!playing,!currentsong\r");
-                }
-                if (!input.Contains("getNextSongCommands="))
-                {
-                    writer2.Write("getNextSongCommands=0=!nextsong\r");
-                }
-                if (!input.Contains("randomNextSong="))
-                {
-                    writer2.Write("randomNextSong=2=!randomnext,!nextrandom,!randomsong!songrandom\r");
-                }
-                if (!input.Contains("editMySong="))
-                {
-                    writer2.Write("editMySong=0=!editsong\r");
-                }
-                if (!input.Contains("removeMySong="))
-                {
-                    writer2.Write("removeMySong=0=!removesong,!wrongsong\r");
-                }
-                if (!input.Contains("adddonatorCommands"))
-                {
-                    writer2.Write("adddonatorCommands=2=!adddonator\r");
-                }
-                if (!input.Contains("bannedKeywords"))
-                {
-                    writer2.Write("bannedKeywords=\r");
-                }
-                if (!input.Contains("mySongPosition"))
-                {
-                    writer2.Write("mySongPosition=0=!mysong,!position,!songposition\r");
-                }
-                if (!input.Contains("timer="))
-                {
-                    writer2.Write("timer=20\r");
-                }
-                if (!input.Contains("whispersOn="))
-                {
-                    writer2.Write("whispersOn=true\r");
-                }
-                if (!input.Contains("quotesOn="))
-                {
-                    writer2.Write("quotesOn=true\r");
-                }
-                if (!input.Contains("minigameOn="))
-                {
-                    writer2.Write("minigameOn=true\r");
-                }
-                if (!input.Contains("googleSheet="))
-                {
-                    writer2.Write("googleSheet=\r");
-                }
-                if (!input.Contains("sfxTimer="))
-                {
-                    writer2.Write("sfxTimer=60\r");
-                }
-                if (!input.Contains("revloReward="))
-                {
-                    writer2.Write("revloReward=75\r");
-                }
-                if (!input.Contains("amountResult="))
-                {
-                    writer2.Write("amountResult=false\r");
-                }
-                if (!input.Contains("minigameTimer="))
-                {
-                    writer2.Write("minigameTimer=60\r");
-                }
-                if (!input.Contains("startupMessage="))
-                {
-                    writer2.Write("startupMessage=is here, let's party.\r");
-                }
-                if (!input.Contains("minigameEndMessage="))
-                {
-                    writer2.Write("minigameEndMessage=Time has run out for the current game, guesses cannot be added now!\r");
-                }
-                if (!input.Contains("subOnlyRequests="))
-                {
-                    writer2.Write("subOnlyRequests=Only subs can request right now!\r");
-                }
-                if (!input.Contains("directInputRequests="))
-                {
-                    writer2.Write("directInputRequests=true\r");
-                }
-                if (!input.Contains("youtubeLinkRequests="))
-                {
-                    writer2.Write("youtubeLinkRequests=true\r");
-                }
-                if (!input.Contains("maxSongLimitOn="))
-                {
-                    writer2.Write("maxSongLimitOn=false\r");
-                }
-                if (!input.Contains("maxSongDuration="))
-                {
-                    writer2.Write("maxSongDuration=10\r");
-                }
-                if (!input.Contains("adventureUserJoinTime="))
-                {
-                    writer2.Write("adventureUserJoinTime=120\r");
-                }
-                if (!input.Contains("adventureCoolDownTime="))
-                {
-                    writer2.Write("adventureCoolDownTime=20\r");
-                }
-                if (!input.Contains("adventureMinReward="))
-                {
-                    writer2.Write("adventureMinReward=25\r");
-                }
-                if (!input.Contains("adventureMaxReward="))
-                {
-                    writer2.Write("adventureMaxReward=75\r");
-                }
-                if (!input.Contains("giveawaycommandname="))
-                {
-                    writer2.Write("giveawaycommandname=!raffle\r");
-                }
-                if (!input.Contains("currencyName="))
-                {
-                    writer2.Write("currencyName=points\r");
-                }
-                if (!input.Contains("currencyPerMinute="))
-                {
-                    writer2.Write("currencyPerMinute=2\r");
-                }
-                if (!input.Contains("maxGamble="))
-                {
-                    writer2.Write("maxGamble=10000\r");
-                }
-                if (!input.Contains("currencyCoolDownMinutes="))
-                {
-                    writer2.Write("currencyCoolDownMinutes=5\r");
-                }
-                if (!input.Contains("currencyToggle="))
-                {
-                    writer2.Write("currencyToggle=false\r");
-                }
-                if (!input.Contains("currencyCommandName="))
-                {
-                    writer2.Write("currencyCommandName=!points\r");
-                }
-                if (!input.Contains("vipSongCost="))
-                {
-                    writer2.Write("vipSongCost=500\r");
-                }
-                if (!input.Contains("vipSongToggle="))
-                {
-                    writer2.Write("vipSongToggle=true\r");
-                }
-                if (!input.Contains("gambleToggle="))
-                {
-                    writer2.Write("gambleToggle=true\r");
-                }
-                if (!input.Contains("adventureToggle="))
-                {
-                    writer2.Write("adventureToggle=true\r");
-                }
-                if (!input.Contains("endMessage="))
-                {
-                    writer2.Write("endMessage=BYE FAM\r");
-                }
-                if (!input.Contains("vipRedeemCoolDownMinutes="))
-                {
-                    writer2.Write("vipRedeemCoolDownMinutes=60\r");
-                }
-                if (!input.Contains("autoShoutoutOnHost="))
-                {
-                    writer2.Write("autoShoutoutOnHost=true\r");
-                }
-                if (!input.Contains("quotesModOnly="))
-                {
-                    writer2.Write("quotesModOnly=true\r");
-                }
-                if (!input.Contains("imageDisplayTimeSeconds="))
-                {
-                    writer2.Write("imageDisplayTimeSeconds=3\r");
-                }
-                if (!input.Contains("imageCoolDown="))
-                {
-                    writer2.Write("imageCoolDown=60\r");
-                }
-                if (!input.Contains("openImageWindowOnStart="))
-                {
-                    writer2.Write("openImageWindowOnStart=false\r");
-                }
-                if (!input.Contains("sfxOverallCoolDown="))
-                {
-                    writer2.Write("sfxOverallCoolDown=0\r");
-                }
-                if (!input.Contains("imagesOverallCoolDown="))
-                {
-                    writer2.Write("imagesOverallCoolDown=0\r");
-                }
-                if (!input.Contains("followersTextFile="))
-                {
-                    writer2.Write("followersTextFile=\r");
-                }
-                if (!input.Contains("subTextFile="))
-                {
-                    writer2.Write("subTextFile=\r");
-                }
-                if (!input.Contains("followerMessage="))
-                {
-                    writer2.Write("followerMessage=$user just followed the stream! Thank You!\r");
-                }
-                if (!input.Contains("subMessage="))
-                {
-                    writer2.Write("subMessage=$user just subscribed to the stream! Thank You!\r");
-                }
-                if (!input.Contains("rankupUnitCost="))
-                {
-                    writer2.Write("rankupUnitCost=0\r");
-                }
-                if (!input.Contains("subCreditRedeemCost="))
-                {
-                    writer2.Write("subCreditRedeemCost=1\r");
-                }
-                if (!input.Contains("creditsPerSub="))
-                {
-                    writer2.Write("creditsPerSub=1\r");
-                }
-                writer2.Close();
-                System.IO.StreamWriter writer3 = new System.IO.StreamWriter(configFile);
-                writer3.Write("");
-                writer3.Close();
-                fileCopy(tempFile, configFile);
-                System.IO.StreamWriter writer4 = new System.IO.StreamWriter(tempFile);
-                writer4.Write("");
-                writer4.Close();
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-        private void preset()
+        private void preset() // TODO : May need to update this??
         {
             refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             numberSongsSongListDisplays.Value = 8;
@@ -1447,39 +848,7 @@ namespace WpfApplication1
             creditsPerSub.Value = 1;
         }
 
-        public void fileCopy(String f1, String f2)
-        {
-            try
-            {
-                File.WriteAllText(f2, String.Empty);
-
-                using (FileStream stream = File.OpenRead(f1))
-                using (FileStream writeStream = File.OpenWrite(f2))
-                {
-                    BinaryReader reader = new BinaryReader(stream);
-                    BinaryWriter writer = new BinaryWriter(writeStream);
-
-                    // create a buffer to hold the bytes 
-                    byte[] buffer = new Byte[1024];
-                    int bytesRead;
-
-                    // while the read method returns bytes
-                    // keep writing them to the output stream
-                    while ((bytesRead =
-                            stream.Read(buffer, 0, 1024)) > 0)
-                    {
-                        writeStream.Write(buffer, 0, bytesRead);
-                    }
-                    reader.Close();
-                    writer.Close();
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        private void readConfig()
+        private void readConfig() // TODO : Json bind
         {
             string line;
             try
@@ -1964,547 +1333,6 @@ namespace WpfApplication1
             return str.Substring(str.LastIndexOf("=") + 1).Trim();
         }
 
-        private void writeToConfigAndReset(Object sender, RoutedEventArgs e)
-        {
-            writeToConfig(sender, e);
-
-        }
-
-        private async void writeToConfig(Object sender, RoutedEventArgs e)
-        {
-            string line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(configFile);
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(tempFile);
-
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (line.Contains("channel="))
-                    {
-                        if (streamerName.Text.StartsWith("#"))
-                        {
-                            streamerName.Text = streamerName.Text.Substring(1);
-                        }
-                        writer.Write("channel=#" + streamerName.Text.ToLower() + "\r");
-                    }
-                    else if (line.Contains("oauth="))
-                    {
-                        writer.Write("oauth=" + oauth.Text.ToLower() + "\r");
-                    }
-                    else if (line.Contains("googleSheet="))
-                    {
-                        writer.Write("googleSheet=" + googleSheetID.Text + "\r");
-                    }
-                    else if (line.Contains("botName="))
-                    {
-                        writer.Write("botName=" + botName.Text.ToLower() + "\r");
-                    }
-                    else if (line.Contains("regulars="))
-                    {
-                        writer.Write("regulars=" + regulars.Text.ToLower() + "\r");
-                    }
-                    else if (line.Contains("favSongs="))
-                    {
-                        writer.Write("favSongs=" + favSongList.Text.ToLower() + "\r");
-                    }
-                    else if (line.Contains("numOfSongsToDisplay="))
-                    {
-                        writer.Write("numOfSongsToDisplay=" + numberSongsSongListDisplays.Value + "\r");
-                    }
-                    else if (line.Contains("numOfSongsInQueuePerUser="))
-                    {
-                        writer.Write("numOfSongsInQueuePerUser=" + maxNumberSongsPerUser.Value + "\r");
-                    }
-                    else if (line.Contains("maxSonglistLength="))
-                    {
-                        writer.Write("maxSonglistLength=" + maxSongListLength.Value + "\r");
-                    }
-                    else if (line.Contains("mustFollowToRequest="))
-                    {
-                        if (followToRequestCheckbox.IsChecked == true)
-                        {
-                            writer.Write("mustFollowToRequest=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("mustFollowToRequest=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("displayIfUserIsHere="))
-                    {
-                        if (displayIfUserIsHereCheckbox.IsChecked == true)
-                        {
-                            writer.Write("displayIfUserIsHere=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("displayIfUserIsHere=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("displaySonglistOneLine="))
-                    {
-                        if (songlistOneLineCheckbox.IsChecked == true)
-                        {
-                            writer.Write("displaySonglistOneLine=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("displaySonglistOneLine=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("requestsOn="))
-                    {
-                        if (requestOnCheckbox.IsChecked == true)
-                        {
-                            writer.Write("requestsOn=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("requestsOn=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("requestCommands="))
-                    {
-                        writer.Write("requestCommands=" + requestLevel.SelectedIndex + "=" + requestCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("favSongCommand="))
-                    {
-                        writer.Write("favSongCommand=" + playFavLevel.SelectedIndex + "=" + playFavCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("requestsTrigger="))
-                    {
-                        writer.Write("requestsTrigger=" + triggerRequestsLevel.SelectedIndex + "=" + triggerRequestsCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("requestCommands="))
-                    {
-                        writer.Write("requestCommands=" + requestLevel.SelectedIndex + "=" + requestCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("songlistCommands="))
-                    {
-                        writer.Write("songlistCommands=" + songListLevel.SelectedIndex + "=" + songListCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("getTotalSongsCommands="))
-                    {
-                        writer.Write("getTotalSongsCommands=" + getTotalSongsLevel.SelectedIndex + "=" + getTotalSongsInListCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("getViewerCountCommands="))
-                    {
-                        writer.Write("getViewerCountCommands=" + getViewerCountLevel.SelectedIndex + "=" + getViewerCountCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("addtopCommands="))
-                    {
-                        writer.Write("addtopCommands=" + addTopLevel.SelectedIndex + "=" + addTopCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("addvipCommands="))
-                    {
-                        writer.Write("addvipCommands=" + addVipLevel.SelectedIndex + "=" + addVipCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("editCommands="))
-                    {
-                        writer.Write("editCommands=" + editLevel.SelectedIndex + "=" + editCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("nextCommands="))
-                    {
-                        writer.Write("nextCommands=" + nextLevel.SelectedIndex + "=" + nextCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("clearCommands="))
-                    {
-                        writer.Write("clearCommands=" + clearLevel.SelectedIndex + "=" + clearCommandNames.Text + "\r");
-                    }
-                    else if (line.Contains("getCurrentCommands="))
-                    {
-                        writer.Write("getCurrentCommands=" + displayCurrentLevel.SelectedIndex + "=" + displayCurrentCommandName.Text + "\r");
-                    }
-                    else if (line.Contains("getNextSongCommands="))
-                    {
-                        writer.Write("getNextSongCommands=" + displayNextLevel.SelectedIndex + "=" + displayNextSongCommandName.Text + "\r");
-                    }
-                    else if (line.Contains("randomNextSong="))
-                    {
-                        writer.Write("randomNextSong=" + randomNextSongLevel.SelectedIndex + "=" + randomNextSongCommandName.Text + "\r");
-                    }
-                    else if (line.Contains("editMySong="))
-                    {
-                        writer.Write("editMySong=" + editReqSongLevel.SelectedIndex + "=" + editReqSongCommandName.Text + "\r");
-                    }
-                    else if (line.Contains("removeMySong="))
-                    {
-                        writer.Write("removeMySong=" + removeReqSongLevel.SelectedIndex + "=" + removeReqSongCommand.Text + "\r");
-                    }
-                    else if (line.Contains("adddonatorCommands="))
-                    {
-                        writer.Write("adddonatorCommands=" + addDonationLevel.SelectedIndex + "=" + addDonationCommand.Text + "\r");
-                    }
-                    else if (line.Contains("bannedKeywords="))
-                    {
-                        writer.Write("bannedKeywords=" + bannedKeywords.Text + "\r");
-                    }
-                    else if (line.Contains("mySongPosition="))
-                    {
-                        writer.Write("mySongPosition=" + songPositionLevel.SelectedIndex + "=" + songPositionName.Text + "\r");
-                    }
-                    else if (line.Contains("timer="))
-                    {
-                        writer.Write("timer=" + refreshtimer.Value + "\r");
-                    }
-                    else if (line.Contains("whispersOn="))
-                    {
-                        if (whisperCheckbox.IsChecked == true)
-                        {
-                            writer.Write("whispersOn=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("whispersOn=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("quotesOn="))
-                    {
-                        if (quotesOn.IsChecked == true)
-                        {
-                            writer.Write("quotesOn=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("quotesOn=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("minigameOn="))
-                    {
-                        if (minigameToggle.IsChecked == true)
-                        {
-                            writer.Write("minigameOn=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("minigameOn=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("sfxTimer="))
-                    {
-                        writer.Write("sfxTimer=" + sfxCoolDownTextBox.Value + "\r");
-                    }
-                    else if (line.Contains("revloReward="))
-                    {
-                        writer.Write("revloReward=" + revloReward.Value + "\r");
-                    }
-                    else if (line.Contains("amountResult="))
-                    {
-                        if (amountResult.IsChecked == true)
-                        {
-                            writer.Write("amountResult=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("amountResult=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("minigameTimer="))
-                    {
-                        writer.Write("minigameTimer=" + minigametimer.Value + "\r");
-                    }
-                    else if (line.Contains("startupMessage="))
-                    {
-                        writer.Write("startupMessage=" + startupMessage.Text + "\r");
-                    }
-                    else if (line.Contains("minigameEndMessage="))
-                    {
-                        writer.Write("minigameEndMessage=" + minigameEndMessage.Text + "\r");
-                    }
-                    else if (line.Contains("subOnlyRequests="))
-                    {
-                        writer.Write("subOnlyRequests=" + subOnlyRequests.Text + "\r");
-                    }
-                    else if (line.Contains("directInputRequests="))
-                    {
-                        if (direquests.IsChecked == true)
-                        {
-                            writer.Write("directInputRequests=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("directInputRequests=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("youtubeLinkRequests="))
-                    {
-                        if (ylrequests.IsChecked == true)
-                        {
-                            writer.Write("youtubeLinkRequests=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("youtubeLinkRequests=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("maxSongLimitOn="))
-                    {
-                        if (songduration.IsChecked == true)
-                        {
-                            writer.Write("maxSongLimitOn=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("maxSongLimitOn=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("maxSongDuration="))
-                    {
-                        writer.Write("maxSongDuration=" + songdurationlimit.Value + "\r");
-                    }
-                    else if (line.Contains("adventureUserJoinTime="))
-                    {
-                        writer.Write("adventureUserJoinTime=" + adventurejointime.Value + "\r");
-                    }
-                    else if (line.Contains("adventureCoolDownTime="))
-                    {
-                        writer.Write("adventureCoolDownTime=" + adventurecooldowntime.Value + "\r");
-                    }
-                    else if (line.Contains("adventureMinReward="))
-                    {
-                        writer.Write("adventureMinReward=" + adventureminreward.Value + "\r");
-                    }
-                    else if (line.Contains("adventureMaxReward="))
-                    {
-                        writer.Write("adventureMaxReward=" + adventuremaxreward.Value + "\r");
-                    }
-                    else if (line.Contains("giveawaycommandname="))
-                    {
-                        writer.Write("giveawaycommandname=" + giveawaycommandname.Text + "\r");
-                    }
-                    else if (line.Contains("currencyName="))
-                    {
-                        writer.Write("currencyName=" + currencyName.Text + "\r");
-                    }
-                    else if (line.Contains("currencyPerMinute="))
-                    {
-                        writer.Write("currencyPerMinute=" + currencyPerMinute.Value + "\r");
-                    }
-                    else if (line.Contains("maxGamble="))
-                    {
-                        writer.Write("maxGamble=" + maxGamble.Value + "\r");
-                    }
-                    else if (line.Contains("currencyCoolDownMinutes="))
-                    {
-                        writer.Write("currencyCoolDownMinutes=" + gambleCoolDown.Value + "\r");
-                    }
-                    else if (line.Contains("currencyToggle="))
-                    {
-                        if (currencyToggle.IsChecked == true)
-                        {
-                            writer.Write("currencyToggle=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("currencyToggle=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("currencyCommandName="))
-                    {
-                        writer.Write("currencyCommandName=" + currencyCommand.Text + "\r");
-                    }
-                    else if (line.Contains("vipSongCost="))
-                    {
-                        writer.Write("vipSongCost=" + vipsongcost.Value + "\r");
-                    }
-                    else if (line.Contains("vipSongToggle="))
-                    {
-                        if (vipsongtoggle.IsChecked == true)
-                        {
-                            writer.Write("vipSongToggle=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("vipSongToggle=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("gambleToggle="))
-                    {
-                        if (gambleToggle.IsChecked == true)
-                        {
-                            writer.Write("gambleToggle=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("gambleToggle=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("adventureToggle="))
-                    {
-                        if (adventureToggle.IsChecked == true)
-                        {
-                            writer.Write("adventureToggle=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("adventureToggle=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("endMessage="))
-                    {
-                        writer.Write("endMessage=" + endMessage.Text + "\r");
-                    }
-                    else if (line.Contains("vipRedeemCoolDownMinutes="))
-                    {
-                        writer.Write("vipRedeemCoolDownMinutes=" + vipRedeemCoolDownMinutes.Value + "\r");
-                    }
-                    else if (line.Contains("autoShoutoutOnHost="))
-                    {
-                        if (autoShoutoutOnHost.IsChecked == true)
-                        {
-                            writer.Write("autoShoutoutOnHost=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("autoShoutoutOnHost=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("quotesModOnly="))
-                    {
-                        if (quotesModOnly.IsChecked == true)
-                        {
-                            writer.Write("quotesModOnly=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("quotesModOnly=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("imageDisplayTimeSeconds="))
-                    {
-                        writer.Write("imageDisplayTimeSeconds=" + imageDisplayTime.Value + "\r");
-                    }
-                    else if (line.Contains("imageCoolDown="))
-                    {
-                        writer.Write("imageCoolDown=" + imageCoolDown.Value + "\r");
-                    }
-                    else if (line.Contains("openImageWindowOnStart="))
-                    {
-                        if (openImageWindowOnStart.IsChecked == true)
-                        {
-                            writer.Write("openImageWindowOnStart=true" + "\r");
-                        }
-                        else
-                        {
-                            writer.Write("openImageWindowOnStart=false" + "\r");
-                        }
-                    }
-                    else if (line.Contains("sfxOverallCoolDown="))
-                    {
-                        writer.Write("sfxOverallCoolDown=" + sfxOverallCoolDown.Value + "\r");
-                    }
-                    else if (line.Contains("imagesOverallCoolDown="))
-                    {
-                        writer.Write("imagesOverallCoolDown=" + ImagesOverallCoolDown.Value + "\r");
-                    }
-                    else if (line.Contains("followersTextFile="))
-                    {
-                        writer.Write("followersTextFile=" + followersTextFile.Text + "\r");
-                    }
-                    else if (line.Contains("subTextFile="))
-                    {
-                        writer.Write("subTextFile=" + subTextFile.Text + "\r");
-                    }
-                    else if (line.Contains("followerMessage="))
-                    {
-                        writer.Write("followerMessage=" + followerMessage.Text + "\r");
-                    }
-                    else if (line.Contains("subMessage="))
-                    {
-                        writer.Write("subMessage=" + subMessage.Text + "\r");
-                    }
-                    else if (line.Contains("rankupUnitCost="))
-                    {
-                        writer.Write("rankupUnitCost=" + rankunitdropbox.SelectedIndex + "\r");
-                    }
-                    else if (line.Contains("subCreditRedeemCost="))
-                    {
-                        writer.Write("subCreditRedeemCost=" + subCreditRedeemCost.Value + "\r");
-                    }
-                    else if (line.Contains("creditsPerSub="))
-                    {
-                        writer.Write("creditsPerSub=" + creditsPerSub.Value + "\r");
-                    }
-                }
-                reader.Close();
-                writer.Close();
-
-                File.WriteAllText(configFile, String.Empty);
-
-                using (FileStream stream = File.OpenRead(tempFile))
-                using (FileStream writeStream = File.OpenWrite(configFile))
-                {
-                    BinaryReader reader2 = new BinaryReader(stream);
-                    BinaryWriter writer2 = new BinaryWriter(writeStream);
-
-                    // create a buffer to hold the bytes 
-                    byte[] buffer = new Byte[1024];
-                    int bytesRead;
-
-                    // while the read method returns bytes
-                    // keep writing them to the output stream
-                    while ((bytesRead =
-                            stream.Read(buffer, 0, 1024)) > 0)
-                    {
-                        writeStream.Write(buffer, 0, bytesRead);
-                    }
-                    reader2.Close();
-                    writer2.Close();
-                }
-                File.WriteAllText(tempFile, String.Empty);
-
-                fileCopy(configFile, backupbotfile);
-                fileCopy(commandsFile, backupcommandsfile);
-                fileCopy(timersFile, backuptimersfile);
-                fileCopy(quotesFile, backupquotesfile);
-                fileCopy(othersFile, backupothersfile);
-                fileCopy(sfxFile, backupsfxfile);
-                fileCopy(usersFile, backupusersfile);
-                fileCopy(eventsFile, backupeventsfile);
-                if (!File.Exists(currencyFile))
-                {
-                    File.Create(currencyFile).Close();
-                }
-                if (!File.Exists(backupcurrencyfile))
-                {
-                    File.Create(backupcurrencyfile).Close();
-                }
-                fileCopy(currencyFile, backupcurrencyfile);
-                if (!File.Exists(imagesFile))
-                {
-                    File.Create(imagesFile).Close();
-                }
-                if (!File.Exists(backupimagesfile))
-                {
-                    File.Create(backupimagesfile).Close();
-                }
-                fileCopy(imagesFile, backupimagesfile);
-                if (!File.Exists(ranksFile))
-                {
-                    File.Create(ranksFile).Close();
-                }
-                if (!File.Exists(backupranksfile))
-                {
-                    File.Create(backupranksfile).Close();
-                }
-                fileCopy(ranksFile, backupranksfile);
-            }
-            catch (Exception)
-            {
-            }
-            if (e.Source.ToString().Contains("Button"))
-            {
-                await this.ShowMessageAsync("", "Changes Applied!");
-            }
-            readTextFile();
-            if (writeAndReset)
-            {
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                Application.Current.Shutdown();
-            }
-        }
-
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
@@ -2522,16 +1350,15 @@ namespace WpfApplication1
             {
                 return "";
             }
-
         }
 
-        private void readTextFile()
+        private void readTextFile() // TODO : convert to json file!
         {
             try
             {
                 string line;
                 int counter = 0;
-                System.IO.StreamReader reader = new System.IO.StreamReader(songsFile);
+                System.IO.StreamReader reader = new System.IO.StreamReader(Utils.songlistfile);
                 while ((line = reader.ReadLine()) != null)
                 {
                     counter++;
@@ -2547,7 +1374,7 @@ namespace WpfApplication1
                     int counter2 = 0;
                     try
                     {
-                        System.IO.StreamReader file2 = new System.IO.StreamReader(songsFile);
+                        System.IO.StreamReader file2 = new System.IO.StreamReader(Utils.songlistfile);
                         while ((line2 = file2.ReadLine()) != null)
                         {
                             String[] parts = line2.Split('\t');
@@ -2597,10 +1424,10 @@ namespace WpfApplication1
 
         public void refresh_currency(Object sender, RoutedEventArgs e)
         {
-            readFromCurrency();
+            // TODO : read from currency???
         }
 
-        public async void clearlist(Object sender, RoutedEventArgs e)
+        public async void clearlist(Object sender, RoutedEventArgs e) // TODO : Json bind
         {
             this.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
@@ -2609,13 +1436,13 @@ namespace WpfApplication1
             {
                 try
                 {
-                    System.IO.StreamWriter writer = new System.IO.StreamWriter(songsFile);
+                    System.IO.StreamWriter writer = new System.IO.StreamWriter(Utils.songlistfile); // Refactor to json
                     writer.Write("");
                     writer.Close();
-                    System.IO.StreamWriter writer2 = new System.IO.StreamWriter(currentsongFile);
+                    System.IO.StreamWriter writer2 = new System.IO.StreamWriter(Utils.currentSongFile); // keep
                     writer2.Write("Song list is empty");
                     writer2.Close();
-                    System.IO.StreamWriter writer3 = new System.IO.StreamWriter(currentrequesterFile);
+                    System.IO.StreamWriter writer3 = new System.IO.StreamWriter(Utils.currentRequesterFile); // keep
                     writer3.Write("");
                     writer3.Close();
                     refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
@@ -2635,7 +1462,6 @@ namespace WpfApplication1
         {
             try
             {
-                readFromQuotes();
                 readTextFile();
                 if (!isEmpty)
                 {
@@ -2684,7 +1510,7 @@ namespace WpfApplication1
 
         }
 
-        public class SongInfo
+        public class SongInfo // TODO : Json bind
         {
             public TextBlock songInfo { get; set; }
             public TextBlock songReq { get; set; }
@@ -2700,7 +1526,7 @@ namespace WpfApplication1
             }
         }
 
-        public class Currency
+        public class Currency // TODO : Json bind
         {
             public TextBlock currencyUser { get; set; }
             public TextBlock currencyAmount { get; set; }
@@ -2716,7 +1542,7 @@ namespace WpfApplication1
             }
         }
 
-        public class Ranks
+        public class Ranks // TODO : Json bind
         {
             public TextBlock rankTitle { get; set; }
             public TextBlock rankCost { get; set; }
@@ -2728,7 +1554,7 @@ namespace WpfApplication1
             }
         }
 
-        public class Commands
+        public class Commands // TODO : Json bind
         {
             public TextBlock commandName { get; set; }
             public TextBlock commandResponse { get; set; }
@@ -2742,7 +1568,7 @@ namespace WpfApplication1
             }
         }
 
-        public class Timers
+        public class Timers // TODO : Json bind
         {
             public TextBlock timerName { get; set; }
             public TextBlock timerResponse { get; set; }
@@ -2756,7 +1582,7 @@ namespace WpfApplication1
             }
         }
 
-        public class Quotes
+        public class Quotes // TODO : Json bind
         {
             public TextBlock quoteInfo { get; set; }
 
@@ -2766,7 +1592,7 @@ namespace WpfApplication1
             }
         }
 
-        public class SFX
+        public class SFX // TODO : Json bind
         {
             public TextBlock sfxCommand { get; set; }
             public TextBlock sfxResponse { get; set; }
@@ -2778,7 +1604,7 @@ namespace WpfApplication1
             }
         }
 
-        public class Images
+        public class Images // TODO : Json bind
         {
             public TextBlock imageCommand { get; set; }
             public TextBlock imageResponse { get; set; }
@@ -2790,7 +1616,7 @@ namespace WpfApplication1
             }
         }
 
-        public class Events
+        public class Events // TODO : Json bind
         {
             public TextBlock eventUser { get; set; }
             public TextBlock eventMessage { get; set; }
@@ -2811,7 +1637,7 @@ namespace WpfApplication1
                 {
                     CurrencyArray[i] = currencySorted[i];
                 }
-                writeToCurrency();
+                // TODO : add to currency ???
             }
             catch (Exception)
             {
@@ -2827,7 +1653,7 @@ namespace WpfApplication1
                 {
                     CurrencyArray[i] = currencySorted[i];
                 }
-                writeToCurrency();
+                // TODO : add to currency ???
             }
             catch (Exception)
             {
@@ -2843,7 +1669,7 @@ namespace WpfApplication1
                 {
                     CurrencyArray[i] = currencySorted[i];
                 }
-                writeToCurrency();
+                // TODO : add to currency ???
             }
             catch (Exception)
             {
@@ -2859,7 +1685,7 @@ namespace WpfApplication1
                 {
                     CurrencyArray[i] = currencySorted[i];
                 }
-                writeToCurrency();
+                // TODO : add to currency ???
             }
             catch (Exception)
             {
@@ -2896,7 +1722,7 @@ namespace WpfApplication1
         {
             try
             {
-                System.IO.StreamReader br = new System.IO.StreamReader(songsFile);
+                System.IO.StreamReader br = new System.IO.StreamReader(Utils.songlistfile); // TODO : Json bind
                 String check = br.ReadLine();
                 br.Close();
                 if (check.Contains(song + "\t" + requester))
@@ -2914,7 +1740,7 @@ namespace WpfApplication1
                 int upperlevel = 0;
                 string writeToUpper = "";
                 string writeToCurrent = "";
-                System.IO.StreamReader reader = new System.IO.StreamReader(songsFile);
+                System.IO.StreamReader reader = new System.IO.StreamReader(Utils.songlistfile); // TODO : Json bind
                 while ((line = reader.ReadLine()) != null)
                 {
                     counter++;
@@ -2938,7 +1764,7 @@ namespace WpfApplication1
                     }
                 }
                 reader.Close();
-                System.IO.StreamReader reader2 = new System.IO.StreamReader(songsFile);
+                System.IO.StreamReader reader2 = new System.IO.StreamReader(Utils.songlistfile); // TODO : Json bind
                 for (int i = 1; i < counter; i++)
                 {
                     line = reader2.ReadLine();
@@ -2969,8 +1795,8 @@ namespace WpfApplication1
                     writeToUpper = currentsong.Substring(0, 4);
                     currentSongEdit1 = currentsong.Substring(4);
                 }
-                System.IO.StreamReader reader3 = new System.IO.StreamReader(songsFile);
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(tempFile);
+                System.IO.StreamReader reader3 = new System.IO.StreamReader(Utils.songlistfile); // TODO : Json bind
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(Utils.templistfile); // TODO : Json bind
                 while ((line = reader3.ReadLine()) != null)
                 {
                     if (line.Equals(uppersong))
@@ -3023,11 +1849,11 @@ namespace WpfApplication1
                 }
                 reader3.Close();
                 writer.Close();
-                System.IO.StreamWriter writer2 = new System.IO.StreamWriter(songsFile);
+                System.IO.StreamWriter writer2 = new System.IO.StreamWriter(Utils.songlistfile); // TODO : Json bind
                 writer2.Write("");
                 writer2.Close();
-                fileCopy(tempFile, songsFile);
-                System.IO.StreamWriter writer3 = new System.IO.StreamWriter(tempFile);
+                Utils.copyFile(Utils.templistfile, Utils.songlistfile); // TODO : Json bind
+                System.IO.StreamWriter writer3 = new System.IO.StreamWriter(Utils.templistfile); // TODO : Json bind
                 writer3.Write("");
                 writer3.Close();
                 refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
@@ -3071,8 +1897,8 @@ namespace WpfApplication1
                 }
                 song = song.Trim();
                 String line;
-                System.IO.StreamReader reader = new System.IO.StreamReader(songsFile);
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(tempFile);
+                System.IO.StreamReader reader = new System.IO.StreamReader(Utils.songlistfile);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(Utils.templistfile);
                 while ((line = reader.ReadLine()) != null)
                 {
                     if (!(line.Contains(song + "\t" + requester)))
@@ -3091,11 +1917,11 @@ namespace WpfApplication1
                 reader.Close();
                 writer.Close();
 
-                System.IO.StreamWriter writer2 = new System.IO.StreamWriter(songsFile);
+                System.IO.StreamWriter writer2 = new System.IO.StreamWriter(Utils.songlistfile);
                 writer2.Write("");
                 writer2.Close();
-                fileCopy(tempFile, songsFile);
-                System.IO.StreamWriter writer3 = new System.IO.StreamWriter(tempFile);
+                Utils.copyFile(Utils.templistfile, Utils.songlistfile);
+                System.IO.StreamWriter writer3 = new System.IO.StreamWriter(Utils.templistfile);
                 writer3.Write("");
                 writer3.Close();
                 refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
@@ -3121,13 +1947,6 @@ namespace WpfApplication1
             }
             try
             {
-                fileCopy(othersFile, backupothersfile);
-            }
-            catch (Exception)
-            {
-            }
-            try
-            {
                 imageWindow.Kill();
             }
             catch (Exception)
@@ -3135,355 +1954,7 @@ namespace WpfApplication1
             }
             killBot(null, null);
         }
-
-        public void readFromCurrency()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(currencyFile);
-                CurrencyArray.Clear();
-                int count = 0;
-                String user = "", amount = "", time = "", subCredits = "";
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String[] temp = line.Split('\t');
-                    user = temp[0];
-                    amount = temp[1];
-                    if (temp[2] != null)
-                    {
-                        time = temp[2];
-                    }
-                    else
-                    {
-                        time = "0";
-                    }
-                    if (temp.Length > 3)
-                    {
-                        subCredits = temp[3];
-                    }
-                    else
-                    {
-                        subCredits = "0";
-                    }
-                    TextBlock tb = new TextBlock();
-                    tb.Text = user;
-                    tb.Uid = count.ToString();
-                    TextBlock tb2 = new TextBlock();
-                    tb2.Text = amount;
-                    tb2.Uid = count.ToString();
-                    TextBlock tb3 = new TextBlock();
-                    tb3.Text = time;
-                    tb3.Uid = count.ToString();
-                    TextBlock tb4 = new TextBlock();
-                    tb4.Text = subCredits;
-                    tb4.Uid = count.ToString();
-                    currencyuser.Insert(count, user);
-                    currencyamount.Insert(count, amount);
-                    currencytime.Insert(count, time);
-                    currencysubcredits.Insert(count, subCredits);
-
-                    CurrencyArray.Add(new Currency(tb, tb2, tb3, tb4));
-                    count++;
-                }
-                currencydatagrid.ItemsSource = CurrencyArray;
-                reader.Close();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.StackTrace);
-            }
-        }
-
-        public void readFromRanks()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(ranksFile);
-                RankArray.Clear();
-                int count = 0;
-                String title = "", cost = "";
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String[] temp = line.Split('\t');
-                    title = temp[0];
-                    cost = temp[1];
-                    TextBlock tb = new TextBlock();
-                    tb.Text = title;
-                    tb.Uid = count.ToString();
-                    TextBlock tb2 = new TextBlock();
-                    tb2.Text = cost;
-                    tb2.Uid = count.ToString();
-                    ranktitle.Insert(count, title);
-                    rankcost.Insert(count, cost);
-                    RankArray.Add(new Ranks(tb, tb2));
-                    count++;
-                }
-                rankgrid.ItemsSource = RankArray;
-                reader.Close();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.StackTrace);
-            }
-        }
-
-        public void readFromCommands()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(commandsFile);
-                commandArray.Clear();
-                responses = new String[1000];
-                commands = new String[1000];
-                commandLevels = new String[1000];
-                int count = 0;
-                String response = "", level = "0";
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String commandName = line.Substring(0, line.IndexOf("\t"));
-                    if (line.EndsWith("\t0") || line.EndsWith("\t1") || line.EndsWith("\t2") || line.EndsWith("\t3"))
-                    {
-                        String[] temp = line.Split('\t');
-                        response = temp[1];
-                        level = temp[2];
-                    }
-                    else
-                    {
-                        response = line.Substring(line.IndexOf("\t") + 1);
-                    }
-                    TextBlock tb = new TextBlock();
-                    tb.Text = commandName;
-                    tb.Uid = count.ToString();
-                    tb.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown);
-                    TextBlock tb2 = new TextBlock();
-                    tb2.Text = response;
-                    tb2.Uid = count.ToString();
-                    TextBlock tb3 = new TextBlock();
-                    if (level.Equals("0"))
-                    {
-                        tb3.Text = "Everyone";
-                    }
-                    else if (level.Equals("1"))
-                    {
-                        tb3.Text = "Subs, Mods, Streamer";
-                    }
-                    else if (level.Equals("2"))
-                    {
-                        tb3.Text = "Mods, Streamer";
-                    }
-                    else if (level.Equals("3"))
-                    {
-                        tb3.Text = "Streamer";
-                    }
-                    tb3.Uid = count.ToString();
-                    responses[count] = response;
-                    commands[count] = commandName;
-                    commandLevels[count] = level;
-                    tb2.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown);
-                    commandArray.Add(new Commands(tb, tb2, tb3));
-                    count++;
-                }
-                commanddatagrid.ItemsSource = commandArray;
-                reader.Close();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void readFromTimers()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(timersFile);
-                timerArray.Clear();
-                Timedresponses = new String[1000];
-                Timedcommands = new String[1000];
-                Timedtoggle = new String[1000];
-                int count = 0;
-                String response = "", toggle = "1";
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String commandName = line.Substring(0, line.IndexOf("\t"));
-                    if (line.EndsWith("\t0") || line.EndsWith("\t1") || line.EndsWith("\t2") || line.EndsWith("\t3"))
-                    {
-                        String[] temp = line.Split('\t');
-                        response = temp[1];
-                        toggle = temp[2];
-                    }
-                    else
-                    {
-                        response = line.Substring(line.IndexOf("\t") + 1);
-                    }
-                    TextBlock tb = new TextBlock();
-                    tb.Text = commandName;
-                    tb.Uid = count.ToString();
-                    // tb.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown2);
-                    TextBlock tb2 = new TextBlock();
-                    tb2.Text = response;
-                    tb2.Uid = count.ToString();
-                    TextBlock tb3 = new TextBlock();
-                    tb3.Uid = count.ToString();
-                    if (toggle.Equals("1"))
-                    {
-                        tb3.Text = "ON";
-                    }
-                    else
-                    {
-                        tb3.Text = "OFF";
-                    }
-                    Timedresponses[count] = response;
-                    Timedcommands[count] = commandName;
-                    Timedtoggle[count] = toggle;
-                    // tb2.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown2);
-                    timerArray.Add(new Timers(tb, tb2, tb3));
-                    count++;
-                }
-                timerdatagrid.ItemsSource = timerArray;
-                reader.Close();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void readFromSFX()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(sfxFile);
-                SFXArray.Clear();
-                SFXcommands = new String[1000];
-                SFXresponses = new String[1000];
-                int count = 0;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String commandName = line.Substring(0, line.IndexOf("\t"));
-                    String response = line.Substring(line.IndexOf("\t") + 1);
-                    TextBlock tb = new TextBlock();
-                    tb.Text = commandName;
-                    tb.Uid = count.ToString();
-                    tb.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown4);
-                    TextBlock tb2 = new TextBlock();
-                    tb2.Text = response;
-                    tb2.Uid = count.ToString();
-                    SFXresponses[count] = response;
-                    SFXcommands[count] = commandName;
-                    tb2.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown4);
-                    SFXArray.Add(new SFX(tb, tb2));
-                    count++;
-                }
-                SFXdatagrid.ItemsSource = SFXArray;
-                reader.Close();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void readFromImages()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(imagesFile);
-                ImagesArray.Clear();
-                imagecommands = new String[1000];
-                imageresponses = new String[1000];
-                int count = 0;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String commandName = line.Substring(0, line.IndexOf("\t"));
-                    String response = line.Substring(line.IndexOf("\t") + 1);
-                    TextBlock tb = new TextBlock();
-                    tb.Text = commandName;
-                    tb.Uid = count.ToString();
-                    tb.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown8);
-                    TextBlock tb2 = new TextBlock();
-                    tb2.Text = response;
-                    tb2.Uid = count.ToString();
-                    imagecommands[count] = response;
-                    imageresponses[count] = commandName;
-                    tb2.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown8);
-                    ImagesArray.Add(new Images(tb, tb2));
-                    count++;
-                }
-                imagedatagrid.ItemsSource = ImagesArray;
-                reader.Close();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void readFromEvents()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(eventsFile);
-                EventsArray.Clear();
-                eventusers = new String[1000];
-                eventmessages = new String[1000];
-                int count = 0;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String commandName = line.Substring(0, line.IndexOf("\t"));
-                    String response = line.Substring(line.IndexOf("\t") + 1);
-                    TextBlock tb = new TextBlock();
-                    tb.Text = commandName;
-                    tb.Uid = count.ToString();
-                    tb.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown7);
-                    TextBlock tb2 = new TextBlock();
-                    tb2.Text = response;
-                    tb2.Uid = count.ToString();
-                    eventmessages[count] = response;
-                    eventusers[count] = commandName;
-                    tb2.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown7);
-                    EventsArray.Add(new Events(tb, tb2));
-                    count++;
-                }
-                eventsdatagrid.ItemsSource = EventsArray;
-                reader.Close();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void readFromQuotes()
-        {
-            String line;
-            try
-            {
-                System.IO.StreamReader reader = new System.IO.StreamReader(quotesFile);
-                QuotesArray.Clear();
-                quotes.Clear();
-                int count = 0;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    String quoteline = line;
-                    TextBlock tb = new TextBlock();
-                    tb.Text = quoteline;
-                    tb.Uid = count.ToString();
-                    quotes.Add(quoteline);
-                    tb.MouseLeftButtonDown += new MouseButtonEventHandler(tb_MouseLeftButtonDown3);
-                    QuotesArray.Add(new Quotes(tb));
-                    count++;
-                }
-                quotesdatagrid.ItemsSource = QuotesArray;
-                reader.Close();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
+        
         private void tb_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var line = sender as TextBlock;
@@ -3698,582 +2169,10 @@ namespace WpfApplication1
                 editResponseImage.Text = filename;
             }
         }
-
-
-        public void writeToSFX()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(sfxFile);
-                for (int i = 0; i < SFXArray.Count; i++)
-                {
-                    var item = SFXArray[i].sfxCommand as TextBlock;
-                    var item2 = SFXArray[i].sfxResponse as TextBlock;
-                    writer.Write(item.Text + "\t" + item2.Text + "\r");
-                }
-                writer.Close();
-                readFromSFX();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-
-        public void writeToImages()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(imagesFile);
-                for (int i = 0; i < ImagesArray.Count; i++)
-                {
-                    var item = ImagesArray[i].imageCommand as TextBlock;
-                    var item2 = ImagesArray[i].imageResponse as TextBlock;
-                    writer.Write(item.Text + "\t" + item2.Text + "\r");
-                }
-                writer.Close();
-                readFromImages();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void writeToEvents()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(eventsFile);
-                for (int i = 0; i < EventsArray.Count; i++)
-                {
-                    var item = EventsArray[i].eventUser as TextBlock;
-                    var item2 = EventsArray[i].eventMessage as TextBlock;
-                    writer.Write(item.Text + "\t" + item2.Text + "\r");
-                }
-                writer.Close();
-                readFromEvents();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void writeToCommands()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(commandsFile);
-                for (int i = 0; i < commandArray.Count; i++)
-                {
-                    var item = commandArray[i].commandName as TextBlock;
-                    var item2 = commandArray[i].commandResponse as TextBlock;
-                    var item3 = commandArray[i].commandLevel as TextBlock;
-                    String level = "0";
-                    if (item3.Text.Equals("Everyone"))
-                    {
-                        level = "0";
-                    }
-                    else if (item3.Text.Equals("Subs, Mods, Streamer"))
-                    {
-                        level = "1";
-                    }
-                    else if (item3.Text.Equals("Mods, Streamer"))
-                    {
-                        level = "2";
-                    }
-                    else if (item3.Text.Equals("Streamer"))
-                    {
-                        level = "3";
-                    }
-                    writer.Write(item.Text + "\t" + item2.Text + "\t" + level + "\r");
-                }
-                writer.Close();
-                readFromCommands();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void writeToCurrency()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(currencyFile);
-                for (int i = 0; i < CurrencyArray.Count; i++)
-                {
-                    var item = CurrencyArray[i].currencyUser as TextBlock;
-                    var item2 = CurrencyArray[i].currencyAmount as TextBlock;
-                    var item3 = CurrencyArray[i].currencyTime as TextBlock;
-                    var item4 = CurrencyArray[i].currencySubCredits as TextBlock;
-                    writer.Write(item.Text + "\t" + item2.Text + "\t" + item3.Text + "\t" + item4.Text + "\r");
-                }
-                writer.Close();
-                readFromCurrency();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void writeToRanks()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(ranksFile);
-                for (int i = 0; i < RankArray.Count; i++)
-                {
-                    var item = RankArray[i].rankTitle as TextBlock;
-                    var item2 = RankArray[i].rankCost as TextBlock;
-                    writer.Write(item.Text + "\t" + item2.Text + "\r");
-                }
-                writer.Close();
-                readFromRanks();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void writeToQuotes()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(quotesFile);
-                for (int i = 0; i < QuotesArray.Count; i++)
-                {
-                    var item = QuotesArray[i].quoteInfo as TextBlock;
-                    writer.Write(item.Text + "\r");
-                }
-                writer.Close();
-                readFromQuotes();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public void writeToTimers()
-        {
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(timersFile);
-                for (int i = 0; i < timerArray.Count; i++)
-                {
-                    var item = timerArray[i].timerName as TextBlock;
-                    var item2 = timerArray[i].timerResponse as TextBlock;
-                    var item3 = timerArray[i].timerToggle as TextBlock;
-                    String toggle = "0";
-                    if (item3.Text.Equals("ON"))
-                    {
-                        toggle = "1";
-                    }
-                    writer.Write(item.Text + "\t" + item2.Text + "\t" + toggle + "\r");
-                }
-                writer.Close();
-                readFromTimers();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        public async void removeSFX(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommandSFX.Text)))
-            {
-                for (int i = 0; i < SFXArray.Count; i++)
-                {
-                    var item = SFXArray[i].sfxCommand as TextBlock;
-                    var item2 = SFXArray[i].sfxResponse as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommandSFX.Text)))
-                    {
-                        SFXArray.Remove(SFXArray[i]);
-                        break;
-                    }
-                }
-                writeToSFX();
-                editCommandSFX.Text = "";
-                editResponseSFX.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit a SFX, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void removeImage(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommandImage.Text)))
-            {
-                for (int i = 0; i < ImagesArray.Count; i++)
-                {
-                    var item = ImagesArray[i].imageCommand as TextBlock;
-                    var item2 = ImagesArray[i].imageResponse as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommandImage.Text)))
-                    {
-                        ImagesArray.Remove(ImagesArray[i]);
-                        break;
-                    }
-                }
-                writeToImages();
-                editCommandImage.Text = "";
-                editResponseImage.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit an image, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void removeevent(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(editEventUser.Text))
-            {
-                for (int i = 0; i < EventsArray.Count; i++)
-                {
-                    var item = EventsArray[i].eventUser as TextBlock;
-                    var item2 = EventsArray[i].eventMessage as TextBlock;
-                    if (item.Text.StartsWith(editEventUser.Text))
-                    {
-                        EventsArray.Remove(EventsArray[i]);
-                        break;
-                    }
-                }
-                writeToEvents();
-                editEventUser.Text = "";
-                editEventMessage.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit an event, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void removecommand(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommand.Text)))
-            {
-                for (int i = 0; i < commandArray.Count; i++)
-                {
-                    var item = commandArray[i].commandName as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommand.Text)))
-                    {
-                        commandArray.Remove(commandArray[i]);
-                        break;
-                    }
-                }
-                writeToCommands();
-                editCommand.Text = "";
-                editResponse.Text = "";
-                editCommandLevel.SelectedIndex = 0;
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit a command, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void removecurrency(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCurrencyUserName.Text)))
-            {
-                for (int i = 0; i < CurrencyArray.Count; i++)
-                {
-                    var item = CurrencyArray[i].currencyUser as TextBlock;
-                    if (item.Text.StartsWith(editCurrencyUserName.Text))
-                    {
-                        CurrencyArray.Remove(CurrencyArray[i]);
-                        break;
-                    }
-                }
-                writeToCurrency();
-                editCurrencyUserName.Text = "";
-                editCurrencyAmount.Text = "";
-                editCurrencyTime.Text = "";
-                editCurrencySubCredits.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit a curreny entry, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void removerank(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editRankTitle.Text)))
-            {
-                for (int i = 0; i < RankArray.Count; i++)
-                {
-                    var item = RankArray[i].rankTitle as TextBlock;
-                    if (item.Text.StartsWith(editRankTitle.Text))
-                    {
-                        RankArray.Remove(RankArray[i]);
-                        break;
-                    }
-                }
-                writeToRanks();
-                editRankTitle.Text = "";
-                editRankCost.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit a rank entry, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void removequote(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(quoteEdit.Text))
-            {
-                for (int i = 0; i < QuotesArray.Count; i++)
-                {
-                    var item = QuotesArray[i].quoteInfo as TextBlock;
-                    if (item.Text.Equals(quoteEdit.Text))
-                    {
-                        QuotesArray.Remove(QuotesArray[i]);
-                        break;
-                    }
-                }
-                writeToQuotes();
-                quoteEdit.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit a quote, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void removetimer(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommandTimed.Text)))
-            {
-                for (int i = 0; i < timerArray.Count; i++)
-                {
-                    var item = timerArray[i].timerName as TextBlock;
-                    var item2 = timerArray[i].timerResponse as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommandTimed.Text)))
-                    {
-                        timerArray.Remove(timerArray[i]);
-                        break;
-                    }
-                }
-                writeToTimers();
-                editCommandTimed.Text = "";
-                editResponseTimed.Text = "";
-                editToggleTimed.IsChecked = false;
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "To delete or edit a command, click on it in the box and then press the desired button!");
-            }
-        }
-
-        public async void addSFX(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommandSFX.Text)) && !string.IsNullOrWhiteSpace(editResponseSFX.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = formatCommand(editCommandSFX.Text);
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = editResponseSFX.Text;
-                for (int i = 0; i < SFXArray.Count; i++)
-                {
-                    var item = SFXArray[i].sfxCommand as TextBlock;
-                    var item2 = SFXArray[i].sfxResponse as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommandSFX.Text)))
-                    {
-                        SFXArray.Remove(SFXArray[i]);
-                        break;
-                    }
-                }
-                SFXArray.Add(new SFX(tb, tb2));
-                writeToSFX();
-                editCommandSFX.Text = "";
-                editResponseSFX.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the command name and upload an sfx file!");
-            }
-        }
-
-        public async void addImage(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommandImage.Text)) && !string.IsNullOrWhiteSpace(editResponseImage.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = formatCommand(editCommandImage.Text);
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = editResponseImage.Text;
-                for (int i = 0; i < ImagesArray.Count; i++)
-                {
-                    var item = ImagesArray[i].imageCommand as TextBlock;
-                    var item2 = ImagesArray[i].imageResponse as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommandImage.Text)))
-                    {
-                        ImagesArray.Remove(ImagesArray[i]);
-                        break;
-                    }
-                }
-                ImagesArray.Add(new Images(tb, tb2));
-                writeToImages();
-                editCommandImage.Text = "";
-                editResponseImage.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the command name and upload an image file!");
-            }
-        }
-
-        public async void addevent(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(editEventUser.Text) && !string.IsNullOrWhiteSpace(editEventMessage.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = editEventUser.Text;
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = editEventMessage.Text;
-                for (int i = 0; i < EventsArray.Count; i++)
-                {
-                    var item = EventsArray[i].eventUser as TextBlock;
-                    var item2 = EventsArray[i].eventMessage as TextBlock;
-                    if (item.Text.StartsWith(editEventUser.Text))
-                    {
-                        EventsArray.Remove(EventsArray[i]);
-                        break;
-                    }
-                }
-                EventsArray.Add(new Events(tb, tb2));
-                writeToEvents();
-                editEventUser.Text = "";
-                editEventMessage.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the username and message!");
-            }
-        }
-
-        public async void addcommand(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommand.Text)) && !string.IsNullOrWhiteSpace(editResponse.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = formatCommand(editCommand.Text);
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = editResponse.Text;
-                TextBlock tb3 = new TextBlock();
-                if (editCommandLevel.SelectedIndex.ToString().Equals("0"))
-                {
-                    tb3.Text = "Everyone";
-                }
-                else if (editCommandLevel.SelectedIndex.ToString().Equals("1"))
-                {
-                    tb3.Text = "Subs, Mods, Streamer";
-                }
-                else if (editCommandLevel.SelectedIndex.ToString().Equals("2"))
-                {
-                    tb3.Text = "Mods, Streamer";
-                }
-                else if (editCommandLevel.SelectedIndex.ToString().Equals("3"))
-                {
-                    tb3.Text = "Streamer";
-                }
-
-                for (int i = 0; i < commandArray.Count; i++)
-                {
-                    var item = commandArray[i].commandName as TextBlock;
-                    var item2 = commandArray[i].commandResponse as TextBlock;
-                    var item3 = commandArray[i].commandLevel as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommand.Text)))
-                    {
-                        commandArray.Remove(commandArray[i]);
-                        break;
-                    }
-                }
-                commandArray.Add(new Commands(tb, tb2, tb3));
-                writeToCommands();
-                editCommand.Text = "";
-                editResponse.Text = "";
-                editCommandLevel.SelectedIndex = 0;
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the command name and response!");
-            }
-        }
-
-        public async void addcurrency(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCurrencyUserName.Text)) && !string.IsNullOrWhiteSpace(editCurrencyAmount.Text) && !string.IsNullOrWhiteSpace(editCurrencyTime.Text) && !string.IsNullOrWhiteSpace(editCurrencySubCredits.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = editCurrencyUserName.Text;
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = editCurrencyAmount.Text;
-                TextBlock tb3 = new TextBlock();
-                tb3.Text = editCurrencyTime.Text;
-                TextBlock tb4 = new TextBlock();
-                tb4.Text = editCurrencySubCredits.Text;
-                for (int i = 0; i < CurrencyArray.Count; i++)
-                {
-                    var item = CurrencyArray[i].currencyUser as TextBlock;
-                    var item2 = CurrencyArray[i].currencyAmount as TextBlock;
-                    var item3 = CurrencyArray[i].currencyTime as TextBlock;
-                    var item4 = CurrencyArray[i].currencySubCredits as TextBlock;
-                    if (item.Text.StartsWith(editCurrencyUserName.Text))
-                    {
-                        CurrencyArray.Remove(CurrencyArray[i]);
-                        break;
-                    }
-                }
-                CurrencyArray.Add(new Currency(tb, tb2, tb3, tb4));
-                writeToCurrency();
-                editCurrencyUserName.Text = "";
-                editCurrencyAmount.Text = "";
-                editCurrencyTime.Text = "";
-                editCurrencySubCredits.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the user name, amount, and time in minutes!");
-            }
-        }
-
-        public async void addrank(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editRankTitle.Text)) && !string.IsNullOrWhiteSpace(editRankCost.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = editRankTitle.Text;
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = editRankCost.Text;
-                for (int i = 0; i < RankArray.Count; i++)
-                {
-                    var item = RankArray[i].rankTitle as TextBlock;
-                    var item2 = RankArray[i].rankCost as TextBlock;
-                    if (item.Text.StartsWith(editRankTitle.Text))
-                    {
-                        RankArray.Remove(RankArray[i]);
-                        break;
-                    }
-                }
-                RankArray.Add(new Ranks(tb, tb2));
-                writeToRanks();
-                editRankTitle.Text = "";
-                editRankCost.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the rank title and cost!");
-            }
-        }
-
+        
         public ArrayList LoadArrayList()
         {
-            System.IO.StreamReader reader = new System.IO.StreamReader(songsFile);
+            System.IO.StreamReader reader = new System.IO.StreamReader(Utils.songlistfile);
             ArrayList list = new ArrayList();
             string a;
             while ((a = reader.ReadLine()) != null)
@@ -4336,7 +2235,7 @@ namespace WpfApplication1
                 catch (Exception)
                 {
                 }
-                File.WriteAllLines(songsFile, text.Cast<String>());
+                File.WriteAllLines(Utils.songlistfile, text.Cast<String>());
                 refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 editSong.Text = "";
                 editRequester.Text = "";
@@ -4363,7 +2262,7 @@ namespace WpfApplication1
             {
                 try
                 {
-                    string[] text = File.ReadAllLines(songsFile);
+                    string[] text = File.ReadAllLines(Utils.songlistfile);
                     if (text[0] == "")
                     {
                         await this.ShowMessageAsync("Warning", "Place # " + songplace.Value + " does not exist!");
@@ -4390,7 +2289,7 @@ namespace WpfApplication1
                         await this.ShowMessageAsync("Warning", "Place # " + songplace.Value + " does not exist!");
                         return;
                     }
-                    File.WriteAllLines(songsFile, text);
+                    File.WriteAllLines(Utils.songlistfile, text);
                     refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                     editSong.Text = "";
                     editRequester.Text = "";
@@ -4407,73 +2306,7 @@ namespace WpfApplication1
                 await this.ShowMessageAsync("Warning", "Please enter the song name!");
             }
         }
-
-        public async void addquote(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(quoteEdit.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = quoteEdit.Text;
-                for (int i = 0; i < QuotesArray.Count; i++)
-                {
-                    var item = QuotesArray[i].quoteInfo as TextBlock;
-                    if (quoteID.ToString() == item.Uid)
-                    {
-                        QuotesArray.Remove(QuotesArray[i]);
-                        break;
-                    }
-                }
-                QuotesArray.Add(new Quotes(tb));
-                writeToQuotes();
-                readFromQuotes();
-                quoteEdit.Text = "";
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the quote!");
-            }
-        }
-
-        public async void addtimer(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCommandTimed.Text)) && !string.IsNullOrWhiteSpace(editResponseTimed.Text))
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = formatCommand(editCommandTimed.Text);
-                TextBlock tb2 = new TextBlock();
-                tb2.Text = editResponseTimed.Text;
-                TextBlock tb3 = new TextBlock();
-                if (editToggleTimed.IsChecked == true)
-                {
-                    tb3.Text = "ON";
-                }
-                else
-                {
-                    tb3.Text = "OFF";
-                }
-                for (int i = 0; i < timerArray.Count; i++)
-                {
-                    var item = timerArray[i].timerName as TextBlock;
-                    var item2 = timerArray[i].timerResponse as TextBlock;
-                    if (item.Text.StartsWith(formatCommand(editCommandTimed.Text)))
-                    {
-                        timerArray.Remove(timerArray[i]);
-                        break;
-                    }
-                }
-                timerArray.Add(new Timers(tb, tb2, tb3));
-                writeToTimers();
-                editCommandTimed.Text = "";
-                editResponseTimed.Text = "";
-                editToggleTimed.IsChecked = false;
-            }
-            else
-            {
-                await this.ShowMessageAsync("Warning", "Please enter the timed command name and response!");
-            }
-        }
-
-
+        
         public String formatCommand(String str)
         {
             if (!str.StartsWith("!"))
@@ -4494,76 +2327,18 @@ namespace WpfApplication1
             MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Reset Confirmation", "Are you sure you want to reset DudeBot? All user data will be deleted, but this will fix any problems with DudeBot.", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
             if (messageBoxResult == MessageDialogResult.Affirmative)
             {
-                if (File.Exists(backupcommandsfile))
-                {
-                    File.Delete(backupcommandsfile);
-                }
-                if (File.Exists(backupbotfile))
-                {
-                    File.Delete(backupbotfile);
-                }
-                if (File.Exists(backuptimersfile))
-                {
-                    File.Delete(backupbotfile);
-                }
-                if (File.Exists(backupothersfile))
-                {
-                    File.Delete(backupothersfile);
-                }
-                if (File.Exists(backupsfxfile))
-                {
-                    File.Delete(backupsfxfile);
-                }
-                if (File.Exists(backupquotesfile))
-                {
-                    File.Delete(backupquotesfile);
-                }
-                if (File.Exists(backupguifile))
-                {
-                    File.Delete(backupguifile);
-                }
-                if (File.Exists(backupusersfile))
-                {
-                    File.Delete(backupusersfile);
-                }
-                if (File.Exists(backupeventsfile))
-                {
-                    File.Delete(backupeventsfile);
-                }
-                if (File.Exists(backupcurrencyfile))
-                {
-                    File.Delete(backupcurrencyfile);
-                }
-                if (File.Exists(backupimagesfile))
-                {
-                    File.Delete(backupimagesfile);
-                }
-                if (File.Exists(backupranksfile))
-                {
-                    File.Delete(backupranksfile);
-                }
-                if (File.Exists(backuppurchasedranksfile))
-                {
-                    File.Delete(backuppurchasedranksfile);
-                }
-                System.IO.File.WriteAllText(commandsFile, string.Empty);
-                System.IO.File.WriteAllText(timersFile, string.Empty);
-                System.IO.File.WriteAllText(quotesFile, string.Empty);
-                System.IO.File.WriteAllText(othersFile, string.Empty);
-                System.IO.File.WriteAllText(usersFile, string.Empty);
-                System.IO.File.WriteAllText(sfxFile, string.Empty);
-                System.IO.File.WriteAllText(eventsFile, string.Empty);
-                System.IO.File.WriteAllText(currencyFile, string.Empty);
-                System.IO.File.WriteAllText(imagesFile, string.Empty);
-                System.IO.File.WriteAllText(ranksFile, string.Empty);
-                System.IO.File.WriteAllText(purchasedranksFile, string.Empty);
                 // Set variable presets (config.txt)
                 preset();
                 streamerName.Text = "";
                 botName.Text = "";
                 oauth.Text = "";
                 googleSheetID.Text = "";
-                writeToConfig(sender, e);
+
+
+                // TODO : Refactor JSON to new starter file!
+
+
+
                 // Restart Bot
                 await this.ShowMessageAsync("No Previous Data Found!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, and Bot Oauth, then press 'APPLY' and restart DudeBot!");
                 customization.Focus();
@@ -4720,7 +2495,7 @@ namespace WpfApplication1
                     }
                     reader.Close();
                 }
-                writeToCurrency();
+                // TODO : add to currency! ???
                 await this.ShowMessageAsync("Successfully Imported", "Revlobot points have been successfully imported.");
             }
             catch (Exception f)
