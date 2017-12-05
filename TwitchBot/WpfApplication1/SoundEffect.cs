@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using WMPLib;
 
-public class SoundEffect // TODO : TEST!
+public class SoundEffect
 {
-    public int sfxTimer, SFXOverallCoolDown;
-    public long SFXstartTime = 0;
-    public Dictionary<String, long> userCoolDowns = new Dictionary<String, long>();
+    public int sfxTimer { get; set; }
+    public int SFXOverallCoolDown { get; set; }
+    [JsonIgnore]
+    public long SFXstartTime { get; set; } = 0;
+    [JsonIgnore]
+    public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
     public void sfxCOMMANDS(String message, String channel, String sender, List<Command> comList)
     {

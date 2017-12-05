@@ -1,15 +1,28 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 public class Currency
 {
-    public String currencyName, currencyCommand;
-    public int currencyPerMinute, maxGamble, gambleCoolDownMinutes, vipRedeemCoolDownMinutes, vipSongCost,
-            subCreditRedeemCost = 1, creditsPerSub = 1, rankupUnitCost;
-    public Boolean toggle, vipSongToggle, gambleToggle;
-    public Dictionary<String, Int32> ranks = new Dictionary<String, Int32>();
+    public String currencyName { get; set; }
+    public String currencyCommand { get; set; }
+    public int currencyPerMinute { get; set; }
+    public int maxGamble { get; set; }
+    [JsonIgnore]
+    public int gambleCoolDownMinutes { get; set; }
+    [JsonIgnore]
+    public int vipRedeemCoolDownMinutes { get; set; }
+    public int vipSongCost { get; set; }
+    public int subCreditRedeemCost { get; set; } = 1;
+    public int creditsPerSub { get; set; } = 1;
+    public int rankupUnitCost { get; set; }
+    public Boolean toggle { get; set; }
+    public Boolean vipSongToggle { get; set; }
+    public Boolean gambleToggle { get; set; }
+    public Dictionary<String, Int32> ranks { get; set; } = new Dictionary<String, Int32>();
+    [JsonIgnore]
     public List<BotUser> users;
 
     public Currency(List<BotUser> users)
@@ -332,7 +345,7 @@ public class Currency
         return "Failed to give points to " + user;
     }
 
-    public String bonusall(int amount, List<String> usersHere, Boolean auto)
+    public String bonusall(List<String> usersHere, Boolean auto, int amount) // TODO : Set different amount for subs and regulars
     {
         List<String> awarded = new List<String>();
         foreach (String s in usersHere)
@@ -348,14 +361,25 @@ public class Currency
                     if (auto)
                     {
                         botUser.time += 1;
-                    }
-                    if (botUser.points + amount < 0)
-                    {
-                        botUser.points = 0;
+                        if (botUser.points + currencyPerMinute < 0)
+                        {
+                            botUser.points = 0;
+                        }
+                        else
+                        {
+                            botUser.points += currencyPerMinute;
+                        }
                     }
                     else
                     {
-                        botUser.points += amount;
+                        if (botUser.points + amount < 0)
+                        {
+                            botUser.points = 0;
+                        }
+                        else
+                        {
+                            botUser.points += amount;
+                        }
                     }
                     awarded.Add(s);
                     break;
@@ -364,13 +388,13 @@ public class Currency
         }
         if (!auto)
         {
-            if (amount > -1)
+            if (amount > 0)
             {
                 return "Everyone has been given " + amount + " " + currencyName + "!";
             }
             else
             {
-                return amount + " " + currencyName + " has been taken away from everyone!";
+                return (amount * -1) + " " + currencyName + " has been taken away from everyone!";
             }
         }
         else

@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 public class Quote
 {
-    public Boolean quotesModOnly, quotesOn;
-    public List<String> quotes = new List<String>();
+    public Boolean quotesModOnly { get; set; }
+    public bool quotesOn { get; set; }
+    public List<String> quotes { get; set; } = new List<String>();
+    [JsonIgnore]
     public TwitchBot bot;
 
     public void triggerQuotes(String message, String channel, String sender)

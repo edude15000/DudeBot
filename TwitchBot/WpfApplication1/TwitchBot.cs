@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using TwitchLib;
 using TwitchLib.Models.Client;
@@ -8,85 +7,266 @@ using TwitchLib.Events.Client;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using WpfApplication1;
+using Newtonsoft.Json;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using TwitchLib.Services;
+using TwitchLib.Events.Services.FollowerService;
+using TwitchLib.Events.PubSub;
 
 public class TwitchBot
 {
+    [JsonIgnore]
     public TwitchClient client;
+    [JsonIgnore]
     ConnectionCredentials credentials;
-
-    public String oauth, streamer, channel, botName, followersTextFile, subTextFile, followerMessage, subMessage,
-            minigameEndMessage, giveawaycommandname, spreadsheetId, botColor, endMessage, startupMessage;
-    public int counter1, counter2, counter3, counter4, counter5, minigameTimer, timerTotal;
-    public long gameStartTime;
-    public Boolean minigameTriggered = false, timeFinished = false, minigameOn, amountResult, adventureToggle,
-            startAdventure = false, waitForAdventureCoolDown = false, raffleInProgress = false, autoShoutoutOnHost;
+    [JsonIgnore]
     public YoutubeHandler youtube;
+    [JsonIgnore]
     public GoogleHandler google;
-    public TextAdventure textAdventure;
-    public Currency currency;
-    public Image image;
-    public SoundEffect soundEffect;
-    public Quote quote;
-    public RequestSystem requestSystem;
-    public List<Command> sfxCommandList = new List<Command>(), userCommandList = new List<Command>(),
-            timerCommandList = new List<Command>(), botCommandList = new List<Command>(),
-            imageCommandList = new List<Command>(), commandList = new List<Command>();
-    public List<BotUser> users = new List<BotUser>();
-    public List<Double> gameGuess = new List<Double>();
-    public List<String> raffleUsers = new List<String>(), allHosts = new List<String>(),
-            gameUser = new List<String>(), extraCommandNames = new List<String>();
-    public Dictionary<String, String> events = new Dictionary<String, String>();
-    public Command getViewerComm;
+    [JsonIgnore]
+    private static TwitchAPI api;
+    [JsonIgnore]
+    private static FollowerService service;
 
-    public void botStartUp()
+    public String oauth { get; set; }
+    public String streamer { get; set; }
+    public String channel { get; set; }
+    public String botName { get; set; }
+    public String followersTextFile { get; set; }
+    public String subTextFile { get; set; }
+    public String followerMessage { get; set; }
+    public String subMessage { get; set; }
+    public String subOnlyRequests { get; set; }
+    public String minigameEndMessage { get; set; }
+    public String giveawaycommandname { get; set; }
+    public String spreadsheetId { get; set; }
+    public String botColor { get; set; }
+    public String endMessage { get; set; }
+    public String startupMessage { get; set; }
+    public int counter1, counter2, counter3, counter4, counter5;
+    public int minigameTimer { get; set; }
+    public int timerTotal { get; set; }
+    [JsonIgnore]
+    public long gameStartTime { get; set; }
+    public Boolean minigameTriggered { get; set; } = false;
+    public Boolean timeFinished { get; set; } = false;
+    public Boolean minigameOn { get; set; }
+    public Boolean adventureToggle { get; set; }
+    public Boolean startAdventure { get; set; } = false;
+    public Boolean waitForAdventureCoolDown { get; set; } = false;
+    public Boolean raffleInProgress { get; set; } = false;
+    public Boolean autoShoutoutOnHost { get; set; }
+    public TextAdventure textAdventure { get; set; }
+    public Currency currency { get; set; }
+    public Image image { get; set; }
+    public SoundEffect soundEffect { get; set; }
+    public Quote quote { get; set; }
+    public RequestSystem requestSystem { get; set; }
+    public List<Command> sfxCommandList { get; set; } = new List<Command>();
+    public List<Command> userCommandList { get; set; } = new List<Command>();
+    public List<Command> timerCommandList { get; set; } = new List<Command>();
+    public List<Command> botCommandList { get; set; } = new List<Command>();
+    public List<Command> imageCommandList { get; set; } = new List<Command>();
+    public List<Command> commandList { get; set; } = new List<Command>();
+    public List<BotUser> users { get; set; } = new List<BotUser>();
+    [JsonIgnore]
+    public List<Double> gameGuess { get; set; } = new List<Double>();
+    public List<String> raffleUsers { get; set; } = new List<String>();
+    [JsonIgnore]
+    public List<String> gameUser { get; set; } = new List<String>();
+    public List<String> extraCommandNames { get; set; } = new List<String>();
+    public Dictionary<String, String> events { get; set; } = new Dictionary<String, String>();
+    public Command getViewerComm { get; set; }
+    
+    public event PropertyChangedEventHandler PropertyChanged;
+    public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    public virtual bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
+    {
+        if (object.Equals(storage, value))
+            return false;
+        storage = value;
+        OnPropertyChanged(string.Empty);
+        return true;
+    }
+    
+    public void botStartUpAsync()
     { // Starts bot up, calls necessary threads and methods
-        credentials = new ConnectionCredentials(streamer, oauth);
-        client = new TwitchClient(credentials, channel); // TODO : '#'??
-        client.OnJoinedChannel += onJoinedChannel;
-        client.OnMessageReceived += onMessageReceived;
-        client.OnWhisperReceived += onWhisperReceived;
-        client.OnNewSubscriber += onNewSubscriber;
-        client.OnUserJoined += onUserJoined;
-        client.Connect();
-        setClasses();
-        Debug.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
-        Utils.writeVersion();
-        textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
-        resetAllCommands();
-        threads();
-        this.channel = "#" + streamer;
+        try
+        {
+            if (channel.Contains("#"))
+            {
+                channel = channel.Replace("#", "");
+            }
+            credentials = new ConnectionCredentials(botName, oauth);
+            client = new TwitchClient(credentials, channel);
+            api = new TwitchAPI(Utils.twitchClientID);
+            service = new FollowerService(api);
+            service.OnNewFollowersDetected += onNewFollower;
+            service.StartService();
+            TwitchPubSub pubsub = new TwitchPubSub();
+            pubsub.OnBitsReceived += onPubSubBitsReceived;
+            pubsub.Connect();
+            client.OnJoinedChannel += onJoinedChannel;
+            client.OnMessageReceived += onMessageReceived;
+            client.OnChatCommandReceived += onChatCommandReceived;
+            client.OnWhisperReceived += onWhisperReceived;
+            client.OnNewSubscriber += onNewSubscriber;
+            client.OnUserJoined += onUserJoined;
+            client.OnReSubscriber += onReSubscriber;
+            client.OverrideBeingHostedCheck = true;
+            client.OnBeingHosted += onBeingHosted;
+            client.Connect();
+            setClasses();
+            Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
+            Utils.writeVersion();
+            textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
+            resetAllCommands();
+            threads();
+        }
+        catch (Exception e1)
+        {
+            Console.WriteLine(e1.ToString());
+            Utils.errorReport(e1);
+        }
     }
 
+    private void onBeingHosted(object sender, OnBeingHostedArgs e) // TODO : Add raid message for more than x people
+    {
+        if (autoShoutoutOnHost && !e.IsAutoHosted)
+        {
+            if (e.Viewers > 4)
+            {
+                client.SendMessage("Thanks for the " + e.Viewers + " viewer host! "
+                    + (userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true)));
+            }
+            else
+            {
+                client.SendMessage("Thanks for the host! "
+                    + (userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true)));
+            }
+        }
+    }
+
+    private void onReSubscriber(object sender, OnReSubscriberArgs e)
+    {
+        client.SendMessage(e.ReSubscriber.DisplayName + " just resubscribed for " + e.ReSubscriber.Months + " months! Thank you!"); // TODO : Create custom message
+        foreach (BotUser botUser in users)
+        {
+            if (botUser.username.Equals(e.ReSubscriber.DisplayName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                botUser.subCredits += currency.creditsPerSub;
+                botUser.sub = true;
+                break;
+            }
+        }
+    }
+
+    private void onPubSubBitsReceived(object sender, OnBitsReceivedArgs e)
+    {
+        client.SendMessage("Just received " + e.BitsUsed + " bits from " + e.Username + ". That brings their total to " + e.TotalBitsUsed + " bits!"); // TODO : TEST!
+    }
+
+    private void onNewFollower(object sender, OnNewFollowersDetectedArgs e) // TODO : TEST!
+    {
+        if (followerMessage.Contains("$user"))
+        {
+            client.SendMessage(followerMessage.Replace("$user", String.Join(", ", e.NewFollowers)));
+        }
+        else
+        {
+            client.SendMessage(followerMessage);
+        }
+    }
+
+    public async void checkAtBeginningAsync()
+    {
+        var allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync(channel);
+        var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync(channel);
+        foreach (BotUser user in users)
+        {
+            Boolean follows = false, isSubbed = false;
+            if (user.follower || user.sub)
+            {
+                foreach (var u in allSubscriptions)
+                {
+                    if (u.User.Name.Equals(user.username, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        follows = true;
+                    }
+                }
+            }
+            if (user.sub)
+            {
+                foreach (var u in channelFollowers.Follows)
+                {
+                    if (u.User.Name.Equals(user.username, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        isSubbed = true;
+                    }
+                }
+            }
+            user.follower = follows;
+            user.sub = isSubbed;
+        }
+    }
+    
+    private void onMessageReceived(object sender, OnMessageReceivedArgs e)
+    {
+        // TODO ?
+    }
+    
     public void botDisconnect()
     {
         client.Disconnect();
+        client.LeaveChannel(channel);
     }
 
     private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
     {
-        throw new NotImplementedException();
+        client.SendMessage(startupMessage);
     }
 
     private void onWhisperReceived(object sender, OnWhisperReceivedArgs e)
     {
-        throw new NotImplementedException();
+        // TODO ?
     }
 
     private void onNewSubscriber(object sender, OnNewSubscriberArgs e)
     {
-        throw new NotImplementedException();
+        if (subMessage.Contains("$user"))
+        {
+            client.SendMessage(subMessage.Replace("$user", e.Subscriber.DisplayName));
+        }
+        else
+        {
+            client.SendMessage(streamer + " : " + subMessage);
+        }
+        foreach (BotUser botUser in users)
+        {
+            if (botUser.username.Equals(e.Subscriber.DisplayName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                botUser.subCredits += currency.creditsPerSub;
+                botUser.sub = true; 
+                break;
+            }
+        }
     }
-
+    
     public void setClasses()
     { // Resets classes within bot using bot as passed variables to request system and
       // quote, resets google
         requestSystem.bot = this;
         quote.bot = this;
         currency.users = users;
-        google = new GoogleHandler();
+        google = new GoogleHandler(spreadsheetId);
         youtube = new YoutubeHandler();
-        google.spreadsheetId = spreadsheetId;
         textAdventure.setUpText();
+        requestSystem.songList = Utils.loadSongs();
+        requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
     }
 
     public void resetAllCommands()
@@ -107,7 +287,7 @@ public class TwitchBot
         imageCommandList = getCommands("image");
         extraCommandNames = setExtraCommandNames();
     }
-    
+
     public void syncFileTimerThread()
     {
         try
@@ -116,7 +296,7 @@ public class TwitchBot
         }
         catch (Exception e1)
         {
-            e1.ToString();
+            Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
         }
         int count = 0;
@@ -140,7 +320,7 @@ public class TwitchBot
                         catch (Exception e)
                         {
                             Utils.errorReport(e);
-                            Debug.WriteLine(e.ToString());
+                            Console.WriteLine(e.ToString());
                         }
                     }
                     else
@@ -159,7 +339,7 @@ public class TwitchBot
             catch (Exception e)
             {
                 Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString());
             }
         }
     }
@@ -175,165 +355,16 @@ public class TwitchBot
                     break;
                 }
                 Thread.Sleep(60000);
-                currency.bonusall(currency.currencyPerMinute, Utils.getAllViewers(streamer), true);
+                currency.bonusall(Utils.getAllViewers(streamer), true, 0);
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString());
                 Utils.errorReport(e);
             }
         }
     }
-
-    public void shoutoutThread()
-    {
-        int count = 0;
-        List<String> list;
-        while (true)
-        {
-            try
-            {
-                if (count > 3)
-                {
-                    count = 1;
-                    Thread.Sleep(600000);
-                }
-                Thread.Sleep(5000);
-                list = getHostList();
-                foreach (String s in list)
-                {
-                    if (!allHosts.Contains(s))
-                    {
-                        allHosts.Add(s);
-                        if (count > 0)
-                        {
-                            client.SendMessage("Thanks for the host! " + (userVariables("$shoutout", "#" + streamer, streamer, s,
-                                            "!shoutout " + s, true)));
-                        }
-                    }
-                }
-                count = 1;
-            }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                count++;
-            }
-        }
-    }
-
-    public void getCurrentViewersThread()
-    {
-        while (true)
-        {
-            try
-            {
-                Thread.Sleep(8000);
-                List<String> users = Utils.getAllViewers(streamer);
-                StreamWriter writer = new StreamWriter(Path.GetTempPath() + "currentusers.txt"); // TODO : instead of text file, just set textbox
-                foreach (String s in users)
-                {
-                    writer.Write(s + "\r");
-                }
-                writer.Close();
-            }
-            catch (Exception)
-            {
-            }
-        }
-    }
-
-    public void followerThread() // TODO : Change to use API instead of file reading
-    {
-        List<String> users = new List<String>();
-        String lastFollower = "", currentFollower = "";
-        int count = 0;
-        while (true)
-        {
-            try
-            {
-                Thread.Sleep(5000);
-                if (followersTextFile != null && !followersTextFile.Equals(""))
-                {
-                    StreamReader reader = new StreamReader(followersTextFile);
-                    currentFollower = reader.ReadLine();
-                    if (currentFollower.Contains(" "))
-                    {
-                        currentFollower = currentFollower.Substring(currentFollower.LastIndexOf(" ")).Trim();
-                    }
-                    reader.Close();
-                    if (count > 0 && !lastFollower.Equals(currentFollower)
-                            && !users.Contains(currentFollower))
-                    {
-                        if (followerMessage.Contains("$user"))
-                        {
-                            client.SendMessage(followerMessage.Replace("$user", currentFollower));
-                        }
-                        else
-                        {
-                            client.SendMessage(followerMessage);
-                        }
-                        users.Add(currentFollower);
-                    }
-                    lastFollower = currentFollower;
-                    count++;
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
-    }
-
-    public void subThread() // TODO : Change to use API instead of file reading
-    {
-        String lastSub = "", currentSub = "";
-        List<String> subList = new List<String>();
-        int count = 0;
-        while (true)
-        {
-            try
-            {
-                Thread.Sleep(5000);
-                if (subTextFile != null && !subTextFile.Equals(""))
-                {
-                    StreamReader reader = new StreamReader(subTextFile);
-                    currentSub = reader.ReadLine();
-                    if (currentSub.Contains(" "))
-                    {
-                        currentSub = currentSub.Substring(currentSub.LastIndexOf(" ")).Trim();
-                    }
-                    reader.Close();
-                    if (count > 0 && !lastSub.Equals(currentSub) && !subList.Contains(currentSub))
-                    {
-                        if (subMessage.Contains("$user"))
-                        {
-                            client.SendMessage(subMessage.Replace("$user", currentSub));
-                        }
-                        else
-                        {
-                            client.SendMessage(streamer + " : " + subMessage);
-                        }
-                        foreach (BotUser botUser in users)
-                        {
-                            if (botUser.username.Equals(currentSub, StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                botUser.subCredits += currency.creditsPerSub;
-                                botUser.sub = true;
-                                subList.Add(botUser.username);
-                                break;
-                            }
-                        }
-                    }
-                    lastSub = currentSub;
-                    count++;
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
-    } 
+    
     public void saveThread()
     {
         while (true)
@@ -348,7 +379,7 @@ public class TwitchBot
                 catch (Exception e)
                 {
                     Utils.errorReport(e);
-                    Debug.WriteLine(e.ToString());
+                    Console.WriteLine(e.ToString());
                 }
             }
             catch (Exception)
@@ -356,7 +387,7 @@ public class TwitchBot
             }
         }
     }
-    
+
     public void adventureThread(String sender)
     {
         textAdventure.start(sender);
@@ -425,7 +456,7 @@ public class TwitchBot
         }
         catch (Exception e)
         {
-            Debug.WriteLine(e.ToString());
+            Console.WriteLine(e.ToString());
             Utils.errorReport(e);
         }
         if ((new Random().Next(7) + 1) == 6)
@@ -439,22 +470,17 @@ public class TwitchBot
                     + sender + " has lived to survive roulette!");
         }
     }
-    
+
     public void threads()
     {
         new Thread(new ThreadStart(syncFileTimerThread)).Start();
-        if (currency.toggle) {
+        if (currency.toggle)
+        {
             new Thread(new ThreadStart(bonusAllThread)).Start();
         }
-		if (autoShoutoutOnHost) {
-            new Thread(new ThreadStart(shoutoutThread)).Start();
-        }
-        new Thread(new ThreadStart(getCurrentViewersThread)).Start();
-        new Thread(new ThreadStart(followerThread)).Start();
-        new Thread(new ThreadStart(subThread)).Start();
         new Thread(new ThreadStart(saveThread)).Start();
     }
-    
+
     public void clearUpTempData()
     { // Resets all bot startup data
         gameStartTime = 0;
@@ -471,7 +497,6 @@ public class TwitchBot
         requestSystem.favSongsPlayedThisStream.Clear();
         requestSystem.doNotWriteToHistory = true;
         gameGuess.Clear();
-        allHosts.Clear();
         foreach (BotUser botUser in users)
         {
             botUser.gaveSpot = false;
@@ -534,10 +559,10 @@ public class TwitchBot
     }
 
 
-    private void onMessageReceived(object s, OnMessageReceivedArgs e)
+    private void onChatCommandReceived(object s, OnChatCommandReceivedArgs e)
     {
-        String sender = e.ChatMessage.Username;
-        String message = e.ChatMessage.Message;
+        String sender = e.Command.ChatMessage.Username;
+        String message = e.Command.ChatMessage.Message;
         if (!message.StartsWith("!"))
         {
             return;
@@ -565,15 +590,15 @@ public class TwitchBot
             }
         }
 
-		// Images
-		for (int i = 0; i<imageCommandList.Count; i++)
+        // Images
+        for (int i = 0; i < imageCommandList.Count; i++)
         {
-			if (temp.StartsWith(imageCommandList[i].input[0]))
+            if (temp.StartsWith(imageCommandList[i].input[0]))
             {
                 var t = new Thread(() => imageThread(message, sender));
                 t.Start();
             }
-		}
+        }
         // USER COMMANDS
         for (int i = 0; i < userCommandList.Count; i++)
         {
@@ -640,8 +665,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -657,8 +682,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -674,8 +699,8 @@ public class TwitchBot
                 }
                 catch (IOException e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -691,8 +716,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -708,8 +733,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -725,8 +750,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -742,8 +767,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -759,8 +784,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -776,8 +801,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -794,7 +819,7 @@ public class TwitchBot
                 catch (IOException e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
                 return;
             }
@@ -810,91 +835,118 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
         }
         // Currency Commands
-		if (message.Equals("!currency on", StringComparison.InvariantCultureIgnoreCase)) {
-			if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || sender.Equals(streamer)) {
-				if (!currency.toggle) {
-					try {
+        if (message.Equals("!currency on", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || sender.Equals(streamer))
+            {
+                if (!currency.toggle)
+                {
+                    try
+                    {
                         triggerCurrency(true, channel);
-					} catch (IOException e1) {
-						Utils.errorReport(e1);
-						Debug.WriteLine(e1.ToString());
-					}
+                    }
+                    catch (IOException e1)
+                    {
+                        Utils.errorReport(e1);
+                        Console.WriteLine(e1.ToString());
+                    }
                     new Thread(new ThreadStart(bonusAllThread)).Start();
                     client.SendMessage("The currency system has been turned on, " + sender + "!");
-				} else {
-
+                }
+                else
+                {
                     client.SendMessage("The currency system is already on, " + sender + "!");
-				}
-			}
-			return;
-		}
-		if (message.Equals("!currency off", StringComparison.InvariantCultureIgnoreCase)) {
-			if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || sender.Equals(streamer)) {
-				try {
-
+                }
+            }
+            return;
+        }
+        if (message.Equals("!currency off", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || sender.Equals(streamer))
+            {
+                try
+                {
                     triggerCurrency(false, channel);
-				} catch (IOException e1) {
-					Utils.errorReport(e1);
-					Debug.WriteLine(e1.ToString());
-				}
-			}
-			return;
-		}
-		if (message.Equals(currency.currencyCommand, StringComparison.InvariantCultureIgnoreCase)) {
-			if (currency.toggle) {
-                client.SendMessage( currency.getCurrency(sender));
-			}
-			return;
-		}
-		if (message.Equals("!rank", StringComparison.InvariantCultureIgnoreCase)) {
-			if (currency.toggle) {
-                client.SendMessage( currency.getRank(sender, streamer, botName));
-				return;
-			}
-		}
-		if (message.Trim().StartsWith("!bonus") && !message.Trim().StartsWith("!bonusall")) {
-			if (currency.toggle) {
-				if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) 
+                }
+                catch (IOException e1)
+                {
+                    Utils.errorReport(e1);
+                    Console.WriteLine(e1.ToString());
+                }
+            }
+            return;
+        }
+        if (message.Equals(currency.currencyCommand, StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (currency.toggle)
+            {
+                client.SendMessage(currency.getCurrency(sender));
+            }
+            return;
+        }
+        if (message.Equals("!rank", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (currency.toggle)
+            {
+                client.SendMessage(currency.getRank(sender, streamer, botName));
+                return;
+            }
+        }
+        if (message.Trim().StartsWith("!bonus") && !message.Trim().StartsWith("!bonusall"))
+        {
+            if (currency.toggle)
+            {
+                if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase)
                     || sender.Equals(streamer, StringComparison.InvariantCultureIgnoreCase)
-						|| Utils.checkIfUserIsOP(sender, channel, streamer, users)) {
-					if (message.Equals("!bonus", StringComparison.InvariantCultureIgnoreCase)) {
+                        || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                {
+                    if (message.Equals("!bonus", StringComparison.InvariantCultureIgnoreCase))
+                    {
                         client.SendMessage("Type in the format '!bonus user amount'");
-					}
-					String[] tempArray = Utils.getFollowingText(message).Split(' ');
+                    }
+                    String[] tempArray = Utils.getFollowingText(message).Split(' ');
                     String neg = "";
-					if (tempArray[1].StartsWith("-")) {
-						neg = "-";
-						tempArray[1] = tempArray[1].Substring(1);
-					}
-					if (Utils.isInteger(tempArray[1])) {
-						if (tempArray[0].GetType() == typeof(String)) {
-							if (tempArray.Length == 2) {
-								if (tempArray[0].StartsWith("@")) {
-									tempArray[0] = tempArray[0].Replace("@", "");
-								}
-								if (neg.Equals("-")) {
+                    if (tempArray[1].StartsWith("-"))
+                    {
+                        neg = "-";
+                        tempArray[1] = tempArray[1].Substring(1);
+                    }
+                    if (Utils.isInteger(tempArray[1]))
+                    {
+                        if (tempArray[0].GetType() == typeof(String))
+                        {
+                            if (tempArray.Length == 2)
+                            {
+                                if (tempArray[0].StartsWith("@"))
+                                {
+                                    tempArray[0] = tempArray[0].Replace("@", "");
+                                }
+                                if (neg.Equals("-"))
+                                {
 
                                     client.SendMessage(currency.bonus(tempArray[0], -1 * Int32.Parse(tempArray[1])));
-								} else {
+                                }
+                                else
+                                {
 
                                     client.SendMessage(currency.bonus(tempArray[0], Int32.Parse(tempArray[1])));
-								}
-								return;
-							}
-						}
-					}
+                                }
+                                return;
+                            }
+                        }
+                    }
                     client.SendMessage("Type in the format '!bonus user amount'");
-				}
-				return;
-			}
-		}
+                }
+                return;
+            }
+        }
         if (message.StartsWith("!bonusall "))
         {
             if (currency.toggle)
@@ -913,12 +965,12 @@ public class TwitchBot
                     {
                         if (neg.Equals("-"))
                         {
-                            client.SendMessage(currency.bonusall(-1 * Int32.Parse(temp2),
-                                    Utils.getAllViewers(streamer), false));
+                            client.SendMessage(currency.bonusall(
+                                    Utils.getAllViewers(streamer), false, -1 * Int32.Parse(temp2)));
                         }
                         else
                         {
-                            client.SendMessage(currency.bonusall(Int32.Parse(temp2), Utils.getAllViewers(streamer), false));
+                            client.SendMessage(currency.bonusall(Utils.getAllViewers(streamer), false, Int32.Parse(temp2)));
                         }
                     }
                     else
@@ -942,7 +994,7 @@ public class TwitchBot
                 catch (IOException e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
             }
             return;
@@ -959,7 +1011,7 @@ public class TwitchBot
                 catch (IOException e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
             }
             return;
@@ -998,7 +1050,7 @@ public class TwitchBot
             catch (IOException e1)
             {
                 Utils.errorReport(e1);
-                Debug.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString());
             }
             return;
         }
@@ -1011,7 +1063,7 @@ public class TwitchBot
             catch (IOException e1)
             {
                 Utils.errorReport(e1);
-                Debug.WriteLine(e1.ToString());
+                Console.WriteLine(e1.ToString());
             }
             return;
         }
@@ -1048,7 +1100,7 @@ public class TwitchBot
                     catch (Exception e1)
                     {
                         Utils.errorReport(e1);
-                        Debug.WriteLine(e1.ToString());
+                        Console.WriteLine(e1.ToString());
                     }
                 }
                 else
@@ -1096,6 +1148,7 @@ public class TwitchBot
                 if (temp2.StartsWith("bad "))
                 {
                     Exception e1 = new Exception(temp2);
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
                 }
                 client.SendMessage(temp2);
@@ -1160,7 +1213,7 @@ public class TwitchBot
                 catch (IOException e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
                 return;
             }
@@ -1177,7 +1230,7 @@ public class TwitchBot
                 catch (IOException e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
                 return;
             }
@@ -1194,7 +1247,7 @@ public class TwitchBot
                 catch (Exception e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
                 return;
             }
@@ -1219,8 +1272,8 @@ public class TwitchBot
                 }
                 catch (Exception e1)
                 {
+                    Console.WriteLine(e1.ToString());
                     Utils.errorReport(e1);
-                    e1.ToString();
                 }
                 return;
             }
@@ -1237,7 +1290,7 @@ public class TwitchBot
                 catch (Exception e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
                 return;
             }
@@ -1257,7 +1310,7 @@ public class TwitchBot
                 catch (Exception e1)
                 {
                     Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
+                    Console.WriteLine(e1.ToString());
                 }
                 return;
             }
@@ -1272,7 +1325,7 @@ public class TwitchBot
             catch (IOException e1)
             {
                 Utils.errorReport(e1);
-                Debug.WriteLine(e1.ToString());
+                Console.WriteLine(e1.ToString());
             }
             return;
         }
@@ -1302,7 +1355,7 @@ public class TwitchBot
                     catch (Exception e1)
                     {
                         Utils.errorReport(e1);
-                        Debug.WriteLine(e1.ToString());
+                        Console.WriteLine(e1.ToString());
                     }
                     requestSystem.lastSong = null;
                 }
@@ -1323,8 +1376,8 @@ public class TwitchBot
             }
             catch (IOException e1)
             {
+                Console.WriteLine(e1.ToString());
                 Utils.errorReport(e1);
-                e1.ToString();
             }
             return;
         }
@@ -1337,7 +1390,7 @@ public class TwitchBot
             catch (Exception e1)
             {
                 Utils.errorReport(e1);
-                Debug.WriteLine(e1.ToString());
+                Console.WriteLine(e1.ToString());
             }
         }
         // Total Requests System
@@ -1522,7 +1575,7 @@ public class TwitchBot
                     catch (IOException e1)
                     {
                         Utils.errorReport(e1);
-                        Debug.WriteLine(e1.ToString());
+                        Console.WriteLine(e1.ToString());
                     }
                     return;
                 }
@@ -1535,7 +1588,7 @@ public class TwitchBot
                     catch (IOException e1)
                     {
                         Utils.errorReport(e1);
-                        Debug.WriteLine(e1.ToString());
+                        Console.WriteLine(e1.ToString());
                     }
                     return;
                 }
@@ -1663,10 +1716,7 @@ public class TwitchBot
                             String[] winnersArray = winners.Split(',');
                             foreach (String str in winnersArray)
                             {
-                                if (amountResult)
-                                {
-                                    client.SendMessage(currency.bonus(str.Trim(), (int)Math.Round(Double.Parse(temp2))));
-                                }
+                                client.SendMessage(currency.bonus(str.Trim(), (int)Math.Round(Double.Parse(temp2))));
                             }
                         }
                         timeFinished = false;
@@ -1739,13 +1789,13 @@ public class TwitchBot
                         }
                         if (timeLeft == 1.0)
                         {
-                                    client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
-                                    + timeLeft + " minute, " + sender + "!");
+                            client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
+                            + timeLeft + " minute, " + sender + "!");
                         }
                         else
                         {
-                                    client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
-                                    + timeLeft + " minutes, " + sender + "!");
+                            client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
+                            + timeLeft + " minutes, " + sender + "!");
                         }
                         return;
                     }
@@ -1761,17 +1811,22 @@ public class TwitchBot
                         t.Start();
                         return;
                     }
-                    if (startAdventure) {
-                        try {
-                            if (textAdventure.addUser(sender) == 0) {
+                    if (startAdventure)
+                    {
+                        try
+                        {
+                            if (textAdventure.addUser(sender) == 0)
+                            {
 
-                                client.SendMessage( "Please try again in a little bit, " + sender
+                                client.SendMessage("Please try again in a little bit, " + sender
                                         + "!");
-                            startAdventure = false;
+                                startAdventure = false;
                             }
-                        } catch (Exception e1) {
+                        }
+                        catch (Exception e1)
+                        {
                             Utils.errorReport(e1);
-                            Debug.WriteLine(e1.ToString());
+                            Console.WriteLine(e1.ToString());
                         }
                     }
                     return;
@@ -1811,53 +1866,11 @@ public class TwitchBot
             return;
         }
 
-        // Edit / Remove Songs
+        // Remove Songs
         if (message.Trim().ToLower().StartsWith("!removesong ")
                 || message.Trim().ToLower().StartsWith("!deletesong "))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
-                    || sender.Equals(Utils.botMaker))
-            {
-                int number = -1;
-                try
-                {
-                    number = Int32.Parse(Utils.getFollowingText(message));
-                    if (Int32.Parse(requestSystem.getNumberOfSongs()) == 0)
-                    {
-                        client.SendMessage("The song list is empty, " + sender + "!");
-                        return;
-                    }
-                    if (Int32.Parse(requestSystem.getNumberOfSongs()) < number || number == 0)
-                    {
-                        client.SendMessage("Song #" + number + " does not exist, " + sender + "!");
-                        return;
-                    }
-                }
-                catch
-                {
-                    client.SendMessage("To remove a song, it must be in the form '!removesong #'");
-                    return;
-                }
-                try
-                {
-                    String[] array = File.ReadAllLines(Utils.songlistfile);
-                    List<String> a = new List<String>(array);
-                    a.RemoveAt(number - 1);
-                    client.SendMessage(temp + " has been removed, " + sender + "!");
-                    StreamWriter writer = new StreamWriter(Utils.songlistfile);
-                    writer.Write(a);
-                    writer.Close();
-                    google.writeToGoogleSheets(false, Utils.songlistfile, Utils.lastPlayedSongsFile);
-                    return;
-                }
-                catch (IOException e1)
-                {
-                    Utils.errorReport(e1);
-                    Debug.WriteLine(e.ToString());
-                }
-                client.SendMessage("Song #" + number + " does not exist, " + sender + "!");
-                return;
-            }
+            requestSystem.removeSongCOMMAND(sender, channel, streamer, users, message, temp);
         }
 
         if (message.Trim().ToLower().StartsWith("!editcom !")
@@ -1968,67 +1981,7 @@ public class TwitchBot
         }
         if (message.Trim().ToLower().StartsWith("!promote "))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
-                    || sender.Equals(Utils.botMaker))
-            {
-                String user = Utils.getFollowingText(message);
-                try
-                {
-                    String line = "";
-                    String[] c = File.ReadAllLines(Utils.songlistfile);
-                    List<String> fileContent = new List<String>(c);
-                    for (int j = 0; j < fileContent.Count; j++)
-                    {
-                        if (user.Contains("@"))
-                        {
-                            user = user.Replace("@", "");
-                        }
-                        line = fileContent[j];
-                        if (line.EndsWith("(" + user + ")"))
-                        {
-                            String song = "";
-                            if (line.StartsWith("VIP\t"))
-                            {
-                                song = line.Substring(line.IndexOf("\t") + 1, line.LastIndexOf("\t"));
-                                fileContent.RemoveAt(j);
-                                StreamWriter writer = new StreamWriter(Utils.songlistfile);
-                                writer.Write(fileContent);
-                                writer.Close();
-                                requestSystem.addDonator(channel, song, user);
-                                client.SendMessage("VIP Song '" + song
-                                        + "' has been promoted to $$$, " + sender + "!");
-                                return;
-                            }
-                            else if (line.StartsWith("$$$\t"))
-                            {
-                                client.SendMessage("Cannot promote a $$$ song any higher, " + sender
-                                        + "!");
-                                return;
-                            }
-                            else
-                            {
-                                song = line.Substring(0, line.IndexOf("\t"));
-                                fileContent.RemoveAt(j);
-                                StreamWriter writer = new StreamWriter(Utils.songlistfile);
-                                writer.Write(fileContent);
-                                writer.Close();
-                                requestSystem.addVip(channel, song, user);
-                                client.SendMessage("Song '" + song + "' has been promoted to VIP, "
-                                        + sender + "!");
-                                return;
-                            }
-                        }
-                    }
-                    client.SendMessage(user + " does not have a song in the list, "
-                            + sender + "!");
-                }
-                catch (IOException e1)
-                {
-                    Utils.errorReport(e1);
-                    Debug.WriteLine(e1.ToString());
-                }
-                return;
-            }
+            requestSystem.promoteSongCommand(sender, channel, streamer, users, message);
         }
 
         if (message.Trim().ToLower().Equals("!subcredits", StringComparison.InvariantCultureIgnoreCase))
@@ -2100,7 +2053,7 @@ public class TwitchBot
             catch (Exception e1)
             {
                 Utils.errorReport(e1);
-                Debug.WriteLine(e1.ToString());
+                Console.WriteLine(e1.ToString());
             }
         }
 
@@ -2115,7 +2068,7 @@ public class TwitchBot
         catch (IOException e1)
         {
             Utils.errorReport(e1);
-            Debug.WriteLine(e1.ToString());
+            Console.WriteLine(e1.ToString());
         }
     }
 
@@ -2304,7 +2257,7 @@ public class TwitchBot
         List<String> result = new List<String>();
         try
         {
-            dynamic a = new JObject(Utils.callURL("https://api.twitch.tv/kraken/channels/" + streamer));
+            dynamic a = new JObject(Utils.callURL("https://api.twitch.tv/kraken/oauth2/authorize?channels/" + streamer));
             String id = a["_id"];
             a = new JObject(Utils.callURL("http://tmi.twitch.tv/hosts?include_logins=1&target=" + id));
             JArray info = a["hosts"];
@@ -2317,7 +2270,7 @@ public class TwitchBot
         catch (Exception e1)
         {
             Utils.errorReport(e1);
-            Debug.WriteLine(e1.ToString());
+            Console.WriteLine(e1.ToString());
         }
         return result;
     }
@@ -2437,7 +2390,7 @@ public class TwitchBot
             catch (IOException e)
             {
                 Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString());
             }
         }
         if (response.Contains("$randomuser"))
@@ -2458,7 +2411,7 @@ public class TwitchBot
             catch (Exception e1)
             {
                 Utils.errorReport(e1);
-                Debug.WriteLine(e1.ToString());
+                Console.WriteLine(e1.ToString());
             }
         }
         if (response.Contains("$currentrequester"))
@@ -2475,7 +2428,7 @@ public class TwitchBot
             catch (Exception e1)
             {
                 Utils.errorReport(e1);
-                Debug.WriteLine(e1.ToString());
+                Console.WriteLine(e1.ToString());
             }
         }
         if (response.Contains("$randomuser"))
@@ -2837,5 +2790,5 @@ public class TwitchBot
         }
         return null;
     }
-    
+
 }

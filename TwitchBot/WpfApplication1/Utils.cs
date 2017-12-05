@@ -6,20 +6,65 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 public class Utils
 {
     public static String version = "2.12.1"; // UPDATE AS NECESSARY
     public static String releaseDate = "7/17/2017"; // UPDATE AS NECESSARY
-    public static String clientID = "c203ik5st5i3kde6amsageei2snaj1v";
+    public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
-    public static String songlistfile = @"bin\song.txt";
     public static String currentSongFile = @"bin\currentsong.txt";
     public static String currentRequesterFile = @"bin\currentrequester.txt";
-    public static String templistfile = @"bin\temp.txt";
-    public static String userDataFile = @"bin\userData.json"; // TODO : FIX!
+    public static String userDataFile = @"bin\userData.json";
     public static String lastPlayedSongsFile = Path.GetTempPath() + "lastsongsplayed.txt";
+    public static String songListFile = @"bin\songList.json";
+    public static String googleApiKey = "AIzaSyDU4bPym2G64rrPgk7B9a5L6LWtIyLhFQg";
+
+    public static int getDurationOfVideoInSeconds(String time)
+    {
+        TimeSpan youTubeDuration = System.Xml.XmlConvert.ToTimeSpan(time);
+        return (youTubeDuration.Hours * 3600) + (youTubeDuration.Minutes * 60) + youTubeDuration.Seconds;
+    }
+
+    public static List<Song> loadSongs()
+    {
+        try
+        {
+            using (StreamReader r = new StreamReader(songListFile))
+            {
+                string json = r.ReadToEnd();
+                List<Song> list = JsonConvert.DeserializeObject<List<Song>>(json);
+                if (list == null)
+                {
+                    list = new List<Song>();
+                }
+                return list;
+            }
+        }
+        catch (Exception e)
+        {
+            errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+        return new List<Song>();
+    }
+
+    public static void saveSongs(List<Song> songs)
+    {
+        try
+        {
+            string json = JsonConvert.SerializeObject(songs, Formatting.Indented);
+            using (StreamWriter sw = new StreamWriter(songListFile))
+            {
+                sw.Write(json);
+            }
+        }
+        catch (Exception e)
+        {
+            errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+    }
 
     public static TwitchBot loadData()
     {
@@ -29,7 +74,11 @@ public class Utils
         }
         try
         {
-            return JsonConvert.DeserializeObject<dynamic>(userDataFile);
+            using (StreamReader r = new StreamReader(userDataFile))
+            {
+                string json = r.ReadToEnd();
+                return JsonConvert.DeserializeObject<TwitchBot>(json);
+            }
         }
         catch (Exception e)
         {
@@ -41,14 +90,20 @@ public class Utils
 
     public static void saveData(TwitchBot twitchBot)
     {
-        JsonSerializer serializer = new JsonSerializer();
-        serializer.Converters.Add(new JavaScriptDateTimeConverter());
-        serializer.NullValueHandling = NullValueHandling.Ignore;
-        using (StreamWriter sw = new StreamWriter(userDataFile))
-        using(JsonWriter writer = new JsonTextWriter(sw))
+        try
         {
-            serializer.Serialize(writer, twitchBot);
+            string json = JsonConvert.SerializeObject(twitchBot, Formatting.Indented);
+            using (StreamWriter sw = new StreamWriter(userDataFile))
+            {
+                sw.Write(json);
+            }
         }
+        catch (Exception e)
+        {
+            errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+        saveSongs(twitchBot.requestSystem.songList);
     }
 
     public static void copyFile(String f1, String f2)
@@ -69,9 +124,8 @@ public class Utils
         StreamWriter output;
         try
         {
-            output = new StreamWriter("errorlog.txt", true);
-            output.Write(getDate() + " " + getTime() + " - DudeBot " + version + " Error : " + e + "\r");
-            output.Write(e.ToString() + "\r");
+            output = new StreamWriter(@"bin\errorlog.txt", true);
+            output.Write(getDate() + " " + getTime() + " - DudeBot " + version + " Error : " + e + "\r\r\r");
             output.Close();
         }
         catch (IOException e1)
@@ -82,7 +136,7 @@ public class Utils
 
     public static String getDate()
     {
-        return DateTime.Now.ToString("dd/mm/yyyy");
+        return DateTime.Now.ToString("MM/dd/yyyy");
     }
 
     public static String getTime()
@@ -398,12 +452,17 @@ public class Utils
         return false;
     }
 
-    public static String callURL(String uri) // TODO : TEST!
+    public static String callURL(String uri) // TODO : FIX!
     {
         try
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            if (uri.ToLower().Contains("kraken"))
+            {
+                request.Headers.Add("Client-ID", twitchClientID);
+            }
+            request.AutomaticDecompression = DecompressionMethods.GZip;
+
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             using (Stream stream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(stream))
@@ -411,8 +470,10 @@ public class Utils
                 return reader.ReadToEnd();
             }
         }
-        catch (Exception)
+        catch (Exception e1)
         {
+            errorReport(e1);
+            Debug.WriteLine(e1.ToString());
             return "";
         }
     }

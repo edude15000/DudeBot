@@ -1,0 +1,200 @@
+12/01/2017 10:55:31 AM - DudeBot 2.12.1 Error : System.IO.FileNotFoundException: Could not find file 'C:\git\DudeBotWorkspace\DudeBot\bin\songList.json'.
+File name: 'C:\git\DudeBotWorkspace\DudeBot\bin\songList.json'
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   at System.IO.StreamReader..ctor(String path)
+   at Utils.loadSongs() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 3512/01/2017 10:55:32 AM - DudeBot 2.12.1 Error : System.IO.IOException: The file 'C:\Users\Evan Snitkey\AppData\Local\Temp\dudebotupdater.exe' already exists.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at Utils.copyFile(String f1, String f2) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 11512/01/2017 10:55:37 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:55:37 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:55:43 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:55:43 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:55:48 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:55:48 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:55:54 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:55:54 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:00 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:00 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:05 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:05 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:11 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:11 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:17 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:17 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:22 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:22 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:28 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:28 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:33 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:33 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:39 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:39 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:45 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:45 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:50 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:50 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:56:56 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:56:56 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:01 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:01 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:05 AM - DudeBot 2.12.1 Error : System.IO.IOException: The file 'C:\Users\Evan Snitkey\AppData\Local\Temp\dudebotupdater.exe' already exists.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at Utils.copyFile(String f1, String f2) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 11512/01/2017 10:57:07 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:07 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:11 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:11 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:13 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:13 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:16 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:16 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:18 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:18 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:22 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:22 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:24 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:24 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:28 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:28 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:29 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:29 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:33 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:33 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:35 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:35 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:39 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:39 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:41 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:41 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:44 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:44 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 231112/01/2017 10:57:46 AM - DudeBot 2.12.1 Error : System.Net.WebException: The remote server returned an error: (400) Bad Request.
+   at System.Net.HttpWebRequest.GetResponse()
+   at Utils.callURL(String uri) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 46812/01/2017 10:57:46 AM - DudeBot 2.12.1 Error : System.ArgumentException: Can not add Newtonsoft.Json.Linq.JValue to Newtonsoft.Json.Linq.JObject.
+   at Newtonsoft.Json.Linq.JObject.ValidateToken(JToken o, JToken existing)
+   at Newtonsoft.Json.Linq.JContainer.InsertItem(Int32 index, JToken item, Boolean skipParentCheck)
+   at Newtonsoft.Json.Linq.JContainer.AddInternal(Int32 index, Object content, Boolean skipParentCheck)
+   at TwitchBot.getHostList() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 2311

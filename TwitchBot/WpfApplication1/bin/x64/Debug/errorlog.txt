@@ -1,3 +1,0 @@
-27/32/2017 00:32:11 AM - DudeBot 2.12.1 Error : System.NullReferenceException: Object reference not set to an instance of an object.
-   at WpfApplication1.MainWindow.killBot(Object sender, RoutedEventArgs e) in C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\MainWindow.xaml.cs:line 180System.NullReferenceException: Object reference not set to an instance of an object.
-   at WpfApplication1.MainWindow.killBot(Object sender, RoutedEventArgs e) in C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\MainWindow.xaml.cs:line 180

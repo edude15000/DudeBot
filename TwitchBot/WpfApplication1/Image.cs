@@ -1,14 +1,19 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
 public class Image
 {
-    public long imageStartTime = (long)0, imageOverallCoolDown, imageCoolDown;
-    public int imageDisplayTimeSeconds;
-    public Boolean openImageWindowOnStart;
-    public Dictionary<String, long> userCoolDowns = new Dictionary<String, long>();
+    [JsonIgnore]
+    public long imageStartTime { get; set; } = (long)0;
+    public long imageOverallCoolDown { get; set; }
+    public long imageCoolDown { get; set; }
+    public int imageDisplayTimeSeconds { get; set; }
+    public Boolean openImageWindowOnStart { get; set; }
+    [JsonIgnore]
+    public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
     public void imageCOMMANDS(String message, String channel, String sender, List<Command> comList)
     {

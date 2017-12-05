@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\x64\Release\
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\
 DudeBot
 none
 false
 TRACE
-C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\App.xaml
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\App.xaml
 3-1260861683
 
-19405046943
-29-570340845
+201561790655
+98695582974
 MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;
 
 False

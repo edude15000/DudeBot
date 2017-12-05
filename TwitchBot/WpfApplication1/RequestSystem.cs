@@ -1,4 +1,5 @@
 ﻿using Google.Apis.YouTube.v3.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,16 +7,47 @@ using System.IO;
 
 public class RequestSystem
 {
+    [JsonIgnore]
     public TwitchBot bot;
-    public Boolean vipSongToggle, mustFollowToRequest, requestsTrigger, displayIfUserIsHere, displayOneLine, whisperToUser,
-            direquests, ylrequests, maxSongLength, doNotWriteToHistory = false;
-    public String subOnlyRequests, lastSong;
-    public int maxSonglistLength, numOfSongsToDisplay, numOfSongsInQueuePerUser, maxSongLengthInMinutes;
-    public String[] favSongs, bannedKeywords;
-    public List<String> favSongsPlayedThisStream = new List<String>();
-    public Command requestComm, songlistComm, getTotalComm, editComm, nextComm, addvipComm, addtopComm, adddonatorComm,
-            getCurrentComm, clearComm, triggerRequestsComm, backupRequestAddComm, getNextComm, randomComm, favSongComm,
-            editSongComm, removeSongComm, songPositionComm;
+    public Boolean vipSongToggle { get; set; }
+    public Boolean mustFollowToRequest { get; set; }
+    public Boolean requestsTrigger { get; set; }
+    public Boolean displayIfUserIsHere { get; set; }
+    public Boolean displayOneLine { get; set; }
+    public Boolean whisperToUser { get; set; }
+    public Boolean direquests { get; set; }
+    public Boolean ylrequests { get; set; }
+    public Boolean maxSongLength { get; set; }
+    public Boolean doNotWriteToHistory { get; set; } = false;
+    public String subOnlyRequests { get; set; }
+    public String lastSong { get; set; }
+    public String formattedTotalTime { get; set; } = "";
+    public int maxSonglistLength { get; set; }
+    public int numOfSongsToDisplay { get; set; }
+    public int numOfSongsInQueuePerUser { get; set; }
+    public int maxSongLengthInMinutes { get; set; }
+    public String[] favSongs { get; set; }
+    public String[] bannedKeywords { get; set; }
+    public List<String> favSongsPlayedThisStream { get; set; } = new List<String>();
+    public Command requestComm { get; set; }
+    public Command songlistComm { get; set; }
+    public Command getTotalComm { get; set; }
+    public Command editComm { get; set; }
+    public Command nextComm { get; set; }
+    public Command addvipComm { get; set; }
+    public Command addtopComm { get; set; }
+    public Command adddonatorComm { get; set; }
+    public Command getCurrentComm { get; set; }
+    public Command clearComm { get; set; }
+    public Command triggerRequestsComm { get; set; }
+    public Command backupRequestAddComm { get; set; }
+    public Command getNextComm { get; set; }
+    public Command randomComm { get; set; }
+    public Command favSongComm { get; set; }
+    public Command editSongComm { get; set; }
+    public Command removeSongComm { get; set; }
+    public Command songPositionComm { get; set; }
+    public List<Song> songList { get; set; } = new List<Song>();
 
     public int getNumRequests(String sender)
     {
@@ -40,89 +72,32 @@ public class RequestSystem
                     bot.client.SendMessage("You can only give another user your spot once per stream!");
                     return;
                 }
-                try
+                if (Int32.Parse(getNumberOfSongs()) == 0)
                 {
-                    StreamReader br = new StreamReader(Utils.songlistfile);
-                    String line, line2;
-                    int count = 1;
-                    Boolean noSong = false;
-                    if (Int32.Parse(getNumberOfSongs()) == 0)
+                    bot.client.SendMessage("You have no requests in the list, " + sender + "!");
+                    return;
+                }
+                for (int i = 0; i < songList.Count; i++)
+                {
+                    if (songList[i].requester.Equals(sender, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        bot.client.SendMessage("You have no requests in the list, " + sender + "!");
-                        return;
-                    }
-                    String toWrite = "";
-                    while ((line = br.ReadLine()) != null)
-                    {
-                        if (line.Contains(sender))
-                        {
-                            if (line.StartsWith("$$$"))
-                            {
-                                toWrite = "$$$\t";
-                            }
-                            else if (line.StartsWith("VIP\t"))
-                            {
-                                toWrite = "VIP\t";
-                            }
-                            noSong = false;
-                            line2 = line;
-                            break;
-                        }
-                        else
-                        {
-                            noSong = true;
-                        }
-                        count++;
-                    }
-                    br.Close();
-                    if (!noSong)
-                    {
-                        StreamWriter StreamWriter = new StreamWriter(Utils.templistfile); // TODO
-                        StreamReader reader = new StreamReader(Utils.songlistfile);
-                        for (int i = 0; i < count - 1; i++)
-                        {
-                            StreamWriter.Write(reader.ReadLine() + "\r");
-                        }
                         String newUser = Utils.getFollowingText(message);
                         if (newUser.Contains("@"))
                         {
                             newUser = newUser.Replace("@", "");
                         }
-                        StreamWriter.Write(toWrite + "Place Holder\t(" + newUser + ")\r");
-                        String previousSong = reader.ReadLine();
-                        while ((line2 = reader.ReadLine()) != null)
-                        {
-                            StreamWriter.Write(line2 + "\r");
-                        }
-                        StreamWriter.Close();
-                        reader.Close();
-
-                        clear(channel, Utils.songlistfile);
-
-                        Utils.copyFile(Utils.templistfile, Utils.songlistfile); // TODO
-
-                        clear(channel, Utils.templistfile); // TODO
-                        if (previousSong.StartsWith("$$$\t") || previousSong.StartsWith("VIP\t"))
-                        {
-                            previousSong = previousSong.Substring(previousSong.IndexOf(' ') + 1);
-                        }
+                        String previousSong = songList[i].name;
+                        songList[i].requester = newUser;
+                        songList[i].name = "Place Holder";
                         bot.client.SendMessage("Your next request '" + previousSong
-                                + "' has been changed to 'Place Holder' FOR " + newUser.ToLower() + "!");
+                           + "' has been changed to 'Place Holder' FOR " + newUser.ToLower() + "!");
                         u.gaveSpot = true;
                         return;
                     }
-                    else
-                    {
-                        bot.client.SendMessage("You have no regular requests in the list, "
-                                + sender + "!");
-                        return;
-                    }
                 }
-                catch (Exception e)
-                {
-                    Utils.errorReport(e);
-                    Debug.WriteLine(e.ToString());
-                }
+                bot.client.SendMessage("You have no regular requests in the list, "
+                        + sender + "!");
+                return;
             }
         }
     }
@@ -175,24 +150,12 @@ public class RequestSystem
     public List<Int32> checkPosition(String message, String channel, String sender)
     {
         List<Int32> songs = new List<Int32>();
-        try
+        for (int i = 0; i < songList.Count; i++)
         {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            String line;
-            int count = 0;
-            while ((line = br.ReadLine()) != null)
+            if (songList[i].requester.Equals(sender, StringComparison.InvariantCultureIgnoreCase))
             {
-                if (line.Contains("(" + sender + ")"))
-                {
-                    songs.Add(count);
-                }
-                count++;
+                songs.Add(i);
             }
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
         }
         return songs;
     }
@@ -307,109 +270,24 @@ public class RequestSystem
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            StreamWriter output;
-            output = new StreamWriter(Utils.songlistfile, true);
-            output.Write("$$$\t" + song + "\t(" + requestedby + ")\r");
-            output.Close();
+            songList.Add(new Song(song, requestedby, "$$$", bot));
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            try
-            {
-                StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
-                Utils.copyFile(Utils.songlistfile, Utils.templistfile); // TODO
-                String line2 = br2.ReadLine();
-                StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                if (line2.StartsWith("VIP\t"))
-                {
-                    line2 = line2.Replace("VIP", "$$$");
-                    StreamWriter.Write(line2 + "\r");
-                }
-                else if (line2.StartsWith("$$$\t"))
-                {
-                    StreamWriter.Write(line2 + "\r");
-                }
-                else
-                {
-                    StreamWriter.Write("$$$\t" + line2 + "\r");
-                }
-                br2.ReadLine();
-                StreamWriter.Write("$$$\t" + song + "\t(" + requestedby + ")\r");
-                clear(channel, Utils.templistfile); // TODO
-                br2.Close();
-                StreamWriter.Close();
-            }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
-            }
+            songList[0].level = "$$$";
+            songList.Add(new Song(song, requestedby, "$$$", bot));
         }
         else
         {
-            try
+            for (int i = 1; i < songList.Count; i++)
             {
-                StreamReader br3 = new StreamReader(Utils.templistfile); // TODO
-                Utils.copyFile(Utils.songlistfile, Utils.templistfile);// TODO
-                String line2, line3, line4;
-                line4 = br3.ReadLine();
-                br3.Close();
-                if (line4.StartsWith("$$$\t"))
+                if (!songList[i].level.Equals("$$$"))
                 {
-                    StreamReader br = new StreamReader(Utils.templistfile);// TODO
-                    StreamReader br2 = new StreamReader(Utils.templistfile);// TODO
-                    StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                    int count = 0;
-                    while ((line2 = br.ReadLine()) != null)
-                    {
-                        if (line2.Contains("$$$\t"))
-                        {
-                            StreamWriter.Write(line2 + "\r");
-                            count++;
-                        }
-                    }
-                    StreamWriter.Write("$$$\t" + song + "\t(" + requestedby + ")\r");
-                    for (int i = 0; i < count; i++)
-                    {
-                        br2.ReadLine();
-                    }
-                    while ((line3 = br2.ReadLine()) != null)
-                    {
-                        StreamWriter.Write(line3 + "\r");
-                    }
-                    clear(channel, Utils.templistfile);// TODO
-                    br.Close();
-                    br2.Close();
-                    StreamWriter.Close();
-                }
-                else
-                {
-                    StreamReader br = new StreamReader(Utils.templistfile);// TODO
-                    StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                    line2 = br.ReadLine();
-                    if (line2.Contains("VIP\t"))
-                    {
-                        StreamWriter.Write(line2.Replace("VIP", "$$$") + "\r");
-                    }
-                    else
-                    {
-                        StreamWriter.Write("$$$\t" + line2 + "\r");
-                    }
-                    StreamWriter.Write("$$$\t" + song + "\t(" + requestedby + ")\r");
-                    while ((line2 = br.ReadLine()) != null)
-                    {
-                        StreamWriter.Write(line2 + "\r");
-                    }
-                    clear(channel, Utils.templistfile);// TODO
-                    br.Close();
-                    StreamWriter.Close();
+                    songList.Insert(i, new Song(song, requestedby, "$$$", bot));
+                    return;
                 }
             }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
-            }
+            songList.Add(new Song(song, requestedby, "$$$", bot));
         }
     }
 
@@ -430,65 +308,25 @@ public class RequestSystem
 
     public void removeRequesterSong(String message, String channel, String sender)
     {
-        try
+        if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            String line, line2;
-            int count = 1;
-            Boolean noSong = false;
-            if (Int32.Parse(getNumberOfSongs()) == 0)
+            bot.client.SendMessage("You have no regular requests in the list, " + sender + "!");
+            return;
+        }
+        for (int i = 0; i < songList.Count; i++)
+        {
+            if (songList[i].requester.Equals(sender, StringComparison.InvariantCultureIgnoreCase))
             {
-                bot.client.SendMessage("You have no regular requests in the list, " + sender + "!");
+                String songToDelete = songList[i].name;
+                songList.RemoveAt(i);
+                bot.client.SendMessage("Your next request '"
+                    + songToDelete.Substring(0, songToDelete.LastIndexOf("\t")) + "' has been removed, " + sender
+                    + "!");
+                bot.addUserRequestAmount(sender, false);
                 return;
             }
-            while ((line = br.ReadLine()) != null)
-            {
-                if (line.Contains("(" + sender + ")"))
-                {
-                    noSong = false;
-                    line2 = line;
-                    break;
-                }
-                else
-                {
-                    noSong = true;
-                }
-                count++;
-            }
-            br.Close();
-            if (!noSong)
-            {
-                StreamWriter StreamWriter = new StreamWriter(Utils.templistfile);
-                StreamReader reader = new StreamReader(Utils.songlistfile);
-                for (int i = 0; i < count - 1; i++)
-                {
-                    StreamWriter.Write(reader.ReadLine() + "\r");
-                }
-                String songToDelete = reader.ReadLine();
-                while ((line2 = reader.ReadLine()) != null)
-                {
-                    StreamWriter.Write(line2 + "\r");
-                }
-                StreamWriter.Close();
-                reader.Close();
-                clear(channel, Utils.songlistfile);
-                Utils.copyFile(Utils.templistfile, Utils.songlistfile);
-                clear(channel, Utils.templistfile);
-                bot.client.SendMessage("Your next request '"
-                        + songToDelete.Substring(0, songToDelete.LastIndexOf("\t")) + "' has been removed, " + sender
-                        + "!");
-                bot.addUserRequestAmount(sender, false);
-            }
-            else
-            {
-                bot.client.SendMessage("You have no requests in the list, " + sender + "!");
-            }
         }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
+        bot.client.SendMessage("You have no requests in the list, " + sender + "!");
     }
 
     public void editMySongCOMMAND(String message, String channel, String sender)
@@ -524,103 +362,29 @@ public class RequestSystem
 
     public void editRequesterSong(String message, String channel, String sender)
     {
-        try
+        if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            String line, line2;
-            int count = 1;
-            Boolean noSong = false;
-            Boolean writeVIP = false, writeDon = false;
-            if (Int32.Parse(getNumberOfSongs()) == 0)
+            bot.client.SendMessage("You have no requests in the list, " + sender + "!");
+            return;
+        }
+        for (int i = 0; i < songList.Count; i++)
+        {
+            if (songList[i].requester.Equals(sender, StringComparison.InvariantCultureIgnoreCase))
             {
-                bot.client.SendMessage("You have no requests in the list, " + sender + "!");
+                if (i == 1)
+                {
+                    if (!Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users)
+                        && !sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) && !sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.client.SendMessage("Your song is currently playing. Please have a mod edit it, " + sender + "!");
+                        return;
+                    }
+                }
+                songList[i].name = Utils.getFollowingText(message);
                 return;
             }
-            while ((line = br.ReadLine()) != null)
-            {
-                if (line.Contains(sender))
-                {
-                    if (count == 1)
-                    {
-                        if (!Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users)
-                                && !sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) && !sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            bot.client.SendMessage("Your song is currently playing. Please have a mod edit it, " + sender + "!");
-                            return;
-                        }
-                    }
-                    if (line.Contains("VIP\t"))
-                    {
-                        writeVIP = true;
-                    }
-                    if (line.Contains("$$$\t"))
-                    {
-                        writeDon = true;
-                    }
-                    noSong = false;
-                    line2 = line;
-                    break;
-                }
-                else
-                {
-                    noSong = true;
-                }
-                count++;
-            }
-            br.Close();
-            if (!noSong)
-            {
-                StreamWriter StreamWriter = new StreamWriter(Utils.templistfile);
-                StreamReader reader = new StreamReader(Utils.songlistfile);
-                for (int i = 0; i < count - 1; i++)
-                {
-                    StreamWriter.Write(reader.ReadLine() + "\r");
-                }
-                if (writeDon)
-                {
-                    StreamWriter.Write("$$$\t" + Utils.getFollowingText(message) + "\t(" + sender + ")\r");
-                }
-                else if (writeVIP)
-                {
-                    StreamWriter.Write("VIP\t" + Utils.getFollowingText(message) + "\t(" + sender + ")\r");
-                }
-                else
-                {
-                    StreamWriter.Write(Utils.getFollowingText(message) + "\t(" + sender + ")\r");
-                }
-                String previousSong = reader.ReadLine();
-                while ((line2 = reader.ReadLine()) != null)
-                {
-                    StreamWriter.Write(line2 + "\r");
-                }
-                StreamWriter.Close();
-                reader.Close();
-                clear(channel, Utils.songlistfile);
-                Utils.copyFile(Utils.templistfile, Utils.songlistfile);
-                clear(channel, Utils.templistfile);
-                if (previousSong.StartsWith("VIP\t"))
-                {
-                    previousSong = previousSong.Replace("VIP\t", "");
-                }
-                if (previousSong.StartsWith("$$$\t"))
-                {
-                    previousSong = previousSong.Replace("$$$\t", "");
-                }
-                bot.client.SendMessage("Your next request '"
-                        + previousSong.Substring(0, previousSong.LastIndexOf("\t")) + "' has been changed to '"
-                        + Utils.getFollowingText(message) + "', " + sender + "!");
-                writeToCurrentSong(channel, false);
-            }
-            else
-            {
-                bot.client.SendMessage("You have no requests in the list, " + sender + "!");
-            }
         }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
+        bot.client.SendMessage("You have no requests in the list, " + sender + "!");
     }
 
     public void chooseRandomFavorite(String message, String channel, String sender)
@@ -746,29 +510,7 @@ public class RequestSystem
         }
         else
         {
-            String line = "";
-            try
-            {
-                StreamReader br = new StreamReader(Utils.songlistfile);
-                br.ReadLine();
-                if ((line = br.ReadLine()) != null)
-                {
-                    if (line.Contains("VIP\t") || line.Contains("$$$\t"))
-                    {
-                        line = line.Substring(line.IndexOf("\t") + 1, line.Length);
-                    }
-                    else
-                    {
-                        line = line.Substring(0, line.Length);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
-            }
-            return "Next up: " + line;
+            return "Next up: " + songList[1].name;
         }
     }
 
@@ -788,104 +530,22 @@ public class RequestSystem
 
     public void randomizer(String channel)
     {
-        String line, line2, line3 = "";
-        Boolean writeVIP = false;
         if (Int32.Parse(getNumberOfSongs()) > 2)
         {
             Random rand = new Random();
             int randInt = rand.Next(Int32.Parse(getNumberOfSongs()) - 1) + 1;
-            try
+            Song s = songList[randInt];
+            songList.RemoveAt(randInt);
+            if (songList[1].level.Equals("VIP"))
             {
-                StreamReader br = new StreamReader(Utils.songlistfile);
-                for (int i = 0; i < randInt; i++)
-                {
-                    line = br.ReadLine();
-                    if (i == 0)
-                    {
-                        line3 = line.Substring(line.IndexOf("("));
-                    }
-                    if (i == 1 && ((line.StartsWith("VIP\t")) || (line.StartsWith("$$$\t"))))
-                    {
-                        writeVIP = true;
-                    }
-                }
-                line = br.ReadLine();
-                br.Close();
-                if (line.Contains(line3))
-                {
-                    writeVIP = false;
-                    randInt = rand.Next(Int32.Parse(getNumberOfSongs()) - 1) + 1;
-                    StreamReader secondReader = new StreamReader(Utils.songlistfile);
-                    for (int i = 0; i < randInt; i++)
-                    {
-                        line = secondReader.ReadLine();
-                        if (i == 1 && ((line.StartsWith("VIP\t")) || (line.StartsWith("$$$\t"))))
-                        {
-                            writeVIP = true;
-                        }
-                    }
-                    line = secondReader.ReadLine();
-                    secondReader.Close();
-                }
-                Utils.copyFile(Utils.songlistfile, Utils.templistfile);
-                StreamReader br2 = new StreamReader(Utils.templistfile);
-                StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                if (writeVIP == true)
-                {
-                    if (line.StartsWith("VIP\t") || line.StartsWith("$$$\t"))
-                    {
-                        if (line.StartsWith("$$$\t"))
-                        {
-                            StreamWriter.Write(line + "\r");
-                        }
-                        else
-                        {
-                            String line4 = line.Replace("VIP", "$$$");
-                            StreamWriter.Write(line4 + "\r");
-                        }
-                    }
-                    else
-                    {
-                        StreamWriter.Write("$$$\t" + line + "\r");
-                    }
-                }
-                else
-                {
-                    if (line.StartsWith("$$$\t"))
-                    {
-                        StreamWriter.Write(line + "\r");
-                    }
-                    else
-                    {
-                        StreamWriter.Write("$$$\t" + line + "\r");
-                    }
-                }
-                br2.ReadLine();
-                while ((line2 = br2.ReadLine()) != null)
-                {
-                    if (!line2.Equals(line))
-                    {
-                        StreamWriter.Write(line2 + "\r");
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                while ((line2 = br2.ReadLine()) != null)
-                {
-                    StreamWriter.Write(line2 + "\r");
-                }
-                StreamWriter.Close();
-                br2.Close();
-                clear(channel, Utils.templistfile);
-                bot.client.SendMessage(getNextSong(channel));
+                s.level = "VIP";
             }
-            catch (Exception e)
+            if (songList[1].level.Equals("$$$"))
             {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
+                s.level = "$$$";
             }
+            songList[0] = s;
+            bot.client.SendMessage(getNextSong(channel));
         }
         else
         {
@@ -920,41 +580,26 @@ public class RequestSystem
     {
         StreamWriter output;
         output = new StreamWriter(Utils.currentSongFile, false);
-        String line = getCurrentSongTitle(channel);
-        if (line.StartsWith("VIP\t") || line.StartsWith("$$$\t"))
-        {
-            if (line.Contains("\t"))
-            {
-                line = line.Substring(line.IndexOf("\t") + 1, line.LastIndexOf("\t"));
-            }
-        }
-        else
-        {
-            if (line.Contains("\t"))
-            {
-                line = line.Substring(0, line.IndexOf("\t"));
-            }
-        }
-        output.Write(line);
+        output.Write(getCurrentSongTitle(channel));
+        output = new StreamWriter(Utils.currentRequesterFile, false);
+        output.Write(getCurrentSongRequester(channel));
         output.Close();
-
-        StreamWriter output2;
-        output2 = new StreamWriter(Utils.currentRequesterFile, false);
-        String line2 = getCurrentSongTitle(channel);
-        if (line2.Contains("\t"))
-        {
-            line2 = line2.Substring(line2.LastIndexOf("\t") + 2, line2.Length - 1);
-        }
-        if (line2.Equals("Song list is empty"))
-        {
-            line2 = "";
-        }
-        output2.Write(line2);
-        output2.Close();
         if (bot.spreadsheetId != null)
         {
-            bot.google.writeToGoogleSheets(nextCom, Utils.songlistfile, Utils.lastPlayedSongsFile);
+            bot.google.writeToGoogleSheets(nextCom, songList);
         }
+        formattedTotalTime = formatTotalTime();
+        Utils.saveSongs(songList);
+    }
+
+    public String formatTotalTime()
+    {
+        int totalSeconds = 0;
+        foreach (Song s in songList)
+        {
+            totalSeconds += s.durationInSeconds;
+        }
+        return TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss");
     }
 
     public void clear(String channel, String file)
@@ -1039,7 +684,8 @@ public class RequestSystem
                 {
                     try
                     {
-                        clear(channel, Utils.songlistfile);
+                        clear(channel, Utils.songListFile);
+                        songList.Clear();
                         bot.client.SendMessage("Song list has been cleared!");
                         writeToCurrentSong(channel, false);
                     }
@@ -1055,30 +701,12 @@ public class RequestSystem
 
     public void decrementUsersOnClear()
     {
-        String line;
-        int i = 0;
-        String user = "";
-        try
+        for (int i = 0; i < songList.Count; i++)
         {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            while ((line = br.ReadLine()) != null)
+            if (i != 0)
             {
-                if (i != 0)
-                {
-                    user = line.Substring(line.LastIndexOf('\t')).Trim();
-                    user = user.Replace(")", "");
-                    user = user.Replace("(", "");
-                    bot.addUserRequestAmount(user, false);
-                }
-                i++;
+                bot.addUserRequestAmount(songList[i].requester, false);
             }
-            bot.read();
-            br.Close();
-        }
-        catch (IOException e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
         }
     }
 
@@ -1143,47 +771,19 @@ public class RequestSystem
         }
         else
         {
-            Utils.copyFile(Utils.songlistfile, Utils.templistfile);
-            StreamReader br = new StreamReader(Utils.templistfile);
-            br.ReadLine();
-            String line, song = "";
-            Boolean check = false;
-            while ((line = br.ReadLine()) != null)
+            for (int i = 0; i < songList.Count; i++)
             {
-                if (!line.StartsWith("$$$\t") && !line.StartsWith("VIP\t"))
+                if (songList[i].level.Equals(""))
                 {
-                    song = line;
-                    check = true;
-                    break;
+                    Song s = songList[i];
+                    songList.RemoveAt(i);
+                    s.level = "$$$";
+                    songList.Insert(0, s);
+                    bot.client.SendMessage(getNextSong(channel));
+                    return;
                 }
             }
-            br.Close();
-            if (check)
-            {
-                clear(channel, Utils.songlistfile);
-                StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                StreamWriter.Write("$$$\t" + line + "\r");
-                StreamReader br2 = new StreamReader(Utils.templistfile);
-                br2.ReadLine();
-                while ((line = br2.ReadLine()) != null)
-                {
-                    if (!line.Equals(song))
-                    {
-                        StreamWriter.Write(line + "\r");
-                    }
-                }
-                StreamWriter.Close();
-                br2.Close();
-                bot.client.SendMessage(getNextSong(channel));
-                return;
-            }
-            else
-            {
-                Utils.copyFile(Utils.templistfile, Utils.songlistfile);
-                nextSongAuto(channel, true);
-                clear(channel, Utils.templistfile);
-                return;
-            }
+            nextSongAuto(channel, true);
         }
     }
 
@@ -1572,7 +1172,7 @@ public class RequestSystem
                 }
                 if (!commList.Equals(""))
                 {
-                    commList = commList.Substring(1, commList.Length);
+                    commList = commList.Substring(1, commList.Length - 1);
                 }
                 if (temp.Equals(requestComm.input[i]))
                 {
@@ -1828,31 +1428,16 @@ public class RequestSystem
         {
             return "Song list is empty";
         }
-        else
+        return songList[0].name;
+    }
+
+    public String getCurrentSongRequester(String channel)
+    {
+        if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            String line = "";
-            try
-            {
-                StreamReader br = new StreamReader(Utils.songlistfile);
-                if ((line = br.ReadLine()) != null)
-                {
-                    if (line.StartsWith("VIP\t") || line.StartsWith("$$$\t"))
-                    {
-                        line = line.Substring(line.IndexOf("\t") + 1, line.Length);
-                    }
-                    else
-                    {
-                        line = line.Substring(0, line.Length);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
-            }
-            return line;
+            return "Song list is empty";
         }
+        return songList[0].requester;
     }
 
     public void songlist(String channel, String text)
@@ -1863,56 +1448,25 @@ public class RequestSystem
         }
         if (!displayOneLine)
         {
-            try
+            for (int i = 0; i < songList.Count; i++)
             {
-                StreamReader br = new StreamReader(Utils.songlistfile);
-                String line;
-                String temp = "";
-                int count = 1;
-                bot.client.SendMessage(text);
-                while ((line = br.ReadLine()) != null)
+                if (i < numOfSongsToDisplay)
                 {
-                    if (count < numOfSongsToDisplay + 1)
-                    {
-                        temp = count + ". " + line + " ";
-                        bot.client.SendMessage(temp);
-                        count++;
-                    }
+                    bot.client.SendMessage((i + 1) + ". " + songList[i].level + " " + songList[i].name + " (" + songList[i].requester + ")");
                 }
-                br.Close();
-            }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
             }
         }
         else
         {
-            String temp2 = "";
-            try
+            String temp = "";
+            for (int i = 0; i < songList.Count; i++)
             {
-                StreamReader br = new StreamReader(Utils.songlistfile);
-                String line;
-                String temp = "";
-                int count = 1;
-                while ((line = br.ReadLine()) != null)
+                if (i < numOfSongsToDisplay)
                 {
-                    if (count < numOfSongsToDisplay + 1)
-                    {
-                        temp = count + ". " + line + " ";
-                        temp2 += temp;
-                        count++;
-                    }
+                    temp += (i + 1) + ". " + songList[i].level + " " + songList[i].name + " (" + songList[i].requester + ") ";
                 }
-                bot.client.SendMessage(text + " " + temp2);
-                br.Close();
             }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
-            }
+            bot.client.SendMessage(text + " " + temp);
         }
     }
 
@@ -1927,175 +1481,65 @@ public class RequestSystem
             if (!doNotWriteToHistory)
             {
                 lastSong = getCurrentSongTitle(channel);
-
                 appendToLastSongs(channel, lastSong);
             }
-            Utils.copyFile(Utils.songlistfile, Utils.templistfile);
             doNotWriteToHistory = false;
-            try
-            {
-                StreamReader br = new StreamReader(Utils.templistfile); // TODO
-                br.ReadLine();
-                String line;
-                StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                while ((line = br.ReadLine()) != null)
-                {
-                    StreamWriter.Write(line + "\r");
-                }
-                br.Close();
-                clear(channel, Utils.templistfile); // TODO
-                StreamWriter.Close();
-            }
-            catch (Exception e)
-            {
-                Utils.errorReport(e);
-                Debug.WriteLine(e.ToString());
-            }
+            songList.RemoveAt(0);
             return true;
         }
     }
 
     public String getNextSong(String channel)
     {
-        String line = null, song = null, requestedby = null;
-        try
-        {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            if ((line = br.ReadLine()) != null)
-            {
-                if (line.StartsWith("$$$\t") || line.StartsWith("VIP\t"))
-                {
-                    song = line.Substring(line.IndexOf("\t") + 1, line.LastIndexOf('\t'));
-                }
-                else
-                {
-                    song = line.Substring(0, line.LastIndexOf('\t'));
-                }
-                requestedby = line.Substring(line.LastIndexOf('\t') + 1, line.Length);
-            }
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
-        if (song == null)
+        if (Int32.Parse(getNumberOfSongs()) == 0)
         {
             return "There are no songs in the queue!";
         }
-        else
+        String song = songList[0].name;
+        String requestedby = songList[0].requester;
+        if (displayIfUserIsHere)
         {
-            if (displayIfUserIsHere)
+            if (bot.checkIfUserIsHere(requestedby, channel))
             {
-                if (bot.checkIfUserIsHere(requestedby, channel))
+                if (whisperToUser)
                 {
-                    if (whisperToUser)
+                    String toWhisper = requestedby.Substring(1, requestedby.Length - 1);
+                    if (!bot.streamer.ToLower().Equals(toWhisper.ToLower()))
                     {
-                        String toWhisper = requestedby.Substring(1, requestedby.Length - 1);
-                        if (!bot.streamer.ToLower().Equals(toWhisper.ToLower()))
-                        {
-                            bot.client.SendMessage("/w " + toWhisper + " Your request '" + song
-                                    + "' is being played next in " + bot.streamer + "'s stream!");
-                        }
+                        bot.client.SendMessage("/w " + toWhisper + " Your request '" + song
+                                + "' is being played next in " + bot.streamer + "'s stream!");
                     }
-                    return "The next song is: '" + song + "' - " + requestedby + " HERE! :) ";
                 }
-                else
-                {
-                    return "The next song is: '" + song + "' - " + requestedby;
-                }
+                return "The next song is: '" + song + "' - " + requestedby + " HERE! :) ";
             }
             else
             {
                 return "The next song is: '" + song + "' - " + requestedby;
             }
         }
+        else
+        {
+            return "The next song is: '" + song + "' - " + requestedby;
+        }
+
     }
 
     public String getNumberOfSongs()
     {
-        try
-        {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            int count = 0;
-            while ((br.ReadLine()) != null)
-            {
-                count++;
-            }
-            return count.ToString();
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
-        return "0";
+        return songList.Count.ToString();
     }
 
     public Boolean editCurrent(String channel, String newSong, String sender)
     {
-        String line = null, requestedby = null;
-        String prefix = "";
         if ((Int32.Parse(getNumberOfSongs()) == 0))
         {
-            StreamWriter output;
-            output = new StreamWriter(Utils.songlistfile, true);
-            output.Write(newSong + "\t(" + sender + ")\r");
-            output.Close();
+            songList.Add(new Song(newSong, sender, "", bot));
             bot.client.SendMessage("Since there are no songs in the song list, song '" + newSong
                     + "' has been added to the song list, " + sender + "!");
             writeToCurrentSong(channel, false);
             return false;
         }
-        try
-        {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            if ((line = br.ReadLine()) != null)
-            {
-                if (line.StartsWith("VIP\t"))
-                {
-                    prefix = "VIP\t";
-                }
-                else if (line.StartsWith("$$$\t"))
-                {
-                    prefix = "$$$\t";
-                }
-                requestedby = line.Substring(line.LastIndexOf('\t') + 1, line.Length);
-            }
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
-        Utils.copyFile(Utils.songlistfile, Utils.templistfile);
-        try
-        {
-            StreamReader br = new StreamReader(Utils.templistfile); // TODO
-            br.ReadLine();
-            String line2;
-            StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-            if (prefix.Equals(""))
-            {
-                StreamWriter.Write(newSong + "\t" + requestedby + "\r");
-            }
-            else
-            {
-                StreamWriter.Write(prefix + newSong + "\t" + requestedby + "\r");
-            }
-            while ((line2 = br.ReadLine()) != null)
-            {
-                StreamWriter.Write(line2 + "\r");
-            }
-            clear(channel, Utils.templistfile); // TODO
-            StreamWriter.Close();
-            br.Close();
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
+        songList[0].name = newSong;
         writeToCurrentSong(channel, false);
         return true;
     }
@@ -2106,38 +1550,99 @@ public class RequestSystem
         {
             return false;
         }
-        try
+        int count = 0;
+        for (int i = 0; i < songList.Count; i++)
         {
-            StreamReader br = new StreamReader(Utils.songlistfile);
-            String line;
-            int count = 0;
-            while ((line = br.ReadLine()) != null)
+            if (songList[i].requester.Equals(user, StringComparison.InvariantCultureIgnoreCase) && (songList[i].level.Equals("")))
             {
-                if (line.Contains("\t(" + user) && (!line.StartsWith("$$$\t") && (!line.StartsWith("VIP\t"))))
-                {
-                    count++;
-                }
+                count++;
             }
-            if (count >= numOfSongsInQueuePerUser)
-            {
-                return true;
-            }
-            br.Close();
         }
-        catch (Exception e)
+        if (count >= numOfSongsInQueuePerUser)
         {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
+            return true;
         }
         return false;
     }
 
+    public void removeSongCOMMAND(String sender, String channel, String streamer, List<BotUser> users, String message, String temp)
+    {
+        if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+                        || sender.Equals(Utils.botMaker))
+        {
+            int number = -1;
+            try
+            {
+                number = Int32.Parse(Utils.getFollowingText(message));
+                if (Int32.Parse(getNumberOfSongs()) == 0)
+                {
+                    bot.client.SendMessage("The song list is empty, " + sender + "!");
+                    return;
+                }
+                if (Int32.Parse(getNumberOfSongs()) < number || number == 0)
+                {
+                    bot.client.SendMessage("Song #" + number + " does not exist, " + sender + "!");
+                    return;
+                }
+            }
+            catch
+            {
+                bot.client.SendMessage("To remove a song, it must be in the form '!removesong #'");
+                return;
+            }
+            songList.RemoveAt(number);
+            return;
+        }
+    }
+
+    public void promoteSongCommand(String sender, String channel, String streamer, List<BotUser> users, String message)
+    {
+        if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+                    || sender.Equals(Utils.botMaker))
+        {
+            String user = Utils.getFollowingText(message);
+            if (user.Contains("@"))
+            {
+                user = user.Replace("@", "");
+            }
+            for (int j = 0; j < songList.Count; j++)
+            {
+                Song s = songList[j];
+                if (s.requester.Equals(user, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (s.level.Equals("VIP"))
+                    {
+                        songList.RemoveAt(j);
+                        addDonator(channel, s.name, user);
+                        bot.client.SendMessage("VIP Song '" + s.name
+                                + "' has been promoted to $$$, " + sender + "!");
+                        return;
+                    }
+                    else if (s.level.Equals("$$$"))
+                    {
+                        bot.client.SendMessage("Cannot promote a $$$ song any higher, " + sender
+                                + "!");
+                        return;
+                    }
+                    else
+                    {
+                        songList.RemoveAt(j);
+                        bot.requestSystem.addVip(channel, s.name, user);
+                        bot.client.SendMessage("Song '" + s.name + "' has been promoted to VIP, "
+                                + sender + "!");
+                        return;
+                    }
+                }
+            }
+            bot.client.SendMessage(user + " does not have a song in the list, "
+                    + sender + "!");
+            return;
+        }
+    }
+
     public void addSong(String channel, String song, String requestedby)
     {
-        StreamWriter output;
-        output = new StreamWriter(Utils.songlistfile, true);
-        output.Write(song + "\t(" + requestedby + ")\r");
-        output.Close();
+        songList.Add(new Song(song, requestedby, "", bot));
         bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
                 + requestedby + "!");
         bot.addUserRequestAmount(requestedby, true);
@@ -2146,189 +1651,33 @@ public class RequestSystem
 
     public void addTop(String channel, String song, String requestedby)
     {
-        Utils.copyFile(Utils.songlistfile, Utils.templistfile);
-        try
-        {
-            StreamReader br = new StreamReader(Utils.templistfile); // TODO
-            StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
-            String line2;
-            StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-            StreamWriter.Write("$$$\t" + song + "\t(" + requestedby + ")\r");
-            while ((line2 = br.ReadLine()) != null)
-            {
-                StreamWriter.Write(line2 + "\r");
-            }
-            clear(channel, Utils.templistfile); // TODO
-            br.Close();
-            br2.Close();
-            StreamWriter.Close();
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
+        songList.Insert(0, new Song(song, requestedby, "$$$", bot));
     }
 
     public void addVip(String channel, String song, String requestedby)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            StreamWriter output;
-            output = new StreamWriter(Utils.songlistfile, true);
-            output.Write("VIP\t" + song + "\t(" + requestedby + ")\r");
-            output.Close();
+            songList.Insert(0, new Song(song, requestedby, "VIP", bot));
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            try
-            {
-                StreamReader br = new StreamReader(Utils.templistfile); // TODO
-                Utils.copyFile(Utils.songlistfile, Utils.templistfile);
-                StreamReader br2 = new StreamReader(Utils.templistfile); // TODO
-                String line2 = br2.ReadLine();
-                StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                if (line2.StartsWith("VIP\t") || line2.StartsWith("$$$\t"))
-                {
-                    StreamWriter.Write(line2 + "\r");
-                }
-                else
-                {
-                    StreamWriter.Write("VIP\t" + line2 + "\r");
-                }
-                br2.ReadLine();
-                StreamWriter.Write("VIP\t" + song + "\t(" + requestedby + ")\r");
-                clear(channel, Utils.templistfile); // TODO
-                br.Close();
-                br2.Close();
-                StreamWriter.Close();
-            }
-            catch (Exception ioe)
-            {
-                Utils.errorReport(ioe);
-                Debug.WriteLine(ioe.ToString());
-            }
+            songList[0].level = "VIP";
+            songList.Add(new Song(song, requestedby, "VIP", bot));
         }
         else
         {
-            try
+            for (int i = 1; i < songList.Count; i++)
             {
-                StreamReader br3 = new StreamReader(Utils.templistfile); // TODO
-                String line2, line4;
-                Utils.copyFile(Utils.songlistfile, Utils.templistfile);
-                line4 = br3.ReadLine();
-                br3.Close();
-                if (line4.StartsWith("$$$\t"))
+                Song s = songList[i];
+                if (s.level.Equals(""))
                 {
-                    StreamReader br4 = new StreamReader(Utils.templistfile); // TODO
-                    StreamWriter writer2 = new StreamWriter(Utils.songlistfile);
-                    while ((line2 = br4.ReadLine()) != null)
-                    {
-                        if (line2.StartsWith("$$$\t"))
-                        {
-                            writer2.Write(line2 + "\r");
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    // CHECK IF NEXT NON $$$ IS VIP
-                    if (line2.StartsWith("VIP\t"))
-                    {
-                        // IF YES : WRITE ALL VIP, WRITE SONG, WRITE REMAINING
-                        if (line2 != null && line2.Contains("VIP\t"))
-                        {
-                            writer2.Write(line2 + "\r");
-                        }
-                        while ((line2 = br4.ReadLine()) != null)
-                        {
-                            if (line2.Contains("VIP\t"))
-                            {
-                                writer2.Write(line2 + "\r");
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        writer2.Write("VIP\t" + song + "\t(" + requestedby + ")\r");
-                        if (line2 != null)
-                        {
-                            writer2.Write(line2 + "\r");
-                        }
-                        while ((line2 = br4.ReadLine()) != null)
-                        {
-                            writer2.Write(line2 + "\r");
-                        }
-                    }
-                    else
-                    {
-                        // IF NOT : WRITE SONG, WRITE REMAINING SONGS
-                        writer2.Write("VIP\t" + song + "\t(" + requestedby + ")\r");
-
-                        if (line2 != null)
-                        {
-                            writer2.Write(line2 + "\r");
-                        }
-                        while ((line2 = br4.ReadLine()) != null)
-                        {
-                            writer2.Write(line2 + "\r");
-                        }
-                    }
-                    br4.Close();
-                    writer2.Close();
-                    clear(channel, Utils.templistfile); // TODO
-                }
-                else if (line4.StartsWith("VIP\t"))
-                {
-                    StreamReader br4 = new StreamReader(Utils.templistfile); // TODO
-                    StreamWriter writer2 = new StreamWriter(Utils.songlistfile);
-                    while ((line2 = br4.ReadLine()) != null)
-                    {
-                        if (line2.StartsWith("VIP\t"))
-                        {
-                            writer2.Write(line2 + "\r");
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    writer2.Write("VIP\t" + song + "\t(" + requestedby + ")\r");
-                    if (line2 != null)
-                    {
-                        writer2.Write(line2 + "\r");
-                    }
-                    while ((line2 = br4.ReadLine()) != null)
-                    {
-                        writer2.Write(line2 + "\r");
-                    }
-                    br4.Close();
-                    writer2.Close();
-                    clear(channel, Utils.templistfile); // TODO
-                }
-                else
-                {
-                    StreamReader br = new StreamReader(Utils.templistfile); // TODO
-                    StreamWriter StreamWriter = new StreamWriter(Utils.songlistfile);
-                    StreamWriter.Write("VIP\t" + br.ReadLine() + "\r");
-                    StreamWriter.Write("VIP\t" + song + "\t(" + requestedby + ")\r");
-                    while ((line2 = br.ReadLine()) != null)
-                    {
-                        StreamWriter.Write(line2 + "\r");
-                    }
-                    clear(channel, Utils.templistfile); // TODO
-                    br.Close();
-                    StreamWriter.Close();
+                    songList.Insert(i, new Song(song, requestedby, "VIP", bot));
+                    return;
                 }
             }
-            catch (Exception ioe)
-            {
-                Utils.errorReport(ioe);
-                Debug.WriteLine(ioe.ToString());
-            }
+            songList.Add(new Song(song, requestedby, "VIP", bot));
         }
-    }
 
+    }
 }

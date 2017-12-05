@@ -1,7 +1,7 @@
 {
   "oauth": "oauth:a2401fzypn6x3oimbf1sgh4b8x14z7",
   "streamer": "edude15000",
-  "channel": "#edude15000",
+  "channel": "edude15000",
   "botName": "edudebot2",
   "followersTextFile": "C:\\Users\\Evan\\Desktop\\Rocksmith\\TWITCH\\most_recent_follower.txt",
   "subTextFile": "C:\\Users\\Evan\\Desktop\\Rocksmith\\TWITCH\\most_recent_subscriber.txt",
@@ -10,6 +10,7 @@
   "minigameEndMessage": "Time has run out for the current game, guesses cannot be added now, $user!",
   "giveawaycommandname": "!raffle",
   "spreadsheetId": "1jLNPhuJ0Cwmd3xL64YXAb1FwYcPBmh5FMw16O33TUZk",
+  "botColor": null,
   "endMessage": "BYE FAM",
   "startupMessage": "SEXY TIME",
   "counter1": 1,
@@ -29,8 +30,6 @@
   "waitForAdventureCoolDown": false,
   "raffleInProgress": false,
   "autoShoutoutOnHost": true,
-  "youtube": {},
-  "google": {},
   "textAdventure": {
     "users": [],
     "text": {
@@ -38,36 +37,6 @@
         "Sadly, the spaceship everyone was on exploded, and the crew is now dead in space.",
         "Many casualties occured, but $user was lucky enough to escape with space coins!",
         "$users were able to successfully raid a group of space pirates and escaped with space coins!"
-      ],
-      "$user wants to expose everyone to magical goo to make them super heroes.": [
-        "Everyone dies cause magical goo is just your ordinary toxic waste.",
-        "$user was able to survive the harmful effects of the goo while the rest must endure the lives of misable abominations.  $user steals their wallets.",
-        "$users become the most powerful beings in the universe and instead of using their powers for good they just use them for profit."
-      ],
-      "$user wants to take over the world.": [
-        "Too late, Pinky and Brain have already done so.",
-        "$user using a deadly \u0027lazer\u0027 was able to hold the world hostage and everyone submitted to them as supreme ruler.",
-        "$users created an army of robotic badgers that brought the world to it\u0027s knees and gained them total supremacy."
-      ],
-      "$user wants to get a mega rock band together for a amazing arena show.": [
-        "People went and saw the latest pop act and didn\u0027t bother, congratulations everyone you killed rock.",
-        "$user was singed by the record label and abandoned their bandmates to sell out.",
-        "$users have formed the greatest rock band known to mankind and are planning a space tour."
-      ],
-      " $user wants to overthrow the evil king.": [
-        "The petty uprising was crushed before it even began, hail to the king baby.",
-        "$user dethroned the king and rather then set up a republic took the crown for themselves and betrayed all those who help them.",
-        "$users were exiled but set up their own kingdom, a better kingdom with black jack and hookers."
-      ],
-      "$user wants to get revenge on the jedi.": [
-        "The jedi use thier cunning and force push spam to defeat everyone.",
-        "At last $user has their revenge, at last the galaxy is theirs!",
-        "At last $users have their revenge, at last the galaxy is theirs!"
-      ],
-      "$user wants to get a road trip together to go to Vegas and win big.": [
-        "Everyone lost all their money and are now forced to do horrible demeaning things to make it back home.",
-        "$user won big at the black jack tables but everyone else owed mobsters money and are now burried somewhere in the desert.",
-        "$users all won showcases and are living it large in their own private suites."
       ],
       "$user wants to be a badass and raid the castle of undead hoes.": [
         "Everyone died, they were no match for the hoes.",
@@ -79,12 +48,43 @@
         "The spaceship crashes on a distant planet with only $user left, they find a utopia of sexy ladies and dudes that grant them riches.",
         "$users were actually corperate spies sent to sabatoge the mission, they succeeded and now reap the rewards."
       ],
-      "$user wants to slay the dragon and get it\u0027s loot.": [
+      "$user wants to expose everyone to magical goo to make them super heroes.": [
+        "Everyone dies cause magical goo is just your ordinary toxic waste.",
+        "$user was able to survive the harmful effects of the goo while the rest must endure the lives of misable abominations.  $user steals their wallets.",
+        "$users become the most powerful beings in the universe and instead of using their powers for good they just use them for profit."
+      ],
+      "$user wants to get revenge on the jedi.": [
+        "The jedi use thier cunning and force push spam to defeat everyone.",
+        "At last $user has their revenge, at last the galaxy is theirs!",
+        "At last $users have their revenge, at last the galaxy is theirs!"
+      ],
+      "$user wants to get a mega rock band together for a amazing arena show.": [
+        "People went and saw the latest pop act and didn't bother, congratulations everyone you killed rock.",
+        "$user was singed by the record label and abandoned their bandmates to sell out.",
+        "$users have formed the greatest rock band known to mankind and are planning a space tour."
+      ],
+      "$user wants to slay the dragon and get it's loot.": [
         "The dragon decimated the party, dragons are dicks.",
         "$user was valient and true, nothing could stop them in slaying the dragon, ashame what happened to the rest.",
-        "$users deciced to go to the pub instead while everyone else was decimated but it was free ale night so it wasn\u0027t all bad."
+        "$users deciced to go to the pub instead while everyone else was decimated but it was free ale night so it wasn't all bad."
+      ],
+      " $user wants to overthrow the evil king.": [
+        "The petty uprising was crushed before it even began, hail to the king baby.",
+        "$user dethroned the king and rather then set up a republic took the crown for themselves and betrayed all those who help them.",
+        "$users were exiled but set up their own kingdom, a better kingdom with black jack and hookers."
+      ],
+      "$user wants to get a road trip together to go to Vegas and win big.": [
+        "Everyone lost all their money and are now forced to do horrible demeaning things to make it back home.",
+        "$user won big at the black jack tables but everyone else owed mobsters money and are now burried somewhere in the desert.",
+        "$users all won showcases and are living it large in their own private suites."
+      ],
+      "$user wants to take over the world.": [
+        "Too late, Pinky and Brain have already done so.",
+        "$user using a deadly 'lazer' was able to hold the world hostage and everyone submitted to them as supreme ruler.",
+        "$users created an army of robotic badgers that brought the world to it's knees and gained them total supremacy."
       ]
     },
+    "choice": null,
     "startTimerInMS": 0,
     "adventureStartTime": 120,
     "allowUserAdds": true,
@@ -131,48 +131,48 @@
       "\"I do like this song. It reminds me of puppies running around. Happy puppy song. Like a big happy puppy day.\" -edude15000 2/5/2016 ",
       "\"*Hears steam message* Is someone calling me on skype?\" -edude15000 2/7/2016 ",
       "\"Good in bed? Sometimes. Only if it is a full moon though\" -edude15000 2/7/2016 ",
-      "\"I\u0027m sorry we just played that song, well not that recently, it was like 2 hours ago.\" -edude15000 2/15/2016 ",
+      "\"I'm sorry we just played that song, well not that recently, it was like 2 hours ago.\" -edude15000 2/15/2016 ",
       "\"Walmart is a great place to pick up chicks\" -edude15000 2/15/2016 ",
       "\"Deadpool could be a horror documentary, where people turn up dead in pools across the country, so detective John Travolta has to investigate. Susan Boyle is also in it. Summer hit for sure.\" -edude15000 2/15/2016 ",
       "\"So many graphs, so little time\" -edude15000 2/16/2016 ",
-      "\"Back when I was in junior high, I had this teacher that was very hot and taught english. Me and my friends said that we have B\u0027s in our english class.\" -edude15000 2/16/2016 ",
+      "\"Back when I was in junior high, I had this teacher that was very hot and taught english. Me and my friends said that we have B's in our english class.\" -edude15000 2/16/2016 ",
       "\"I have a reoccurring dream where aliens come and... Get me. It makes me paranoid in the day\" -edude15000 2/16/2016 ",
       "\"Ooh, look at that underboob. Nothing is more sexy than an underboob in the summer.\" -edude15000 2/17/2016 ",
       "\"I really wish I had boobs, but like nice boobs.\" -edude15000 2/17/2016 ",
       "\"This song is for all the ladies in the world, who wake up and look in the mirror, and say, Should I wear makeup today?\" -edude15000 2/17/2016 ",
-      "\"I had some tacos that weren\u0027t very good. The meat wasn\u0027t good\" -edude15000 2/17/2016 ",
+      "\"I had some tacos that weren't very good. The meat wasn't good\" -edude15000 2/17/2016 ",
       "\"I had the mongolian buffet tonight, and now my stomach kind of hurts.\" -edude15000 2/25/2016 ",
       "\"I can just fart on stream\" -edude15000 2/25/2016 ",
       "\"Viva la vivda. viava vavavav vidddvaa.\" -edude15000 2/25/2016 ",
       "\"oh baby\" -edude15000 2/4/2016 ",
-      "\"That\u0027s not a quote, that\u0027s two words.\" -edude15000 2/4/2016 ",
+      "\"That's not a quote, that's two words.\" -edude15000 2/4/2016 ",
       "\"I used to be Japanese...but then I made the change. Like every young boy goes through.\" -edude15000 3/5/2016 ",
       "\"Sometimes this game is just complete utter shit\" -edude15000 4/12/2016 ",
       "\"My friend got his nipple pierced.\" -edude15000 9/3/2016 ",
       "\"I feel like a stripper\" -edude15000 9/12/2016 ",
       "\"I was there with my buddies, and these two girls talked to us, we were having a conversation, and one of them just kissed me, and I was like What The Hell?!\" -edude15000 2/16/2016 ",
       "\"Sassy sisters? I wanna be a sassy sister. I was a sassy sister when I was younger.\" -edude15000 2/7/2016 ",
-      "\"I would show my true colors, but I\u0027d get banned from twitch\" -edude15000 9/23/2016 ",
+      "\"I would show my true colors, but I'd get banned from twitch\" -edude15000 9/23/2016 ",
       "\"Went down the wrong hole....like last night! That was a horrible joke.\" -edude15000 9/23/2016 ",
       "\"I wish I was doing the solo... FeelsBadMan\" -edude15000 9/25/2016 ",
       "\" *** on my tits! This killed my tone!! \" -edude15000 9/30/2016 ",
-      "\" If you have a problem with spoilers then you shouldn\u0027t be on my stream \" -edude15000 10/14/2016 ",
+      "\" If you have a problem with spoilers then you shouldn't be on my stream \" -edude15000 10/14/2016 ",
       "\" I got a new tinder match. Oh wow \" -edude15000 10/23/2016 ",
-      "\" That really hurt, my guitar cord got stuck in my junk when I pulled it back. Now my junk doesn\u0027t feel good \" -edude15000 12/29/2016 ",
+      "\" That really hurt, my guitar cord got stuck in my junk when I pulled it back. Now my junk doesn't feel good \" -edude15000 12/29/2016 ",
       "\"This tone makes me more moist than a moist towelette.\" -edude15000 2/4/2016 ",
       "\"Just some awkward quiet sexy sex\" -edude15000 2/5/2016 ",
       "\"I always break the D. I always break my D.\" -edude15000 2/7/2016 ",
       "\"This song is about getting semen on the seat.\" -edude15000 2/5/2016 ",
-      "\"My favorite super bowl was when the singer girl\u0027s boob popped out\" -edude15000 2/7/2016 ",
-      "\"That\u0027d be fast sex. A fast Sexy sex.\" -edude15000 2/13/2016 ",
+      "\"My favorite super bowl was when the singer girl's boob popped out\" -edude15000 2/7/2016 ",
+      "\"That'd be fast sex. A fast Sexy sex.\" -edude15000 2/13/2016 ",
       "\"Cornhub.com, where real men go to get corn.\" -edude15000 2/7/2016 ",
       "\" mate \" -mate 3/11/2017 ",
       "\" Hollybombay, you had sex to Barney the Dinosaur? I feel guilty knocking one out when the dog is in the room \" -spookyone_1 3/11/2017 ",
       "\" Apple Juice is gone..... \" -edude15000 3/11/2017 ",
-      "\" can we get !ass in the chat? Not saying I\u0027m eating *** or anything \" -edude15000 3/11/2017 ",
-      "\" y\u0027all eat ass? \" -edude15000 3/11/2017 ",
-      "\" I love everyone...just don\u0027t want to have everyone\u0027s children \" - Hollybombay 3/11/2017 ",
-      "\" There\u0027s nothing sexier than a man blowing his nose, let me tell you. \" -edude15000 3/11/2017 ",
+      "\" can we get !ass in the chat? Not saying I'm eating *** or anything \" -edude15000 3/11/2017 ",
+      "\" y'all eat ass? \" -edude15000 3/11/2017 ",
+      "\" I love everyone...just don't want to have everyone's children \" - Hollybombay 3/11/2017 ",
+      "\" There's nothing sexier than a man blowing his nose, let me tell you. \" -edude15000 3/11/2017 ",
       "\" Alright Alright Alright Alright Alright Alright Alright Alright \" -Outkast 3/11/2017 "
     ]
   },
@@ -188,6 +188,7 @@
     "maxSongLength": false,
     "doNotWriteToHistory": true,
     "subOnlyRequests": "Only subs can request right now, $user!",
+    "lastSong": null,
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
@@ -196,6 +197,7 @@
     "bannedKeywords": [],
     "favSongsPlayedThisStream": [],
     "requestComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -207,6 +209,7 @@
       "toggle": true
     },
     "songlistComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -217,6 +220,7 @@
       "toggle": true
     },
     "getTotalComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -227,6 +231,7 @@
       "toggle": true
     },
     "editComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -236,6 +241,7 @@
       "toggle": true
     },
     "nextComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -245,6 +251,7 @@
       "toggle": true
     },
     "addvipComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -253,6 +260,7 @@
       "toggle": true
     },
     "addtopComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -261,6 +269,7 @@
       "toggle": true
     },
     "adddonatorComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -269,6 +278,7 @@
       "toggle": true
     },
     "getCurrentComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -279,6 +289,7 @@
       "toggle": true
     },
     "clearComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -287,6 +298,7 @@
       "toggle": true
     },
     "triggerRequestsComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -294,7 +306,9 @@
       ],
       "toggle": true
     },
+    "backupRequestAddComm": null,
     "getNextComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -303,6 +317,7 @@
       "toggle": true
     },
     "randomComm": {
+      "output": null,
       "commandType": "bot",
       "level": 2,
       "input": [
@@ -313,6 +328,7 @@
       "toggle": true
     },
     "favSongComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -323,6 +339,7 @@
       "toggle": true
     },
     "editSongComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -331,6 +348,7 @@
       "toggle": true
     },
     "removeSongComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -340,6 +358,7 @@
       "toggle": true
     },
     "songPositionComm": {
+      "output": null,
       "commandType": "bot",
       "level": 0,
       "input": [
@@ -348,7 +367,8 @@
         "!songposition"
       ],
       "toggle": true
-    }
+    },
+    "songList": []
   },
   "sfxCommandList": [
     {
@@ -732,7 +752,7 @@
       "toggle": true
     },
     {
-      "output": "There is $randomnumber3% \u003c3 between $user and $input!",
+      "output": "There is $randomnumber3% <3 between $user and $input!",
       "commandType": "user",
       "level": 0,
       "input": [
@@ -777,7 +797,7 @@
       "toggle": true
     },
     {
-      "output": "Kreygasm $counter1 OHOH\u0027s! Kreygasm",
+      "output": "Kreygasm $counter1 OHOH's! Kreygasm",
       "commandType": "user",
       "level": 0,
       "input": [
@@ -795,7 +815,7 @@
       "toggle": true
     },
     {
-      "output": "Christmas isn\u0027t Christmas without ho\u0027s...",
+      "output": "Christmas isn't Christmas without ho's...",
       "commandType": "user",
       "level": 0,
       "input": [
@@ -806,7 +826,7 @@
   ],
   "timerCommandList": [
     {
-      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it\u0027s available, request it! I\u0027ll play it if it works! :D",
+      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it's available, request it! I'll play it if it works! :D",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -833,7 +853,7 @@
       "toggle": true
     },
     {
-      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here\u0027s the link: https://www.twitch.tv/edude15000",
+      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -860,7 +880,7 @@
       "toggle": true
     },
     {
-      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called \u0027Shadyview Boulevard\u0027! OHOH! :)",
+      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -869,7 +889,7 @@
       "toggle": true
     },
     {
-      "output": "Type: !request \u0027artist_name - song_name\u0027 to request a song, !songrequest \u0027artist_name - song_name\u0027 for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
+      "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -887,7 +907,7 @@
       "toggle": true
     },
     {
-      "output": "Type \u0027!position\u0027 to display your song\u0027s position in the song list!",
+      "output": "Type '!position' to display your song's position in the song list!",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -1505,7 +1525,7 @@
       "toggle": true
     },
     {
-      "output": "There is $randomnumber3% \u003c3 between $user and $input!",
+      "output": "There is $randomnumber3% <3 between $user and $input!",
       "commandType": "user",
       "level": 0,
       "input": [
@@ -1550,7 +1570,7 @@
       "toggle": true
     },
     {
-      "output": "Kreygasm $counter1 OHOH\u0027s! Kreygasm",
+      "output": "Kreygasm $counter1 OHOH's! Kreygasm",
       "commandType": "user",
       "level": 0,
       "input": [
@@ -1568,7 +1588,7 @@
       "toggle": true
     },
     {
-      "output": "Christmas isn\u0027t Christmas without ho\u0027s...",
+      "output": "Christmas isn't Christmas without ho's...",
       "commandType": "user",
       "level": 0,
       "input": [
@@ -1577,7 +1597,7 @@
       "toggle": true
     },
     {
-      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it\u0027s available, request it! I\u0027ll play it if it works! :D",
+      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it's available, request it! I'll play it if it works! :D",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -1604,7 +1624,7 @@
       "toggle": true
     },
     {
-      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here\u0027s the link: https://www.twitch.tv/edude15000",
+      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -1631,7 +1651,7 @@
       "toggle": true
     },
     {
-      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called \u0027Shadyview Boulevard\u0027! OHOH! :)",
+      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -1640,7 +1660,7 @@
       "toggle": true
     },
     {
-      "output": "Type: !request \u0027artist_name - song_name\u0027 to request a song, !songrequest \u0027artist_name - song_name\u0027 for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
+      "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -1658,7 +1678,7 @@
       "toggle": true
     },
     {
-      "output": "Type \u0027!position\u0027 to display your song\u0027s position in the song list!",
+      "output": "Type '!position' to display your song's position in the song list!",
       "commandType": "timer",
       "level": 0,
       "input": [
@@ -1895,6 +1915,7 @@
   "users": [
     {
       "username": "allstarsniper32",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1908,6 +1929,7 @@
     },
     {
       "username": "anclave",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1921,6 +1943,7 @@
     },
     {
       "username": "bastian0532",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1934,6 +1957,7 @@
     },
     {
       "username": "bigkiste",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1947,6 +1971,7 @@
     },
     {
       "username": "bleedfuel",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1960,6 +1985,7 @@
     },
     {
       "username": "bobthebu1lder3",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1973,6 +1999,7 @@
     },
     {
       "username": "brak145",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1986,6 +2013,7 @@
     },
     {
       "username": "brendant02",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -1999,6 +2027,7 @@
     },
     {
       "username": "darkmantik",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2012,6 +2041,7 @@
     },
     {
       "username": "deadhead72",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2025,6 +2055,7 @@
     },
     {
       "username": "derkeyno",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2038,6 +2069,7 @@
     },
     {
       "username": "desarus",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2051,6 +2083,7 @@
     },
     {
       "username": "elentwitch",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2064,6 +2097,7 @@
     },
     {
       "username": "felipelu4ri",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2077,6 +2111,7 @@
     },
     {
       "username": "greggyfonzo",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2090,6 +2125,7 @@
     },
     {
       "username": "hard83",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2103,6 +2139,7 @@
     },
     {
       "username": "highdad",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2116,6 +2153,7 @@
     },
     {
       "username": "hippunen",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2129,6 +2167,7 @@
     },
     {
       "username": "johnsonke",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2142,6 +2181,7 @@
     },
     {
       "username": "jrace1193",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2155,6 +2195,7 @@
     },
     {
       "username": "kazzasleeps",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2168,6 +2209,7 @@
     },
     {
       "username": "killbandit360",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2181,6 +2223,7 @@
     },
     {
       "username": "lynxwhite_",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2194,6 +2237,7 @@
     },
     {
       "username": "mehdiboha",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2207,6 +2251,7 @@
     },
     {
       "username": "mylastserenade88",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2220,6 +2265,7 @@
     },
     {
       "username": "opertune",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2233,6 +2279,7 @@
     },
     {
       "username": "papercat84",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2246,6 +2293,7 @@
     },
     {
       "username": "radderzuk",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2259,6 +2307,7 @@
     },
     {
       "username": "tyannatalie",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2272,6 +2321,7 @@
     },
     {
       "username": "vespers_haven",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2285,6 +2335,7 @@
     },
     {
       "username": "wilddogo",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2298,6 +2349,7 @@
     },
     {
       "username": "zlpl",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2311,6 +2363,7 @@
     },
     {
       "username": "zynixxdzik",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2324,6 +2377,7 @@
     },
     {
       "username": "b",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2337,6 +2391,7 @@
     },
     {
       "username": "MarluxiaPetals",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2350,6 +2405,7 @@
     },
     {
       "username": "aguyplayinggames",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2363,6 +2419,7 @@
     },
     {
       "username": "ardarionus",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2376,6 +2433,7 @@
     },
     {
       "username": "champasoruswrex",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2389,6 +2447,7 @@
     },
     {
       "username": "chatspamgreyface123",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2402,6 +2461,7 @@
     },
     {
       "username": "downeastgamers",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2415,6 +2475,7 @@
     },
     {
       "username": "frozenraintv",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2428,6 +2489,7 @@
     },
     {
       "username": "lazercore",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2441,6 +2503,7 @@
     },
     {
       "username": "mortalperiltwitch",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2454,6 +2517,7 @@
     },
     {
       "username": "mrmojorisin_",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2467,6 +2531,7 @@
     },
     {
       "username": "nharsmusic",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2480,6 +2545,7 @@
     },
     {
       "username": "one2h",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2493,6 +2559,7 @@
     },
     {
       "username": "rutledgex",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2506,6 +2573,7 @@
     },
     {
       "username": "ryanburnsred",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2519,6 +2587,7 @@
     },
     {
       "username": "steplery",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2532,6 +2601,7 @@
     },
     {
       "username": "vicrattlehead62621",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2545,6 +2615,7 @@
     },
     {
       "username": "zultnezulu",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2558,6 +2629,7 @@
     },
     {
       "username": "zwick_zwick_der_zwicker",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2571,6 +2643,7 @@
     },
     {
       "username": "stallionducky03",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2584,6 +2657,7 @@
     },
     {
       "username": "18star18",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2597,6 +2671,7 @@
     },
     {
       "username": "colt_sparta",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2610,6 +2685,7 @@
     },
     {
       "username": "d0mlno",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2623,6 +2699,7 @@
     },
     {
       "username": "ihateregistering123",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2636,6 +2713,7 @@
     },
     {
       "username": "kloderrz",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2649,6 +2727,7 @@
     },
     {
       "username": "notorious1325",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2662,6 +2741,7 @@
     },
     {
       "username": "painkiller003",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2675,6 +2755,7 @@
     },
     {
       "username": "pretzal",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2688,6 +2769,7 @@
     },
     {
       "username": "spicytofu2",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2701,6 +2783,7 @@
     },
     {
       "username": "turboman50",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2714,6 +2797,7 @@
     },
     {
       "username": "vengefuldeaths",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2727,6 +2811,7 @@
     },
     {
       "username": "xxgreenven0mxx",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2740,6 +2825,7 @@
     },
     {
       "username": "botzerker",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2753,6 +2839,7 @@
     },
     {
       "username": "nightbot",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2766,6 +2853,7 @@
     },
     {
       "username": "punkestmf",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2779,6 +2867,7 @@
     },
     {
       "username": "pure__pazaak",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2792,6 +2881,7 @@
     },
     {
       "username": "7_kyren",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2805,6 +2895,7 @@
     },
     {
       "username": "asaptpet",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2818,6 +2909,7 @@
     },
     {
       "username": "endemolde",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2831,6 +2923,7 @@
     },
     {
       "username": "godsock",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2844,6 +2937,7 @@
     },
     {
       "username": "hieronimus68",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2857,6 +2951,7 @@
     },
     {
       "username": "isshan",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2870,6 +2965,7 @@
     },
     {
       "username": "kappuccinocappuccino",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2883,6 +2979,7 @@
     },
     {
       "username": "outland71",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2896,6 +2993,7 @@
     },
     {
       "username": "tearingithupp",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2909,6 +3007,7 @@
     },
     {
       "username": "bardzerker",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2922,6 +3021,7 @@
     },
     {
       "username": "necromss",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2935,6 +3035,7 @@
     },
     {
       "username": "nighttprowler",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2948,6 +3049,7 @@
     },
     {
       "username": "rt_zontar",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2961,6 +3063,7 @@
     },
     {
       "username": "topyosh",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2974,6 +3077,7 @@
     },
     {
       "username": "vurs_ik",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -2987,6 +3091,7 @@
     },
     {
       "username": "arielglzc",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3000,6 +3105,7 @@
     },
     {
       "username": "auscultare",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3013,6 +3119,7 @@
     },
     {
       "username": "kllavier",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3026,6 +3133,7 @@
     },
     {
       "username": "mattyice8701",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3039,6 +3147,7 @@
     },
     {
       "username": "amrk_",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3052,6 +3161,7 @@
     },
     {
       "username": "grand_black_overlord",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3065,6 +3175,7 @@
     },
     {
       "username": "hopbidi",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3078,6 +3189,7 @@
     },
     {
       "username": "ksuaes",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3091,6 +3203,7 @@
     },
     {
       "username": "latarielle",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3104,6 +3217,7 @@
     },
     {
       "username": "razgarize",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3117,6 +3231,7 @@
     },
     {
       "username": "suiggetsu17",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3130,6 +3245,7 @@
     },
     {
       "username": "alpuka",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3143,6 +3259,7 @@
     },
     {
       "username": "mkmarciano",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3156,6 +3273,7 @@
     },
     {
       "username": "yarr_finloid",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3169,6 +3287,7 @@
     },
     {
       "username": "thewookieway",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3182,6 +3301,7 @@
     },
     {
       "username": "nemata",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3195,6 +3315,7 @@
     },
     {
       "username": "xdylanxloverx",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3208,6 +3329,7 @@
     },
     {
       "username": "dastulumen",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3221,6 +3343,7 @@
     },
     {
       "username": "btiddy",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3234,6 +3357,7 @@
     },
     {
       "username": "dreadwasdert",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3247,6 +3371,7 @@
     },
     {
       "username": "gde_moi_kotletki",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3260,6 +3385,7 @@
     },
     {
       "username": "sylethh",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3273,6 +3399,7 @@
     },
     {
       "username": "maverix23",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3286,6 +3413,7 @@
     },
     {
       "username": "osko1ok",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3299,6 +3427,7 @@
     },
     {
       "username": "boss_rubix",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3312,6 +3441,7 @@
     },
     {
       "username": "pendragorn1",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3325,6 +3455,7 @@
     },
     {
       "username": "novofine",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3338,6 +3469,7 @@
     },
     {
       "username": "thecrazydeath",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3351,6 +3483,7 @@
     },
     {
       "username": "natalie_moore",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3364,6 +3497,7 @@
     },
     {
       "username": "rake1off",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3377,6 +3511,7 @@
     },
     {
       "username": "maethofastora",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3390,6 +3525,7 @@
     },
     {
       "username": "soulflys_",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3403,6 +3539,7 @@
     },
     {
       "username": "hammerhead0158",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3416,6 +3553,7 @@
     },
     {
       "username": "mizzzero",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3429,6 +3567,7 @@
     },
     {
       "username": "andyopolis77",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3442,6 +3581,7 @@
     },
     {
       "username": "aoarms",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3455,6 +3595,7 @@
     },
     {
       "username": "bigbubba45",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3468,6 +3609,7 @@
     },
     {
       "username": "adamducky",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3481,6 +3623,7 @@
     },
     {
       "username": "rawarck",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3494,6 +3637,7 @@
     },
     {
       "username": "revlobot",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3507,6 +3651,7 @@
     },
     {
       "username": "reversihide",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3520,6 +3665,7 @@
     },
     {
       "username": "l9_elias",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3533,6 +3679,7 @@
     },
     {
       "username": "maltn",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3546,6 +3693,7 @@
     },
     {
       "username": "destiny_spores",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3559,6 +3707,7 @@
     },
     {
       "username": "squidstormtv",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3572,6 +3721,7 @@
     },
     {
       "username": "ultranova5000",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3585,6 +3735,7 @@
     },
     {
       "username": "hologrammer",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3598,6 +3749,7 @@
     },
     {
       "username": "symboliccross95",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3611,6 +3763,7 @@
     },
     {
       "username": "brianfnpillman",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3624,6 +3777,7 @@
     },
     {
       "username": "papamaanbeer",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3637,6 +3791,7 @@
     },
     {
       "username": "avenici",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3650,6 +3805,7 @@
     },
     {
       "username": "korgull_the_exterminator",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3663,6 +3819,7 @@
     },
     {
       "username": "bigdamscooters",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3676,6 +3833,7 @@
     },
     {
       "username": "jake_seattlex19",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3689,6 +3847,7 @@
     },
     {
       "username": "tenebreux35",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3702,6 +3861,7 @@
     },
     {
       "username": "vexed2dodplants",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3715,6 +3875,7 @@
     },
     {
       "username": "hollybombay",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3728,6 +3889,7 @@
     },
     {
       "username": "bearsfan5051",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3741,6 +3903,7 @@
     },
     {
       "username": "spookyone_1",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3754,6 +3917,7 @@
     },
     {
       "username": "felipegrox",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3767,6 +3931,7 @@
     },
     {
       "username": "mesoniclake",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3780,6 +3945,7 @@
     },
     {
       "username": "kokolihapihvi",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3793,6 +3959,7 @@
     },
     {
       "username": "vickevi",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3806,6 +3973,7 @@
     },
     {
       "username": "darkmarkiz",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3819,6 +3987,7 @@
     },
     {
       "username": "rydersousa",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3832,6 +4001,7 @@
     },
     {
       "username": "nahvec",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3845,6 +4015,7 @@
     },
     {
       "username": "kilian737ngx",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3858,6 +4029,7 @@
     },
     {
       "username": "demon_drummer",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3871,6 +4043,7 @@
     },
     {
       "username": "edude15000",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3884,6 +4057,7 @@
     },
     {
       "username": "asdf",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3897,6 +4071,7 @@
     },
     {
       "username": "zdude15000",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3910,6 +4085,7 @@
     },
     {
       "username": "a",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3923,6 +4099,7 @@
     },
     {
       "username": "q",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3936,6 +4113,7 @@
     },
     {
       "username": "pp",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3949,6 +4127,7 @@
     },
     {
       "username": "mm",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3962,6 +4141,7 @@
     },
     {
       "username": "xscarface",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -3975,6 +4155,7 @@
     },
     {
       "username": "edudebot2",
+      "rank": null,
       "follower": false,
       "sub": false,
       "mod": false,
@@ -4045,6 +4226,7 @@
     "test": "test!"
   },
   "getViewerComm": {
+    "output": null,
     "commandType": "bot",
     "level": 0,
     "input": [

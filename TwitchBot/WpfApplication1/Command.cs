@@ -2,10 +2,11 @@
 
 public class Command
 {
-    public String output, commandType;
-    public int level;
-    public String[] input;
-    public Boolean toggle;
+    public String output { get; set; }
+    public String commandType { get; set; }
+    public int level { get; set; }
+    public String[] input { get; set; }
+    public Boolean toggle { get; set; }
 
     public Command(String[] input, int level, String output, String commandType, Boolean toggle)
     {

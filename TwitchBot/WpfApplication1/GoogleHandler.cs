@@ -12,28 +12,32 @@ using System.Linq;
 
 public class GoogleHandler
 {
-    public static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
-    public static string ApplicationName = "Google Sheets API .NET Quickstart";
+    static string[] Scopes = { SheetsService.Scope.Spreadsheets };
+    static string ApplicationName = "Google Sheets API .NET Quickstart";
     public String spreadsheetId;
-    public SheetsService service;
+    SheetsService service;
     
-
-    public GoogleHandler()
+    public GoogleHandler(String id)
     {
+        spreadsheetId = id;
         UserCredential credential;
         using (var stream =
-               new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+                new FileStream(@"bin\client_secret.json", FileMode.Open, FileAccess.Read))
         {
             string credPath = System.Environment.GetFolderPath(
-                                System.Environment.SpecialFolder.Personal);
+                System.Environment.SpecialFolder.Personal);
             credPath = Path.Combine(credPath, ".credentials/sheets.googleapis.com-dotnet-quickstart.json");
+            
+
             credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleClientSecrets.Load(stream).Secrets,
                 Scopes,
                 "user",
-                CancellationToken.None,
-                new FileDataStore(credPath, true)).Result;
+                CancellationToken.None
+                //new FileDataStore(credPath, true)
+                ).Result;
         }
+
         service = new SheetsService(new BaseClientService.Initializer()
         {
             HttpClientInitializer = credential,
@@ -41,7 +45,7 @@ public class GoogleHandler
         });
     }
     
-    public void setValue(String RowStart, String file)
+    public void setValue(String RowStart, List<Song> songlist, String file)
     {
         String range = RowStart;
         ValueRange oRange = new ValueRange();
@@ -53,7 +57,7 @@ public class GoogleHandler
         oRequest.ValueInputOption ="RAW";
         oRequest.Data = oList;
         service.Spreadsheets.Values.BatchUpdate(oRequest, spreadsheetId).Execute();
-        IList<IList<Object>> arrData2 = getData(file);
+        IList<IList<Object>> arrData2 = getData(songlist, file);
         ValueRange oRange2 = new ValueRange();
         oRange2.Range = range;
         oRange2.Values = arrData2;
@@ -77,36 +81,30 @@ public class GoogleHandler
         return data;
     }
 
-    public IList<IList<Object>> getData(String file)
+    public IList<IList<Object>> getData(List<Song> songlist, String file)
     {
         IList<IList<Object>> data = new List<IList<Object>>();
         try
         {
-            StreamReader br = new StreamReader(file);
-            String line;
-            int count = 0;
             data.Add(new List<Object>());
-            if (file.Equals("song.txt"))
+            if (file.Equals(@"bin\songList.json"))
             {
-                if (count == 0)
+                data[0].Add("CURRENT QUEUE:");
+                for (int i = 0; i < songlist.Count; i++)
                 {
-                    data[0].Add("CURRENT QUEUE:");
-                    count++;
-                }
-                while ((line = br.ReadLine()) != null)
-                {
-                    if (line.Equals("Song list is empty"))
+                    if (songlist.Count == 0)
                     {
-                        br.Close();
-                        return null;
+                        break;
                     }
                     data.Add(new List<Object>());
-                    data[count].Add(line);
-                    count++;
+                    data[i].Add(songlist[i].name + " (" + songlist[i].requester + ")");
                 }
             }
             else
             {
+                int count = 0;
+                String line = "";
+                StreamReader br = new StreamReader(file);
                 while ((line = br.ReadLine()) != null)
                 {
                     data.Add(new List<Object>());
@@ -116,7 +114,6 @@ public class GoogleHandler
                 data.Reverse();
                 data[0].Add("LAST PLAYED SONGS:");
             }
-            br.Close();
             return data;
         }
         catch (Exception e)
@@ -127,14 +124,14 @@ public class GoogleHandler
         return null;
     }
 
-    public void writeToGoogleSheets(Boolean updateAllSongs, String songlistfile, String lastPlayedSongsFile)
+    public void writeToGoogleSheets(Boolean updateAllSongs, List<Song> songs)
     {
         try
         {
-            setValue("A1", songlistfile);
+            setValue("A1", songs, Utils.songListFile);
             if (updateAllSongs)
             {
-                setValue("B1", lastPlayedSongsFile);
+                setValue("B1", songs, Utils.lastPlayedSongsFile);
             }
         }
         catch (Exception e)

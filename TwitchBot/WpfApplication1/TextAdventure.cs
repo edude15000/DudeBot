@@ -1,16 +1,26 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
 public class TextAdventure
 {
-    public List<String> users = new List<String>();
-    public Dictionary<String, String[]> text = new Dictionary<String, String[]>();
-    public String choice = null;
-    public long startTimerInMS, adventureStartTime;
-    public Boolean allowUserAdds = true, enoughPlayers = false;
-    public int adventurePointsMin, adventurePointsMax, adventureCoolDown;
+    [JsonIgnore]
+    public List<String> users { get; set; } = new List<String>();
+    [JsonIgnore]
+    public Dictionary<String, String[]> text { get; set; } = new Dictionary<String, String[]>();
+    public String choice { get; set; } = null;
+    public long startTimerInMS { get; set; }
+    [JsonIgnore]
+    public long adventureStartTime { get; set; }
+    [JsonIgnore]
+    public Boolean allowUserAdds { get; set; } = true;
+    [JsonIgnore]
+    public Boolean enoughPlayers { get; set; } = false;
+    public int adventurePointsMin { get; set; }
+    public int adventurePointsMax { get; set; }
+    public int adventureCoolDown { get; set; }
 
     public void startAdventuring(List<String> users, int startTimerInMS)
     {
@@ -41,10 +51,6 @@ public class TextAdventure
                 "$user was able to survive the harmful effects of the goo while the rest must endure the lives of misable abominations.  $user steals their wallets.",
                 "$users become the most powerful beings in the universe and instead of using their powers for good they just use them for profit." };
         text.Add("$user wants to expose everyone to magical goo to make them super heroes.", d);
-        String[] e = { "Sadly, the spaceship everyone was on exploded, and the crew is now dead in space.",
-                "Many casualties occured, but $user was lucky enough to escape with space coins!",
-                "$users were able to successfully raid a group of space pirates and escaped with space coins!" };
-        text.Add("$user wants to get a posse together to raid some space pirates.", e);
         String[] f = { "The jedi use thier cunning and force push spam to defeat everyone.",
                 "At last $user has their revenge, at last the galaxy is theirs!",
                 "At last $users have their revenge, at last the galaxy is theirs!" };

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "hotel california",
+    "requester": "edude15000",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=BYlb_MnOhBs",
+    "durationInSeconds": 410,
+    "tuning": null,
+    "customsForgeLink": null,
+    "parts": null,
+    "dlcCreator": null,
+    "formattedDuration": "00:06:50"
+  },
+  {
+    "name": "weee",
+    "requester": "edude15000",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=-Q7wUbtT9gk",
+    "durationInSeconds": 41,
+    "tuning": null,
+    "customsForgeLink": null,
+    "parts": null,
+    "dlcCreator": null,
+    "formattedDuration": "00:00:41"
+  },
+  {
+    "name": "test",
+    "requester": "edude15000",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=_nfREkI7Nsk",
+    "durationInSeconds": 617,
+    "tuning": null,
+    "customsForgeLink": null,
+    "parts": null,
+    "dlcCreator": null,
+    "formattedDuration": "00:10:17"
+  }
+]
