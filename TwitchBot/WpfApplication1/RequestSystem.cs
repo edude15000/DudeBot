@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -617,7 +618,6 @@ public class RequestSystem
         {
             StreamWriter output;
             output = new StreamWriter(Utils.lastPlayedSongsFile, true);
-
             output.Write(Utils.getDate() + " " + Utils.getTime() + " - " + lastSong + "\r");
             output.Close();
         }
@@ -1565,7 +1565,7 @@ public class RequestSystem
         return false;
     }
 
-    public void removeSongCOMMAND(String sender, String channel, String streamer, List<BotUser> users, String message, String temp)
+    public void removeSongCOMMAND(String sender, String channel, String streamer, ObservableCollection<BotUser> users, String message, String temp)
     {
         if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
                         || sender.Equals(Utils.botMaker))
@@ -1595,7 +1595,7 @@ public class RequestSystem
         }
     }
 
-    public void promoteSongCommand(String sender, String channel, String streamer, List<BotUser> users, String message)
+    public void promoteSongCommand(String sender, String channel, String streamer, ObservableCollection<BotUser> users, String message)
     {
         if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
                     || sender.Equals(Utils.botMaker))
@@ -1647,6 +1647,17 @@ public class RequestSystem
                 + requestedby + "!");
         bot.addUserRequestAmount(requestedby, true);
         writeToCurrentSong(channel, false);
+    }
+
+    public void insertSong(String song, String requestedby, int place)
+    {
+        String level = "";
+        if (songList.Count > place)
+        {
+            level = songList[place].level;
+        }
+        songList.Insert(place, new Song(song, requestedby, level, bot));
+        writeToCurrentSong(bot.channel, true);
     }
 
     public void addTop(String channel, String song, String requestedby)

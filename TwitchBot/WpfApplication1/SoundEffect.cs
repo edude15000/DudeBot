@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using WMPLib;
 
@@ -13,7 +14,7 @@ public class SoundEffect
     [JsonIgnore]
     public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
-    public void sfxCOMMANDS(String message, String channel, String sender, List<Command> comList)
+    public void sfxCOMMANDS(String message, String channel, String sender, ObservableCollection<Command> comList)
     {
         for (int i = 0; i < comList.Count; i++)
         {

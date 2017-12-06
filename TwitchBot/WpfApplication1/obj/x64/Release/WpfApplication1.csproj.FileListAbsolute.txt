@@ -100,9 +100,3 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Securit
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Security.Cryptography.Encoding.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Security.Cryptography.Primitives.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Security.Cryptography.X509Certificates.dll
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\EO.Base.dll
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\EO.WebBrowser.dll
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\EO.WebEngine.dll
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\EO.Base.xml
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\EO.WebBrowser.xml
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\EO.WebEngine.xml

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 public class Quote
@@ -27,7 +28,7 @@ public class Quote
         bot.read();
     }
 
-    public void quotesSystem(String message, String channel, String sender, String streamer, List<BotUser> users)
+    public void quotesSystem(String message, String channel, String sender, String streamer, ObservableCollection<BotUser> users)
 
     {
         String temp = message.ToLower();

@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Closing="Window_Closing"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      Title="DudeBot" Height="400" Width="950"
+                      Title="{Binding version, StringFormat=DUDEBOT {0}}" Height="400" Width="950"
         MinHeight="400" MinWidth="950">
     <Controls:MetroWindow.DataContext>
         <Binding Source="bot" />
@@ -64,8 +64,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <TabControl x:Name="tabholder" TabStripPlacement="Left" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue"
-		    SelectionChanged="TabControl_SelectionChanged" Grid.Row="1" >
+        <TabControl x:Name="tabholder" TabStripPlacement="Left" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue" Grid.Row="1" >
             <TabControl.Template>
                 <ControlTemplate TargetType="TabControl">
                     <Grid>
@@ -114,8 +113,7 @@
 
             <TabItem x:Name="customization" Header="Customize" FontSize="12">
 
-                <TabControl x:Name="customizationtabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue"
-		    SelectionChanged="TabControl_SelectionChanged" >
+                <TabControl x:Name="customizationtabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
                             <Grid>
@@ -621,14 +619,14 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30*"/>
                         <ColumnDefinition Width="30*"/>
-                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="14*"/>
                         <ColumnDefinition Width="13*"/>
                         <ColumnDefinition Width="13*"/>
                     </Grid.ColumnDefinitions>
-
+                    <Controls:NumericUpDown x:Name="songplace" Controls:TextBoxHelper.Watermark="Queue Number" Value="1"  Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="2" />
                     <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Song Name" TextWrapping="Wrap" x:Name="editSong" Text="" Grid.Column="0" Grid.Row="0" />
                     <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Requester Name" TextWrapping="Wrap" x:Name="editRequester" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="0" />
-                    <Controls:NumericUpDown x:Name="songplace" Controls:TextBoxHelper.Watermark="Queue Number" Value="1"  Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="2" />
+                  
                     <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to insert new song into list at given position, will push following songs down." IsDefault="True" Content="Add" Click="addsong" Grid.Column="3" />
                     <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to edit song at given position in list, will overwrite song at given queue number." Content="Edit" Click="editsong" Grid.Column="4" />
 
@@ -643,7 +641,7 @@
                                 <DataGridTemplateColumn.CellTemplate >
                                     <DataTemplate >
                                         <TextBlock TextWrapping="Wrap" Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridCell}, 
-                                            Path=Column.DisplayIndex}" HorizontalAlignment="Center" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="tb_MouseLeftButtonDown5" />
+                                            Path=Column.DisplayIndex}" HorizontalAlignment="Center" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -655,7 +653,7 @@
                                 </DataGridTemplateColumn.HeaderStyle>
                                 <DataGridTemplateColumn.CellTemplate >
                                     <DataTemplate >
-                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding level}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="tb_MouseLeftButtonDown5" />
+                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding level}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -667,7 +665,7 @@
                                 </DataGridTemplateColumn.HeaderStyle>
                                 <DataGridTemplateColumn.CellTemplate >
                                     <DataTemplate >
-                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding name}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="tb_MouseLeftButtonDown5" />
+                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding name}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -679,7 +677,7 @@
                                 </DataGridTemplateColumn.HeaderStyle>
                                 <DataGridTemplateColumn.CellTemplate >
                                     <DataTemplate >
-                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding formattedDuration}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="tb_MouseLeftButtonDown5" />
+                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding formattedDuration}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -691,7 +689,7 @@
                                 </DataGridTemplateColumn.HeaderStyle>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding requester}" ToolTipService.ToolTip="Double click to open requester's Twitch page." MouseLeftButtonDown="tb_MouseLeftButtonDown6" />
+                                        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding requester}" ToolTipService.ToolTip="Double click to open requester's Twitch page." MouseLeftButtonDown="editRequesterButtonClick" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -733,7 +731,7 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Style="{DynamicResource SquareButtonStyle}" Visibility="Visible" x:Name="refresh" IsDefault="True" Background="White" Content="Refresh" Click="Button_Click" FontSize="16" Grid.Column="3" Grid.Row="2"/>
+                    <Button Style="{DynamicResource SquareButtonStyle}" Visibility="Visible" x:Name="refresh" IsDefault="True" Background="White" Content="Refresh" Click="writeToConfig" FontSize="16" Grid.Column="3" Grid.Row="2"/>
                     <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.songList.Count, UpdateSourceTrigger=PropertyChanged, StringFormat=Total Songs: {0}}"  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right"/>
 
                     <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.formattedTotalTime, UpdateSourceTrigger=PropertyChanged, StringFormat=Estimated Time: {0}}"  Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
@@ -771,26 +769,26 @@
                         <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removecommand" Grid.Column="4" />
                     </Grid>
                     <Grid Grid.Row="1" >
-                        <DataGrid x:Name="commanddatagrid" GridLinesVisibility="All" ItemsSource="{Binding userCommandList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <DataGrid x:Name="commanddatagrid" GridLinesVisibility="All" ItemsSource="{Binding userCommandList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn x:Name="commandName" Header="Command" Width=".13*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="tb_MouseLeftButtonDown" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0], UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="commandResponse" Header="Response" Width=".72*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="tb_MouseLeftButtonDown" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding output, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="commandLevel" Header="Level" Width=".16*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding level}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="tb_MouseLeftButtonDown" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding level, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -838,21 +836,21 @@
                                 <DataGridTemplateColumn x:Name="timerName" Header="Command" Width=".15*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit timed command." MouseLeftButtonDown="tb_MouseLeftButtonDown2" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit timed command." MouseLeftButtonDown="editTimedCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="timerResponse" Header="Response" Width=".75*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit timed command." MouseLeftButtonDown="tb_MouseLeftButtonDown2" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit timed command." MouseLeftButtonDown="editTimedCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="timerToggle" Header="Toggle" Width=".10*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding toggle}" ToolTipService.ToolTip="Click to edit timed command." MouseLeftButtonDown="tb_MouseLeftButtonDown2" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding toggle}" ToolTipService.ToolTip="Click to edit timed command." MouseLeftButtonDown="editTimedCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -865,8 +863,7 @@
 
             <TabItem Header="Currency" FontSize="12">
 
-                <TabControl x:Name="currencytabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue"
-		    SelectionChanged="TabControl_SelectionChanged" >
+                <TabControl x:Name="currencytabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
                             <Grid>
@@ -981,7 +978,7 @@
                                             </DataGridTemplateColumn.HeaderStyle>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding rank}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="tb_MouseLeftButtonDown9" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding rank}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="editCurrencyButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -994,7 +991,7 @@
                                             </DataGridTemplateColumn.HeaderStyle>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding username}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="tb_MouseLeftButtonDown9" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding username}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="editCurrencyButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1007,7 +1004,7 @@
                                             </DataGridTemplateColumn.HeaderStyle>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding points}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="tb_MouseLeftButtonDown9" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding points}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="editCurrencyButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1020,7 +1017,7 @@
                                             </DataGridTemplateColumn.HeaderStyle>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding time}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="tb_MouseLeftButtonDown9" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding time}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="editCurrencyButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1033,14 +1030,14 @@
                                             </DataGridTemplateColumn.HeaderStyle>
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding subCredits}" Uid="{Binding currencySubCredits.Uid}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="tb_MouseLeftButtonDown9" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding subCredits}" Uid="{Binding currencySubCredits.Uid}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="editCurrencyButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
-                            <Button Style="{DynamicResource SquareButtonStyle}" Visibility="Visible" x:Name="refreshcurrency" IsDefault="True" Background="White" Content="Refresh" Click="refresh_currency" FontSize="16" Grid.Column="0" Grid.Row="2"/>
+                            <Button Style="{DynamicResource SquareButtonStyle}" Visibility="Visible" x:Name="refreshcurrency" IsDefault="True" Background="White" Content="Refresh" Click="writeToConfig" FontSize="16" Grid.Column="0" Grid.Row="2"/>
 
                         </Grid>
                     </TabItem>
@@ -1090,14 +1087,14 @@
                                         <DataGridTemplateColumn x:Name="rankTitle" Header="Rank Title" Width=".33*" >
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Key}" ToolTipService.ToolTip="Click to edit rank title." MouseLeftButtonDown="tb_MouseLeftButtonDown10" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Key}" ToolTipService.ToolTip="Click to edit rank title." MouseLeftButtonDown="editRankButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn x:Name="rankCost" Header="Cost To Upgrade" Width=".33*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Value}" ToolTipService.ToolTip="Click to edit rank cost." MouseLeftButtonDown="tb_MouseLeftButtonDown10" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Value}" ToolTipService.ToolTip="Click to edit rank cost." MouseLeftButtonDown="editRankButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1172,7 +1169,7 @@
                                 <DataGridTemplateColumn x:Name="quoteName" Header="Quote" Width=".15*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding}" ToolTipService.ToolTip="Click to edit quote." MouseLeftButtonDown="tb_MouseLeftButtonDown3" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}" ToolTipService.ToolTip="Click to edit quote." MouseLeftButtonDown="editQuteButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -1224,14 +1221,14 @@
                                 <DataGridTemplateColumn x:Name="SFXName" Header="Command" Width=".15*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="tb_MouseLeftButtonDown4" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="SFXResponse" Header="SFX" Width=".85*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="tb_MouseLeftButtonDown4" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -1298,14 +1295,14 @@
                                 <DataGridTemplateColumn x:Name="imageName" Header="Command" Width=".15*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="tb_MouseLeftButtonDown8" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="editImageButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="imageResponse" Header="Image" Width=".85*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="tb_MouseLeftButtonDown8" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="editImageButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -1323,6 +1320,24 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
                     </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="subdatagrid" GridLinesVisibility="All" ItemsSource="{Binding imageCommandList, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" >
+                        <DataGrid.Columns >
+                            <DataGridTemplateColumn x:Name="subName" Header="User Name" Width=".15*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn x:Name="subMonths" Header="Months Subscribed" Width=".50*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding output}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
 
@@ -1394,8 +1409,7 @@
 
             <TabItem Header="Events" FontSize="12">
 
-                <TabControl x:Name="eventstabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue"
-		    SelectionChanged="TabControl_SelectionChanged" >
+                <TabControl x:Name="eventstabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue" >
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
                             <Grid>
@@ -1447,14 +1461,14 @@
                                         <DataGridTemplateColumn x:Name="eventUserName" Header="Joining User" Width=".18*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Key}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="tb_MouseLeftButtonDown7" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Key}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="editEventsButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTemplateColumn x:Name="eventMessage" Header="Response" Width=".85*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Value}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="tb_MouseLeftButtonDown7" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Value}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="editEventsButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>

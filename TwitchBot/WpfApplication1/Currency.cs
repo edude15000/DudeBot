@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -23,9 +24,9 @@ public class Currency
     public Boolean gambleToggle { get; set; }
     public Dictionary<String, Int32> ranks { get; set; } = new Dictionary<String, Int32>();
     [JsonIgnore]
-    public List<BotUser> users;
+    public ObservableCollection<BotUser> users;
 
-    public Currency(List<BotUser> users)
+    public Currency(ObservableCollection<BotUser> users)
     {
         this.users = users;
     }

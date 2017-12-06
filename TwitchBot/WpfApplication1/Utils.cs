@@ -6,10 +6,12 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 public class Utils
 {
-    public static String version = "2.12.1"; // UPDATE AS NECESSARY
+    public static String version { get; set; } = "2.12.1"; // UPDATE AS NECESSARY
     public static String releaseDate = "7/17/2017"; // UPDATE AS NECESSARY
     public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
@@ -30,16 +32,15 @@ public class Utils
     {
         try
         {
-            using (StreamReader r = new StreamReader(songListFile))
+            StreamReader r = new StreamReader(songListFile);
+            string json = r.ReadToEnd();
+            List<Song> list = JsonConvert.DeserializeObject<List<Song>>(json);
+            if (list == null)
             {
-                string json = r.ReadToEnd();
-                List<Song> list = JsonConvert.DeserializeObject<List<Song>>(json);
-                if (list == null)
-                {
-                    list = new List<Song>();
-                }
-                return list;
+                list = new List<Song>();
             }
+            r.Close();
+            return list;
         }
         catch (Exception e)
         {
@@ -54,15 +55,25 @@ public class Utils
         try
         {
             string json = JsonConvert.SerializeObject(songs, Formatting.Indented);
-            using (StreamWriter sw = new StreamWriter(songListFile))
-            {
-                sw.Write(json);
-            }
+            StreamWriter sw = new StreamWriter(songListFile);
+            sw.Write(json);
+            sw.Close();
         }
         catch (Exception e)
         {
-            errorReport(e);
-            Debug.WriteLine(e.ToString());
+            Thread.Sleep(1000);
+            try
+            {
+                string json = JsonConvert.SerializeObject(songs, Formatting.Indented);
+                StreamWriter sw = new StreamWriter(songListFile);
+                sw.Write(json);
+                sw.Close();
+            }
+            catch (Exception)
+            {
+                errorReport(e);
+                Debug.WriteLine(e.ToString());
+            }
         }
     }
 
@@ -74,11 +85,10 @@ public class Utils
         }
         try
         {
-            using (StreamReader r = new StreamReader(userDataFile))
-            {
-                string json = r.ReadToEnd();
-                return JsonConvert.DeserializeObject<TwitchBot>(json);
-            }
+            StreamReader r = new StreamReader(userDataFile);
+            string json = r.ReadToEnd();
+            r.Close();
+            return JsonConvert.DeserializeObject<TwitchBot>(json);
         }
         catch (Exception e)
         {
@@ -93,15 +103,25 @@ public class Utils
         try
         {
             string json = JsonConvert.SerializeObject(twitchBot, Formatting.Indented);
-            using (StreamWriter sw = new StreamWriter(userDataFile))
-            {
-                sw.Write(json);
-            }
+            StreamWriter sw = new StreamWriter(userDataFile);
+            sw.Write(json);
+            sw.Close();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            errorReport(e);
-            Debug.WriteLine(e.ToString());
+            Thread.Sleep(1000);
+            try
+            {
+                string json = JsonConvert.SerializeObject(twitchBot, Formatting.Indented);
+                StreamWriter sw = new StreamWriter(userDataFile);
+                sw.Write(json);
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                errorReport(e);
+                Debug.WriteLine(e.ToString());
+            }
         }
         saveSongs(twitchBot.requestSystem.songList);
     }
@@ -121,10 +141,9 @@ public class Utils
 
     public static void errorReport(Exception e)
     {
-        StreamWriter output;
         try
         {
-            output = new StreamWriter(@"bin\errorlog.txt", true);
+            StreamWriter output = new StreamWriter(@"bin\errorlog.txt", true);
             output.Write(getDate() + " " + getTime() + " - DudeBot " + version + " Error : " + e + "\r\r\r");
             output.Close();
         }
@@ -369,7 +388,7 @@ public class Utils
         return rand.Next(x);
     }
 
-    public static Boolean checkIfUserIsOP(String user, String channel, String streamer, List<BotUser> users)
+    public static Boolean checkIfUserIsOP(String user, String channel, String streamer, ObservableCollection<BotUser> users)
     {
         foreach (BotUser u in users)
         {
@@ -401,7 +420,7 @@ public class Utils
         return false;
     }
 
-    public static Boolean checkIfUserIsFollowing(String channel, String user, String streamer, List<BotUser> users)
+    public static Boolean checkIfUserIsFollowing(String channel, String user, String streamer, ObservableCollection<BotUser> users)
     {
         if (user.Equals(streamer) || user.Equals(Utils.botMaker))
         {

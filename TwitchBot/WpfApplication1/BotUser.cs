@@ -12,6 +12,7 @@ public class BotUser
     public int subCredits { get; set; }
     public int points { get; set; }
     public int numRequests { get; set; }
+    public long months { get; set; } = 0;
     public long gambleCoolDown { get; set; }
     public long vipCoolDown { get; set; }
 

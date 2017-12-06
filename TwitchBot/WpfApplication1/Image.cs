@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -15,7 +16,7 @@ public class Image
     [JsonIgnore]
     public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
-    public void imageCOMMANDS(String message, String channel, String sender, List<Command> comList)
+    public void imageCOMMANDS(String message, String channel, String sender, ObservableCollection<Command> comList)
     {
         try
         {

@@ -19,6 +19,7 @@
   "botColor": null,
   "endMessage": "BYE FAM",
   "startupMessage": "SEXY TIME",
+  "version": "2.12.1",
   "minigameTimer": 90,
   "timerTotal": 10,
   "minigameTriggered": false,
@@ -131,10 +132,10 @@
     "direquests": true,
     "ylrequests": true,
     "maxSongLength": false,
-    "doNotWriteToHistory": true,
+    "doNotWriteToHistory": false,
     "subOnlyRequests": "Only subs can request right now, $user!",
-    "lastSong": null,
-    "formattedTotalTime": "00:17:48",
+    "lastSong": "test",
+    "formattedTotalTime": "00:04:50",
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
@@ -316,16 +317,16 @@
     },
     "songList": [
       {
-        "name": "hotel california",
+        "name": "asdf",
         "requester": "edude15000",
         "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=BYlb_MnOhBs",
-        "durationInSeconds": 410,
+        "youtubeLink": "http://www.youtube.com/watch?v=lsJLLEwUYZM",
+        "durationInSeconds": 249,
         "tuning": null,
         "customsForgeLink": null,
         "parts": null,
         "dlcCreator": null,
-        "formattedDuration": "00:06:50"
+        "formattedDuration": "00:04:09"
       },
       {
         "name": "weee",
@@ -340,16 +341,16 @@
         "formattedDuration": "00:00:41"
       },
       {
-        "name": "test",
+        "name": "ppp",
         "requester": "edude15000",
         "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=_nfREkI7Nsk",
-        "durationInSeconds": 617,
+        "youtubeLink": "http://www.youtube.com/watch?v=NFhJRTdmviA",
+        "durationInSeconds": 369,
         "tuning": null,
         "customsForgeLink": null,
         "parts": null,
         "dlcCreator": null,
-        "formattedDuration": "00:10:17"
+        "formattedDuration": "00:06:09"
       }
     ]
   },
@@ -803,6 +804,15 @@
       "level": 0,
       "input": [
         "!santa"
+      ],
+      "toggle": true
+    },
+    {
+      "output": "a",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!a"
       ],
       "toggle": true
     }
@@ -1893,6 +1903,15 @@
         "!love"
       ],
       "toggle": true
+    },
+    {
+      "output": "a",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!a"
+      ],
+      "toggle": true
     }
   ],
   "users": [
@@ -1907,6 +1926,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -1921,6 +1941,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -1935,6 +1956,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -1949,6 +1971,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -1963,6 +1986,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -1977,6 +2001,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -1991,6 +2016,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2005,6 +2031,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2019,6 +2046,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2033,6 +2061,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2047,6 +2076,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2061,6 +2091,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2075,6 +2106,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2089,6 +2121,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2103,6 +2136,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2117,6 +2151,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2131,6 +2166,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2145,6 +2181,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2159,6 +2196,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2173,6 +2211,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2187,6 +2226,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2201,6 +2241,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2215,6 +2256,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2229,6 +2271,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2243,6 +2286,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2257,6 +2301,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2271,6 +2316,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2285,6 +2331,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2299,6 +2346,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2313,6 +2361,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2327,6 +2376,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2341,6 +2391,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2355,6 +2406,7 @@
       "subCredits": 0,
       "points": 1,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2369,6 +2421,7 @@
       "subCredits": 0,
       "points": 109,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2383,6 +2436,7 @@
       "subCredits": 0,
       "points": 260,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2397,6 +2451,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2411,6 +2466,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2425,6 +2481,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2439,6 +2496,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2453,6 +2511,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2467,6 +2526,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2481,6 +2541,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2495,6 +2556,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2509,6 +2571,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2523,6 +2586,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2537,6 +2601,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2551,6 +2616,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2565,6 +2631,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2579,6 +2646,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2593,6 +2661,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2607,6 +2676,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2621,6 +2691,7 @@
       "subCredits": 0,
       "points": 2,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2635,6 +2706,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2649,6 +2721,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2663,6 +2736,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2677,6 +2751,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2691,6 +2766,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2705,6 +2781,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2719,6 +2796,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2733,6 +2811,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2747,6 +2826,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2761,6 +2841,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2775,6 +2856,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2789,6 +2871,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2803,6 +2886,7 @@
       "subCredits": 0,
       "points": 3,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2817,6 +2901,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2831,6 +2916,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2845,6 +2931,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2859,6 +2946,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2873,6 +2961,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2887,6 +2976,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2901,6 +2991,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2915,6 +3006,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2929,6 +3021,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2943,6 +3036,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2957,6 +3051,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2971,6 +3066,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2985,6 +3081,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -2999,6 +3096,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3013,6 +3111,7 @@
       "subCredits": 0,
       "points": 5,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3027,6 +3126,7 @@
       "subCredits": 0,
       "points": 5,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3041,6 +3141,7 @@
       "subCredits": 0,
       "points": 5,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3055,6 +3156,7 @@
       "subCredits": 0,
       "points": 5,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3069,6 +3171,7 @@
       "subCredits": 0,
       "points": 5,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3083,6 +3186,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3097,6 +3201,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3111,6 +3216,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3125,6 +3231,7 @@
       "subCredits": 0,
       "points": 6,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3139,6 +3246,7 @@
       "subCredits": 0,
       "points": 7,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3153,6 +3261,7 @@
       "subCredits": 0,
       "points": 7,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3167,6 +3276,7 @@
       "subCredits": 0,
       "points": 7,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3181,6 +3291,7 @@
       "subCredits": 0,
       "points": 8,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3195,6 +3306,7 @@
       "subCredits": 0,
       "points": 8,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3209,6 +3321,7 @@
       "subCredits": 0,
       "points": 8,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3223,6 +3336,7 @@
       "subCredits": 0,
       "points": 8,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3237,6 +3351,7 @@
       "subCredits": 0,
       "points": 9,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3251,6 +3366,7 @@
       "subCredits": 0,
       "points": 9,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3265,6 +3381,7 @@
       "subCredits": 0,
       "points": 9,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3279,6 +3396,7 @@
       "subCredits": 0,
       "points": 10,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3293,6 +3411,7 @@
       "subCredits": 0,
       "points": 12,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3307,6 +3426,7 @@
       "subCredits": 0,
       "points": 12,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3321,6 +3441,7 @@
       "subCredits": 0,
       "points": 13,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3335,6 +3456,7 @@
       "subCredits": 0,
       "points": 14,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3349,6 +3471,7 @@
       "subCredits": 0,
       "points": 15,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3363,6 +3486,7 @@
       "subCredits": 0,
       "points": 15,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3377,6 +3501,7 @@
       "subCredits": 0,
       "points": 15,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3391,6 +3516,7 @@
       "subCredits": 0,
       "points": 16,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3405,6 +3531,7 @@
       "subCredits": 0,
       "points": 18,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3419,6 +3546,7 @@
       "subCredits": 0,
       "points": 19,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3433,6 +3561,7 @@
       "subCredits": 0,
       "points": 20,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3447,6 +3576,7 @@
       "subCredits": 0,
       "points": 21,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3461,6 +3591,7 @@
       "subCredits": 0,
       "points": 21,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3475,6 +3606,7 @@
       "subCredits": 0,
       "points": 22,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3489,6 +3621,7 @@
       "subCredits": 0,
       "points": 22,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3503,6 +3636,7 @@
       "subCredits": 0,
       "points": 23,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3517,6 +3651,7 @@
       "subCredits": 0,
       "points": 23,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3531,6 +3666,7 @@
       "subCredits": 0,
       "points": 26,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3545,6 +3681,7 @@
       "subCredits": 0,
       "points": 27,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3559,6 +3696,7 @@
       "subCredits": 0,
       "points": 29,
       "numRequests": 2,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3573,6 +3711,7 @@
       "subCredits": 0,
       "points": 29,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3587,6 +3726,7 @@
       "subCredits": 0,
       "points": 29,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3601,6 +3741,7 @@
       "subCredits": 0,
       "points": 30,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3615,6 +3756,7 @@
       "subCredits": 0,
       "points": 31,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3629,6 +3771,7 @@
       "subCredits": 0,
       "points": 76,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3643,6 +3786,7 @@
       "subCredits": 0,
       "points": 36,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3657,6 +3801,7 @@
       "subCredits": 0,
       "points": 41,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3671,6 +3816,7 @@
       "subCredits": 0,
       "points": 39,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3685,6 +3831,7 @@
       "subCredits": 0,
       "points": 40,
       "numRequests": 2,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3699,6 +3846,7 @@
       "subCredits": 0,
       "points": 43,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3713,6 +3861,7 @@
       "subCredits": 0,
       "points": 112,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3727,6 +3876,7 @@
       "subCredits": 0,
       "points": 110,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3741,6 +3891,7 @@
       "subCredits": 0,
       "points": 1548,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3755,6 +3906,7 @@
       "subCredits": 0,
       "points": 49,
       "numRequests": 2,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3769,6 +3921,7 @@
       "subCredits": 0,
       "points": 50,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3783,6 +3936,7 @@
       "subCredits": 0,
       "points": 53,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3797,6 +3951,7 @@
       "subCredits": 0,
       "points": 4,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3811,6 +3966,7 @@
       "subCredits": 0,
       "points": 507,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3825,6 +3981,7 @@
       "subCredits": 0,
       "points": 62,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3839,6 +3996,7 @@
       "subCredits": 0,
       "points": 65,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3853,6 +4011,7 @@
       "subCredits": 0,
       "points": 69,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3867,6 +4026,7 @@
       "subCredits": 0,
       "points": 165,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3881,6 +4041,7 @@
       "subCredits": 0,
       "points": 73,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3895,6 +4056,7 @@
       "subCredits": 0,
       "points": 79,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3909,6 +4071,7 @@
       "subCredits": 0,
       "points": 83,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3923,6 +4086,7 @@
       "subCredits": 0,
       "points": 83,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3937,6 +4101,7 @@
       "subCredits": 0,
       "points": 87,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3951,6 +4116,7 @@
       "subCredits": 0,
       "points": 88,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3965,6 +4131,7 @@
       "subCredits": 0,
       "points": 96,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3979,6 +4146,7 @@
       "subCredits": 0,
       "points": 97,
       "numRequests": 3,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -3993,6 +4161,7 @@
       "subCredits": 0,
       "points": 203,
       "numRequests": 2,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4007,6 +4176,7 @@
       "subCredits": 0,
       "points": 111,
       "numRequests": 2,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4021,6 +4191,7 @@
       "subCredits": 0,
       "points": 158,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4034,7 +4205,8 @@
       "time": 59,
       "subCredits": 0,
       "points": 59,
-      "numRequests": 158,
+      "numRequests": 161,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4049,6 +4221,7 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 3,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4063,6 +4236,7 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 7,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4077,6 +4251,7 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 2,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4091,6 +4266,7 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4105,6 +4281,7 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4119,6 +4296,7 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 1,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4133,6 +4311,7 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 2,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     },
@@ -4147,6 +4326,7 @@
       "subCredits": 0,
       "points": 289,
       "numRequests": 0,
+      "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
     }

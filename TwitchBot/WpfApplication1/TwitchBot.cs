@@ -13,9 +13,16 @@ using System.Runtime.CompilerServices;
 using TwitchLib.Services;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.PubSub;
-
+using System.Collections.ObjectModel;
 public class TwitchBot
 {
+    public TwitchBot(MainWindow window)
+    {
+        this.window = window;
+    }
+
+    [JsonIgnore]
+    public MainWindow window;
     [JsonIgnore]
     public TwitchClient client;
     [JsonIgnore]
@@ -44,6 +51,7 @@ public class TwitchBot
     public String botColor { get; set; }
     public String endMessage { get; set; }
     public String startupMessage { get; set; }
+    public String version { get; set; } = Utils.version;
     public int counter1, counter2, counter3, counter4, counter5;
     public int minigameTimer { get; set; }
     public int timerTotal { get; set; }
@@ -63,13 +71,13 @@ public class TwitchBot
     public SoundEffect soundEffect { get; set; }
     public Quote quote { get; set; }
     public RequestSystem requestSystem { get; set; }
-    public List<Command> sfxCommandList { get; set; } = new List<Command>();
-    public List<Command> userCommandList { get; set; } = new List<Command>();
-    public List<Command> timerCommandList { get; set; } = new List<Command>();
-    public List<Command> botCommandList { get; set; } = new List<Command>();
-    public List<Command> imageCommandList { get; set; } = new List<Command>();
-    public List<Command> commandList { get; set; } = new List<Command>();
-    public List<BotUser> users { get; set; } = new List<BotUser>();
+    public ObservableCollection<Command> sfxCommandList { get; set; } = new ObservableCollection<Command>();
+    public ObservableCollection<Command> userCommandList { get; set; } = new ObservableCollection<Command>();
+    public ObservableCollection<Command> timerCommandList { get; set; } = new ObservableCollection<Command>();
+    public ObservableCollection<Command> botCommandList { get; set; } = new ObservableCollection<Command>();
+    public ObservableCollection<Command> imageCommandList { get; set; } = new ObservableCollection<Command>();
+    public ObservableCollection<Command> commandList { get; set; } = new ObservableCollection<Command>();
+    public ObservableCollection<BotUser> users { get; set; } = new ObservableCollection<BotUser>();
     [JsonIgnore]
     public List<Double> gameGuess { get; set; } = new List<Double>();
     public List<String> raffleUsers { get; set; } = new List<String>();
@@ -116,6 +124,7 @@ public class TwitchBot
             client.OnWhisperReceived += onWhisperReceived;
             client.OnNewSubscriber += onNewSubscriber;
             client.OnUserJoined += onUserJoined;
+            client.OnUserLeft += onUserLeft;
             client.OnReSubscriber += onReSubscriber;
             client.OverrideBeingHostedCheck = true;
             client.OnBeingHosted += onBeingHosted;
@@ -132,6 +141,11 @@ public class TwitchBot
             Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
         }
+    }
+
+    private void onUserLeft(object sender, OnUserLeftArgs e)
+    {
+        client.SendRaw("PART: " + e.Username);
     }
 
     private void onBeingHosted(object sender, OnBeingHostedArgs e) // TODO : Add raid message for more than x people
@@ -160,6 +174,7 @@ public class TwitchBot
             {
                 botUser.subCredits += currency.creditsPerSub;
                 botUser.sub = true;
+                botUser.months = e.ReSubscriber.Months;
                 break;
             }
         }
@@ -250,7 +265,8 @@ public class TwitchBot
             if (botUser.username.Equals(e.Subscriber.DisplayName, StringComparison.InvariantCultureIgnoreCase))
             {
                 botUser.subCredits += currency.creditsPerSub;
-                botUser.sub = true; 
+                botUser.sub = true;
+                botUser.months = 1;
                 break;
             }
         }
@@ -271,7 +287,7 @@ public class TwitchBot
 
     public void resetAllCommands()
     { // Sets all command types for quicker type checking, sets all command names
-        List<Command> commands = new List<Command>(); // Removes any null commands that come up due to early bugs
+        ObservableCollection<Command> commands = new ObservableCollection<Command>(); // Removes any null commands that come up due to early bugs
         foreach (Command command in commandList)
         {
             if (command != null)
@@ -286,6 +302,7 @@ public class TwitchBot
         timerCommandList = getCommands("timer");
         imageCommandList = getCommands("image");
         extraCommandNames = setExtraCommandNames();
+        App.window.writeToConfig(null, null);
     }
 
     public void syncFileTimerThread()
@@ -506,9 +523,9 @@ public class TwitchBot
         // TODO: reset all the good stuff as needed
     }
 
-    public List<Command> getCommands(String type)
+    public ObservableCollection<Command> getCommands(String type)
     { // Gets a list of all 'type' commands
-        List<Command> list = new List<Command>();
+        ObservableCollection<Command> list = new ObservableCollection<Command>();
         foreach (Command c in commandList)
         {
             if (c.commandType.Equals(type))
@@ -2059,7 +2076,7 @@ public class TwitchBot
 
     }
 
-    public void read() // is this needed?
+    public void read()
     {
         try
         {
@@ -2756,6 +2773,7 @@ public class TwitchBot
     private void onUserJoined(object s, OnUserJoinedArgs e) // TODO
     {
         String login = e.Username;
+        client.SendRaw("JOIN: " + login);
         if (!containsUser(users, login))
         {
             BotUser u = new BotUser(login, 0, false, false, false, 0, 0, null, 0, 0, 0);
@@ -2767,7 +2785,7 @@ public class TwitchBot
         }
     }
 
-    public static Boolean containsUser(List<BotUser> list, String user)
+    public static Boolean containsUser(ObservableCollection<BotUser> list, String user)
     {
         foreach (BotUser b in list)
         {
