@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication1" 
         VerticalContentAlignment="Stretch"
         VerticalAlignment="Stretch"
         mc:Ignorable="d"
@@ -14,6 +15,10 @@
     <Controls:MetroWindow.DataContext>
         <Binding Source="bot" />
     </Controls:MetroWindow.DataContext>
+    <Window.Resources>
+        <local:ListToStringConverter x:Key="ListToStringConverter"/>
+        <local:ListConverter x:Key="ListConverter"/>
+    </Window.Resources>
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
@@ -187,7 +192,11 @@
                                     <ColumnDefinition Width="45*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock  VerticalAlignment="Center" FontSize="14" Grid.Row="2" Text="Banned keyword list: " Grid.Column="2" HorizontalAlignment="Right" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type banned request keywords list here &#x0a;(example: fire and flames, tool)" x:Name="bannedKeywords" FontSize="12" Grid.Row="2" Grid.Column="3" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto" Text="{Binding bannedKeywords, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type banned request keywords list here &#x0a;(example: fire and flames, tool)" x:Name="bannedKeywords" FontSize="12" Grid.Row="2" Grid.Column="3" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto" Text="{Binding Path=requestSystem.bannedKeywords, Converter={StaticResource ListToStringConverter}}" />
+                                <TextBlock  VerticalAlignment="Center" FontSize="14" Grid.Row="7" Text="Favorite Songs list: " Grid.Column="2" HorizontalAlignment="Right" />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type favorite songs list here &#x0a;(example: acdc - big balls, metallica - enter sandman)" x:Name="favoritesongs" FontSize="12" Grid.Row="7" Grid.Column="3" Grid.RowSpan="4" VerticalScrollBarVisibility="Auto" Text="{Binding Path=requestSystem.favSongs, Converter={StaticResource ListConverter}}" />
+
+
                                 <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type Google sheet id here" x:Name="googleSheetID" FontSize="14" Grid.Row="0" Grid.Column="3" Text="{Binding spreadsheetId, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBlock VerticalAlignment="Center" FontSize="14" Grid.Row="0" Text="Google Sheet ID: " Grid.Column="2" HorizontalAlignment="Right"/>
                                 <TextBlock VerticalAlignment="Center" FontSize="14" Grid.Row="0" Grid.Column="0" Text="# songs list displays: " HorizontalAlignment="Right"/>
@@ -253,7 +262,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Request: " Cursor="None" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="requestCommandNames" FontSize="12" Grid.Column="1" Grid.Row="0"  />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="requestCommandNames" FontSize="12" Grid.Column="1" Grid.Row="0" Text="{Binding Path=requestSystem.requestComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="requestLevel" FontSize="12" Grid.Column="2" Grid.Row="0" SelectedIndex="{Binding requestSystem.requestComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -262,7 +271,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Trigger Requests: [on/off]: " Cursor="None" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="triggerRequestsCommandNames" FontSize="12" Grid.Column="1" Grid.Row="1" />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="triggerRequestsCommandNames" FontSize="12" Grid.Column="1" Grid.Row="1" Text="{Binding Path=requestSystem.triggerRequestsComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="triggerRequestsLevel" FontSize="12" Grid.Column="2" Grid.Row="1" SelectedIndex="{Binding requestSystem.triggerRequestsComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -271,7 +280,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Play Song from Favorites: " Cursor="None" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="playFavCommandNames" FontSize="12" Grid.Column="1" Grid.Row="2" />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="playFavCommandNames" FontSize="12" Grid.Column="1" Grid.Row="2" Text="{Binding Path=requestSystem.favSongComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="playFavLevel" FontSize="12" Grid.Column="2" Grid.Row="2" SelectedIndex="{Binding requestSystem.favSongComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -280,7 +289,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Display Song List: " Cursor="None" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="songListCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="3" />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="songListCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="3" Text="{Binding Path=requestSystem.songlistComm.input, Converter={StaticResource ListToStringConverter}}"/>
                                 <ComboBox x:Name="songListLevel" FontSize="12" Grid.Column="2" Grid.Row="3" SelectedIndex="{Binding requestSystem.songlistComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -289,7 +298,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Total # of Songs in List: " Cursor="None" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getTotalSongsInListCommandNames" FontSize="12" Grid.Column="1" Grid.Row="4" />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getTotalSongsInListCommandNames" FontSize="12" Grid.Column="1" Grid.Row="4" Text="{Binding Path=requestSystem.getTotalComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="getTotalSongsLevel" FontSize="12" Grid.Column="2" Grid.Row="4" SelectedIndex="{Binding requestSystem.getTotalComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -298,7 +307,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Total Current Viewers: " Cursor="None" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getViewerCountCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="5"  />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getViewerCountCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="5" Text="{Binding Path=getViewerComm.input, Converter={StaticResource ListToStringConverter}}"  />
                                 <ComboBox x:Name="getViewerCountLevel" FontSize="12" Grid.Column="2" Grid.Row="5" SelectedIndex="{Binding getViewerComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -307,7 +316,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Add Song to Top of List: " Cursor="None" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addTopCommandNames" FontSize="12" Grid.Column="1" Grid.Row="6"  />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addTopCommandNames" FontSize="12" Grid.Column="1" Grid.Row="6" Text="{Binding Path=requestSystem.addtopComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="addTopLevel" FontSize="12" Grid.Column="2" Grid.Row="6" SelectedIndex="{Binding requestSystem.addtopComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -316,7 +325,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Add VIP song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addVipCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="7"  />
+                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addVipCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="7" Text="{Binding Path=requestSystem.addvipComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="addVipLevel" FontSize="12" Grid.Column="2" Grid.Row="7" SelectedIndex="{Binding requestSystem.addvipComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -325,7 +334,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Edit Current Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="8" />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="8" Text="{Binding Path=requestSystem.editComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="editLevel" FontSize="12" Grid.Column="2" Grid.Row="8" SelectedIndex="{Binding requestSystem.editComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -334,7 +343,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Skip to Next Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="nextCommandNames" FontSize="12" Grid.Column="1" Grid.Row="9" />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="nextCommandNames" FontSize="12" Grid.Column="1" Grid.Row="9" Text="{Binding Path=requestSystem.nextComm.input, Converter={StaticResource ListToStringConverter}}"/>
                                 <ComboBox x:Name="nextLevel" FontSize="12" Grid.Column="2" Grid.Row="9" SelectedIndex="{Binding requestSystem.nextComm.level, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -343,7 +352,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Clear Song List: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="clearCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="10"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="clearCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="10" Text="{Binding Path=requestSystem.clearComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="clearLevel" FontSize="12" Grid.Column="2" Grid.Row="10" SelectedIndex="{Binding requestSystem.clearComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -352,7 +361,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Display Current Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayCurrentCommandName" FontSize="12" Grid.Column="1" Grid.Row="11"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayCurrentCommandName" FontSize="12" Grid.Column="1" Grid.Row="11" Text="{Binding Path=requestSystem.getCurrentComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="displayCurrentLevel" FontSize="12" Grid.Column="2" Grid.Row="11" SelectedIndex="{Binding requestSystem.getCurrentComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -361,7 +370,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Display Next Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="12" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayNextSongCommandName" FontSize="12" Grid.Column="1" Grid.Row="12"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayNextSongCommandName" FontSize="12" Grid.Column="1" Grid.Row="12" Text="{Binding Path=requestSystem.getNextComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="displayNextLevel" FontSize="12" Grid.Column="2" Grid.Row="12" SelectedIndex="{Binding requestSystem.getNextComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -370,7 +379,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Random Next Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="randomNextSongCommandName"  FontSize="12" Grid.Column="1" Grid.Row="13"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="randomNextSongCommandName"  FontSize="12" Grid.Column="1" Grid.Row="13" Text="{Binding Path=requestSystem.randomComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="randomNextSongLevel" FontSize="12" Grid.Column="2" Grid.Row="13" SelectedIndex="{Binding requestSystem.randomComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -379,7 +388,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Edit Requester Song: " Cursor="None" VerticalAlignment="Center" Grid.Row="14" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editReqSongCommandName" FontSize="12" Grid.Column="1" Grid.Row="14"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editReqSongCommandName" FontSize="12" Grid.Column="1" Grid.Row="14" Text="{Binding Path=requestSystem.editSongComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="editReqSongLevel" FontSize="12" Grid.Column="2" Grid.Row="14" SelectedIndex="{Binding requestSystem.editSongComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -388,7 +397,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Remove Requester Song: " Cursor="None" VerticalAlignment="Center" Grid.Row="15" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="removeReqSongCommand"  FontSize="12" Grid.Column="1" Grid.Row="15"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="removeReqSongCommand"  FontSize="12" Grid.Column="1" Grid.Row="15" Text="{Binding Path=requestSystem.removeSongComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="removeReqSongLevel" FontSize="12" Grid.Column="2" Grid.Row="15" SelectedIndex="{Binding requestSystem.removeSongComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem>Everyone</ComboBoxItem>
                                     <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
@@ -397,7 +406,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Add Donator Song: " Cursor="None" VerticalAlignment="Center" Grid.Row="16" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="addDonationCommand" FontSize="12" Grid.Column="1" Grid.Row="16"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="addDonationCommand" FontSize="12" Grid.Column="1" Grid.Row="16" Text="{Binding Path=requestSystem.adddonatorComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="addDonationLevel" FontSize="12" Grid.Column="2" Grid.Row="16" SelectedIndex="{Binding requestSystem.adddonatorComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem Content="Everyone"/>
                                     <ComboBoxItem Content="Subs, Mods, Streamer"/>
@@ -406,7 +415,7 @@
                                 </ComboBox>
 
                                 <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Song Position:" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="17" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="songPositionName" FontSize="12" Grid.Column="1" Grid.Row="17"  />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="songPositionName" FontSize="12" Grid.Column="1" Grid.Row="17" Text="{Binding Path=requestSystem.songPositionComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="songPositionLevel" FontSize="12" Grid.Column="2" Grid.Row="17" SelectedIndex="{Binding requestSystem.songPositionComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem Content="Everyone"/>
                                     <ComboBoxItem Content="Subs, Mods, Streamer"/>
@@ -640,8 +649,7 @@
                                 </DataGridTemplateColumn.HeaderStyle>
                                 <DataGridTemplateColumn.CellTemplate >
                                     <DataTemplate >
-                                        <TextBlock TextWrapping="Wrap" Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridCell}, 
-                                            Path=Column.DisplayIndex}" HorizontalAlignment="Center" />
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding index}" HorizontalAlignment="Center" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -769,7 +777,7 @@
                         <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removecommand" Grid.Column="4" />
                     </Grid>
                     <Grid Grid.Row="1" >
-                        <DataGrid x:Name="commanddatagrid" GridLinesVisibility="All" ItemsSource="{Binding userCommandList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <DataGrid x:Name="commanddatagrid" GridLinesVisibility="All" ItemsSource="{Binding userCommandList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn x:Name="commandName" Header="Command" Width=".13*" >
                                     <DataGridTemplateColumn.CellTemplate>
@@ -1160,7 +1168,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type quote here (example: &quot; This is an amazing quote! -theBestStreamer 1/24/2017 &quot;)" Grid.Column="0" TextWrapping="Wrap" x:Name="quoteEdit" Text="" VerticalScrollBarVisibility="Auto" />
-                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addquote" Grid.Column="1" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Edit" Click="addquote" Grid.Column="1" />
                         <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removequote" Grid.Column="2" />
                     </Grid>
                     <Grid Grid.Row="2">
@@ -1205,12 +1213,14 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="15*"/>
                             <ColumnDefinition Width="15*"/>
-                            <ColumnDefinition Width="40*"/>
-                            <ColumnDefinition Width="15*"/>
-                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="10*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addSFX" Grid.Column="3" />
-                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeSFX" Grid.Column="4" />
+                        <Controls:NumericUpDown x:Name="volumeSetter" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="3" Grid.Row="1" Value="100"/>
+                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addSFX" Grid.Column="4" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeSFX" Grid.Column="5" />
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="!sfxCommandName" TextWrapping="Wrap" x:Name="editCommandSFX" Text="" Grid.Column="0"/>
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="SFX file path goes here after uploading" TextWrapping="Wrap" x:Name="editResponseSFX" IsEnabled="False" HorizontalScrollBarVisibility="Auto" Grid.Column="2" />
                         <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Upload SFX" Click="uploadSFX" Grid.Column="1" />
@@ -1225,10 +1235,17 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn x:Name="SFXResponse" Header="SFX" Width=".85*">
+                                <DataGridTemplateColumn x:Name="SFXResponse" Header="SFX" Width=".7*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn x:Name="SFXVolume" Header="Volume" Width=".15*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding volumeLevel}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

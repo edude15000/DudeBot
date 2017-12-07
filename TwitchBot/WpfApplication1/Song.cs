@@ -13,6 +13,7 @@ public class Song
     public String parts { get; set; }
     public String dlcCreator { get; set; }
     public String formattedDuration { get; set; } = "";
+    public int index { get; set; } = 0;
 
     public Song(String name, String requester, String level, TwitchBot bot)
     {

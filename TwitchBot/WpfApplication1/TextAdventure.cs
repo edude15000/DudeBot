@@ -10,13 +10,14 @@ public class TextAdventure
     public List<String> users { get; set; } = new List<String>();
     [JsonIgnore]
     public Dictionary<String, String[]> text { get; set; } = new Dictionary<String, String[]>();
+    [JsonIgnore]
     public String choice { get; set; } = null;
     public long startTimerInMS { get; set; }
     [JsonIgnore]
     public long adventureStartTime { get; set; }
     [JsonIgnore]
     public Boolean allowUserAdds { get; set; } = true;
-    [JsonIgnore]
+    
     public Boolean enoughPlayers { get; set; } = false;
     public int adventurePointsMin { get; set; }
     public int adventurePointsMax { get; set; }

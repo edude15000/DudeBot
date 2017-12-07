@@ -34,6 +34,7 @@ public class SoundEffect
                                     WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
                                     myplayer.URL = comList[i].output;
                                     myplayer.controls.play();
+                                    myplayer.settings.volume = comList[i].volumeLevel;
                                     userCoolDowns.Add(sender, Environment.TickCount);
                                     SFXstartTime = Environment.TickCount;
                                 }

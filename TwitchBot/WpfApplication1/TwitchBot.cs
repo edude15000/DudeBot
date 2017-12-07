@@ -21,6 +21,20 @@ public class TwitchBot
         this.window = window;
     }
 
+    // Sets all commands for !addcom, !editcom, !removecom
+    public List<String> setExtraCommandNames()
+    {
+        String[] result = { "!givespot", "!regnext", "!nextreg", "!regularnext", "!nextregular", "!quote", "!addquote",
+                "!quotes", "!minigame", "!startgame", "!guess", "!endgame", "!sfx", "!images", "!totalrequests",
+                "!toprequester", "!setcounter1", "!setcounter2", "!setcounter3", "!setcounter4", "!setcounter5",
+                "!addcom", "!botcolor", "!colorbot", "!adventure", "!bonus", "!bonusall", giveawaycommandname,
+                "!gamble", "!currency", currency.currencyCommand, "!vipsong", "!vipsongon", "!vipsongoff", "!info",
+                "!rank", "!join", "!leaderboards", "!removesong", "!promote", "!rankup", "!editquote", "!changequote",
+                "!removequote", "!deletequote", "!subcredits", "!givecredits", "!subsong", "!addfav" };
+        return new List<String>(result);
+        // Add TO AS NEEDED
+    }
+
     [JsonIgnore]
     public MainWindow window;
     [JsonIgnore]
@@ -535,21 +549,7 @@ public class TwitchBot
         }
         return list;
     }
-
-    // Sets all commands for !addcom, !editcom, !removecom
-    public List<String> setExtraCommandNames()
-    {
-        String[] result = { "!givespot", "!regnext", "!nextreg", "!regularnext", "!nextregular", "!quote", "!addquote",
-                "!quotes", "!minigame", "!startgame", "!guess", "!endgame", "!sfx", "!images", "!totalrequests",
-                "!toprequester", "!setcounter1", "!setcounter2", "!setcounter3", "!setcounter4", "!setcounter5",
-                "!addcom", "!botcolor", "!colorbot", "!adventure", "!bonus", "!bonusall", giveawaycommandname,
-                "!gamble", "!currency", currency.currencyCommand, "!vipsong", "!vipsongon", "!vipsongoff", "!info",
-                "!rank", "!join", "!leaderboards", "!removesong", "!promote", "!rankup", "!editquote", "!changequote",
-                "!removequote", "!deletequote", "!subcredits", "!givecredits", "!subsong" };
-        return new List<String>(result);
-        // Add TO AS NEEDED
-    }
-
+    
     // Increments or decrements user's request amount
     public void addUserRequestAmount(String sender, Boolean op)
     {
@@ -2073,6 +2073,17 @@ public class TwitchBot
                 Console.WriteLine(e1.ToString());
             }
         }
+
+        if (message.Equals("!addfav", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+                    || sender.Equals(Utils.botMaker))
+            {
+                requestSystem.addCurrentSongToFavList();
+                return;
+            }
+        }
+
 
     }
 

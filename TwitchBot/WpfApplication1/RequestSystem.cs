@@ -27,8 +27,9 @@ public class RequestSystem
     public int numOfSongsToDisplay { get; set; }
     public int numOfSongsInQueuePerUser { get; set; }
     public int maxSongLengthInMinutes { get; set; }
-    public String[] favSongs { get; set; }
+    public List<String> favSongs { get; set; }
     public String[] bannedKeywords { get; set; }
+    [JsonIgnore]
     public List<String> favSongsPlayedThisStream { get; set; } = new List<String>();
     public Command requestComm { get; set; }
     public Command songlistComm { get; set; }
@@ -419,7 +420,7 @@ public class RequestSystem
                                             try
                                             {
                                                 Random rand = new Random();
-                                                int index = rand.Next(favSongs.Length);
+                                                int index = rand.Next(favSongs.Count);
                                                 if (favSongsPlayedThisStream.Contains(favSongs[index]))
                                                 {
                                                     addSong(channel, "streamer's Choice", sender);
@@ -579,9 +580,14 @@ public class RequestSystem
 
     public void writeToCurrentSong(String channel, Boolean nextCom)
     {
+        for (int i = 1; i <= songList.Count; i++)
+        {
+            songList[i-1].index = i;
+        }
         StreamWriter output;
         output = new StreamWriter(Utils.currentSongFile, false);
         output.Write(getCurrentSongTitle(channel));
+        output.Close();
         output = new StreamWriter(Utils.currentRequesterFile, false);
         output.Write(getCurrentSongRequester(channel));
         output.Close();
@@ -1656,7 +1662,14 @@ public class RequestSystem
         {
             level = songList[place].level;
         }
-        songList.Insert(place, new Song(song, requestedby, level, bot));
+        if (place >= songList.Count)
+        {
+            songList.Add(new Song(song, requestedby, level, bot));
+        }
+        else
+        {
+            songList.Insert(place, new Song(song, requestedby, level, bot));
+        }
         writeToCurrentSong(bot.channel, true);
     }
 
@@ -1691,4 +1704,20 @@ public class RequestSystem
         }
 
     }
+
+    public void addCurrentSongToFavList()
+    {
+        if (songList.Count == 0)
+        {
+            bot.client.SendMessage("There are no songs in the queue!");
+            return;
+        }
+        String song = songList[0].name;
+        song = song.Replace(',', ' ');
+        favSongsPlayedThisStream.Add(song);
+        favSongs.Add(song);
+        bot.client.SendMessage(song + " has been added to the favorite songs list!");
+    }
+
+
 }

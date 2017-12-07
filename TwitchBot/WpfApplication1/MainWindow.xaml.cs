@@ -16,10 +16,10 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 namespace WpfApplication1
 {
-
     public partial class MainWindow : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -33,8 +33,11 @@ namespace WpfApplication1
             handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
+       
+
         // TODO : Backup JSON file!
-        
+
+        String selectedQuote = "";
         Process imageWindow = null;
         [DllImport("User32")]
         private static extern int SetForegroundWindow(IntPtr hwnd);
@@ -56,7 +59,7 @@ namespace WpfApplication1
                 }
             }
         }
-
+        
         public async void addcommand(Object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editCommand.Text)) && !string.IsNullOrWhiteSpace(editResponse.Text))
@@ -77,7 +80,7 @@ namespace WpfApplication1
                     }
                 }
                 String[] str = { editCommand.Text };
-                bot.userCommandList.Add(new Command(str, editCommandLevel.SelectedIndex, editResponse.Text, "user", true));
+                bot.commandList.Add(new Command(str, editCommandLevel.SelectedIndex, editResponse.Text, "user", true));
                 bot.resetAllCommands();
                 editCommand.Text = "";
                 editResponse.Text = "";
@@ -179,17 +182,15 @@ namespace WpfApplication1
             {
                 for (int i = 0; i < bot.quote.quotes.Count; i++)
                 {
-                    if (bot.quote.quotes[i].Equals(quoteEdit.Text))
+                    if (bot.quote.quotes[i].Equals(selectedQuote))
                     {
                         bot.quote.quotes[i] = quoteEdit.Text;
                         writeToConfig(null, null);
                         quoteEdit.Text = "";
+                        selectedQuote = "";
                         return;
                     }
                 }
-                bot.quote.quotes.Add(quoteEdit.Text);
-                writeToConfig(null, null);
-                quoteEdit.Text = "";
             }
             else
             {
@@ -232,17 +233,22 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommandSFX.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         c.output = editResponseSFX.Text;
+                        c.volumeLevel = (int)volumeSetter.Value;
                         bot.resetAllCommands();
                         editCommandSFX.Text = "";
                         editResponseSFX.Text = "";
+                        volumeSetter.Value = 100;
                         return;
                     }
                 }
                 String[] str = { editCommandSFX.Text };
-                bot.commandList.Add(new Command(str, 0, editResponseSFX.Text, "sfx", true));
+                Command d = new Command(str, 0, editResponseSFX.Text, "sfx", true);
+                d.volumeLevel = (int)volumeSetter.Value;
+                bot.commandList.Add(d);
                 bot.resetAllCommands();
                 editCommandSFX.Text = "";
                 editResponseSFX.Text = "";
+                volumeSetter.Value = 100;
             }
             else
             {
@@ -288,7 +294,6 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommand.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.commandList.Remove(c);
-                        bot.userCommandList.Remove(c);
                         break;
                     }
                 }
@@ -358,7 +363,6 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommandImage.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.commandList.Remove(c);
-                        bot.imageCommandList.Remove(c);
                         break;
                     }
                 }
@@ -425,12 +429,12 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommandSFX.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.commandList.Remove(c);
-                        bot.sfxCommandList.Remove(c);
                         break;
                     }
                 }
                 editCommandSFX.Text = "";
                 editResponseSFX.Text = "";
+                volumeSetter.Value = 100;
                 writeToConfig(null, null);
                 bot.resetAllCommands();
             }
@@ -449,7 +453,6 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommandTimed.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.commandList.Remove(c);
-                        bot.timerCommandList.Remove(c);
                         break;
                     }
                 }
@@ -532,13 +535,7 @@ namespace WpfApplication1
             OnPropertyChanged();
             DataContext = bot;
         }
-
-        public MainWindow()
-        {
-            
-
-        }
-
+        
         public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
@@ -1041,9 +1038,16 @@ namespace WpfApplication1
             }
         }
         
-        public void clearlist(Object sender, RoutedEventArgs e)
+        public async void clearlist(Object sender, RoutedEventArgs e)
         {
-            bot.requestSystem.clearCOMMAND(bot.requestSystem.clearComm.input[0], bot.channel, bot.streamer);
+            this.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+            MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Clear List?", "Are you sure you want to clear the current request queue?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
+            if (messageBoxResult == MessageDialogResult.Affirmative)
+            {
+                Thread.Sleep(1000);
+                bot.requestSystem.clearCOMMAND(bot.requestSystem.clearComm.input[0], bot.channel, bot.streamer);
+            }
         }
         
         public void sortByUserName(Object sender, RoutedEventArgs e)
@@ -1079,7 +1083,7 @@ namespace WpfApplication1
         private void moveup(Object sender, RoutedEventArgs e)
         {
             TextBlock textBlock = (sender as TextBlock);
-            object datacontext = textBlock.DataContext;
+            object datacontext = textBlock.DataContext; // TODO : FIX null object
             Song c = (Song)datacontext;
             for (int i = 0; i < bot.requestSystem.songList.Count; i++)
             {
@@ -1101,7 +1105,7 @@ namespace WpfApplication1
         private void deleteSong(Object sender, RoutedEventArgs e)
         {
             TextBlock textBlock = (sender as TextBlock);
-            object datacontext = textBlock.DataContext;
+            object datacontext = textBlock.DataContext; // TODO : FIX null object
             Song c = (Song)datacontext;
             foreach (Song s in bot.requestSystem.songList)
             {
@@ -1240,6 +1244,7 @@ namespace WpfApplication1
             TextBlock textBlock = (sender as TextBlock);
             object datacontext = textBlock.DataContext;
             quoteEdit.Text = (String)datacontext;
+            selectedQuote = quoteEdit.Text;
         }
 
         private void editSFXButtonClick(object sender, MouseButtonEventArgs e)
@@ -1249,6 +1254,7 @@ namespace WpfApplication1
             Command c = (Command)datacontext;
             editCommandSFX.Text = c.input[0];
             editResponseSFX.Text = c.output;
+            volumeSetter.Value = c.volumeLevel;
         }
 
         private void editImageButtonClick(object sender, MouseButtonEventArgs e)
@@ -1475,4 +1481,45 @@ namespace WpfApplication1
         }
         
     }
+    [ValueConversion(typeof(String[]), typeof(string))]
+    public class ListToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null || ((String[])value).Length == 0)
+            {
+                return "";
+            }
+            return String.Join(", ", ((String[])value));
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null || value.ToString().Equals(""))
+            {
+                return new String[0];
+            }
+            return value.ToString().Split(',');
+        }
+    }
+    [ValueConversion(typeof(List<String>), typeof(string))]
+    public class ListConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null || ((List<String>)value).Count == 0)
+            {
+                return "";
+            }
+            return String.Join(", ", ((List<String>)value));
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null || value.ToString().Equals(""))
+            {
+                return new List<String>();
+            }
+            return new List<String>(value.ToString().Split(','));
+        }
+    }
+
 }

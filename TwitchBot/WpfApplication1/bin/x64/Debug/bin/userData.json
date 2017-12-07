@@ -31,8 +31,8 @@
   "raffleInProgress": false,
   "autoShoutoutOnHost": true,
   "textAdventure": {
-    "choice": null,
     "startTimerInMS": 0,
+    "enoughPlayers": false,
     "adventurePointsMin": 25,
     "adventurePointsMax": 75,
     "adventureCoolDown": 20
@@ -73,7 +73,7 @@
     "quotesModOnly": true,
     "quotesOn": true,
     "quotes": [
-      "\"I bought socks. There are red ones, blue ones, and white ones. They are good.\" -edude15000 2/5/2016 ",
+      "\"I bought socks. There are red ones, blue ones, and white ones. They are good.\" -edude15000 2/5/2016",
       "\"I do like this song. It reminds me of puppies running around. Happy puppy song. Like a big happy puppy day.\" -edude15000 2/5/2016 ",
       "\"*Hears steam message* Is someone calling me on skype?\" -edude15000 2/7/2016 ",
       "\"Good in bed? Sometimes. Only if it is a full moon though\" -edude15000 2/7/2016 ",
@@ -135,14 +135,20 @@
     "doNotWriteToHistory": false,
     "subOnlyRequests": "Only subs can request right now, $user!",
     "lastSong": "test",
-    "formattedTotalTime": "00:04:50",
+    "formattedTotalTime": "00:00:00",
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
     "maxSongLengthInMinutes": 10,
-    "favSongs": [],
-    "bannedKeywords": [],
-    "favSongsPlayedThisStream": [],
+    "favSongs": [
+      "acdc- big balls",
+      " metallica - enter sandman"
+    ],
+    "bannedKeywords": [
+      "asdf",
+      " qwer",
+      " zxcv"
+    ],
     "requestComm": {
       "output": null,
       "commandType": "bot",
@@ -153,7 +159,8 @@
         "!play",
         "!songrequest"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "songlistComm": {
       "output": null,
@@ -164,7 +171,8 @@
         "!list",
         "!playlist"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "getTotalComm": {
       "output": null,
@@ -175,7 +183,8 @@
         "!length",
         "!total"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "editComm": {
       "output": null,
@@ -185,7 +194,8 @@
         "!edit",
         "!change"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "nextComm": {
       "output": null,
@@ -195,7 +205,8 @@
         "!next",
         "!skip"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "addvipComm": {
       "output": null,
@@ -204,7 +215,8 @@
       "input": [
         "!addvip"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "addtopComm": {
       "output": null,
@@ -213,7 +225,8 @@
       "input": [
         "!addtop"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "adddonatorComm": {
       "output": null,
@@ -222,7 +235,8 @@
       "input": [
         "!adddonator"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "getCurrentComm": {
       "output": null,
@@ -233,7 +247,8 @@
         "!playing",
         "!currentsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "clearComm": {
       "output": null,
@@ -242,7 +257,8 @@
       "input": [
         "!clear"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "triggerRequestsComm": {
       "output": null,
@@ -251,7 +267,8 @@
       "input": [
         "!requests"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "backupRequestAddComm": null,
     "getNextComm": {
@@ -261,7 +278,8 @@
       "input": [
         "!nextsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "randomComm": {
       "output": null,
@@ -272,7 +290,8 @@
         "!nextrandom",
         "!randomsong!songrandom"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "favSongComm": {
       "output": null,
@@ -283,7 +302,8 @@
         "!songfav",
         "!playfav"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "editSongComm": {
       "output": null,
@@ -292,7 +312,8 @@
       "input": [
         "!editsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "removeSongComm": {
       "output": null,
@@ -302,7 +323,8 @@
         "!removesong",
         "!wrongsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     "songPositionComm": {
       "output": null,
@@ -313,46 +335,10 @@
         "!position",
         "!songposition"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
-    "songList": [
-      {
-        "name": "asdf",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=lsJLLEwUYZM",
-        "durationInSeconds": 249,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:04:09"
-      },
-      {
-        "name": "weee",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=-Q7wUbtT9gk",
-        "durationInSeconds": 41,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:00:41"
-      },
-      {
-        "name": "ppp",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=NFhJRTdmviA",
-        "durationInSeconds": 369,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:06:09"
-      }
-    ]
+    "songList": []
   },
   "sfxCommandList": [
     {
@@ -362,7 +348,8 @@
       "input": [
         "!ass"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\boobs.mp3",
@@ -371,7 +358,8 @@
       "input": [
         "!boobs"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\angel.mp3",
@@ -380,7 +368,8 @@
       "input": [
         "!angel"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ohoh.mp3",
@@ -389,7 +378,8 @@
       "input": [
         "!ohoh"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\best2.mp3",
@@ -398,7 +388,8 @@
       "input": [
         "!amazing"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bickdutt.mp3",
@@ -407,7 +398,8 @@
       "input": [
         "!bickdutt"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bleedfuel.mp3",
@@ -416,7 +408,8 @@
       "input": [
         "!bleedfuel"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bruh.mp3",
@@ -425,7 +418,8 @@
       "input": [
         "!bruh"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fart.mp3",
@@ -434,7 +428,8 @@
       "input": [
         "!fart"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\cena.mp3",
@@ -443,7 +438,8 @@
       "input": [
         "!cena"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\carbon621.mp3",
@@ -452,7 +448,8 @@
       "input": [
         "!carbon621"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\demondrummer.mp3",
@@ -461,7 +458,8 @@
       "input": [
         "!demondrummer"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\devil.mp3",
@@ -470,7 +468,8 @@
       "input": [
         "!devilsnightmare"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\doit.mp3",
@@ -479,7 +478,8 @@
       "input": [
         "!doit"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\dreams.mp3",
@@ -488,7 +488,8 @@
       "input": [
         "!dreams"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\elisa.mp3",
@@ -497,7 +498,8 @@
       "input": [
         "!elisa"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fuah.mp3",
@@ -506,7 +508,8 @@
       "input": [
         "!fuah"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\gta.mp3",
@@ -515,7 +518,8 @@
       "input": [
         "!gta"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\hello.mp3",
@@ -524,7 +528,8 @@
       "input": [
         "!hello"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\jeff.mp3",
@@ -533,7 +538,8 @@
       "input": [
         "!jeff"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\listen.mp3",
@@ -542,7 +548,8 @@
       "input": [
         "!listen"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\love.mp3",
@@ -551,7 +558,8 @@
       "input": [
         "!love"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\mlg.mp3",
@@ -560,7 +568,8 @@
       "input": [
         "!mlg"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps1.mp3",
@@ -569,7 +578,8 @@
       "input": [
         "!ps1"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps2.mp3",
@@ -578,7 +588,8 @@
       "input": [
         "!ps2"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\redbeard.mp3",
@@ -587,7 +598,8 @@
       "input": [
         "!redbeard26"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\renage.mp3",
@@ -596,7 +608,8 @@
       "input": [
         "!renage"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\sexy.mp3",
@@ -605,7 +618,8 @@
       "input": [
         "!sexy"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\troll.mp3",
@@ -614,7 +628,8 @@
       "input": [
         "!troll"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\williambolding.mp3",
@@ -623,7 +638,8 @@
       "input": [
         "!williambolding"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\wrong.mp3",
@@ -632,7 +648,8 @@
       "input": [
         "!wrong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\xfiles.mp3",
@@ -641,7 +658,8 @@
       "input": [
         "!xfiles"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yeah.mp3",
@@ -650,7 +668,8 @@
       "input": [
         "!yeah"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yes.mp3",
@@ -659,7 +678,8 @@
       "input": [
         "!yes"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yell.mp3",
@@ -668,7 +688,8 @@
       "input": [
         "!yell"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     }
   ],
   "userCommandList": [
@@ -679,7 +700,8 @@
       "input": [
         "!harambe"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "#dstringsoutforharambe",
@@ -688,7 +710,8 @@
       "input": [
         "!dstrings"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$8ball",
@@ -697,7 +720,8 @@
       "input": [
         "!8ball"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$user gives $input a hug!",
@@ -706,7 +730,8 @@
       "input": [
         "!hug"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$user has been following the stream for $following",
@@ -715,7 +740,8 @@
       "input": [
         "!following"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$streamer joined Twitch on $start",
@@ -724,7 +750,8 @@
       "input": [
         "!start"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
@@ -733,7 +760,8 @@
       "input": [
         "!xfiles"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "There is $randomnumber3% <3 between $user and $input!",
@@ -742,7 +770,8 @@
       "input": [
         "!love"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$streamer has been live for $uptime",
@@ -751,7 +780,8 @@
       "input": [
         "!uptime"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$shoutout",
@@ -760,7 +790,8 @@
       "input": [
         "!shoutout"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$roulette",
@@ -769,7 +800,8 @@
       "input": [
         "!roulette"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$user is moist!",
@@ -778,7 +810,8 @@
       "input": [
         "!moist"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Kreygasm $counter1 OHOH's! Kreygasm",
@@ -787,7 +820,8 @@
       "input": [
         "!ohoh"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Kappa",
@@ -796,7 +830,8 @@
       "input": [
         "!kappa"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Christmas isn't Christmas without ho's...",
@@ -805,7 +840,8 @@
       "input": [
         "!santa"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "a",
@@ -814,7 +850,8 @@
       "input": [
         "!a"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     }
   ],
   "timerCommandList": [
@@ -825,7 +862,8 @@
       "input": [
         "!customs"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
@@ -834,7 +872,8 @@
       "input": [
         "!inlays"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type !quote for a random quote!",
@@ -843,7 +882,8 @@
       "input": [
         "!quoteinfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
@@ -852,7 +892,8 @@
       "input": [
         "!share"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Join my discord here: https://discord.gg/9TcVCmY",
@@ -861,7 +902,8 @@
       "input": [
         "!discord"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
@@ -870,7 +912,8 @@
       "input": [
         "!noteinfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
@@ -879,7 +922,8 @@
       "input": [
         "!story"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
@@ -888,7 +932,8 @@
       "input": [
         "!songinfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
@@ -897,7 +942,8 @@
       "input": [
         "!social"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type '!position' to display your song's position in the song list!",
@@ -906,7 +952,8 @@
       "input": [
         "!positioninfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
@@ -915,7 +962,8 @@
       "input": [
         "!game"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
@@ -924,7 +972,8 @@
       "input": [
         "!donate"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     }
   ],
   "botCommandList": [
@@ -937,7 +986,8 @@
         "!songfav",
         "!playfav"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "triggerRequestsComm",
@@ -946,7 +996,8 @@
       "input": [
         "!requests"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "requestComm",
@@ -958,7 +1009,8 @@
         "!play",
         "!songrequest"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "songlistComm",
@@ -969,7 +1021,8 @@
         "!list",
         "!playlist"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getTotalComm",
@@ -980,7 +1033,8 @@
         "!length",
         "!total"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getViewerCountCommands",
@@ -989,7 +1043,8 @@
       "input": [
         "!viewers"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "addtopComm",
@@ -998,7 +1053,8 @@
       "input": [
         "!addtop"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "addvipComm",
@@ -1007,7 +1063,8 @@
       "input": [
         "!addvip"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "adddonatorComm",
@@ -1016,7 +1073,8 @@
       "input": [
         "!adddonator"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "editComm",
@@ -1026,7 +1084,8 @@
         "!edit",
         "!change"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "nextComm",
@@ -1036,7 +1095,8 @@
         "!next",
         "!skip"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "clearComm",
@@ -1045,7 +1105,8 @@
       "input": [
         "!clear"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getCurrentComm",
@@ -1056,7 +1117,8 @@
         "!playing",
         "!currentsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getNextComm",
@@ -1065,7 +1127,8 @@
       "input": [
         "!nextsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "randomComm",
@@ -1076,7 +1139,8 @@
         "!nextrandom",
         "!randomsong!songrandom"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "editSongComm",
@@ -1085,7 +1149,8 @@
       "input": [
         "!editsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "removeSongComm",
@@ -1095,7 +1160,8 @@
         "!removesong",
         "!wrongsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "songPositionComm",
@@ -1106,7 +1172,8 @@
         "!position",
         "!songposition"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     }
   ],
   "imageCommandList": [
@@ -1117,7 +1184,8 @@
       "input": [
         "!image1"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\13131558_10206308382203578_8436449390544094618_o.jpg",
@@ -1126,7 +1194,8 @@
       "input": [
         "!image2"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\dudebot.jpg",
@@ -1135,7 +1204,8 @@
       "input": [
         "!love"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     }
   ],
   "commandList": [
@@ -1146,7 +1216,8 @@
       "input": [
         "!ass"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\boobs.mp3",
@@ -1155,7 +1226,8 @@
       "input": [
         "!boobs"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\angel.mp3",
@@ -1164,7 +1236,8 @@
       "input": [
         "!angel"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ohoh.mp3",
@@ -1173,7 +1246,8 @@
       "input": [
         "!ohoh"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\best2.mp3",
@@ -1182,7 +1256,8 @@
       "input": [
         "!amazing"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bickdutt.mp3",
@@ -1191,7 +1266,8 @@
       "input": [
         "!bickdutt"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bleedfuel.mp3",
@@ -1200,7 +1276,8 @@
       "input": [
         "!bleedfuel"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bruh.mp3",
@@ -1209,7 +1286,8 @@
       "input": [
         "!bruh"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fart.mp3",
@@ -1218,7 +1296,8 @@
       "input": [
         "!fart"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\cena.mp3",
@@ -1227,7 +1306,8 @@
       "input": [
         "!cena"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\carbon621.mp3",
@@ -1236,7 +1316,8 @@
       "input": [
         "!carbon621"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\demondrummer.mp3",
@@ -1245,7 +1326,8 @@
       "input": [
         "!demondrummer"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\devil.mp3",
@@ -1254,7 +1336,8 @@
       "input": [
         "!devilsnightmare"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\doit.mp3",
@@ -1263,7 +1346,8 @@
       "input": [
         "!doit"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\dreams.mp3",
@@ -1272,7 +1356,8 @@
       "input": [
         "!dreams"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\elisa.mp3",
@@ -1281,7 +1366,8 @@
       "input": [
         "!elisa"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fuah.mp3",
@@ -1290,7 +1376,8 @@
       "input": [
         "!fuah"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\gta.mp3",
@@ -1299,7 +1386,8 @@
       "input": [
         "!gta"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\hello.mp3",
@@ -1308,7 +1396,8 @@
       "input": [
         "!hello"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\jeff.mp3",
@@ -1317,7 +1406,8 @@
       "input": [
         "!jeff"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\listen.mp3",
@@ -1326,7 +1416,8 @@
       "input": [
         "!listen"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\love.mp3",
@@ -1335,7 +1426,8 @@
       "input": [
         "!love"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\mlg.mp3",
@@ -1344,7 +1436,8 @@
       "input": [
         "!mlg"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps1.mp3",
@@ -1353,7 +1446,8 @@
       "input": [
         "!ps1"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps2.mp3",
@@ -1362,7 +1456,8 @@
       "input": [
         "!ps2"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\redbeard.mp3",
@@ -1371,7 +1466,8 @@
       "input": [
         "!redbeard26"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\renage.mp3",
@@ -1380,7 +1476,8 @@
       "input": [
         "!renage"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\sexy.mp3",
@@ -1389,7 +1486,8 @@
       "input": [
         "!sexy"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\troll.mp3",
@@ -1398,7 +1496,8 @@
       "input": [
         "!troll"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\williambolding.mp3",
@@ -1407,7 +1506,8 @@
       "input": [
         "!williambolding"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\wrong.mp3",
@@ -1416,7 +1516,8 @@
       "input": [
         "!wrong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\xfiles.mp3",
@@ -1425,7 +1526,8 @@
       "input": [
         "!xfiles"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yeah.mp3",
@@ -1434,7 +1536,8 @@
       "input": [
         "!yeah"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yes.mp3",
@@ -1443,7 +1546,8 @@
       "input": [
         "!yes"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yell.mp3",
@@ -1452,7 +1556,8 @@
       "input": [
         "!yell"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Harambe would have loved $currentsong!",
@@ -1461,7 +1566,8 @@
       "input": [
         "!harambe"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "#dstringsoutforharambe",
@@ -1470,7 +1576,8 @@
       "input": [
         "!dstrings"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$8ball",
@@ -1479,7 +1586,8 @@
       "input": [
         "!8ball"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$user gives $input a hug!",
@@ -1488,7 +1596,8 @@
       "input": [
         "!hug"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$user has been following the stream for $following",
@@ -1497,7 +1606,8 @@
       "input": [
         "!following"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$streamer joined Twitch on $start",
@@ -1506,7 +1616,8 @@
       "input": [
         "!start"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
@@ -1515,7 +1626,8 @@
       "input": [
         "!xfiles"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "There is $randomnumber3% <3 between $user and $input!",
@@ -1524,7 +1636,8 @@
       "input": [
         "!love"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$streamer has been live for $uptime",
@@ -1533,7 +1646,8 @@
       "input": [
         "!uptime"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$shoutout",
@@ -1542,7 +1656,8 @@
       "input": [
         "!shoutout"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$roulette",
@@ -1551,7 +1666,8 @@
       "input": [
         "!roulette"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "$user is moist!",
@@ -1560,7 +1676,8 @@
       "input": [
         "!moist"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Kreygasm $counter1 OHOH's! Kreygasm",
@@ -1569,7 +1686,8 @@
       "input": [
         "!ohoh"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Kappa",
@@ -1578,7 +1696,8 @@
       "input": [
         "!kappa"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Christmas isn't Christmas without ho's...",
@@ -1587,7 +1706,8 @@
       "input": [
         "!santa"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it's available, request it! I'll play it if it works! :D",
@@ -1596,7 +1716,8 @@
       "input": [
         "!customs"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
@@ -1605,7 +1726,8 @@
       "input": [
         "!inlays"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type !quote for a random quote!",
@@ -1614,7 +1736,8 @@
       "input": [
         "!quoteinfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
@@ -1623,7 +1746,8 @@
       "input": [
         "!share"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Join my discord here: https://discord.gg/9TcVCmY",
@@ -1632,7 +1756,8 @@
       "input": [
         "!discord"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
@@ -1641,7 +1766,8 @@
       "input": [
         "!noteinfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
@@ -1650,7 +1776,8 @@
       "input": [
         "!story"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
@@ -1659,7 +1786,8 @@
       "input": [
         "!songinfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
@@ -1668,7 +1796,8 @@
       "input": [
         "!social"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Type '!position' to display your song's position in the song list!",
@@ -1677,7 +1806,8 @@
       "input": [
         "!positioninfo"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
@@ -1686,7 +1816,8 @@
       "input": [
         "!game"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
@@ -1695,7 +1826,8 @@
       "input": [
         "!donate"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "favSongComm",
@@ -1706,7 +1838,8 @@
         "!songfav",
         "!playfav"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "triggerRequestsComm",
@@ -1715,7 +1848,8 @@
       "input": [
         "!requests"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "requestComm",
@@ -1727,7 +1861,8 @@
         "!play",
         "!songrequest"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "songlistComm",
@@ -1738,7 +1873,8 @@
         "!list",
         "!playlist"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getTotalComm",
@@ -1749,7 +1885,8 @@
         "!length",
         "!total"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getViewerCountCommands",
@@ -1758,7 +1895,8 @@
       "input": [
         "!viewers"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "addtopComm",
@@ -1767,7 +1905,8 @@
       "input": [
         "!addtop"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "addvipComm",
@@ -1776,7 +1915,8 @@
       "input": [
         "!addvip"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "adddonatorComm",
@@ -1785,7 +1925,8 @@
       "input": [
         "!adddonator"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "editComm",
@@ -1795,7 +1936,8 @@
         "!edit",
         "!change"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "nextComm",
@@ -1805,7 +1947,8 @@
         "!next",
         "!skip"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "clearComm",
@@ -1814,7 +1957,8 @@
       "input": [
         "!clear"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getCurrentComm",
@@ -1825,7 +1969,8 @@
         "!playing",
         "!currentsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "getNextComm",
@@ -1834,7 +1979,8 @@
       "input": [
         "!nextsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "randomComm",
@@ -1845,7 +1991,8 @@
         "!nextrandom",
         "!randomsong!songrandom"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "editSongComm",
@@ -1854,7 +2001,8 @@
       "input": [
         "!editsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "removeSongComm",
@@ -1864,7 +2012,8 @@
         "!removesong",
         "!wrongsong"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "songPositionComm",
@@ -1875,7 +2024,8 @@
         "!position",
         "!songposition"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\15251863-Cheeseburger-isolated-on-white-background-Stock-Photo-hamburger-cheeseburger.jpg",
@@ -1884,7 +2034,8 @@
       "input": [
         "!image1"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\13131558_10206308382203578_8436449390544094618_o.jpg",
@@ -1893,7 +2044,8 @@
       "input": [
         "!image2"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\dudebot.jpg",
@@ -1902,7 +2054,8 @@
       "input": [
         "!love"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     },
     {
       "output": "a",
@@ -1911,7 +2064,8 @@
       "input": [
         "!a"
       ],
-      "toggle": true
+      "toggle": true,
+      "volumeLevel": 100
     }
   ],
   "users": [
@@ -4205,7 +4359,7 @@
       "time": 59,
       "subCredits": 0,
       "points": 59,
-      "numRequests": 161,
+      "numRequests": 167,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4380,7 +4534,8 @@
     "!deletequote",
     "!subcredits",
     "!givecredits",
-    "!subsong"
+    "!subsong",
+    "!addfav"
   ],
   "events": {
     "test": "test!"
@@ -4392,6 +4547,7 @@
     "input": [
       "!viewers"
     ],
-    "toggle": true
+    "toggle": true,
+    "volumeLevel": 100
   }
 }

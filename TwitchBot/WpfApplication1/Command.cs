@@ -7,6 +7,7 @@ public class Command
     public int level { get; set; }
     public String[] input { get; set; }
     public Boolean toggle { get; set; }
+    public int volumeLevel { get; set; } = 100;
 
     public Command(String[] input, int level, String output, String commandType, Boolean toggle)
     {
@@ -15,6 +16,7 @@ public class Command
         this.output = output;
         this.toggle = toggle;
         this.commandType = commandType;
+        volumeLevel = 100;
     }
 
 }
