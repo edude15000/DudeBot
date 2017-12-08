@@ -31,6 +31,7 @@ public class RequestSystem
     public String[] bannedKeywords { get; set; }
     [JsonIgnore]
     public List<String> favSongsPlayedThisStream { get; set; } = new List<String>();
+    public List<String> songHistory { get; set; } = new List<String>();
     public Command requestComm { get; set; }
     public Command songlistComm { get; set; }
     public Command getTotalComm { get; set; }
@@ -593,7 +594,7 @@ public class RequestSystem
         output.Close();
         if (bot.spreadsheetId != null)
         {
-            bot.google.writeToGoogleSheets(nextCom, songList);
+            bot.google.writeToGoogleSheets(nextCom, songList, songHistory);
         }
         formattedTotalTime = formatTotalTime();
         Utils.saveSongs(songList);
@@ -620,18 +621,7 @@ public class RequestSystem
 
     public void appendToLastSongs(String channel, String lastSong)
     {
-        try
-        {
-            StreamWriter output;
-            output = new StreamWriter(Utils.lastPlayedSongsFile, true);
-            output.Write(Utils.getDate() + " " + Utils.getTime() + " - " + lastSong + "\r");
-            output.Close();
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
+        songHistory.Add(Utils.getDate() + " " + Utils.getTime() + " - " + lastSong + "\r");
     }
 
     public void getCurrentSongCOMMAND(String message, String channel, String sender)

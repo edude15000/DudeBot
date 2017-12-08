@@ -1,0 +1,8 @@
+12/07/2017 22:46:57 PM - DudeBot 2.12.1 Error : System.IO.FileNotFoundException: Could not find file 'C:\Users\Evan Snitkey\AppData\Local\Temp\lastsongsplayed.txt'.
+File name: 'C:\Users\Evan Snitkey\AppData\Local\Temp\lastsongsplayed.txt'
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.StreamReader..ctor(String path, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean checkHost)
+   at System.IO.StreamReader..ctor(String path)
+   at GoogleHandler.getData(List`1 songlist, String file) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\GoogleHandler.cs:line 107

@@ -2,7 +2,6 @@
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,7 +44,7 @@ public class GoogleHandler
         });
     }
     
-    public void setValue(String RowStart, List<Song> songlist, String file)
+    public void setValue(String RowStart, List<Song> songlist, String file, List<String> songHistory)
     {
         String range = RowStart;
         ValueRange oRange = new ValueRange();
@@ -57,7 +56,7 @@ public class GoogleHandler
         oRequest.ValueInputOption ="RAW";
         oRequest.Data = oList;
         service.Spreadsheets.Values.BatchUpdate(oRequest, spreadsheetId).Execute();
-        IList<IList<Object>> arrData2 = getData(songlist, file);
+        IList<IList<Object>> arrData2 = getData(songlist, file, songHistory);
         ValueRange oRange2 = new ValueRange();
         oRange2.Range = range;
         oRange2.Values = arrData2;
@@ -81,7 +80,7 @@ public class GoogleHandler
         return data;
     }
 
-    public IList<IList<Object>> getData(List<Song> songlist, String file)
+    public IList<IList<Object>> getData(List<Song> songlist, String file, List<String> songHistory)
     {
         IList<IList<Object>> data = new List<IList<Object>>();
         try
@@ -102,14 +101,10 @@ public class GoogleHandler
             }
             else
             {
-                int count = 0;
-                String line = "";
-                StreamReader br = new StreamReader(file);
-                while ((line = br.ReadLine()) != null)
+                for (int i = 0; i < songHistory.Count; i++)
                 {
                     data.Add(new List<Object>());
-                    data[count].Add(line);
-                    count++;
+                    data[i].Add(songHistory[i]);
                 }
                 data.Reverse();
                 data[0].Add("LAST PLAYED SONGS:");
@@ -124,14 +119,14 @@ public class GoogleHandler
         return null;
     }
 
-    public void writeToGoogleSheets(Boolean updateAllSongs, List<Song> songs)
+    public void writeToGoogleSheets(Boolean updateAllSongs, List<Song> songs, List<String> songHistory)
     {
         try
         {
-            setValue("A1", songs, Utils.songListFile);
+            setValue("A1", songs, Utils.songListFile, songHistory);
             if (updateAllSongs)
             {
-                setValue("B1", songs, Utils.lastPlayedSongsFile);
+                setValue("B1", songs, null, songHistory);
             }
         }
         catch (Exception e)

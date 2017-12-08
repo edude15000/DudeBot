@@ -1,0 +1,8 @@
+{
+  "debugSystemHandleQuery": false,
+  "debugFileDetailQuery": false,
+  "debugMemoryReadout": false,
+  "debugSongDetails": false,
+  "debugCache": false,
+  "debugHIRCScan": false
+}

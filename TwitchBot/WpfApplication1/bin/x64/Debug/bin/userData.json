@@ -8,8 +8,6 @@
   "streamer": "edude15000",
   "channel": "edude15000",
   "botName": "edudebot2",
-  "followersTextFile": "C:\\Users\\Evan\\Desktop\\Rocksmith\\TWITCH\\most_recent_follower.txt",
-  "subTextFile": "C:\\Users\\Evan\\Desktop\\Rocksmith\\TWITCH\\most_recent_subscriber.txt",
   "followerMessage": "$user just followed the stream! Thank you!",
   "subMessage": "$user just subscribed to the stream! Thank you!",
   "subOnlyRequests": null,
@@ -30,6 +28,7 @@
   "waitForAdventureCoolDown": false,
   "raffleInProgress": false,
   "autoShoutoutOnHost": true,
+  "openRockSnifferOnStartUp": false,
   "textAdventure": {
     "startTimerInMS": 0,
     "enoughPlayers": false,
@@ -132,7 +131,7 @@
     "direquests": true,
     "ylrequests": true,
     "maxSongLength": false,
-    "doNotWriteToHistory": false,
+    "doNotWriteToHistory": true,
     "subOnlyRequests": "Only subs can request right now, $user!",
     "lastSong": "test",
     "formattedTotalTime": "00:00:00",
@@ -149,6 +148,7 @@
       " qwer",
       " zxcv"
     ],
+    "songHistory": [],
     "requestComm": {
       "output": null,
       "commandType": "bot",
@@ -287,8 +287,9 @@
       "level": 2,
       "input": [
         "!randomnext",
-        "!nextrandom",
-        "!randomsong!songrandom"
+        " !nextrandom",
+        " !randomsong",
+        " !songrandom"
       ],
       "toggle": true,
       "volumeLevel": 100
@@ -1137,7 +1138,8 @@
       "input": [
         "!randomnext",
         "!nextrandom",
-        "!randomsong!songrandom"
+        "!randomsong",
+        "!songrandom"
       ],
       "toggle": true,
       "volumeLevel": 100
@@ -1203,6 +1205,28 @@
       "level": 0,
       "input": [
         "!love"
+      ],
+      "toggle": true,
+      "volumeLevel": 100
+    }
+  ],
+  "hotkeyCommandList": [
+    {
+      "output": "!next",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F7"
+      ],
+      "toggle": true,
+      "volumeLevel": 100
+    },
+    {
+      "output": "!kappa",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F5"
       ],
       "toggle": true,
       "volumeLevel": 100
@@ -1989,7 +2013,8 @@
       "input": [
         "!randomnext",
         "!nextrandom",
-        "!randomsong!songrandom"
+        "!randomsong",
+        "!songrandom"
       ],
       "toggle": true,
       "volumeLevel": 100
@@ -2063,6 +2088,26 @@
       "level": 0,
       "input": [
         "!a"
+      ],
+      "toggle": true,
+      "volumeLevel": 100
+    },
+    {
+      "output": "!next",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F7"
+      ],
+      "toggle": true,
+      "volumeLevel": 100
+    },
+    {
+      "output": "!kappa",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F5"
       ],
       "toggle": true,
       "volumeLevel": 100
@@ -4549,5 +4594,10 @@
     ],
     "toggle": true,
     "volumeLevel": 100
-  }
+  },
+  "guiBackgroundColor": 3,
+  "guiTextColor": 1,
+  "guiTextBlockColor": 0,
+  "guiInputFontStyle": 0,
+  "guiButtonColor": 0
 }

@@ -18,7 +18,6 @@ public class Utils
     public static String currentSongFile = @"bin\currentsong.txt";
     public static String currentRequesterFile = @"bin\currentrequester.txt";
     public static String userDataFile = @"bin\userData.json";
-    public static String lastPlayedSongsFile = Path.GetTempPath() + "lastsongsplayed.txt";
     public static String songListFile = @"bin\songList.json";
     public static String googleApiKey = "AIzaSyDU4bPym2G64rrPgk7B9a5L6LWtIyLhFQg";
 
@@ -162,14 +161,7 @@ public class Utils
     {
         return DateTime.Now.ToString("HH:mm:ss tt");
     }
-
-    public static void writeVersion()
-    {
-        StreamWriter writer = new StreamWriter("version.txt");
-        writer.Write(Utils.version);
-        writer.Close();
-    }
-
+    
     public static Boolean isInteger(String s)
     {
         if (s.Contains("-") || s.Contains(" "))

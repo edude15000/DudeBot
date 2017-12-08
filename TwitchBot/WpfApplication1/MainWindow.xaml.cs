@@ -33,12 +33,12 @@ namespace WpfApplication1
             handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-       
-
+        
         // TODO : Backup JSON file!
 
         String selectedQuote = "";
         Process imageWindow = null;
+        Process rockSnifferWindow = null;
         [DllImport("User32")]
         private static extern int SetForegroundWindow(IntPtr hwnd);
         [DllImportAttribute("User32.DLL")]
@@ -48,18 +48,92 @@ namespace WpfApplication1
         
         void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
         {
-            if (e.KeyPressed.ToString().Equals("F7"))
-            {
-                try
+            foreach (Command c in bot.hotkeyCommandList) {
+                if (e.KeyPressed.ToString().Equals(c.input[0]))
                 {
-                    bot.requestSystem.nextSongAuto(bot.channel, false);
-                }
-                catch (Exception)
-                {
+                    try
+                    {
+                        if (c.output.Equals("!next", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            bot.requestSystem.nextSongAuto(bot.channel, false);
+                        }
+                        else
+                        {
+                            bot.processMessage(bot.streamer, c.output);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
             }
         }
-        
+
+        public async void addhotkey(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(formatCommand(editHotKeyInput.Text)) && !string.IsNullOrWhiteSpace(editHotKeyCommand.Text))
+            {
+                foreach (Command c in bot.hotkeyCommandList)
+                {
+                    if (c.input[0].Equals(editHotKeyInput.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        c.output = editHotKeyCommand.Text;
+                        bot.resetAllCommands();
+                        editHotKeyInput.Text = "";
+                        editHotKeyCommand.Text = "";
+                        return;
+                    }
+                }
+                String[] str = { editHotKeyInput.Text };
+                bot.commandList.Add(new Command(str, 3, editHotKeyCommand.Text, "hotkey", true));
+                bot.resetAllCommands();
+                editHotKeyInput.Text = "";
+                editHotKeyCommand.Text = "";
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "Please enter the hotkey and message/command to send!");
+            }
+        }
+
+        public async void removehotkey(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(formatCommand(editHotKeyInput.Text)) && !string.IsNullOrWhiteSpace(editHotKeyCommand.Text))
+            {
+                foreach (Command c in bot.userCommandList)
+                {
+                    if (c.input[0].Equals(editHotKeyInput.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.commandList.Remove(c);
+                        break;
+                    }
+                }
+                bot.resetAllCommands();
+                editHotKeyInput.Text = "";
+                editHotKeyCommand.Text = "";
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "Please enter the hotkey and message/command to send!");
+            }
+        }
+
+        private void editHotKeyInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            editHotKeyInput.Text = "";
+            editHotKeyInput.Text = e.Key.ToString();
+        }
+
+        private void editHotKeyButtonClick(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (sender as TextBlock);
+            object datacontext = textBlock.DataContext;
+            Command c = (Command)datacontext;
+            editHotKeyInput.Text = c.input[0];
+            editHotKeyCommand.Text = c.output;
+        }
+
+
         public async void addcommand(Object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editCommand.Text)) && !string.IsNullOrWhiteSpace(editResponse.Text))
@@ -468,6 +542,36 @@ namespace WpfApplication1
             }
         }
 
+        public void openRockSniffer(Object sender, RoutedEventArgs e)
+        {
+            if (rockSnifferWindow != null)
+            {
+                try
+                {
+                    rockSnifferWindow.Kill();
+                    rockSnifferWindow = null;
+                }
+                catch (Exception)
+                {
+                }
+            }
+            try
+            {
+                rockSnifferWindow = new Process();
+                rockSnifferWindow.StartInfo.FileName = "bin\\RockSniffer.exe";
+                rockSnifferWindow.StartInfo.WorkingDirectory = "bin\\";
+                rockSnifferWindow.StartInfo.RedirectStandardOutput = true;
+                rockSnifferWindow.StartInfo.UseShellExecute = false;
+                rockSnifferWindow.StartInfo.CreateNoWindow = true;
+                rockSnifferWindow.Start();
+            }
+            catch (Exception e1)
+            {
+                Utils.errorReport(e1);
+                Console.WriteLine(e1.ToString());
+            }
+        }
+
         public void writeToConfig(Object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(() =>
@@ -534,6 +638,10 @@ namespace WpfApplication1
             bot.botStartUpAsync();
             OnPropertyChanged();
             DataContext = bot;
+            if (openRockSnifferOnStartUp.IsChecked == true)
+            {
+                openRockSniffer(null, null);
+            }
         }
         
         public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
@@ -579,7 +687,6 @@ namespace WpfApplication1
                     tb.Background = brush;
                 }
             }
-            writeGUI();
         }
 
         public void gamble_changed(object sender, RoutedEventArgs e)
@@ -729,7 +836,6 @@ namespace WpfApplication1
             {
                 tb.Foreground = brush;
             }
-            writeGUI();
         }
 
         public void textblockcolor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -770,7 +876,6 @@ namespace WpfApplication1
             {
                 tb.Background = brush;
             }
-            writeGUI();
         }
 
         private void fontStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -790,7 +895,6 @@ namespace WpfApplication1
             {
                 tb.FontFamily = new FontFamily(txt);
             }
-            writeGUI();
         }
 
         private void buttonColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -805,29 +909,6 @@ namespace WpfApplication1
                 {
                     tb.Background = brush;
                 }
-            }
-            writeGUI();
-        }
-
-        public void writeGUI()
-        {
-            String fileName = System.IO.Path.GetTempPath() + "backupGUI.txt";
-            if (!File.Exists(fileName))
-            {
-                FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate);
-            }
-            try
-            {
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(fileName);
-                writer.Write("BackgroundColor=" + colorChange.SelectedIndex + "\r");
-                writer.Write("fontColor=" + textColorChange.SelectedIndex + "\r");
-                writer.Write("textBlockColor=" + textblockcolor.SelectedIndex + "\r");
-                writer.Write("buttonColor=" + buttonColor.SelectedIndex + "\r");
-                writer.Write("font=" + fontStyle.SelectedIndex + "\r");
-                writer.Close();
-            }
-            catch (Exception)
-            {
             }
         }
         
@@ -1191,6 +1272,13 @@ namespace WpfApplication1
             catch (Exception)
             {
             }
+            try
+            {
+                rockSnifferWindow.Kill();
+            }
+            catch (Exception)
+            {
+            }
             if (bot != null)
             { 
                 killBot(null, null);
@@ -1479,7 +1567,12 @@ namespace WpfApplication1
             };
             Process.Start(link);
         }
-        
+
+        private void clearHistory_Click(object sender, RoutedEventArgs e)
+        {
+            bot.requestSystem.songHistory.Clear();
+            writeToConfig(null, null);
+        }
     }
     [ValueConversion(typeof(String[]), typeof(string))]
     public class ListToStringConverter : IValueConverter

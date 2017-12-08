@@ -54,8 +54,6 @@ public class TwitchBot
     public String streamer { get; set; }
     public String channel { get; set; }
     public String botName { get; set; }
-    public String followersTextFile { get; set; }
-    public String subTextFile { get; set; }
     public String followerMessage { get; set; }
     public String subMessage { get; set; }
     public String subOnlyRequests { get; set; }
@@ -79,6 +77,7 @@ public class TwitchBot
     public Boolean waitForAdventureCoolDown { get; set; } = false;
     public Boolean raffleInProgress { get; set; } = false;
     public Boolean autoShoutoutOnHost { get; set; }
+    public Boolean openRockSnifferOnStartUp { get; set; } = false;
     public TextAdventure textAdventure { get; set; }
     public Currency currency { get; set; }
     public Image image { get; set; }
@@ -90,6 +89,7 @@ public class TwitchBot
     public ObservableCollection<Command> timerCommandList { get; set; } = new ObservableCollection<Command>();
     public ObservableCollection<Command> botCommandList { get; set; } = new ObservableCollection<Command>();
     public ObservableCollection<Command> imageCommandList { get; set; } = new ObservableCollection<Command>();
+    public ObservableCollection<Command> hotkeyCommandList { get; set; } = new ObservableCollection<Command>();
     public ObservableCollection<Command> commandList { get; set; } = new ObservableCollection<Command>();
     public ObservableCollection<BotUser> users { get; set; } = new ObservableCollection<BotUser>();
     [JsonIgnore]
@@ -100,7 +100,12 @@ public class TwitchBot
     public List<String> extraCommandNames { get; set; } = new List<String>();
     public Dictionary<String, String> events { get; set; } = new Dictionary<String, String>();
     public Command getViewerComm { get; set; }
-    
+    public int guiBackgroundColor { get; set; } = 3;
+    public int guiTextColor { get; set; } = 1;
+    public int guiTextBlockColor { get; set; } = 0;
+    public int guiInputFontStyle { get; set; } = 0;
+    public int guiButtonColor { get; set; } = 0;
+
     public event PropertyChangedEventHandler PropertyChanged;
     public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
@@ -145,7 +150,6 @@ public class TwitchBot
             client.Connect();
             setClasses();
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
-            Utils.writeVersion();
             textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
             resetAllCommands();
             threads();
@@ -311,6 +315,7 @@ public class TwitchBot
         }
         commandList = commands;
         botCommandList = getCommands("bot");
+        hotkeyCommandList = getCommands("hotkey");
         sfxCommandList = getCommands("sfx");
         userCommandList = getCommands("user");
         timerCommandList = getCommands("timer");
@@ -574,12 +579,16 @@ public class TwitchBot
         }
         Utils.saveData(this);
     }
-
-
-    private void onChatCommandReceived(object s, OnChatCommandReceivedArgs e)
+    
+    public void onChatCommandReceived(object s, OnChatCommandReceivedArgs e)
     {
         String sender = e.Command.ChatMessage.Username;
         String message = e.Command.ChatMessage.Message;
+        processMessage(sender, message);
+    }
+
+    public void processMessage(String sender, String message)
+    {
         if (!message.StartsWith("!"))
         {
             return;
@@ -1067,7 +1076,7 @@ public class TwitchBot
             catch (IOException e1)
             {
                 Utils.errorReport(e1);
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e1.ToString());
             }
             return;
         }
@@ -2083,8 +2092,6 @@ public class TwitchBot
                 return;
             }
         }
-
-
     }
 
     public void read()
