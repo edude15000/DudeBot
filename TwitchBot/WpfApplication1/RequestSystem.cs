@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -23,6 +22,7 @@ public class RequestSystem
     public String subOnlyRequests { get; set; }
     public String lastSong { get; set; }
     public String formattedTotalTime { get; set; } = "";
+    public int songListLength { get; set; } = 0;
     public int maxSonglistLength { get; set; }
     public int numOfSongsToDisplay { get; set; }
     public int numOfSongsInQueuePerUser { get; set; }
@@ -407,9 +407,11 @@ public class RequestSystem
                                 Boolean check = true;
                                 if (!checkIfUserAlreadyHasSong(sender))
                                 {
-                                    if (mustFollowToRequest)
+                                    if (mustFollowToRequest && !Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users) && !sender.Equals(Utils.botMaker))
                                     {
-                                        if (!Utils.checkIfUserIsFollowing(channel, sender, bot.streamer, bot.users))
+                                        bot.checkAtBeginningAsync();
+                                        BotUser u = bot.getBotUser(sender);
+                                        if (u == null || !u.follower)
                                         {
                                             check = false;
                                         }
@@ -581,10 +583,6 @@ public class RequestSystem
 
     public void writeToCurrentSong(String channel, Boolean nextCom)
     {
-        for (int i = 1; i <= songList.Count; i++)
-        {
-            songList[i-1].index = i;
-        }
         StreamWriter output;
         output = new StreamWriter(Utils.currentSongFile, false);
         output.Write(getCurrentSongTitle(channel));
@@ -621,7 +619,7 @@ public class RequestSystem
 
     public void appendToLastSongs(String channel, String lastSong)
     {
-        songHistory.Add(Utils.getDate() + " " + Utils.getTime() + " - " + lastSong + "\r");
+        songHistory.Insert(0, Utils.getDate() + " " + Utils.getTime() + " - " + lastSong);
     }
 
     public void getCurrentSongCOMMAND(String message, String channel, String sender)
@@ -1262,11 +1260,12 @@ public class RequestSystem
                                     Boolean check = true;
                                     if (!checkIfUserAlreadyHasSong(sender))
                                     {
-                                        if (mustFollowToRequest)
+                                        if (mustFollowToRequest && !Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users) && !sender.Equals(Utils.botMaker))
                                         {
-                                            if (!Utils.checkIfUserIsFollowing(channel, sender, bot.streamer,
-                                                    bot.users))
-                                            {
+                                            bot.checkAtBeginningAsync();
+                                            BotUser u = bot.getBotUser(sender);
+                                            if (u == null || !u.follower)
+                                            { 
                                                 check = false;
                                             }
                                         }
@@ -1477,7 +1476,14 @@ public class RequestSystem
             if (!doNotWriteToHistory)
             {
                 lastSong = getCurrentSongTitle(channel);
-                appendToLastSongs(channel, lastSong);
+                if (songList[0].youtubeTitle == null || songList[0].youtubeTitle.Equals(""))
+                {
+                    appendToLastSongs(channel, lastSong);
+                }
+                else
+                {
+                    appendToLastSongs(channel, songList[0].youtubeTitle);
+                }
             }
             doNotWriteToHistory = false;
             songList.RemoveAt(0);
@@ -1561,7 +1567,7 @@ public class RequestSystem
         return false;
     }
 
-    public void removeSongCOMMAND(String sender, String channel, String streamer, ObservableCollection<BotUser> users, String message, String temp)
+    public void removeSongCOMMAND(String sender, String channel, String streamer, List<BotUser> users, String message, String temp)
     {
         if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
                         || sender.Equals(Utils.botMaker))
@@ -1591,7 +1597,7 @@ public class RequestSystem
         }
     }
 
-    public void promoteSongCommand(String sender, String channel, String streamer, ObservableCollection<BotUser> users, String message)
+    public void promoteSongCommand(String sender, String channel, String streamer, List<BotUser> users, String message)
     {
         if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
                     || sender.Equals(Utils.botMaker))

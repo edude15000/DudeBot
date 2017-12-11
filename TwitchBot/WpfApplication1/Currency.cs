@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 
@@ -9,7 +8,8 @@ public class Currency
 {
     public String currencyName { get; set; }
     public String currencyCommand { get; set; }
-    public int currencyPerMinute { get; set; }
+    public int currencyPerMinute { get; set; } = 1;
+    public int currencyPerMinuteSubs { get; set; } = 1;
     public int maxGamble { get; set; }
     [JsonIgnore]
     public int gambleCoolDownMinutes { get; set; }
@@ -24,9 +24,9 @@ public class Currency
     public Boolean gambleToggle { get; set; }
     public Dictionary<String, Int32> ranks { get; set; } = new Dictionary<String, Int32>();
     [JsonIgnore]
-    public ObservableCollection<BotUser> users;
+    public List<BotUser> users;
 
-    public Currency(ObservableCollection<BotUser> users)
+    public Currency(List<BotUser> users)
     {
         this.users = users;
     }
@@ -362,13 +362,27 @@ public class Currency
                     if (auto)
                     {
                         botUser.time += 1;
-                        if (botUser.points + currencyPerMinute < 0)
+                        if (botUser.sub)
                         {
-                            botUser.points = 0;
+                            if (botUser.points + currencyPerMinuteSubs < 0)
+                            {
+                                botUser.points = 0;
+                            }
+                            else
+                            {
+                                botUser.points += currencyPerMinuteSubs;
+                            }
                         }
                         else
                         {
-                            botUser.points += currencyPerMinute;
+                            if (botUser.points + currencyPerMinute < 0)
+                            {
+                                botUser.points = 0;
+                            }
+                            else
+                            {
+                                botUser.points += currencyPerMinute;
+                            }
                         }
                     }
                     else

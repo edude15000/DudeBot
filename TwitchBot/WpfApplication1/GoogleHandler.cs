@@ -86,28 +86,36 @@ public class GoogleHandler
         try
         {
             data.Add(new List<Object>());
-            if (file.Equals(@"bin\songList.json"))
+            if (file != null && file.Equals(@"bin\songList.json"))
             {
                 data[0].Add("CURRENT QUEUE:");
-                for (int i = 0; i < songlist.Count; i++)
+                for (int i = 1; i <= songlist.Count; i++)
                 {
                     if (songlist.Count == 0)
                     {
                         break;
                     }
                     data.Add(new List<Object>());
-                    data[i].Add(songlist[i].name + " (" + songlist[i].requester + ")");
+                    if (songlist[i - 1].level.Equals(""))
+                    {
+                        data[i].Add(songlist[i - 1].name + " (" + songlist[i - 1].requester + ")");
+                    }
+                    else
+                    {
+                        data[i].Add(songlist[i - 1].level + " " + songlist[i - 1].name + " (" + songlist[i - 1].requester + ")");
+                    }
                 }
             }
             else
             {
-                for (int i = 0; i < songHistory.Count; i++)
+                for (int i = 1; i <= songHistory.Count; i++)
                 {
                     data.Add(new List<Object>());
-                    data[i].Add(songHistory[i]);
+                    data[i].Add(songHistory[i-1]);
                 }
                 data.Reverse();
                 data[0].Add("LAST PLAYED SONGS:");
+
             }
             return data;
         }

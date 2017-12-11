@@ -195,6 +195,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImagesWindow.xaml.cs">
+      <DependentUpon>ImagesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Quote.cs" />
     <Compile Include="RequestSystem.cs" />
     <Compile Include="Song.cs" />
@@ -203,6 +206,10 @@
     <Compile Include="TwitchBot.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="YoutubeHandler.cs" />
+    <Page Include="ImagesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

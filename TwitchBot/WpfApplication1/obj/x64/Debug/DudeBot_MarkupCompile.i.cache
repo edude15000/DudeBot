@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\App.xaml
-3-1260861683
+4-818145078
 
-24-1609100162
+25115512226
 96-982986574
-MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;
+ImagesWindow.xaml;MainWindow.xaml;Resources\Icons.xaml;Resources\IconsNonShared.xaml;
 
 False
 

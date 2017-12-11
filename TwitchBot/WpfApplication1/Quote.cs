@@ -28,7 +28,7 @@ public class Quote
         bot.read();
     }
 
-    public void quotesSystem(String message, String channel, String sender, String streamer, ObservableCollection<BotUser> users)
+    public void quotesSystem(String message, String channel, String sender, String streamer, List<BotUser> users)
 
     {
         String temp = message.ToLower();

@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Linq;
-using System.Collections.ObjectModel;
 using System.Windows.Data;
 
 namespace WpfApplication1
@@ -33,11 +32,10 @@ namespace WpfApplication1
             handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
+
         // TODO : Backup JSON file!
 
-        String selectedQuote = "";
-        Process imageWindow = null;
+        String selectedQuote = "", selectedFavSong = "";
         Process rockSnifferWindow = null;
         [DllImport("User32")]
         private static extern int SetForegroundWindow(IntPtr hwnd);
@@ -45,7 +43,7 @@ namespace WpfApplication1
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         private LowLevelKeyboardListener _listener;
-        
+
         void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
         {
             foreach (Command c in bot.hotkeyCommandList) {
@@ -133,7 +131,6 @@ namespace WpfApplication1
             editHotKeyCommand.Text = c.output;
         }
 
-
         public async void addcommand(Object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editCommand.Text)) && !string.IsNullOrWhiteSpace(editResponse.Text))
@@ -165,30 +162,92 @@ namespace WpfApplication1
             }
         }
 
+        public async void addreward(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(formatCommand(editRewardName.Text)))
+            {
+                foreach (Command c in bot.rewardCommandList)
+                {
+                    if (c.input[0].Equals(editRewardName.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        c.output = editRewardOutput.Text;
+                        c.costToUse = (int)editRewardCost.Value;
+                        bot.resetAllCommands();
+                        editRewardName.Text = "";
+                        editRewardOutput.Text = "";
+                        return;
+                    }
+                }
+                String[] str = { editRewardName.Text };
+                Command c2 = new Command(str, 0, editRewardOutput.Text, "reward", true);
+                c2.costToUse = (int)editRewardCost.Value;
+                bot.commandList.Add(c2);
+                bot.resetAllCommands();
+                editRewardName.Text = "";
+                editRewardOutput.Text = "";
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "Please enter the reward name and response!");
+            }
+        }
+
+        public async void removereward(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(formatCommand(editRewardName.Text)))
+            {
+                foreach (Command c in bot.rewardCommandList)
+                {
+                    if (c.input[0].Equals(editRewardName.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.commandList.Remove(c);
+                        break;
+                    }
+                }
+                editRewardName.Text = "";
+                editRewardOutput.Text = "";
+                bot.resetAllCommands();
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "To delete or edit a reward, click on it in the box and then press the desired button!");
+            }
+        }
+
+        private void editRewardButtonClick(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (sender as TextBlock);
+            object datacontext = textBlock.DataContext;
+            Command c = (Command)datacontext;
+            editRewardName.Text = c.input[0];
+            editRewardCost.Value = c.costToUse;
+            editRewardOutput.Text = c.output;
+        }
+
         public async void addcurrency(Object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editCurrencyUserName.Text)) && !string.IsNullOrWhiteSpace(editCurrencyAmount.Text) && !string.IsNullOrWhiteSpace(editCurrencyTime.Text) && !string.IsNullOrWhiteSpace(editCurrencySubCredits.Text))
+            if (!string.IsNullOrWhiteSpace(formatCommand(editCurrencyUserName.Text)))
             {
                 foreach (BotUser b in bot.users)
                 {
                     if (b.username.Equals(editCurrencyUserName.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        b.points = Int32.Parse(editCurrencyAmount.Text);
-                        b.time = Int32.Parse(editCurrencyTime.Text);
-                        b.subCredits = Int32.Parse(editCurrencySubCredits.Text);
+                        b.points = (int)editCurrencyAmount.Value;
+                        b.time = (int)editCurrencyTime.Value;
+                        b.subCredits = (int)editCurrencySubCredits.Value;
                         writeToConfig(null, null);
-                        editCurrencyAmount.Text = "";
-                        editCurrencyTime.Text = "";
-                        editCurrencySubCredits.Text = "";
+                        editCurrencyAmount.Value = 0;
+                        editCurrencyTime.Value = 0;
+                        editCurrencySubCredits.Value = 0;
                         editCurrencyUserName.Text = "";
                         return;
                     }
                 }
-                bot.users.Add(new BotUser(editCurrencyUserName.Text, 0, false, false, false, Int32.Parse(editCurrencyAmount.Text), Int32.Parse(editCurrencyTime.Text), null, 0, 0, Int32.Parse(editCurrencySubCredits.Text)));
+                bot.users.Add(new BotUser(editCurrencyUserName.Text, 0, false, false, false, (int)editCurrencyAmount.Value, (int)editCurrencyTime.Value, null, 0, 0, (int)editCurrencySubCredits.Value));
                 writeToConfig(null, null);
-                editCurrencyAmount.Text = "";
-                editCurrencyTime.Text = "";
-                editCurrencySubCredits.Text = "";
+                editCurrencyAmount.Value = 0;
+                editCurrencyTime.Value = 0;
+                editCurrencySubCredits.Value = 0;
                 editCurrencyUserName.Text = "";
             }
             else
@@ -272,25 +331,93 @@ namespace WpfApplication1
             }
         }
 
+        public async void addfavsong(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(favSongEdit.Text))
+            {
+                for (int i = 0; i < bot.requestSystem.favSongs.Count; i++)
+                {
+                    if (bot.requestSystem.favSongs[i].Equals(selectedFavSong))
+                    {
+                        bot.requestSystem.favSongs[i] = favSongEdit.Text;
+                        writeToConfig(null, null);
+                        favSongEdit.Text = "";
+                        selectedFavSong = "";
+                        return;
+                    }
+                }
+                bot.requestSystem.favSongs.Add(favSongEdit.Text);
+                writeToConfig(null, null);
+                favSongEdit.Text = "";
+                selectedFavSong = "";
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "Please enter the song!");
+            }
+        }
+
+        public void playSound(Object sender, RoutedEventArgs e)
+        {
+            FrameworkElement fe = sender as FrameworkElement;
+            ((Command)fe.DataContext).playSound();
+        }
+
+        public void playImage(Object sender, RoutedEventArgs e)
+        {
+            FrameworkElement fe = sender as FrameworkElement;
+            ((Command)fe.DataContext).playImage();
+        }
+
+        public async void removefavsong(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(favSongEdit.Text))
+            {
+                foreach (String b in bot.requestSystem.favSongs)
+                {
+                    if (b.Equals(favSongEdit.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.requestSystem.favSongs.Remove(b);
+                        break;
+                    }
+                }
+                favSongEdit.Text = "";
+                selectedFavSong = "";
+                writeToConfig(null, null);
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "Please enter the song!");
+            }
+        }
+
+        private void editFavSongButtonClick(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (sender as TextBlock);
+            object datacontext = textBlock.DataContext;
+            favSongEdit.Text = (String)datacontext;
+            selectedFavSong = favSongEdit.Text;
+        }
+
         public async void addrank(Object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(formatCommand(editRankTitle.Text)) && !string.IsNullOrWhiteSpace(editRankCost.Text))
+            if (!string.IsNullOrWhiteSpace(formatCommand(editRankTitle.Text)))
             {
                 foreach (KeyValuePair<String, Int32> s in bot.currency.ranks)
                 {
                     if (s.Key.Equals(editRankTitle.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        bot.currency.ranks[s.Key] = Int32.Parse(editRankCost.Text);
+                        bot.currency.ranks[s.Key] = (int)editRankCost.Value;
                         bot.resetAllCommands();
                         editRankTitle.Text = "";
-                        editRankCost.Text = "";
+                        editRankCost.Value = 0;
                         return;
                     }
                 }
-                bot.currency.ranks.Add(editRankTitle.Text, Int32.Parse(editRankCost.Text));
+                bot.currency.ranks.Add(editRankTitle.Text, (int)editRankCost.Value);
                 bot.resetAllCommands();
                 editRankTitle.Text = "";
-                editRankCost.Text = "";
+                editRankCost.Value = 0;
             }
             else
             {
@@ -395,9 +522,9 @@ namespace WpfApplication1
                     }
                 }
                 editCurrencyUserName.Text = "";
-                editCurrencyAmount.Text = "";
-                editCurrencyTime.Text = "";
-                editCurrencySubCredits.Text = "";
+                editCurrencyAmount.Value = 0;
+                editCurrencyTime.Value = 0;
+                editCurrencySubCredits.Value = 0;
                 writeToConfig(null, null);
             }
             else
@@ -463,6 +590,7 @@ namespace WpfApplication1
                         break;
                     }
                 }
+                selectedQuote = "";
                 quoteEdit.Text = "";
                 writeToConfig(null, null);
             }
@@ -476,7 +604,7 @@ namespace WpfApplication1
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editRankTitle.Text)))
             {
-                foreach (KeyValuePair < String, Int32 > b in bot.currency.ranks)
+                foreach (KeyValuePair<String, Int32> b in bot.currency.ranks)
                 {
                     if (b.Key.Equals(editCurrencyUserName.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -485,7 +613,7 @@ namespace WpfApplication1
                     }
                 }
                 editRankTitle.Text = "";
-                editRankCost.Text = "";
+                editRankCost.Value = 0;
                 writeToConfig(null, null);
             }
             else
@@ -583,12 +711,21 @@ namespace WpfApplication1
 
         public void refreshAllDataGrids()
         {
-            foreach (DataGrid d in FindLogicalChildren<DataGrid>(App.Current.MainWindow))
+            bot.requestSystem.formattedTotalTime = bot.requestSystem.formatTotalTime();
+            bot.requestSystem.songListLength = bot.requestSystem.songList.Count;
+            DataContext = bot;
+            try
             {
-                d.Items.Refresh();
+                foreach (DataGrid d in FindLogicalChildren<DataGrid>(App.Current.MainWindow))
+                {
+                    d.Items.Refresh();
+                }
+            }
+            catch (Exception)
+            {
             }
         }
-        
+
         public void killBot(Object sender, RoutedEventArgs e)
         {
             try
@@ -615,6 +752,7 @@ namespace WpfApplication1
             {
             }
             bot = Utils.loadData(); // Sets up and connects bot object
+
             if (bot == null)
             {
                 MessageBox.Show("Missing or corrupt 'userData.json' file. If you are updating from DudeBot 2 to DudeBot 3," +
@@ -628,7 +766,7 @@ namespace WpfApplication1
                     null, browser, new object[] { });
                 activeX.Silent = true;
                 browser.LoadCompleted += (s, e1) =>
-                {     
+                {
                     mshtml.IHTMLDocument2 doc = browser.Document as mshtml.IHTMLDocument2;
                     //doc.parentWindow.execScript("document.body.style.zoom=0.9");
                     //doc.parentWindow.execScript("document.body.style.transformrigin=​\"scale(0.9, 0)\";"); // TODO : FIX!
@@ -636,6 +774,8 @@ namespace WpfApplication1
                 browser.Navigate("http://www.twitch.tv/" + bot.streamer + "/chat");
             }
             bot.botStartUpAsync();
+            kill.IsEnabled = true;
+            open.IsEnabled = false;
             OnPropertyChanged();
             DataContext = bot;
             if (openRockSnifferOnStartUp.IsChecked == true)
@@ -919,7 +1059,7 @@ namespace WpfApplication1
         
         private async void loaded(Object sender, RoutedEventArgs e)
         {
-            bot = new TwitchBot(App.window);
+            bot = new TwitchBot();
             if (!checkPrereqs())
             {
                 await this.ShowMessageAsync("Welcome to DudeBot!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, Bot Oauth, then scroll to the bottom and press 'APPLY'.");
@@ -938,7 +1078,7 @@ namespace WpfApplication1
                     {
                         if (checkUpdate() == 1)
                         {
-                            this.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+                            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
                             var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
                             MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Update Available!", "An update was found, would you like to update?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
                             if (messageBoxResult == MessageDialogResult.Affirmative)
@@ -946,7 +1086,7 @@ namespace WpfApplication1
                                 Thread.Sleep(1000);
                                 try
                                 {
-                                    System.Diagnostics.Process.Start(System.IO.Path.GetTempPath() + @"\dudebotupdater.exe");
+                                    Process.Start(Path.GetTempPath() + @"\dudebotupdater.exe");
                                 }
                                 catch (Exception)
                                 {
@@ -968,26 +1108,7 @@ namespace WpfApplication1
 
         public void openImageWindow(Object sender, RoutedEventArgs e)
         {
-            if (imageWindow != null)
-            {
-                try
-                {
-                    imageWindow.Kill();
-                    imageWindow = null;
-                }
-                catch (Exception)
-                {
-                }
-            }
-            try
-            {
-                imageWindow = new Process();
-                imageWindow.StartInfo.FileName = "bin\\images.exe";
-                imageWindow.Start();
-            }
-            catch (Exception)
-            {
-            }
+            App.imagesWindow.startUp(bot.image.imageDisplayTimeSeconds);
         }
 
         public Boolean checkinfo()
@@ -1133,39 +1254,38 @@ namespace WpfApplication1
         
         public void sortByUserName(Object sender, RoutedEventArgs e)
         {
-            bot.users = new ObservableCollection<BotUser>(bot.users.OrderBy(o => o.username).ToList());
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.username).ToList());
             writeToConfig(null, null);
         }
 
         public void sortByRankTitle(Object sender, RoutedEventArgs e)
         {
-            bot.users = new ObservableCollection<BotUser>(bot.users.OrderBy(o => o.rank).ToList());
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.rank).ToList());
             writeToConfig(null, null);
         }
 
         public void sortByAmount(Object sender, RoutedEventArgs e)
         {
-            bot.users = new ObservableCollection<BotUser>(bot.users.OrderBy(o => o.points).ToList());
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.points).ToList());
             writeToConfig(null, null);
         }
 
         public void sortByMinutes(Object sender, RoutedEventArgs e)
         {
-            bot.users = new ObservableCollection<BotUser>(bot.users.OrderBy(o => o.time).ToList());
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.time).ToList());
             writeToConfig(null, null);
         }
 
         public void sortBySubCredits(Object sender, RoutedEventArgs e)
         {
-            bot.users = new ObservableCollection<BotUser>(bot.users.OrderBy(o => o.subCredits).ToList());
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.subCredits).ToList());
             writeToConfig(null, null);
         }
 
         private void moveup(Object sender, RoutedEventArgs e)
         {
-            TextBlock textBlock = (sender as TextBlock);
-            object datacontext = textBlock.DataContext; // TODO : FIX null object
-            Song c = (Song)datacontext;
+            FrameworkElement fe = sender as FrameworkElement;
+            Song c = ((Song)fe.DataContext);
             for (int i = 0; i < bot.requestSystem.songList.Count; i++)
             {
                 if (bot.requestSystem.songList[i].name.Equals(c.name, StringComparison.InvariantCultureIgnoreCase))
@@ -1183,20 +1303,24 @@ namespace WpfApplication1
             writeToConfig(null, null);
         }
 
-        private void deleteSong(Object sender, RoutedEventArgs e)
+        private async void deleteSong(Object sender, RoutedEventArgs e)
         {
-            TextBlock textBlock = (sender as TextBlock);
-            object datacontext = textBlock.DataContext; // TODO : FIX null object
-            Song c = (Song)datacontext;
-            foreach (Song s in bot.requestSystem.songList)
-            {
-                if (s.name.Equals(c.name, StringComparison.InvariantCultureIgnoreCase))
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+            MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Remove Song", "Are you sure you want to remove this song?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
+            if (messageBoxResult == MessageDialogResult.Affirmative) { 
+                FrameworkElement fe = sender as FrameworkElement;
+                Song c = ((Song)fe.DataContext);
+                foreach (Song s in bot.requestSystem.songList)
                 {
-                    bot.requestSystem.songList.Remove(s);
-                    break;
+                    if (s.name.Equals(c.name, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.requestSystem.songList.Remove(s);
+                        break;
+                    }
                 }
+                writeToConfig(null, null);
             }
-            writeToConfig(null, null);
         }
         
         public async void addsong(object sender, RoutedEventArgs e)
@@ -1212,7 +1336,7 @@ namespace WpfApplication1
             }
             if (!string.IsNullOrWhiteSpace(editSong.Text))
             {
-                bot.requestSystem.insertSong(editSong.Text, uName, (int)songplace.Value);
+                bot.requestSystem.insertSong(editSong.Text, uName, (int)songplace.Value - 1);
                 editSong.Text = "";
                 editRequester.Text = "";
                 songplace.Value = 1;
@@ -1267,7 +1391,7 @@ namespace WpfApplication1
             }
             try
             {
-                imageWindow.Kill();
+                App.imagesWindow.Close();
             }
             catch (Exception)
             {
@@ -1313,9 +1437,9 @@ namespace WpfApplication1
             object datacontext = textBlock.DataContext;
             BotUser c = (BotUser)datacontext;
             editCurrencyUserName.Text = c.username;
-            editCurrencyAmount.Text = c.points.ToString();
-            editCurrencyTime.Text = c.time.ToString();
-            editCurrencySubCredits.Text = c.subCredits.ToString();
+            editCurrencyAmount.Value = c.points;
+            editCurrencyTime.Value = c.time;
+            editCurrencySubCredits.Value = c.subCredits;
         }
 
         private void editRankButtonClick(object sender, MouseButtonEventArgs e)
@@ -1324,7 +1448,7 @@ namespace WpfApplication1
             object datacontext = textBlock.DataContext;
             KeyValuePair<String, Int32> c = (KeyValuePair<String, Int32>)datacontext;
             editRankTitle.Text = c.Key;
-            editRankCost.Text = c.Value.ToString();
+            editRankCost.Value = c.Value;
         }
 
         private void editQuteButtonClick(object sender, MouseButtonEventArgs e)
@@ -1469,6 +1593,7 @@ namespace WpfApplication1
             if (messageBoxResult == MessageDialogResult.Affirmative)
             {
                 File.WriteAllText(Utils.userDataFile, string.Empty);
+                // TODO : Set defaults 
                 writeToConfig(null, null);
                 await this.ShowMessageAsync("No Previous Data Found!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, and Bot Oauth, then press 'APPLY' and restart DudeBot!");
                 customization.Focus();
@@ -1571,6 +1696,12 @@ namespace WpfApplication1
         private void clearHistory_Click(object sender, RoutedEventArgs e)
         {
             bot.requestSystem.songHistory.Clear();
+            writeToConfig(null, null);
+        }
+
+        private void clearFavorites_Click(object sender, RoutedEventArgs e)
+        {
+            bot.requestSystem.favSongs.Clear();
             writeToConfig(null, null);
         }
     }

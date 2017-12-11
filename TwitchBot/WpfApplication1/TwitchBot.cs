@@ -5,7 +5,6 @@ using TwitchLib;
 using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
 using System.Threading;
-using Newtonsoft.Json.Linq;
 using WpfApplication1;
 using Newtonsoft.Json;
 using System.ComponentModel;
@@ -13,14 +12,10 @@ using System.Runtime.CompilerServices;
 using TwitchLib.Services;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.PubSub;
-using System.Collections.ObjectModel;
+using WMPLib;
+
 public class TwitchBot
 {
-    public TwitchBot(MainWindow window)
-    {
-        this.window = window;
-    }
-
     // Sets all commands for !addcom, !editcom, !removecom
     public List<String> setExtraCommandNames()
     {
@@ -30,13 +25,13 @@ public class TwitchBot
                 "!addcom", "!botcolor", "!colorbot", "!adventure", "!bonus", "!bonusall", giveawaycommandname,
                 "!gamble", "!currency", currency.currencyCommand, "!vipsong", "!vipsongon", "!vipsongoff", "!info",
                 "!rank", "!join", "!leaderboards", "!removesong", "!promote", "!rankup", "!editquote", "!changequote",
-                "!removequote", "!deletequote", "!subcredits", "!givecredits", "!subsong", "!addfav" };
+                "!removequote", "!deletequote", "!subcredits", "!givecredits", "!subsong", "!addfav", "!redeem", "!redeeminfo" };
         return new List<String>(result);
         // Add TO AS NEEDED
     }
 
     [JsonIgnore]
-    public MainWindow window;
+    public WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
     [JsonIgnore]
     public TwitchClient client;
     [JsonIgnore]
@@ -56,6 +51,10 @@ public class TwitchBot
     public String botName { get; set; }
     public String followerMessage { get; set; }
     public String subMessage { get; set; }
+    public String resubMessage { get; set; }
+    public int raidViewersRequired { get; set; } = 5;
+    public String hostMessage { get; set; }
+    public String raidMessage { get; set; }
     public String subOnlyRequests { get; set; }
     public String minigameEndMessage { get; set; }
     public String giveawaycommandname { get; set; }
@@ -84,14 +83,15 @@ public class TwitchBot
     public SoundEffect soundEffect { get; set; }
     public Quote quote { get; set; }
     public RequestSystem requestSystem { get; set; }
-    public ObservableCollection<Command> sfxCommandList { get; set; } = new ObservableCollection<Command>();
-    public ObservableCollection<Command> userCommandList { get; set; } = new ObservableCollection<Command>();
-    public ObservableCollection<Command> timerCommandList { get; set; } = new ObservableCollection<Command>();
-    public ObservableCollection<Command> botCommandList { get; set; } = new ObservableCollection<Command>();
-    public ObservableCollection<Command> imageCommandList { get; set; } = new ObservableCollection<Command>();
-    public ObservableCollection<Command> hotkeyCommandList { get; set; } = new ObservableCollection<Command>();
-    public ObservableCollection<Command> commandList { get; set; } = new ObservableCollection<Command>();
-    public ObservableCollection<BotUser> users { get; set; } = new ObservableCollection<BotUser>();
+    public List<Command> sfxCommandList { get; set; } = new List<Command>();
+    public List<Command> userCommandList { get; set; } = new List<Command>();
+    public List<Command> timerCommandList { get; set; } = new List<Command>();
+    public List<Command> botCommandList { get; set; } = new List<Command>();
+    public List<Command> imageCommandList { get; set; } = new List<Command>();
+    public List<Command> hotkeyCommandList { get; set; } = new List<Command>();
+    public List<Command> rewardCommandList { get; set; } = new List<Command>();
+    public List<Command> commandList { get; set; } = new List<Command>();
+    public List<BotUser> users { get; set; } = new List<BotUser>();
     [JsonIgnore]
     public List<Double> gameGuess { get; set; } = new List<Double>();
     public List<String> raffleUsers { get; set; } = new List<String>();
@@ -148,6 +148,7 @@ public class TwitchBot
             client.OverrideBeingHostedCheck = true;
             client.OnBeingHosted += onBeingHosted;
             client.Connect();
+            checkAtBeginningAsync();
             setClasses();
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
             textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
@@ -160,32 +161,53 @@ public class TwitchBot
             Utils.errorReport(e1);
         }
     }
-
+    
     private void onUserLeft(object sender, OnUserLeftArgs e)
     {
         client.SendRaw("PART: " + e.Username);
     }
 
-    private void onBeingHosted(object sender, OnBeingHostedArgs e) // TODO : Add raid message for more than x people
+    private void onBeingHosted(object sender, OnBeingHostedArgs e)
     {
         if (autoShoutoutOnHost && !e.IsAutoHosted)
         {
-            if (e.Viewers > 4)
+            String message = "";
+            if (e.Viewers < raidViewersRequired)
             {
-                client.SendMessage("Thanks for the " + e.Viewers + " viewer host! "
-                    + (userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true)));
+                message = hostMessage;
             }
             else
             {
-                client.SendMessage("Thanks for the host! "
-                    + (userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true)));
+                message = raidMessage;
             }
+            if (hostMessage.Contains("shoutout"))
+            {
+                message = message.Replace("shoutout", userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true));
+            }
+            else if (hostMessage.Contains("$user"))
+            {
+                message = message.Replace("$user", e.HostedByChannel);
+            }
+            if (hostMessage.Contains("shoutout"))
+            {
+                message = message.Replace("$viewers", e.Viewers.ToString());
+            }
+            client.SendMessage(message);
         }
     }
 
     private void onReSubscriber(object sender, OnReSubscriberArgs e)
     {
-        client.SendMessage(e.ReSubscriber.DisplayName + " just resubscribed for " + e.ReSubscriber.Months + " months! Thank you!"); // TODO : Create custom message
+        String message = resubMessage;
+        if (resubMessage.Contains("$user"))
+        {
+            message = message.Replace("$user", e.ReSubscriber.DisplayName);
+        }
+        if (resubMessage.Contains("$months"))
+        {
+            message = message.Replace("$months", e.ReSubscriber.Months.ToString());
+        }
+        client.SendMessage(message);
         foreach (BotUser botUser in users)
         {
             if (botUser.username.Equals(e.ReSubscriber.DisplayName, StringComparison.InvariantCultureIgnoreCase))
@@ -198,9 +220,9 @@ public class TwitchBot
         }
     }
 
-    private void onPubSubBitsReceived(object sender, OnBitsReceivedArgs e)
+    private void onPubSubBitsReceived(object sender, OnBitsReceivedArgs e) // TODO : Bits message, test
     {
-        client.SendMessage("Just received " + e.BitsUsed + " bits from " + e.Username + ". That brings their total to " + e.TotalBitsUsed + " bits!"); // TODO : TEST!
+        client.SendMessage("Just received " + e.BitsUsed + " bits from " + e.Username + ". That brings their total to " + e.TotalBitsUsed + " bits!");
     }
 
     private void onNewFollower(object sender, OnNewFollowersDetectedArgs e) // TODO : TEST!
@@ -215,8 +237,9 @@ public class TwitchBot
         }
     }
 
-    public async void checkAtBeginningAsync()
+    public async void checkAtBeginningAsync() // TODO : FIX!
     {
+        /*
         var allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync(channel);
         var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync(channel);
         foreach (BotUser user in users)
@@ -245,11 +268,12 @@ public class TwitchBot
             user.follower = follows;
             user.sub = isSubbed;
         }
+         */
     }
-    
+
     private void onMessageReceived(object sender, OnMessageReceivedArgs e)
     {
-        // TODO ?
+        // TODO : moderation
     }
     
     public void botDisconnect()
@@ -301,11 +325,12 @@ public class TwitchBot
         textAdventure.setUpText();
         requestSystem.songList = Utils.loadSongs();
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
+        requestSystem.songListLength = requestSystem.songList.Count;
     }
 
     public void resetAllCommands()
     { // Sets all command types for quicker type checking, sets all command names
-        ObservableCollection<Command> commands = new ObservableCollection<Command>(); // Removes any null commands that come up due to early bugs
+        List<Command> commands = new List<Command>(); // Removes any null commands that come up due to early bugs
         foreach (Command command in commandList)
         {
             if (command != null)
@@ -316,6 +341,7 @@ public class TwitchBot
         commandList = commands;
         botCommandList = getCommands("bot");
         hotkeyCommandList = getCommands("hotkey");
+        rewardCommandList = getCommands("reward");
         sfxCommandList = getCommands("sfx");
         userCommandList = getCommands("user");
         timerCommandList = getCommands("timer");
@@ -335,7 +361,6 @@ public class TwitchBot
             Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
         }
-        int count = 0;
         double start_time = Environment.TickCount;
         int i = 0;
         while (true)
@@ -343,9 +368,7 @@ public class TwitchBot
             try
             {
                 if ((Environment.TickCount - start_time) >= (timerTotal * 60000))
-                { // Prints timed
-                  // commands when
-                  // needed
+                {
                     start_time = Environment.TickCount;
                     if (timerCommandList[i].output.Equals("$songlist"))
                     {
@@ -361,11 +384,10 @@ public class TwitchBot
                     }
                     else
                     {
-
                         client.SendMessage(timerCommandList[i].output);
                     }
                     i++;
-                    if (i >= count)
+                    if (i >= timerCommandList.Count - 1)
                     {
                         i = 0;
                     }
@@ -542,9 +564,9 @@ public class TwitchBot
         // TODO: reset all the good stuff as needed
     }
 
-    public ObservableCollection<Command> getCommands(String type)
+    public List<Command> getCommands(String type)
     { // Gets a list of all 'type' commands
-        ObservableCollection<Command> list = new ObservableCollection<Command>();
+        List<Command> list = new List<Command>();
         foreach (Command c in commandList)
         {
             if (c.commandType.Equals(type))
@@ -2092,6 +2114,47 @@ public class TwitchBot
                 return;
             }
         }
+
+        //Redeem rewards
+        if (message.Equals("!redeem", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!redeeminfo", StringComparison.InvariantCultureIgnoreCase))
+        {
+            List<String> list = new List<String>();
+            foreach (Command c in rewardCommandList)
+            {
+                list.Add(c.input[0] + " (" + c.costToUse + ")");
+            }
+            client.SendMessage("To redeem a reward, type 'redeem [reward_name]'. Rewards: " + String.Join(", ", list));
+            return;
+
+        }
+        if (message.StartsWith("!redeem ", StringComparison.InvariantCultureIgnoreCase))
+        {
+            for (int i = 0; i < rewardCommandList.Count; i++)
+            {
+                if (Utils.getFollowingText(message).Equals(rewardCommandList[i].input[0], StringComparison.InvariantCultureIgnoreCase))
+                {
+                    foreach (BotUser b in users)
+                    {
+                        if (b.username.Equals(sender, StringComparison.InvariantCultureIgnoreCase)) {
+                            if (b.points >= rewardCommandList[i].costToUse)
+                            {
+                                b.points -= rewardCommandList[i].costToUse;
+                                client.SendMessage(userVariables(rewardCommandList[i].output, channel, sender,
+                                    rewardCommandList[i].output, rewardCommandList[i].output, false));
+                                return;
+                            }
+                            else
+                            {
+                                client.SendMessage("This reward costs " + rewardCommandList[i].costToUse + " " + currency.currencyName + " to reedem. You cannot afford it, " + sender);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        
     }
 
     public void read()
@@ -2286,30 +2349,7 @@ public class TwitchBot
         }
         return false;
     }
-
-    public List<String> getHostList() // TODO : TEST!
-    {
-        List<String> result = new List<String>();
-        try
-        {
-            dynamic a = new JObject(Utils.callURL("https://api.twitch.tv/kraken/oauth2/authorize?channels/" + streamer));
-            String id = a["_id"];
-            a = new JObject(Utils.callURL("http://tmi.twitch.tv/hosts?include_logins=1&target=" + id));
-            JArray info = a["hosts"];
-            for (int i = 0; i < info.Count; i++)
-            {
-                a = info[i];
-                result.Add(a["host_login"]);
-            }
-        }
-        catch (Exception e1)
-        {
-            Utils.errorReport(e1);
-            Console.WriteLine(e1.ToString());
-        }
-        return result;
-    }
-
+    
     public void triggerCurrency(Boolean trigger, String channel)
     {
         if (trigger)
@@ -2362,7 +2402,7 @@ public class TwitchBot
                 if (temp.Equals(getViewerComm.input[i]))
                 {
                     client.SendMessage("Current viewer count: "
-                            + Utils.getNumberOfUsers(channel, streamer));
+                            + Utils.getAllViewers(streamer).Count);
                 }
             }
         }
@@ -2399,7 +2439,7 @@ public class TwitchBot
         }
         if (response.Contains("$viewers"))
         {
-            response = response.Replace("$viewers", Utils.getNumberOfUsers(channel, streamer));
+            response = response.Replace("$viewers", Utils.getAllViewers(streamer).Count.ToString());
         }
         if (response.Contains("$user"))
         {
@@ -2534,10 +2574,10 @@ public class TwitchBot
                         || Utils.checkIfUserIsOP(sender, channel, streamer, users))
                 {
                     String info = Utils.callURL("https://api.twitch.tv/kraken/channels/" + followingText);
+                    var a = JsonConvert.DeserializeObject<dynamic>(info);
                     try
                     {
-                        String game = ((dynamic)new JObject(info))["game"];
-
+                        String game = a["game"];
                         if (game.Equals("null", StringComparison.InvariantCultureIgnoreCase))
                         {
                             response = response.Replace("$shoutout",
@@ -2565,12 +2605,12 @@ public class TwitchBot
                 response = "";
             }
         }
-        if (response.Contains("$start")) // TODO : TEST!
+        if (response.Contains("$start"))
         {
             String info = Utils.callURL("https://api.twitch.tv/kraken/channels/" + streamer);
+            var a = JsonConvert.DeserializeObject<dynamic>(info);
             try
             {
-                dynamic a = new JObject(info);
                 String created = a["created_at"];
                 DateTime d = Convert.ToDateTime(created);
                 String str = d.ToString("MM/dd/yyyy");
@@ -2581,14 +2621,13 @@ public class TwitchBot
                 response = "";
             }
         }
-        if (response.Contains("$uptime")) // TODO : TEST!
+        if (response.Contains("$uptime"))
         {
             String info = Utils.callURL("https://api.twitch.tv/kraken/streams/" + streamer);
+            var a = JsonConvert.DeserializeObject<dynamic>(info)["stream"];
             try
             {
-                dynamic a = new JObject(info);
-                dynamic s = a["stream"];
-                String name = s["created_at"];
+                String name = a["created_at"];
                 DateTime d = Convert.ToDateTime(name);
                 String str = d.ToString("MM/dd/yyyy");
                 long millisFromEpoch = (long)(d - new DateTime(1970, 1, 1)).TotalMilliseconds;
@@ -2610,9 +2649,9 @@ public class TwitchBot
             {
                 String info = Utils
                         .callURL("https://api.twitch.tv/kraken/users/" + sender + "/follows/channels/" + streamer);
+                var a = JsonConvert.DeserializeObject<dynamic>(info);
                 try
                 {
-                    dynamic a = new JObject(info);
                     String created = a["created_at"];
                     DateTime d = Convert.ToDateTime(created);
                     long millisFromEpoch = (long)(d - new DateTime(1970, 1, 1)).TotalMilliseconds;
@@ -2780,7 +2819,7 @@ public class TwitchBot
     {
         foreach (String userName in Utils.getAllViewers(streamer))
         {
-            if (user.Equals("(" + userName + ")")) // TODO
+            if (user.Equals(userName))
             {
                 return true;
             }
@@ -2788,7 +2827,7 @@ public class TwitchBot
         return false;
     }
 
-    private void onUserJoined(object s, OnUserJoinedArgs e) // TODO
+    private void onUserJoined(object s, OnUserJoinedArgs e)
     {
         String login = e.Username;
         client.SendRaw("JOIN: " + login);
@@ -2803,7 +2842,7 @@ public class TwitchBot
         }
     }
 
-    public static Boolean containsUser(ObservableCollection<BotUser> list, String user)
+    public static Boolean containsUser(List<BotUser> list, String user)
     {
         foreach (BotUser b in list)
         {

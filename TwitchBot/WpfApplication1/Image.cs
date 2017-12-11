@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 
 public class Image
 {
@@ -16,67 +13,39 @@ public class Image
     [JsonIgnore]
     public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
-    public void imageCOMMANDS(String message, String channel, String sender, ObservableCollection<Command> comList)
+    public void imageCOMMANDS(String message, String channel, String sender, List<Command> comList)
     {
-        try
+        for (int i = 0; i < comList.Count; i++)
         {
-            for (int i = 0; i < comList.Count; i++)
+            String temp = message.ToLower();
+            if (temp.StartsWith(comList[i].input[0]))
             {
-                String temp = message.ToLower();
-                if (temp.StartsWith(comList[i].input[0]))
+                if (imageStartTime == 0
+                        || (Environment.TickCount >= imageStartTime + (imageOverallCoolDown * 1000)))
                 {
-                    if (imageStartTime == 0
-                            || (Environment.TickCount >= imageStartTime + (imageOverallCoolDown * 1000)))
+                    for (int j = 0; j < userCoolDowns.Count; j++)
                     {
-                        for (int j = 0; j < userCoolDowns.Count; j++)
+                        if (userCoolDowns[sender] != 0)
                         {
-                            if (userCoolDowns[sender] != 0)
+                            if (Environment.TickCount >= userCoolDowns[sender] + (imageCoolDown * 1000))
                             {
-                                if (Environment.TickCount >= userCoolDowns[sender] + (imageCoolDown * 1000))
-                                {
-                                    try
-                                    {
-                                        StreamWriter writer = new StreamWriter(Path.GetTempPath() + "dudebotimage.txt");
-                                        writer.Write(comList[i].output);
-                                        writer.Close();
-                                        userCoolDowns.Add(sender, Environment.TickCount);
-                                        imageStartTime = Environment.TickCount;
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Utils.errorReport(e);
-                                        Debug.WriteLine(e.ToString());
-                                    }
-                                    return;
-                                }
-                                else
-                                {
-                                    return;
-                                }
+                                comList[i].playImage();
+                                imageStartTime = Environment.TickCount;
+                                userCoolDowns[sender] = Environment.TickCount;
+                                return;
+                            }
+                            else
+                            {
+                                return;
                             }
                         }
-                        try
-                        {
-                            StreamWriter writer = new StreamWriter(Path.GetTempPath() + "dudebotimage.txt");
-                            writer.Write(comList[i].output);
-                            writer.Close();
-                            userCoolDowns.Add(sender, Environment.TickCount);
-                            imageStartTime = Environment.TickCount;
-                        }
-                        catch (Exception e)
-                        {
-                            Utils.errorReport(e);
-                            Debug.WriteLine(e.ToString());
-                        }
-                        return;
                     }
+                    comList[i].playImage();
+                    imageStartTime = Environment.TickCount;
+                    userCoolDowns[sender] = Environment.TickCount;
+                    return;
                 }
             }
-        }
-        catch (Exception e)
-        {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
         }
     }
 }

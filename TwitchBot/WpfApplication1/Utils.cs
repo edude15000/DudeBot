@@ -6,7 +6,6 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using Newtonsoft.Json;
-using System.Collections.ObjectModel;
 using System.Threading;
 
 public class Utils
@@ -159,7 +158,7 @@ public class Utils
 
     public static String getTime()
     {
-        return DateTime.Now.ToString("HH:mm:ss tt");
+        return DateTime.Now.ToString("HH:mm:ss");
     }
     
     public static Boolean isInteger(String s)
@@ -380,7 +379,7 @@ public class Utils
         return rand.Next(x);
     }
 
-    public static Boolean checkIfUserIsOP(String user, String channel, String streamer, ObservableCollection<BotUser> users)
+    public static Boolean checkIfUserIsOP(String user, String channel, String streamer, List<BotUser> users)
     {
         foreach (BotUser u in users)
         {
@@ -411,59 +410,8 @@ public class Utils
         }
         return false;
     }
-
-    public static Boolean checkIfUserIsFollowing(String channel, String user, String streamer, ObservableCollection<BotUser> users)
-    {
-        if (user.Equals(streamer) || user.Equals(Utils.botMaker))
-        {
-            return true;
-        }
-        foreach (BotUser u in users)
-        {
-            if (u.username.Equals(user, StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (u.follower == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    try
-                    {
-                        String line = "";
-                        String check = callURL("https://api.twitch.tv/kraken/users/" + user.ToString()
-                                + "/follows/channels?limit=10000");
-                        StreamReader reader = new StreamReader(check);
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            if (line.Contains("Bad Request"))
-                            {
-                                Debug.WriteLine(
-                                        "WARNING TWITCH KRAKEN API IS DOWN, CANNOT CHECK IF USER IS FOLLOWING! (ADDED SONG IF POSSIBLE ANYWAY)");
-                                reader.Close();
-                                return true;
-                            }
-                            reader.Close();
-                            if (check.Contains(streamer))
-                            {
-                                u.follower = true;
-                                return true;
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        Debug.WriteLine(
-                                "WARNING TWITCH KRAKEN API IS DOWN, CANNOT CHECK IF USER IS FOLLOWING! (ADDED SONG IF POSSIBLE ANYWAY)");
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public static String callURL(String uri) // TODO : FIX!
+    
+    public static String callURL(String uri)
     {
         try
         {
@@ -489,30 +437,14 @@ public class Utils
         }
     }
 
-    public static String getNumberOfUsers(String channel, String streamer)
-    {
-        String info = callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
-        StreamReader sc = new StreamReader(info);
-        String line;
-        while ((line = sc.ReadLine()) != null)
-        {
-            if (line.Contains("chatter_count"))
-            {
-                break;
-            }
-        }
-        sc.Close();
-        line = line.Substring(line.IndexOf(":") + 1, line.Length - 1);
-        return line;
-    }
-
-    public static List<String> getAllViewers(String streamer) // TODO : TEST!
+    public static List<String> getAllViewers(String streamer)
     {
         List<String> users = new List<String>();
         String info = callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
         try
         {
-            dynamic a = new JObject(info)["chatters"];
+            var a = JsonConvert.DeserializeObject<dynamic>(info);
+            a = a["chatters"];
             JArray viewers = a["viewers"];
             JArray staff = a["staff"];
             JArray admins = a["admins"];
@@ -579,8 +511,10 @@ public class Utils
                 }
             }
         }
-        catch (Exception)
+        catch (Exception e1)
         {
+            errorReport(e1);
+            Debug.WriteLine(e1.ToString());
         }
         return users;
     }

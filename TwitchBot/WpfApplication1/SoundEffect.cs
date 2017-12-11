@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using WMPLib;
 
@@ -14,7 +13,7 @@ public class SoundEffect
     [JsonIgnore]
     public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
-    public void sfxCOMMANDS(String message, String channel, String sender, ObservableCollection<Command> comList)
+    public void sfxCOMMANDS(String message, String channel, String sender, List<Command> comList)
     {
         for (int i = 0; i < comList.Count; i++)
         {
@@ -29,20 +28,9 @@ public class SoundEffect
                         {
                             if (Environment.TickCount >= userCoolDowns[sender] + (sfxTimer * 1000))
                             {
-                                try
-                                {
-                                    WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
-                                    myplayer.URL = comList[i].output;
-                                    myplayer.controls.play();
-                                    myplayer.settings.volume = comList[i].volumeLevel;
-                                    userCoolDowns.Add(sender, Environment.TickCount);
-                                    SFXstartTime = Environment.TickCount;
-                                }
-                                catch (Exception e)
-                                {
-                                    Utils.errorReport(e);
-                                    Debug.WriteLine(e.ToString());
-                                }
+                                comList[i].playSound();
+                                userCoolDowns.Add(sender, Environment.TickCount);
+                                SFXstartTime = Environment.TickCount;
                                 return;
                             }
                             else
@@ -51,22 +39,14 @@ public class SoundEffect
                             }
                         }
                     }
-                    try
-                    {
-                        WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
-                        myplayer.URL = comList[i].output;
-                        myplayer.controls.play();
-                        userCoolDowns.Add(sender, Environment.TickCount);
-                        SFXstartTime = Environment.TickCount;
-                    }
-                    catch (Exception e)
-                    {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
-                    }
+                    comList[i].playSound();
+                    userCoolDowns.Add(sender, Environment.TickCount);
+                    SFXstartTime = Environment.TickCount;
                     return;
                 }
             }
         }
     }
+
+    
 }

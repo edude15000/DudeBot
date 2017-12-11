@@ -7,6 +7,7 @@ namespace WpfApplication1
     public partial class App : Application
     {
         public static MainWindow window = new MainWindow();
+        public static Images.MainWindow imagesWindow = new Images.MainWindow();
 
         static void Main(String[] args)
         {
