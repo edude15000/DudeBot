@@ -18,6 +18,9 @@ public class Utils
     public static String currentRequesterFile = @"bin\currentrequester.txt";
     public static String userDataFile = @"bin\userData.json";
     public static String songListFile = @"bin\songList.json";
+    public static String readmeFile = "README.txt";
+    public static String notesFile = @"bin\notes.txt";
+    public static String songListTextFile = @"bin\song.txt";
     public static String googleApiKey = "AIzaSyDU4bPym2G64rrPgk7B9a5L6LWtIyLhFQg";
 
     public static int getDurationOfVideoInSeconds(String time)

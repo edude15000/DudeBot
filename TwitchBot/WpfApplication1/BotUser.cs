@@ -1,8 +1,8 @@
 ﻿using System;
 
-public class BotUser
-{ 
-    public String username { get; set; } 
+public class BotUser 
+{
+    public String username { get; set; }
     public String rank { get; set; }
     public Boolean follower { get; set; }
     public Boolean sub { get; set; }

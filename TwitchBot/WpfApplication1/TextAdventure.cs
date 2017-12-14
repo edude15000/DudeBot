@@ -1,27 +1,66 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
-public class TextAdventure
+public class TextAdventure : INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    protected bool SetField<T>(ref T field, T value, string propertyName)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
+
     [JsonIgnore]
     public List<String> users { get; set; } = new List<String>();
     [JsonIgnore]
     public Dictionary<String, String[]> text { get; set; } = new Dictionary<String, String[]>();
     [JsonIgnore]
     public String choice { get; set; } = null;
-    public long startTimerInMS { get; set; }
     [JsonIgnore]
-    public long adventureStartTime { get; set; }
+    public long startTimerInMS { get; set; } = 0;
     [JsonIgnore]
     public Boolean allowUserAdds { get; set; } = true;
-    
+    [JsonIgnore]
     public Boolean enoughPlayers { get; set; } = false;
-    public int adventurePointsMin { get; set; }
-    public int adventurePointsMax { get; set; }
-    public int adventureCoolDown { get; set; }
+    [JsonIgnore]
+    public long AdventureStartTime = 90;
+    public long adventureStartTime
+    {
+        get => AdventureStartTime;
+        set { SetField(ref AdventureStartTime, value, nameof(adventureStartTime)); }
+    }
+    [JsonIgnore]
+    public int AdventurePointsMin = 25;
+    public int adventurePointsMin
+    {
+        get => AdventurePointsMin;
+        set { SetField(ref AdventurePointsMin, value, nameof(adventurePointsMin)); }
+    }
+    [JsonIgnore]
+    public int AdventurePointsMax = 75;
+    public int adventurePointsMax
+    {
+        get => AdventurePointsMax;
+        set { SetField(ref AdventurePointsMax, value, nameof(adventurePointsMax)); }
+    }
+    [JsonIgnore]
+    public int AdventureCoolDown = 20;
+    public int adventureCoolDown
+    {
+        get => AdventureCoolDown;
+        set { SetField(ref AdventureCoolDown, value, nameof(adventureCoolDown)); }
+    }
 
     public void startAdventuring(List<String> users, int startTimerInMS)
     {

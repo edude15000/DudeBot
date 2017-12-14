@@ -1,27 +1,123 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
-public class Currency
+public class Currency : INotifyPropertyChanged
 {
-    public String currencyName { get; set; }
-    public String currencyCommand { get; set; }
-    public int currencyPerMinute { get; set; } = 1;
-    public int currencyPerMinuteSubs { get; set; } = 1;
-    public int maxGamble { get; set; }
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    protected bool SetField<T>(ref T field, T value, string propertyName)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
     [JsonIgnore]
-    public int gambleCoolDownMinutes { get; set; }
+    public String CurrencyName = "points";
+    public String currencyName
+    {
+        get => CurrencyName;
+        set { SetField(ref CurrencyName, value, nameof(currencyName)); }
+    }
     [JsonIgnore]
-    public int vipRedeemCoolDownMinutes { get; set; }
-    public int vipSongCost { get; set; }
-    public int subCreditRedeemCost { get; set; } = 1;
-    public int creditsPerSub { get; set; } = 1;
-    public int rankupUnitCost { get; set; }
-    public Boolean toggle { get; set; }
-    public Boolean vipSongToggle { get; set; }
-    public Boolean gambleToggle { get; set; }
+    public String CurrencyCommand = "!points";
+    public String currencyCommand
+    {
+        get => CurrencyCommand;
+        set { SetField(ref CurrencyCommand, value, nameof(currencyCommand)); }
+    }
+    [JsonIgnore]
+    public int CurrencyPerMinute = 1;
+    public int currencyPerMinute
+    {
+        get => CurrencyPerMinute;
+        set { SetField(ref CurrencyPerMinute, value, nameof(currencyPerMinute)); }
+    }
+    [JsonIgnore]
+    public int CurrencyPerMinuteSubs = 1;
+    public int currencyPerMinuteSubs
+    {
+        get => CurrencyPerMinuteSubs;
+        set { SetField(ref CurrencyPerMinuteSubs, value, nameof(currencyPerMinuteSubs)); }
+    }
+    [JsonIgnore]
+    public int MaxGamble = 10000;
+    public int maxGamble
+    {
+        get => MaxGamble;
+        set { SetField(ref MaxGamble, value, nameof(maxGamble)); }
+    }
+    [JsonIgnore]
+    public int VipSongCost = 500;
+    public int vipSongCost
+    {
+        get => VipSongCost;
+        set { SetField(ref VipSongCost, value, nameof(vipSongCost)); }
+    }
+    [JsonIgnore]
+    public int SubCreditRedeemCost = 1;
+    public int subCreditRedeemCost
+    {
+        get => SubCreditRedeemCost;
+        set { SetField(ref SubCreditRedeemCost, value, nameof(subCreditRedeemCost)); }
+    }
+    [JsonIgnore]
+    public int CreditsPerSub = 1;
+    public int creditsPerSub
+    {
+        get => CreditsPerSub;
+        set { SetField(ref CreditsPerSub, value, nameof(creditsPerSub)); }
+    }
+    [JsonIgnore]
+    public int RankupUnitCost = 1;
+    public int rankupUnitCost
+    {
+        get => RankupUnitCost;
+        set { SetField(ref RankupUnitCost, value, nameof(rankupUnitCost)); }
+    }
+    [JsonIgnore]
+    public Boolean Toggle = true;
+    public Boolean toggle
+    {
+        get => Toggle;
+        set { SetField(ref Toggle, value, nameof(toggle)); }
+    }
+    [JsonIgnore]
+    public Boolean VipSongToggle = true;
+    public Boolean vipSongToggle
+    {
+        get => VipSongToggle;
+        set { SetField(ref VipSongToggle, value, nameof(vipSongToggle)); }
+    }
+    [JsonIgnore]
+    public Boolean GambleToggle = true;
+    public Boolean gambleToggle
+    {
+        get => GambleToggle;
+        set { SetField(ref GambleToggle, value, nameof(gambleToggle)); }
+    }
+    [JsonIgnore]
+    public int GambleCoolDownMinutes = 5;
+    public int gambleCoolDownMinutes
+    {
+        get => GambleCoolDownMinutes;
+        set { SetField(ref GambleCoolDownMinutes, value, nameof(gambleCoolDownMinutes)); }
+    }
+    [JsonIgnore]
+    public int VipRedeemCoolDownMinutes = 60;
+    public int vipRedeemCoolDownMinutes
+    {
+        get => VipRedeemCoolDownMinutes;
+        set { SetField(ref VipRedeemCoolDownMinutes, value, nameof(vipRedeemCoolDownMinutes)); }
+    }
     public Dictionary<String, Int32> ranks { get; set; } = new Dictionary<String, Int32>();
     [JsonIgnore]
     public List<BotUser> users;

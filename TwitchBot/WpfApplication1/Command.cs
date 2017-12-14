@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using WpfApplication1;
 
-public class Command
+public class Command 
 {
     public String output { get; set; }
     public String commandType { get; set; }
@@ -11,6 +11,7 @@ public class Command
     public Boolean toggle { get; set; }
     public int volumeLevel { get; set; } = 100;
     public int costToUse { get; set; } = 0;
+
 
     public Command(String[] input, int level, String output, String commandType, Boolean toggle)
     {

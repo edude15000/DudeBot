@@ -14,14 +14,13 @@
   "raidViewersRequired": 5,
   "hostMessage": "Thanks for the host! $shoutout",
   "raidMessage": "We are getting raided! Thanks for the $viewers viewer raid! $shoutout",
-  "subOnlyRequests": null,
+  "subOnlyRequests": "Only sub requests are being accepted right now, $user",
   "minigameEndMessage": "Time has run out for the current game, guesses cannot be added now, $user!",
   "giveawaycommandname": "!raffle",
   "spreadsheetId": "1jLNPhuJ0Cwmd3xL64YXAb1FwYcPBmh5FMw16O33TUZk",
   "botColor": null,
   "endMessage": "BYE FAM",
   "startupMessage": "SEXY TIME",
-  "version": "2.12.1",
   "minigameTimer": 90,
   "timerTotal": 10,
   "minigameTriggered": false,
@@ -34,8 +33,7 @@
   "autoShoutoutOnHost": true,
   "openRockSnifferOnStartUp": false,
   "textAdventure": {
-    "startTimerInMS": 0,
-    "enoughPlayers": false,
+    "adventureStartTime": 90,
     "adventurePointsMin": 25,
     "adventurePointsMax": 75,
     "adventureCoolDown": 20
@@ -53,6 +51,8 @@
     "toggle": true,
     "vipSongToggle": true,
     "gambleToggle": true,
+    "gambleCoolDownMinutes": 5,
+    "vipRedeemCoolDownMinutes": 60,
     "ranks": {
       "Bronze": 100,
       "Iron": 250,
@@ -136,18 +136,16 @@
     "direquests": true,
     "ylrequests": true,
     "maxSongLength": false,
-    "doNotWriteToHistory": true,
     "subOnlyRequests": "Only subs can request right now, $user!",
-    "lastSong": "qqq",
-    "formattedTotalTime": "00:27:25",
-    "songListLength": 5,
+    "formattedTotalTime": "00:35:33",
+    "songListLength": 7,
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
     "maxSongLengthInMinutes": 10,
     "favSongs": [
       "acdc - big balls",
-      " metallica - enter sandman"
+      "new song test"
     ],
     "bannedKeywords": [
       "asdf",
@@ -155,6 +153,8 @@
       " zxcv"
     ],
     "songHistory": [
+      "12/13/2017 21:09:54 - Beach House - PPP",
+      "12/13/2017 21:09:25 - オーバーロード ED  |  Overlord Ending - FULL",
       "12/08/2017 16:15:35 - A Day With Lucy!",
       "12/08/2017 16:17:47 - asdqwe",
       "12/10/2017 17:16:51 - 【绝地求生QQQ】神仙会,Q叔四喷诛仙"
@@ -368,71 +368,119 @@
     },
     "songList": [
       {
-        "name": "asdf",
-        "requester": "asdf",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=furTlhb-990",
-        "youtubeTitle": "asdfmovie 1-10 (Complete Collection)",
-        "durationInSeconds": 1093,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:18:13"
-      },
-      {
-        "name": "hotel california",
-        "requester": "asdf",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=dPLmHU2Xccw",
-        "youtubeTitle": "The Eagles - Hotel California",
-        "durationInSeconds": 408,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:06:48"
-      },
-      {
-        "name": "pp",
-        "requester": "pp",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=0qdRU2LqMUc",
-        "youtubeTitle": "El Frente AZNAR-MARINE LE PEN (Ciudadanos-PP). Poco más hay que decir. Echenique",
-        "durationInSeconds": 144,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:02:24"
-      },
-      {
-        "name": "lol",
-        "requester": "lol",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=s1RhUK7f-Vs",
-        "youtubeTitle": "2017 All-Star  Finals - Day 4  | League Of Legends All-Star 2017",
-        "durationInSeconds": 0,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:00:00"
-      },
-      {
-        "name": "aa",
-        "requester": "aa",
-        "level": "",
+        "name": "lala",
+        "requester": "edude15000",
+        "level": "VIP",
         "youtubeLink": null,
         "youtubeTitle": null,
         "durationInSeconds": 0,
+        "index": 1,
         "tuning": null,
         "customsForgeLink": null,
         "parts": null,
         "dlcCreator": null,
         "formattedDuration": ""
+      },
+      {
+        "name": "pp",
+        "requester": "edude15000",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=dQY-qbYycLQ",
+        "youtubeTitle": "【ポケモンUSUM】テッカグヤのPPって∞だったら世界終わるよね【ウルトラサン ウルトラムーン】",
+        "durationInSeconds": 990,
+        "index": 2,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:16:30"
+      },
+      {
+        "name": "ksksks",
+        "requester": "edude15000",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=KfSlVC5BcrY",
+        "youtubeTitle": "Ksksks",
+        "durationInSeconds": 18,
+        "index": 3,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:00:18"
+      },
+      {
+        "name": "qpqpqp",
+        "requester": "edude15000",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=tYysQOHTimo",
+        "youtubeTitle": "Subway Surfers - Launch Trailer",
+        "durationInSeconds": 66,
+        "index": 4,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:01:06"
+      },
+      {
+        "name": "test",
+        "requester": "edude15000",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=_nfREkI7Nsk",
+        "youtubeTitle": "MAKE THE HARDEST CHOICE EVER. PERSONALITY VIDEO TEST",
+        "durationInSeconds": 617,
+        "index": 5,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:10:17"
+      },
+      {
+        "name": "aaa",
+        "requester": "edude15000",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=fnCjUsc7y2M",
+        "youtubeTitle": "AAA - The AAA Girls feat. Alaska Thunderfuck, Willam and Courtney Act",
+        "durationInSeconds": 225,
+        "index": 6,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:03:45"
+      },
+      {
+        "name": "pls",
+        "requester": "edude15000",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=0cHI1DPwqkE",
+        "youtubeTitle": "Otsochodzi - PLS (Design)",
+        "durationInSeconds": 217,
+        "index": 7,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:03:37"
+      },
+      {
+        "name": "a",
+        "requester": "edude15000",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=LTAEVr5LGWY",
+        "youtubeTitle": "A Day With Lucy!",
+        "durationInSeconds": 471,
+        "index": 0,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:07:51"
       }
-    ]
+    ],
+    "songsPlayedTotal": 0
   },
   "sfxCommandList": [
     {
@@ -982,28 +1030,6 @@
       "level": 0,
       "input": [
         "!santa"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0
-    },
-    {
-      "output": "b",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!a"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0
-    },
-    {
-      "output": "b",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!b"
       ],
       "toggle": true,
       "volumeLevel": 100,
@@ -2402,17 +2428,6 @@
       "costToUse": 0
     },
     {
-      "output": "b",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!a"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0
-    },
-    {
       "output": "!next",
       "commandType": "hotkey",
       "level": 3,
@@ -2477,17 +2492,6 @@
       "toggle": true,
       "volumeLevel": 100,
       "costToUse": 5
-    },
-    {
-      "output": "b",
-      "commandType": "user",
-      "level": 0,
-      "input": [
-        "!b"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0
     }
   ],
   "users": [
@@ -2500,7 +2504,7 @@
       "gaveSpot": false,
       "time": 1,
       "subCredits": 0,
-      "points": 0,
+      "points": 1,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,
@@ -4778,25 +4782,10 @@
       "sub": false,
       "mod": true,
       "gaveSpot": false,
-      "time": 87,
+      "time": 218,
       "subCredits": 0,
-      "points": 81,
-      "numRequests": 171,
-      "months": 0,
-      "gambleCoolDown": 0,
-      "vipCoolDown": 0
-    },
-    {
-      "username": "asdf",
-      "rank": null,
-      "follower": false,
-      "sub": false,
-      "mod": false,
-      "gaveSpot": false,
-      "time": 0,
-      "subCredits": 0,
-      "points": 0,
-      "numRequests": 3,
+      "points": 212,
+      "numRequests": 212,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4812,66 +4801,6 @@
       "subCredits": 0,
       "points": 0,
       "numRequests": 7,
-      "months": 0,
-      "gambleCoolDown": 0,
-      "vipCoolDown": 0
-    },
-    {
-      "username": "a",
-      "rank": null,
-      "follower": false,
-      "sub": false,
-      "mod": false,
-      "gaveSpot": false,
-      "time": 0,
-      "subCredits": 0,
-      "points": 0,
-      "numRequests": 2,
-      "months": 0,
-      "gambleCoolDown": 0,
-      "vipCoolDown": 0
-    },
-    {
-      "username": "q",
-      "rank": null,
-      "follower": false,
-      "sub": false,
-      "mod": false,
-      "gaveSpot": false,
-      "time": 0,
-      "subCredits": 0,
-      "points": 0,
-      "numRequests": 1,
-      "months": 0,
-      "gambleCoolDown": 0,
-      "vipCoolDown": 0
-    },
-    {
-      "username": "pp",
-      "rank": null,
-      "follower": false,
-      "sub": false,
-      "mod": false,
-      "gaveSpot": false,
-      "time": 0,
-      "subCredits": 0,
-      "points": 0,
-      "numRequests": 1,
-      "months": 0,
-      "gambleCoolDown": 0,
-      "vipCoolDown": 0
-    },
-    {
-      "username": "mm",
-      "rank": null,
-      "follower": false,
-      "sub": false,
-      "mod": false,
-      "gaveSpot": false,
-      "time": 0,
-      "subCredits": 0,
-      "points": 0,
-      "numRequests": 1,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4898,9 +4827,9 @@
       "sub": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 312,
+      "time": 440,
       "subCredits": 0,
-      "points": 312,
+      "points": 440,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,
@@ -4979,5 +4908,6 @@
   "guiTextColor": 1,
   "guiTextBlockColor": 0,
   "guiInputFontStyle": 0,
-  "guiButtonColor": 0
+  "guiButtonColor": 0,
+  "version": "2.12.1"
 }

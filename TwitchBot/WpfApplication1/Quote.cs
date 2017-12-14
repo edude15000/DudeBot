@@ -1,13 +1,38 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
-public class Quote
+public class Quote : INotifyPropertyChanged
 {
-    public Boolean quotesModOnly { get; set; }
-    public bool quotesOn { get; set; }
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    protected bool SetField<T>(ref T field, T value, string propertyName)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
+    [JsonIgnore]
+    public Boolean QuotesModOnly = true;
+    public Boolean quotesModOnly
+    {
+        get => QuotesModOnly;
+        set { SetField(ref QuotesModOnly, value, nameof(quotesModOnly)); }
+    }
+    [JsonIgnore]
+    public Boolean QuotesOn = true;
+    public Boolean quotesOn
+    {
+        get => QuotesOn;
+        set { SetField(ref QuotesOn, value, nameof(quotesOn)); }
+    }
     public List<String> quotes { get; set; } = new List<String>();
     [JsonIgnore]
     public TwitchBot bot;

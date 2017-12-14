@@ -12,9 +12,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       Title="{Binding version, StringFormat=DUDEBOT {0}}" Height="400" Width="950"
         MinHeight="400" MinWidth="950">
-    <Controls:MetroWindow.DataContext>
-        <Binding Source="bot" />
-    </Controls:MetroWindow.DataContext>
+    
     <Window.Resources>
         <local:ListToStringConverter x:Key="ListToStringConverter"/>
         <local:ListConverter x:Key="ListConverter"/>
@@ -112,7 +110,6 @@
                     <Button Style="{DynamicResource SquareButtonStyle}" x:Name="updateDudebot" Content="Check For Update" Click="updatebot" Grid.Column="3" Grid.Row="1" />
                     <Button Style="{DynamicResource SquareButtonStyle}" x:Name="resetDudebot" Content="Reset DudeBot" Click="resetbot" Grid.Column="5" Grid.Row="1"  />
 
-
                 </Grid>
             </TabItem>
 
@@ -205,7 +202,7 @@
                                 <TextBlock VerticalAlignment="Center" FontSize="14" Text="Max song list length: " Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" />
                                 <Controls:NumericUpDown x:Name="maxSongListLength" Minimum = "1" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Value="{Binding requestSystem.maxSonglistLength, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Requests on: " Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" />
-                                <CheckBox x:Name="requestOnCheckbox" FontSize="14" Grid.Column="1" Grid.Row="3" IsChecked="{Binding requestSystem.requestsTrigger, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox x:Name="requestOnCheckbox" FontSize="14" Grid.Column="1" Grid.Row="3" IsChecked="{Binding requestSystem.requestsTrigger, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Must follow to request: " Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right"/>
                                 <CheckBox x:Name="followToRequestCheckbox"  FontSize="14" Grid.Column="1" Grid.Row="4" IsChecked="{Binding requestSystem.mustFollowToRequest, UpdateSourceTrigger=PropertyChanged}"/>
                                 <CheckBox x:Name="songlistOneLineCheckbox"  FontSize="14" Grid.Column="1" Grid.Row="5" IsChecked="{Binding requestSystem.displayOneLine, UpdateSourceTrigger=PropertyChanged}"/>
@@ -465,37 +462,6 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem Header="Rocksmith" FontSize="12">
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="33*"/>
-                                    <ColumnDefinition Width="33*"/>
-                                    <ColumnDefinition Width="33*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Open RockSniffer on startup: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
-                                <CheckBox x:Name="openRockSnifferOnStartUp" FontSize="14" Grid.Column="1" Grid.Row="0" IsChecked="{Binding openRockSnifferOnStartUp, UpdateSourceTrigger=PropertyChanged}"/>
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Open RockSniffer" Click="openRockSniffer" Grid.Column="2" Grid.Row="0" />
-                                
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="51" Grid.ColumnSpan="4"  />
-                            </Grid>
-                        </ScrollViewer>
-                    </TabItem>
-
-
                     <TabItem Header="GUI" FontSize="12">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -676,36 +642,40 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30*"/>
-                                <ColumnDefinition Width="30*"/>
-                                <ColumnDefinition Width="14*"/>
-                                <ColumnDefinition Width="13*"/>
-                                <ColumnDefinition Width="13*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="10*"/>
                             </Grid.ColumnDefinitions>
-                            <Controls:NumericUpDown x:Name="songplace" Controls:TextBoxHelper.Watermark="Queue Number" Value="1"  Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="2" />
-                            <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Song Name" TextWrapping="Wrap" x:Name="editSong" Text="" Grid.Column="0" Grid.Row="0" />
-                            <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Requester Name" TextWrapping="Wrap" x:Name="editRequester" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="0" />
+                            <Controls:NumericUpDown x:Name="songplace" Controls:TextBoxHelper.Watermark="Queue Number" Value="1"  Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="6" />
+                            <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Song Name" TextWrapping="Wrap" x:Name="editSong" Text="" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+                            <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Requester Name" TextWrapping="Wrap" x:Name="editRequester" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="4" />
 
-                            <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to insert new song into list at given position, will push following songs down." IsDefault="True" Content="Add" Click="addsong" Grid.Column="3" />
-                            <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to edit song at given position in list, will overwrite song at given queue number." Content="Edit" Click="editsong" Grid.Column="4" />
+                            <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to insert new song into list at given position, will push following songs down." IsDefault="True" Content="Add" Click="addsong" Grid.Column="7" />
+                            <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to edit song at given position in list, will overwrite song at given queue number." Content="Edit" Click="editsong" Grid.Column="8" />
 
-                            <DataGrid x:Name="songdatagrid" GridLinesVisibility="All" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding requestSystem.songList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" >
+                            <DataGrid x:Name="songdatagrid" GridLinesVisibility="All" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding requestSystem.songList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" >
                                 <DataGrid.Columns >
-                                    <DataGridTemplateColumn x:Name="songnumber" Header="#" Width=".04*" >
+                                    <DataGridTemplateColumn x:Name="songnumber" Header="#" Width=".05*" >
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" Text="0" HorizontalAlignment="Center" />
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding index}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn x:Name="songlevelinfo" Header="Level" Width=".05*" >
+                                    <DataGridTemplateColumn x:Name="songlevelinfo" Header="Level" Width=".1*" >
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
                                                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding level}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn x:Name="songnamecolumn" Header="Song" Width=".4*">
+                                    <DataGridTemplateColumn x:Name="songnamecolumn" Header="Song" Width=".35*">
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
                                                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding name}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
@@ -726,7 +696,8 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn x:Name="moveupcolumn" Header="Move Up" Width=".08*">
+                                    
+                                    <DataGridTemplateColumn x:Name="moveupcolumn" Header="Move Up" Width=".1*">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Button Width="35" Height="35" Style="{DynamicResource MetroCircleButtonStyle}" Click="moveup" CommandParameter="{Binding}" ToolTipService.ToolTip="Click to move this song up in the list.">
@@ -739,7 +710,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn x:Name="deletecolumn" Header="Remove" Width=".08*">
+                                    <DataGridTemplateColumn x:Name="deletecolumn" Header="Remove" Width=".1*">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Button Width="35" Height="35" HorizontalAlignment="Center" Style="{DynamicResource MetroCircleButtonStyle}" Click="deleteSong" CommandParameter="{Binding}" ToolTipService.ToolTip="Click to remove song from the list.">
@@ -754,12 +725,11 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Button Style="{DynamicResource SquareButtonStyle}" Visibility="Visible" x:Name="refresh" IsDefault="True" Background="White" Content="Refresh" Click="writeToConfig" FontSize="16" Grid.Column="3" Grid.Row="2"/>
-                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.songListLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=Total Songs: {0}}"  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right"/>
-
-                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.formattedTotalTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=Estimated Time: {0}}"  Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right"/>
-                             
-                            <Button Style="{DynamicResource SquareButtonStyle}" x:Name="clear" IsDefault="True" Background="White" Content="Clear" Click="clearlist" FontSize="16" Grid.Column="4" Grid.Row="2"/>
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.songListLength, UpdateSourceTrigger=PropertyChanged,  StringFormat=Songs In Queue: {0}}"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.formattedTotalTime, UpdateSourceTrigger=PropertyChanged, StringFormat=Estimated Time: {0}}"  Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.songsPlayedThisStream, UpdateSourceTrigger=PropertyChanged, StringFormat=Stream Songs: {0}}"  Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="{Binding requestSystem.songsPlayedTotal, UpdateSourceTrigger=PropertyChanged, StringFormat=Lifetime Songs: {0}}"  Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <Button Style="{DynamicResource SquareButtonStyle}" x:Name="clear" IsDefault="True" Background="White" Content="Clear" Click="clearlist" FontSize="16" Grid.Column="9" Grid.Row="2"/>
                         </Grid>
                     </TabItem>
 
@@ -774,7 +744,7 @@
                                     <DataGridTemplateColumn x:Name="songHistorySong" Header="Song History" Width=".15*">
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding}" HorizontalAlignment="Center" />
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding}" HorizontalAlignment="Center" MouseLeftButtonDown="addsongtofavorites" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -797,7 +767,7 @@
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type song here" Grid.Column="0" TextWrapping="Wrap" x:Name="favSongEdit" Text="" VerticalScrollBarVisibility="Auto" />
-                            <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Edit" Click="addfavsong" Grid.Column="1" />
+                            <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addfavsong" Grid.Column="1" />
                             <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removefavsong" Grid.Column="2" />
                             <DataGrid x:Name="favoritesdatagrid" GridLinesVisibility="All" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding requestSystem.favSongs, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" >
                                 <DataGrid.Columns >
@@ -825,21 +795,23 @@
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="40*"/>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="15*"/>
                             <ColumnDefinition Width="20*"/>
                             <ColumnDefinition Width="20*"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="!commandName" TextWrapping="Wrap" x:Name="editCommand" Text="" Grid.Column="0" />
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Command response" TextWrapping="Wrap" x:Name="editResponse" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="1" />
-                        <ComboBox x:Name="editCommandLevel" Grid.Column="2" Grid.Row="0" >
+                        <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Cost for command" Minimum = "0" Maximum = "100000000" Interval = "1" x:Name="editCommandCost" Value="0" Grid.Column="2" />
+                        <ComboBox x:Name="editCommandLevel" Grid.Column="3" Grid.Row="0" >
                             <ComboBoxItem>Everyone</ComboBoxItem>
                             <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
                             <ComboBoxItem>Mods, Streamer</ComboBoxItem>
                             <ComboBoxItem>Streamer</ComboBoxItem>
                         </ComboBox>
-                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addcommand" Grid.Column="3" />
-                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removecommand" Grid.Column="4" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addcommand" Grid.Column="4" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removecommand" Grid.Column="5" />
                     </Grid>
                     <Grid Grid.Row="1" >
                         <DataGrid x:Name="commanddatagrid" GridLinesVisibility="All" ItemsSource="{Binding userCommandList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
@@ -847,21 +819,28 @@
                                 <DataGridTemplateColumn x:Name="commandName" Header="Command" Width=".13*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0], UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="commandResponse" Header="Response" Width=".72*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding output, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn x:Name="commandLevel" Header="Level" Width=".16*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding level, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding level}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn x:Name="commandCost" Header="Cost" Width=".16*" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding costToUse}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editCommandButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -1077,7 +1056,7 @@
                                         <DataGridTemplateColumn x:Name="currencySubCredits" Header="Sub Credits" Width=".15*" ToolTipService.ToolTip="Sort by Sub Credits.">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding subCredits}" Uid="{Binding currencySubCredits.Uid}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="editCurrencyButtonClick" />
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding subCredits}" ToolTipService.ToolTip="Click to edit user currency." MouseLeftButtonDown="editCurrencyButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1303,16 +1282,19 @@
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="8*"/>
                             <ColumnDefinition Width="15*"/>
-                            <ColumnDefinition Width="15*"/>
-                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="10*"/>
                             <ColumnDefinition Width="10*"/>
                             <ColumnDefinition Width="10*"/>
                             <ColumnDefinition Width="10*"/>
                         </Grid.ColumnDefinitions>
                         <Controls:NumericUpDown x:Name="volumeSetter" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="3" Grid.Row="1" Value="100"/>
-                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addSFX" Grid.Column="4" />
-                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeSFX" Grid.Column="5" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addSFX" Grid.Column="5" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeSFX" Grid.Column="6" />
+                        <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Cost for command" Minimum = "0" Maximum = "100000000" Interval = "1" x:Name="editSFXcost" Value="0" Grid.Column="4" />
+
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="!sfxCommandName" TextWrapping="Wrap" x:Name="editCommandSFX" Text="" Grid.Column="0"/>
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="SFX file path goes here after uploading" TextWrapping="Wrap" x:Name="editResponseSFX" IsEnabled="False" HorizontalScrollBarVisibility="Auto" Grid.Column="2" />
                         <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Upload SFX" Click="uploadSFX" Grid.Column="1" />
@@ -1338,6 +1320,13 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock TextWrapping="Wrap" Text="{Binding volumeLevel}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn x:Name="SFXcost" Header="Cost" Width=".10*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding costToUse}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -1396,6 +1385,7 @@
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text=" Overall Cooldown (seconds):" Grid.Column="2" />
                         <Controls:NumericUpDown x:Name="ImagesOverallCoolDown" Minimum = "0" Maximum = "10000" Interval = "1" Grid.Column="3" Value="{Binding image.imageOverallCoolDown, UpdateSourceTrigger=PropertyChanged}" />
                         <Button Style="{DynamicResource SquareButtonStyle}" Content="Apply" Click="writeToConfig" Grid.Column="4"  />
+                        
                     </Grid>
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
@@ -1404,11 +1394,14 @@
                             <ColumnDefinition Width="40*"/>
                             <ColumnDefinition Width="15*"/>
                             <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="15*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addImage" Grid.Column="3" />
-                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeImage" Grid.Column="4" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addImage" Grid.Column="4" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeImage" Grid.Column="5" />
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="!imageCommandName" TextWrapping="Wrap" x:Name="editCommandImage" Text="" Grid.Column="0"/>
                         <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Image file path goes here after uploading" TextWrapping="Wrap" x:Name="editResponseImage" IsEnabled="False" HorizontalScrollBarVisibility="Auto" Grid.Column="2" />
+                        <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Cost for command" Minimum = "0" Maximum = "100000000" Interval = "1" x:Name="editImagecost" Value="0" Grid.Column="3" />
+
                         <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Upload Image" Click="uploadImage" Grid.Column="1" />
                     </Grid>
                     <Grid Grid.Row="3">
@@ -1421,10 +1414,17 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn x:Name="imageResponse" Header="Image" Width=".85*">
+                                <DataGridTemplateColumn x:Name="imageResponse" Header="Image" Width=".55*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="editImageButtonClick" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn x:Name="imageCost" Header="Cost" Width=".15*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding costToUse}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="editImageButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -1487,14 +1487,6 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*"/>
@@ -1502,22 +1494,22 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Right" FontSize="20" FontWeight="Bold" Text="Guessing Game: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
                         <CheckBox x:Name="minigameToggle" FontSize="12" Checked="minigame_changed" Unchecked="minigame_changed" Grid.Row="0" Grid.Column="1" IsChecked="{Binding minigameOn, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Row="3" Grid.Column="0" Text="Guessing Timer (seconds): " HorizontalAlignment="Right"/>
-                        <Controls:NumericUpDown x:Name="minigametimer" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Value="{Binding minigameTimer, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Row="1" Grid.Column="0" Text="Guessing Timer (seconds): " HorizontalAlignment="Right"/>
+                        <Controls:NumericUpDown x:Name="minigametimer" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Value="{Binding minigameTimer, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Text="Adventure Game: " Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right"/>
-                        <CheckBox x:Name="adventureToggle" FontSize="12" Checked="adventure_changed" Unchecked="adventure_changed" Grid.Row="5" Grid.Column="1" IsChecked="{Binding minigameTimer, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="6" Text="Cool Down Time (minutes): " HorizontalAlignment="Right"/>
-                        <Controls:NumericUpDown x:Name="adventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureCoolDown, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="7" Text="User Join Time (seconds): " HorizontalAlignment="Right"/>
-                        <Controls:NumericUpDown x:Name="adventurejointime" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureStartTime, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="8" Text="Minimum RevloBot Reward: " HorizontalAlignment="Right"/>
-                        <Controls:NumericUpDown x:Name="adventureminreward" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMin, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="9" Text="Maximum RevloBot Reward: " HorizontalAlignment="Right" />
-                        <Controls:NumericUpDown x:Name="adventuremaxreward" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMax, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Text="Adventure Game: " Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"/>
+                        <CheckBox x:Name="adventureToggle" FontSize="12" Checked="adventure_changed" Unchecked="adventure_changed" Grid.Row="2" Grid.Column="1" IsChecked="{Binding minigameTimer, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="3" Text="Cool Down Time (minutes): " HorizontalAlignment="Right"/>
+                        <Controls:NumericUpDown x:Name="adventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureCoolDown, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="4" Text="User Join Time (seconds): " HorizontalAlignment="Right"/>
+                        <Controls:NumericUpDown x:Name="adventurejointime" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureStartTime, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="5" Text="Minimum RevloBot Reward: " HorizontalAlignment="Right"/>
+                        <Controls:NumericUpDown x:Name="adventureminreward" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMin, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="6" Text="Maximum RevloBot Reward: " HorizontalAlignment="Right" />
+                        <Controls:NumericUpDown x:Name="adventuremaxreward" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMax, UpdateSourceTrigger=PropertyChanged}"/>
 
                         
-                        <Button Style="{DynamicResource SquareButtonStyle}" x:Name="GO1_Copy" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Grid.RowSpan="2"/>
+                        <Button Style="{DynamicResource SquareButtonStyle}" x:Name="GO1_Copy" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Grid.RowSpan="2"/>
 
 
                     </Grid>
@@ -1633,17 +1625,17 @@
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Auto Shoutout on Host: " Grid.Column="0" HorizontalAlignment="Right" />
                             <CheckBox x:Name="autoShoutoutOnHost" FontSize="14" Grid.Column="1" Grid.Row="0" Checked="writeToConfig" Unchecked="writeToConfig" IsChecked="{Binding autoShoutoutOnHost, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Follower Message: "  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" />
-                            <TextBox x:Name="followerMessage" FontSize="14" Grid.Column="1" Grid.Row="1" Text="{Binding followerMessage, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox x:Name="followerMessage" TextWrapping="Wrap" FontSize="14" Grid.Column="1" Grid.Row="1" Text="{Binding followerMessage, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Subscriber Message: "  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" />
-                            <TextBox x:Name="subMessage" FontSize="14" Grid.Column="1" Grid.Row="2" Text="{Binding subMessage, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox TextWrapping="Wrap" x:Name="subMessage" FontSize="14" Grid.Column="1" Grid.Row="2" Text="{Binding subMessage, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Resubscriber Message: "  HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" />
-                            <TextBox x:Name="resubMessage" FontSize="14" Grid.Column="1" Grid.Row="3" Text="{Binding resubMessage, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox TextWrapping="Wrap" x:Name="resubMessage" FontSize="14" Grid.Column="1" Grid.Row="3" Text="{Binding resubMessage, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Host Message: "  HorizontalAlignment="Right" Grid.Row="4" Grid.Column="0" />
-                            <TextBox x:Name="hostMessage" FontSize="14" Grid.Column="1" Grid.Row="4" Text="{Binding hostMessage, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox TextWrapping="Wrap" x:Name="hostMessage" FontSize="14" Grid.Column="1" Grid.Row="4" Text="{Binding hostMessage, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Host viewers required for raid: "  HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0" />
                             <Controls:NumericUpDown x:Name="raidViewersRequired" Minimum = "1" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Value="{Binding raidViewersRequired, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Raid Message: "  HorizontalAlignment="Right" Grid.Row="6" Grid.Column="0" />
-                            <TextBox x:Name="raidMessage" FontSize="14" Grid.Column="1" Grid.Row="6" Text="{Binding raidMessage, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox TextWrapping="Wrap" x:Name="raidMessage" FontSize="14" Grid.Column="1" Grid.Row="6" Text="{Binding raidMessage, UpdateSourceTrigger=PropertyChanged}" />
                             
                             <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="apply_button" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="4"  />
 
@@ -1694,6 +1686,55 @@
                         </DataGrid>
                     </Grid>
                 </Grid>
+            </TabItem>
+
+            <TabItem Header="Rocksmith" FontSize="12">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="33*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Open RockSniffer on startup: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
+                        <CheckBox x:Name="openRockSnifferOnStartUp" FontSize="14" Grid.Column="1" Grid.Row="0" IsChecked="{Binding openRockSnifferOnStartUp, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Open RockSniffer" Click="openRockSniffer" Grid.Column="2" Grid.Row="0" />
+
+                        <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="51" Grid.ColumnSpan="4"  />
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Notes" FontSize="12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="90*"/>
+                        <RowDefinition Height="8*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="0" >
+                        <TextBox TextWrapping="Wrap" x:Name="notestextbox" FontSize="16" Text="" />
+                    </ScrollViewer>
+                    <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Save" Click="saveNotes" Grid.Column="0" Grid.Row="1" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Readme" FontSize="12">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                    <TextBox IsReadOnly="True" TextWrapping="Wrap" x:Name="readmetextbox" FontSize="16" Text="" />
+                </ScrollViewer>
             </TabItem>
 
 

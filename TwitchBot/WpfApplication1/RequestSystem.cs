@@ -2,55 +2,317 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 
-public class RequestSystem
+public class RequestSystem : INotifyPropertyChanged
 {
-    [JsonIgnore]
-    public TwitchBot bot;
-    public Boolean vipSongToggle { get; set; }
-    public Boolean mustFollowToRequest { get; set; }
-    public Boolean requestsTrigger { get; set; }
-    public Boolean displayIfUserIsHere { get; set; }
-    public Boolean displayOneLine { get; set; }
-    public Boolean whisperToUser { get; set; }
-    public Boolean direquests { get; set; }
-    public Boolean ylrequests { get; set; }
-    public Boolean maxSongLength { get; set; }
-    public Boolean doNotWriteToHistory { get; set; } = false;
-    public String subOnlyRequests { get; set; }
-    public String lastSong { get; set; }
-    public String formattedTotalTime { get; set; } = "";
-    public int songListLength { get; set; } = 0;
-    public int maxSonglistLength { get; set; }
-    public int numOfSongsToDisplay { get; set; }
-    public int numOfSongsInQueuePerUser { get; set; }
-    public int maxSongLengthInMinutes { get; set; }
-    public List<String> favSongs { get; set; }
-    public String[] bannedKeywords { get; set; }
+    public event PropertyChangedEventHandler PropertyChanged;
+  
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    protected bool SetField<T>(ref T field, T value, string propertyName)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        formattedTotalTime = formatTotalTime();
+        songListLength = songList.Count;
+        return true;
+    }
     [JsonIgnore]
     public List<String> favSongsPlayedThisStream { get; set; } = new List<String>();
-    public List<String> songHistory { get; set; } = new List<String>();
-    public Command requestComm { get; set; }
-    public Command songlistComm { get; set; }
-    public Command getTotalComm { get; set; }
-    public Command editComm { get; set; }
-    public Command nextComm { get; set; }
-    public Command addvipComm { get; set; }
-    public Command addtopComm { get; set; }
-    public Command adddonatorComm { get; set; }
-    public Command getCurrentComm { get; set; }
-    public Command clearComm { get; set; }
-    public Command triggerRequestsComm { get; set; }
-    public Command backupRequestAddComm { get; set; }
-    public Command getNextComm { get; set; }
-    public Command randomComm { get; set; }
-    public Command favSongComm { get; set; }
-    public Command editSongComm { get; set; }
-    public Command removeSongComm { get; set; }
-    public Command songPositionComm { get; set; }
-    public List<Song> songList { get; set; } = new List<Song>();
+    [JsonIgnore]
+    public Boolean doNotWriteToHistory = false;
+    [JsonIgnore]
+    public String lastSong { get; set; }
+    [JsonIgnore]
+    public TwitchBot bot;
+    [JsonIgnore]
+    public Boolean VipSongToggle = true;
+    public Boolean vipSongToggle
+    {
+        get => VipSongToggle;
+        set { SetField(ref VipSongToggle, value, nameof(vipSongToggle)); }
+    }
+    [JsonIgnore]
+    public Boolean MustFollowToRequest = true;
+    public Boolean mustFollowToRequest
+    {
+        get => MustFollowToRequest;
+        set { SetField(ref MustFollowToRequest, value, nameof(mustFollowToRequest)); }
+    }
+    [JsonIgnore]
+    public Boolean RequestsTrigger = true;
+    public Boolean requestsTrigger
+    {
+        get => RequestsTrigger;
+        set { SetField(ref RequestsTrigger, value, nameof(requestsTrigger)); }
+    }
+    [JsonIgnore]
+    public Boolean DisplayIfUserIsHere = true;
+    public Boolean displayIfUserIsHere
+    {
+        get => DisplayIfUserIsHere;
+        set { SetField(ref DisplayIfUserIsHere, value, nameof(displayIfUserIsHere)); }
+    }
+    [JsonIgnore]
+    public Boolean DisplayOneLine = true;
+    public Boolean displayOneLine
+    {
+        get => DisplayOneLine;
+        set { SetField(ref DisplayOneLine, value, nameof(displayOneLine)); }
+    }
+    [JsonIgnore]
+    public Boolean WhisperToUser = true;
+    public Boolean whisperToUser
+    {
+        get => WhisperToUser;
+        set { SetField(ref WhisperToUser, value, nameof(whisperToUser)); }
+    }
+    [JsonIgnore]
+    public Boolean Direquests = true;
+    public Boolean direquests
+    {
+        get => Direquests;
+        set { SetField(ref Direquests, value, nameof(direquests)); }
+    }
+    [JsonIgnore]
+    public Boolean Ylrequests = true;
+    public Boolean ylrequests
+    {
+        get => Ylrequests;
+        set { SetField(ref Ylrequests, value, nameof(ylrequests)); }
+    }
+    [JsonIgnore]
+    public Boolean MaxSongLength = false;
+    public Boolean maxSongLength
+    {
+        get => MaxSongLength;
+        set { SetField(ref MaxSongLength, value, nameof(maxSongLength)); }
+    }
+    [JsonIgnore]
+    public String SubOnlyRequests = "Only subs can request right now, $user!";
+    public String subOnlyRequests
+    {
+        get => SubOnlyRequests;
+        set { SetField(ref SubOnlyRequests, value, nameof(subOnlyRequests)); }
+    }
+    [JsonIgnore]
+    public String FormattedTotalTime;
+    public String formattedTotalTime
+    {
+        get => FormattedTotalTime;
+        set { SetField(ref FormattedTotalTime, value, nameof(formattedTotalTime)); }
+    }
+    [JsonIgnore]
+    public int SongListLength = 0;
+    public int songListLength
+    {
+        get => SongListLength;
+        set { SetField(ref SongListLength, value, nameof(songListLength)); }
+    }
+    [JsonIgnore]
+    public int MaxSonglistLength = 100;
+    public int maxSonglistLength
+    {
+        get => MaxSonglistLength;
+        set { SetField(ref MaxSonglistLength, value, nameof(maxSonglistLength)); }
+    }
+    [JsonIgnore]
+    public int NumOfSongsToDisplay = 8;
+    public int numOfSongsToDisplay
+    {
+        get => NumOfSongsToDisplay;
+        set { SetField(ref NumOfSongsToDisplay, value, nameof(numOfSongsToDisplay)); }
+    }
+    [JsonIgnore]
+    public int NumOfSongsInQueuePerUser = 1;
+    public int numOfSongsInQueuePerUser
+    {
+        get => NumOfSongsInQueuePerUser;
+        set { SetField(ref NumOfSongsInQueuePerUser, value, nameof(numOfSongsInQueuePerUser)); }
+    }
+    [JsonIgnore]
+    public int MaxSongLengthInMinutes = 10;
+    public int maxSongLengthInMinutes
+    {
+        get => MaxSongLengthInMinutes;
+        set { SetField(ref MaxSongLengthInMinutes, value, nameof(maxSongLengthInMinutes)); }
+    }
+    [JsonIgnore]
+    public List<String> FavSongs = new List<String>();
+    public List<String> favSongs
+    {
+        get => FavSongs;
+        set { SetField(ref FavSongs, value, nameof(favSongs)); }
+    }
+    [JsonIgnore]
+    public String[] BannedKeywords;
+    public String[] bannedKeywords
+    {
+        get => BannedKeywords;
+        set { SetField(ref BannedKeywords, value, nameof(bannedKeywords)); }
+    }
+    [JsonIgnore]
+    public List<String> SongHistory = new List<String>();
+    public List<String> songHistory
+    {
+        get => SongHistory;
+        set { SetField(ref SongHistory, value, nameof(songHistory)); }
+    }
+    [JsonIgnore]
+    public Command RequestComm;
+    public Command requestComm
+    {
+        get => RequestComm;
+        set { SetField(ref RequestComm, value, nameof(requestComm)); }
+    }
+    [JsonIgnore]
+    public Command SonglistComm;
+    public Command songlistComm
+    {
+        get => SonglistComm;
+        set { SetField(ref SonglistComm, value, nameof(songlistComm)); }
+    }
+    [JsonIgnore]
+    public Command GetTotalComm;
+    public Command getTotalComm
+    {
+        get => GetTotalComm;
+        set { SetField(ref GetTotalComm, value, nameof(getTotalComm)); }
+    }
+    [JsonIgnore]
+    public Command EditComm;
+    public Command editComm
+    {
+        get => EditComm;
+        set { SetField(ref EditComm, value, nameof(editComm)); }
+    }
+    [JsonIgnore]
+    public Command NextComm;
+    public Command nextComm
+    {
+        get => NextComm;
+        set { SetField(ref NextComm, value, nameof(nextComm)); }
+    }
+    [JsonIgnore]
+    public Command AddvipComm;
+    public Command addvipComm
+    {
+        get => AddvipComm;
+        set { SetField(ref AddvipComm, value, nameof(addvipComm)); }
+    }
+    [JsonIgnore]
+    public Command AddtopComm;
+    public Command addtopComm
+    {
+        get => AddtopComm;
+        set { SetField(ref AddtopComm, value, nameof(addtopComm)); }
+    }
+    [JsonIgnore]
+    public Command AdddonatorComm;
+    public Command adddonatorComm
+    {
+        get => AdddonatorComm;
+        set { SetField(ref AdddonatorComm, value, nameof(adddonatorComm)); }
+    }
+    [JsonIgnore]
+    public Command GetCurrentComm;
+    public Command getCurrentComm
+    {
+        get => GetCurrentComm;
+        set { SetField(ref GetCurrentComm, value, nameof(getCurrentComm)); }
+    }
+    [JsonIgnore]
+    public Command ClearComm;
+    public Command clearComm
+    {
+        get => ClearComm;
+        set { SetField(ref ClearComm, value, nameof(clearComm)); }
+    }
+    [JsonIgnore]
+    public Command TriggerRequestsComm;
+    public Command triggerRequestsComm
+    {
+        get => TriggerRequestsComm;
+        set { SetField(ref TriggerRequestsComm, value, nameof(triggerRequestsComm)); }
+    }
+    [JsonIgnore]
+    public Command BackupRequestAddComm;
+    public Command backupRequestAddComm
+    {
+        get => BackupRequestAddComm;
+        set { SetField(ref BackupRequestAddComm, value, nameof(backupRequestAddComm)); }
+    }
+    [JsonIgnore]
+    public Command GetNextComm;
+    public Command getNextComm
+    {
+        get => GetNextComm;
+        set { SetField(ref GetNextComm, value, nameof(getNextComm)); }
+    }
+    [JsonIgnore]
+    public Command RandomComm;
+    public Command randomComm
+    {
+        get => RandomComm;
+        set { SetField(ref RandomComm, value, nameof(randomComm)); }
+    }
+    [JsonIgnore]
+    public Command FavSongComm;
+    public Command favSongComm
+    {
+        get => FavSongComm;
+        set { SetField(ref FavSongComm, value, nameof(favSongComm)); }
+    }
+    [JsonIgnore]
+    public Command EditSongComm;
+    public Command editSongComm
+    {
+        get => EditSongComm;
+        set { SetField(ref EditSongComm, value, nameof(editSongComm)); }
+    }
+    [JsonIgnore]
+    public Command RemoveSongComm;
+    public Command removeSongComm
+    {
+        get => RemoveSongComm;
+        set { SetField(ref RemoveSongComm, value, nameof(removeSongComm)); }
+    }
+    [JsonIgnore]
+    public Command SongPositionComm;
+    public Command songPositionComm
+    {
+        get => SongPositionComm;
+        set { SetField(ref SongPositionComm, value, nameof(songPositionComm)); }
+    }
+    [JsonIgnore]
+    public List<Song> SongList = new List<Song>();
+    public List<Song> songList
+    {
+        get => SongList;
+        set { SetField(ref SongList, value, nameof(songList)); }
+    }
+    [JsonIgnore]
+    public int SongsPlayedThisStream = 0;
+    [JsonIgnore]
+    public int songsPlayedThisStream
+    {
+        get => SongsPlayedThisStream;
+        set { SetField(ref SongsPlayedThisStream, value, nameof(songsPlayedThisStream)); }
+    }
+    [JsonIgnore]
+    public int SongsPlayedTotal = 0;
+    public int songsPlayedTotal
+    {
+        get => SongsPlayedThisStream;
+        set { SetField(ref SongsPlayedThisStream, value, nameof(songsPlayedTotal)); }
+    }
 
     public int getNumRequests(String sender)
     {
@@ -287,11 +549,13 @@ public class RequestSystem
                 if (!songList[i].level.Equals("$$$"))
                 {
                     songList.Insert(i, new Song(song, requestedby, "$$$", bot));
+                    writeToCurrentSong(bot.channel, true);
                     return;
                 }
             }
             songList.Add(new Song(song, requestedby, "$$$", bot));
         }
+        writeToCurrentSong(bot.channel, true);
     }
 
     public void removeMySong(String message, String channel, String sender)
@@ -326,6 +590,7 @@ public class RequestSystem
                     + songToDelete.Substring(0, songToDelete.LastIndexOf("\t")) + "' has been removed, " + sender
                     + "!");
                 bot.addUserRequestAmount(sender, false);
+                writeToCurrentSong(bot.channel, true);
                 return;
             }
         }
@@ -384,6 +649,7 @@ public class RequestSystem
                     }
                 }
                 songList[i].name = Utils.getFollowingText(message);
+                writeToCurrentSong(bot.channel, true);
                 return;
             }
         }
@@ -551,6 +817,7 @@ public class RequestSystem
             }
             songList[0] = s;
             bot.client.SendMessage(getNextSong(channel));
+            writeToCurrentSong(bot.channel, true);
         }
         else
         {
@@ -581,8 +848,17 @@ public class RequestSystem
         }
     }
 
+    public void setIndexesForSongs()
+    {
+        for (int i = 0; i < songList.Count; i++)
+        {
+            songList[i].index = i + 1;
+        }
+    }
+
     public void writeToCurrentSong(String channel, Boolean nextCom)
     {
+        setIndexesForSongs();
         StreamWriter output;
         output = new StreamWriter(Utils.currentSongFile, false);
         output.Write(getCurrentSongTitle(channel));
@@ -595,7 +871,17 @@ public class RequestSystem
             bot.google.writeToGoogleSheets(nextCom, songList, songHistory);
         }
         formattedTotalTime = formatTotalTime();
+        String songs = "";
+        foreach(Song s in songList)
+        {
+            songs += s.name + " (" + s.requester + ")\r";
+        }
+        output = new StreamWriter(Utils.songListTextFile, false);
+        output.Write(songs);
+        output.Close();
         Utils.saveSongs(songList);
+        songList = Utils.loadSongs();
+
     }
 
     public String formatTotalTime()
@@ -679,6 +965,7 @@ public class RequestSystem
                     try
                     {
                         clear(channel, Utils.songListFile);
+                        clear(channel, Utils.songListTextFile);
                         songList.Clear();
                         bot.client.SendMessage("Song list has been cleared!");
                         writeToCurrentSong(channel, false);
@@ -723,7 +1010,6 @@ public class RequestSystem
                         {
                             bot.client.SendMessage("There are no songs currently in the queue!");
                         }
-
                         writeToCurrentSong(channel, true);
                     }
                     catch (Exception e)
@@ -796,6 +1082,8 @@ public class RequestSystem
                 {
                     bot.client.SendMessage(getNextSong(channel));
                 }
+                songsPlayedThisStream += 1;
+                SongsPlayedTotal += 1;
             }
             else
             {
@@ -1487,6 +1775,8 @@ public class RequestSystem
             }
             doNotWriteToHistory = false;
             songList.RemoveAt(0);
+            songsPlayedThisStream += 1;
+            SongsPlayedTotal += 1;
             return true;
         }
     }
@@ -1672,6 +1962,7 @@ public class RequestSystem
     public void addTop(String channel, String song, String requestedby)
     {
         songList.Insert(0, new Song(song, requestedby, "$$$", bot));
+        writeToCurrentSong(bot.channel, true);
     }
 
     public void addVip(String channel, String song, String requestedby)
@@ -1693,12 +1984,13 @@ public class RequestSystem
                 if (s.level.Equals(""))
                 {
                     songList.Insert(i, new Song(song, requestedby, "VIP", bot));
+                    writeToCurrentSong(bot.channel, true);
                     return;
                 }
             }
             songList.Add(new Song(song, requestedby, "VIP", bot));
         }
-
+        writeToCurrentSong(bot.channel, true);
     }
 
     public void addCurrentSongToFavList()

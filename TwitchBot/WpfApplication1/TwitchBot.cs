@@ -7,15 +7,28 @@ using TwitchLib.Events.Client;
 using System.Threading;
 using WpfApplication1;
 using Newtonsoft.Json;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using TwitchLib.Services;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.PubSub;
 using WMPLib;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-public class TwitchBot
+public class TwitchBot : INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    protected bool SetField<T>(ref T field, T value, string propertyName)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
+
     // Sets all commands for !addcom, !editcom, !removecom
     public List<String> setExtraCommandNames()
     {
@@ -29,7 +42,6 @@ public class TwitchBot
         return new List<String>(result);
         // Add TO AS NEEDED
     }
-
     [JsonIgnore]
     public WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
     [JsonIgnore]
@@ -45,81 +57,380 @@ public class TwitchBot
     [JsonIgnore]
     private static FollowerService service;
 
-    public String oauth { get; set; }
-    public String streamer { get; set; }
-    public String channel { get; set; }
-    public String botName { get; set; }
-    public String followerMessage { get; set; }
-    public String subMessage { get; set; }
-    public String resubMessage { get; set; }
-    public int raidViewersRequired { get; set; } = 5;
-    public String hostMessage { get; set; }
-    public String raidMessage { get; set; }
-    public String subOnlyRequests { get; set; }
-    public String minigameEndMessage { get; set; }
-    public String giveawaycommandname { get; set; }
-    public String spreadsheetId { get; set; }
-    public String botColor { get; set; }
-    public String endMessage { get; set; }
-    public String startupMessage { get; set; }
-    public String version { get; set; } = Utils.version;
-    public int counter1, counter2, counter3, counter4, counter5;
-    public int minigameTimer { get; set; }
-    public int timerTotal { get; set; }
     [JsonIgnore]
-    public long gameStartTime { get; set; }
-    public Boolean minigameTriggered { get; set; } = false;
-    public Boolean timeFinished { get; set; } = false;
-    public Boolean minigameOn { get; set; }
-    public Boolean adventureToggle { get; set; }
-    public Boolean startAdventure { get; set; } = false;
-    public Boolean waitForAdventureCoolDown { get; set; } = false;
-    public Boolean raffleInProgress { get; set; } = false;
-    public Boolean autoShoutoutOnHost { get; set; }
-    public Boolean openRockSnifferOnStartUp { get; set; } = false;
-    public TextAdventure textAdventure { get; set; }
-    public Currency currency { get; set; }
-    public Image image { get; set; }
-    public SoundEffect soundEffect { get; set; }
-    public Quote quote { get; set; }
-    public RequestSystem requestSystem { get; set; }
-    public List<Command> sfxCommandList { get; set; } = new List<Command>();
-    public List<Command> userCommandList { get; set; } = new List<Command>();
-    public List<Command> timerCommandList { get; set; } = new List<Command>();
-    public List<Command> botCommandList { get; set; } = new List<Command>();
-    public List<Command> imageCommandList { get; set; } = new List<Command>();
-    public List<Command> hotkeyCommandList { get; set; } = new List<Command>();
-    public List<Command> rewardCommandList { get; set; } = new List<Command>();
-    public List<Command> commandList { get; set; } = new List<Command>();
-    public List<BotUser> users { get; set; } = new List<BotUser>();
+    public String Oauth;
+    public String oauth
+    {
+        get => Oauth;
+        set { SetField(ref Oauth, value, nameof(oauth)); }
+    }
     [JsonIgnore]
-    public List<Double> gameGuess { get; set; } = new List<Double>();
-    public List<String> raffleUsers { get; set; } = new List<String>();
+    public String Streamer;
+    public String streamer
+    {
+        get => Streamer;
+        set { SetField(ref Streamer, value, nameof(streamer)); }
+    }
+    [JsonIgnore]
+    public String Channel;
+    public String channel
+    {
+        get => Channel;
+        set { SetField(ref Channel, value, nameof(channel)); }
+    }
+    [JsonIgnore]
+    public String BotName;
+    public String botName
+    {
+        get => BotName;
+        set { SetField(ref BotName, value, nameof(botName)); }
+    }
+    [JsonIgnore]
+    public String FollowerMessage = "$user just followed the stream! Thank you!";
+    public String followerMessage
+    {
+        get => FollowerMessage;
+        set { SetField(ref FollowerMessage, value, nameof(followerMessage)); }
+    }
+    [JsonIgnore]
+    public String SubMessage = "$user just subscribed to the stream! Thank you!";
+    public String subMessage
+    {
+        get => SubMessage;
+        set { SetField(ref SubMessage, value, nameof(subMessage)); }
+    }
+    [JsonIgnore]
+    public String ResubMessage = "$user just resubscribed for $months months! Thank you!";
+    public String resubMessage
+    {
+        get => ResubMessage;
+        set { SetField(ref ResubMessage, value, nameof(resubMessage)); }
+    }
+    [JsonIgnore]
+    public int RaidViewersRequired = 5;
+    public int raidViewersRequired
+    {
+        get => RaidViewersRequired;
+        set { SetField(ref RaidViewersRequired, value, nameof(raidViewersRequired)); }
+    }
+    [JsonIgnore]
+    public String HostMessage = "Thanks for the host! $shoutout";
+    public String hostMessage
+    {
+        get => HostMessage;
+        set { SetField(ref HostMessage, value, nameof(hostMessage)); }
+    }
+    [JsonIgnore]
+    public String RaidMessage = "We are getting raided! Thanks for the $viewers viewer raid! $shoutout";
+    public String raidMessage
+    {
+        get => RaidMessage;
+        set { SetField(ref RaidMessage, value, nameof(raidMessage)); }
+    }
+    [JsonIgnore]
+    public String SubOnlyRequests = "Only sub requests are being accepted right now, $user";
+    public String subOnlyRequests
+    {
+        get => SubOnlyRequests;
+        set { SetField(ref SubOnlyRequests, value, nameof(subOnlyRequests)); }
+    }
+    [JsonIgnore]
+    public String MinigameEndMessage = "Time has run out for the current game, guesses cannot be added now, $user!";
+    public String minigameEndMessage
+    {
+        get => MinigameEndMessage;
+        set { SetField(ref MinigameEndMessage, value, nameof(minigameEndMessage)); }
+    }
+    [JsonIgnore]
+    public String Giveawaycommandname = "!raffle";
+    public String giveawaycommandname
+    {
+        get => Giveawaycommandname;
+        set { SetField(ref Giveawaycommandname, value, nameof(giveawaycommandname)); }
+    }
+    [JsonIgnore]
+    public String SpreadsheetId;
+    public String spreadsheetId
+    {
+        get => SpreadsheetId;
+        set { SetField(ref SpreadsheetId, value, nameof(spreadsheetId)); }
+    }
+    [JsonIgnore]
+    public String BotColor = "CadetBlue";
+    public String botColor
+    {
+        get => BotColor;
+        set { SetField(ref BotColor, value, nameof(botColor)); }
+    }
+    [JsonIgnore]
+    public String EndMessage = "BYE EVERYONE";
+    public String endMessage
+    {
+        get => EndMessage;
+        set { SetField(ref EndMessage, value, nameof(endMessage)); }
+    }
+    [JsonIgnore]
+    public String StartupMessage = "I AM ALIVE!";
+    public String startupMessage
+    {
+        get => StartupMessage;
+        set { SetField(ref StartupMessage, value, nameof(startupMessage)); }
+    }
+    [JsonIgnore]
+    public int MinigameTimer = 90;
+    public int minigameTimer
+    {
+        get => MinigameTimer;
+        set { SetField(ref MinigameTimer, value, nameof(minigameTimer)); }
+    }
+    [JsonIgnore]
+    public int TimerTotal = 20;
+    public int timerTotal
+    {
+        get => TimerTotal;
+        set { SetField(ref TimerTotal, value, nameof(timerTotal)); }
+    }
+    [JsonIgnore]
+    public Boolean MinigameTriggered = false;
+    public Boolean minigameTriggered
+    {
+        get => MinigameTriggered;
+        set { SetField(ref MinigameTriggered, value, nameof(minigameTriggered)); }
+    }
+    [JsonIgnore]
+    public Boolean TimeFinished = false;
+    public Boolean timeFinished
+    {
+        get => TimeFinished;
+        set { SetField(ref TimeFinished, value, nameof(timeFinished)); }
+    }
+    [JsonIgnore]
+    public Boolean MinigameOn = true;
+    public Boolean minigameOn
+    {
+        get => MinigameOn;
+        set { SetField(ref MinigameOn, value, nameof(minigameOn)); }
+    }
+    [JsonIgnore]
+    public Boolean AdventureToggle = true;
+    public Boolean adventureToggle
+    {
+        get => AdventureToggle;
+        set { SetField(ref AdventureToggle, value, nameof(adventureToggle)); }
+    }
+    [JsonIgnore]
+    public Boolean StartAdventure = false;
+    public Boolean startAdventure
+    {
+        get => StartAdventure;
+        set { SetField(ref StartAdventure, value, nameof(startAdventure)); }
+    }
+    [JsonIgnore]
+    public Boolean WaitForAdventureCoolDown = false;
+    public Boolean waitForAdventureCoolDown
+    {
+        get => WaitForAdventureCoolDown;
+        set { SetField(ref WaitForAdventureCoolDown, value, nameof(waitForAdventureCoolDown)); }
+    }
+    [JsonIgnore]
+    public Boolean RaffleInProgress = false;
+    public Boolean raffleInProgress
+    {
+        get => RaffleInProgress;
+        set { SetField(ref RaffleInProgress, value, nameof(raffleInProgress)); }
+    }
+    [JsonIgnore]
+    public Boolean AutoShoutoutOnHost = true;
+    public Boolean autoShoutoutOnHost
+    {
+        get => AutoShoutoutOnHost;
+        set { SetField(ref AutoShoutoutOnHost, value, nameof(autoShoutoutOnHost)); }
+    }
+    [JsonIgnore]
+    public Boolean OpenRockSnifferOnStartUp = false;
+    public Boolean openRockSnifferOnStartUp
+    {
+        get => OpenRockSnifferOnStartUp;
+        set { SetField(ref OpenRockSnifferOnStartUp, value, nameof(openRockSnifferOnStartUp)); }
+    }
+    [JsonIgnore]
+    public TextAdventure _TextAdventure;
+    public TextAdventure textAdventure
+    {
+        get => _TextAdventure;
+        set { SetField(ref _TextAdventure, value, nameof(textAdventure)); }
+    }
+    [JsonIgnore]
+    public Currency _Currency;
+    public Currency currency
+    {
+        get => _Currency;
+        set { SetField(ref _Currency, value, nameof(currency)); }
+    }
+    [JsonIgnore]
+    public Image _Image;
+    public Image image
+    {
+        get => _Image;
+        set { SetField(ref _Image, value, nameof(image)); }
+    }
+    [JsonIgnore]
+    public SoundEffect _SoundEffect;
+    public SoundEffect soundEffect
+    {
+        get => _SoundEffect;
+        set { SetField(ref _SoundEffect, value, nameof(soundEffect)); }
+    }
+    [JsonIgnore]
+    public Quote _quote;
+    public Quote quote
+    {
+        get => _quote;
+        set { SetField(ref _quote, value, nameof(quote)); }
+    }
+    [JsonIgnore]
+    public RequestSystem _RequestSystem;
+    public RequestSystem requestSystem
+    {
+        get => _RequestSystem;
+        set { SetField(ref _RequestSystem, value, nameof(requestSystem)); }
+    }
+    [JsonIgnore]
+    public List<Command> SfxCommandList = new List<Command>();
+    public List<Command> sfxCommandList
+    {
+        get => SfxCommandList;
+        set { SetField(ref SfxCommandList, value, nameof(sfxCommandList)); }
+    }
+    [JsonIgnore]
+    public List<Command> UserCommandList = new List<Command>();
+    public List<Command> userCommandList
+    {
+        get => UserCommandList;
+        set { SetField(ref UserCommandList, value, nameof(userCommandList)); }
+    }
+    [JsonIgnore]
+    public List<Command> TimerCommandList = new List<Command>();
+    public List<Command> timerCommandList
+    {
+        get => TimerCommandList;
+        set { SetField(ref TimerCommandList, value, nameof(timerCommandList)); }
+    }
+    [JsonIgnore]
+    public List<Command> BotCommandList = new List<Command>();
+    public List<Command> botCommandList
+    {
+        get => BotCommandList;
+        set { SetField(ref BotCommandList, value, nameof(botCommandList)); }
+    }
+    [JsonIgnore]
+    public List<Command> ImageCommandList = new List<Command>();
+    public List<Command> imageCommandList
+    {
+        get => ImageCommandList;
+        set { SetField(ref ImageCommandList, value, nameof(imageCommandList)); }
+    }
+    [JsonIgnore]
+    public List<Command> HotkeyCommandList = new List<Command>();
+    public List<Command> hotkeyCommandList
+    {
+        get => HotkeyCommandList;
+        set { SetField(ref HotkeyCommandList, value, nameof(hotkeyCommandList)); }
+    }
+    [JsonIgnore]
+    public List<Command> RewardCommandList = new List<Command>();
+    public List<Command> rewardCommandList
+    {
+        get => RewardCommandList;
+        set { SetField(ref RewardCommandList, value, nameof(rewardCommandList)); }
+    }
+    [JsonIgnore]
+    public List<Command> CommandList = new List<Command>();
+    public List<Command> commandList
+    {
+        get => CommandList;
+        set { SetField(ref CommandList, value, nameof(commandList)); }
+    }
+    [JsonIgnore]
+    public List<BotUser> Users = new List<BotUser>();
+    public List<BotUser> users
+    {
+        get => Users;
+        set { SetField(ref Users, value, nameof(users)); }
+    }
+    [JsonIgnore]
+    public List<String> RaffleUsers = new List<String>();
+    public List<String> raffleUsers
+    {
+        get => RaffleUsers;
+        set { SetField(ref RaffleUsers, value, nameof(raffleUsers)); }
+    }
+    [JsonIgnore]
+    public List<String> ExtraCommandNames = new List<String>();
+    public List<String> extraCommandNames
+    {
+        get => ExtraCommandNames;
+        set { SetField(ref ExtraCommandNames, value, nameof(extraCommandNames)); }
+    }
+    [JsonIgnore]
+    public Dictionary<String, String> Events = new Dictionary<String, String>();
+    public Dictionary<String, String> events
+    {
+        get => Events;
+        set { SetField(ref Events, value, nameof(events)); }
+    }
+    [JsonIgnore]
+    public Command GetViewerComm;
+    public Command getViewerComm
+    {
+        get => GetViewerComm;
+        set { SetField(ref GetViewerComm, value, nameof(getViewerComm)); }
+    }
+    [JsonIgnore]
+    public int GuiBackgroundColor = 3;
+    public int guiBackgroundColor
+    {
+        get => GuiBackgroundColor;
+        set { SetField(ref GuiBackgroundColor, value, nameof(guiBackgroundColor)); }
+    }
+    [JsonIgnore]
+    public int GuiTextColor = 1;
+    public int guiTextColor
+    {
+        get => GuiTextColor;
+        set { SetField(ref GuiTextColor, value, nameof(guiTextColor)); }
+    }
+    [JsonIgnore]
+    public int GuiTextBlockColor = 0;
+    public int guiTextBlockColor
+    {
+        get => GuiTextBlockColor;
+        set { SetField(ref GuiTextBlockColor, value, nameof(guiTextBlockColor)); }
+    }
+    [JsonIgnore]
+    public int GuiInputFontStyle = 0;
+    public int guiInputFontStyle
+    {
+        get => GuiInputFontStyle;
+        set { SetField(ref GuiInputFontStyle, value, nameof(guiInputFontStyle)); }
+    }
+    [JsonIgnore]
+    public int GuiButtonColor = 0;
+    public int guiButtonColor
+    {
+        get => GuiButtonColor;
+        set { SetField(ref GuiButtonColor, value, nameof(guiButtonColor)); }
+    }
+
+    public int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0, counter5 = 0;
     [JsonIgnore]
     public List<String> gameUser { get; set; } = new List<String>();
-    public List<String> extraCommandNames { get; set; } = new List<String>();
-    public Dictionary<String, String> events { get; set; } = new Dictionary<String, String>();
-    public Command getViewerComm { get; set; }
-    public int guiBackgroundColor { get; set; } = 3;
-    public int guiTextColor { get; set; } = 1;
-    public int guiTextBlockColor { get; set; } = 0;
-    public int guiInputFontStyle { get; set; } = 0;
-    public int guiButtonColor { get; set; } = 0;
+    [JsonIgnore]
+    public List<Double> gameGuess { get; set; } = new List<Double>();
+    [JsonIgnore]
+    public long gameStartTime { get; set; }
+    public String version { get; set; } = Utils.version;
 
-    public event PropertyChangedEventHandler PropertyChanged;
-    public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    public virtual bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
-    {
-        if (object.Equals(storage, value))
-            return false;
-        storage = value;
-        OnPropertyChanged(string.Empty);
-        return true;
-    }
-    
     public void botStartUpAsync()
     { // Starts bot up, calls necessary threads and methods
         try
@@ -267,6 +578,9 @@ public class TwitchBot
             }
             user.follower = follows;
             user.sub = isSubbed;
+            if (!user.sub) {
+                user.months = 0;
+            }
         }
          */
     }
@@ -347,7 +661,7 @@ public class TwitchBot
         timerCommandList = getCommands("timer");
         imageCommandList = getCommands("image");
         extraCommandNames = setExtraCommandNames();
-        App.window.writeToConfig(null, null);
+        App.guiWindow.writeToConfig(null, null);
     }
 
     public void syncFileTimerThread()
@@ -497,12 +811,12 @@ public class TwitchBot
 
     public void sfxThread(String message, String sender)
     {
-        soundEffect.sfxCOMMANDS(message, channel, sender, sfxCommandList);
+        soundEffect.sfxCOMMANDS(message, channel, getBotUser(sender), sfxCommandList);
     }
 
     public void imageThread(String message, String sender)
     {
-        image.imageCOMMANDS(message, channel, sender, imageCommandList);
+        image.imageCOMMANDS(message, channel, getBotUser(sender), imageCommandList);
     }
 
     public void rouletteThread(String sender)
@@ -1399,6 +1713,8 @@ public class TwitchBot
                         requestSystem.doNotWriteToHistory = true;
                         requestSystem.addtopCOMMAND(requestSystem.addtopComm.input[0] + " " + requestSystem.lastSong,
                                 channel, sender);
+                        requestSystem.songsPlayedThisStream -= 1;
+                        requestSystem.SongsPlayedTotal -= 1;
                     }
                     catch (Exception e1)
                     {
@@ -1406,6 +1722,7 @@ public class TwitchBot
                         Console.WriteLine(e1.ToString());
                     }
                     requestSystem.lastSong = null;
+
                 }
                 else
                 {
@@ -2416,8 +2733,13 @@ public class TwitchBot
             if (temp.StartsWith(userCommandList[i].input[0])
                     && checkUserLevelCustomCommands(sender, userCommandList[i].level, channel))
             {
-                client.SendMessage(userVariables(userCommandList[i].output, channel, sender,
+                BotUser b = getBotUser(sender);
+                if (b.points >= userCommandList[i].costToUse)
+                {
+                    b.points -= userCommandList[i].costToUse;
+                    client.SendMessage(userVariables(userCommandList[i].output, channel, sender,
                         Utils.getFollowingText(message), message, false));
+                }
             }
         }
         for (int i = 0; i < timerCommandList.Count; i++)
@@ -2547,7 +2869,6 @@ public class TwitchBot
             }
         }
         if (response.Contains("$randomnumber2"))
-
         {
             response = response.Replace("$randomnumber2", Utils.getRandomNumber(10).ToString());
         }
@@ -2695,6 +3016,60 @@ public class TwitchBot
             var t = new Thread(() => rouletteThread(sender));
             t.Start();
         }
+        if (response.Contains("$streamplays"))
+        {
+            response = response.Replace("$streamplays", requestSystem.songsPlayedThisStream.ToString());
+        }
+        if (response.Contains("$lifetimeplays"))
+        {
+            response = response.Replace("$lifetimeplays", requestSystem.songsPlayedTotal.ToString());
+        }
+        if (response.Contains("$userrank"))
+        {
+            response = response.Replace("$userrank", getBotUser(sender).rank);
+        }
+        if (response.Contains("$usertime"))
+        {
+            response = response.Replace("$usertime", Utils.timeConversion(getBotUser(sender).time));
+        }
+        if (response.Contains("$usersubcredits"))
+        {
+            response = response.Replace("$usersubcredits", getBotUser(sender).subCredits.ToString());
+        }
+        if (response.Contains("$userpoints"))
+        {
+            response = response.Replace("$userpoints", getBotUser(sender).points.ToString());
+        }
+        if (response.Contains("$usernumrequests"))
+        {
+            response = response.Replace("$usernumrequests", getBotUser(sender).numRequests.ToString());
+        }
+        if (response.Contains("$usermonths"))
+        {
+            response = response.Replace("$usermonths", getBotUser(sender).months.ToString());
+        }
+        Song s = requestSystem.songList[0];
+        if (response.Contains("$currentsonglevel") && s != null)
+        {
+            response = response.Replace("$currentsonglevel", s.level);
+        }
+        if (response.Contains("$currentsongyoutubelink") && s != null)
+        {
+            response = response.Replace("$currentsongyoutubelink", s.youtubeLink);
+        }
+        if (response.Contains("$currentsongyoutubetitle") && s != null)
+        {
+            response = response.Replace("$currentsongyoutubetitle", s.youtubeTitle);
+        }
+        if (response.Contains("$currentsongduration") && s != null)
+        {
+            response = response.Replace("$currentsongduration", s.formattedDuration);
+        }
+        if (response.Contains("$currentsongduration") && s != null)
+        {
+            response = response.Replace("$currentsongduration", s.formattedDuration);
+        }
+
         return response;
     }
 

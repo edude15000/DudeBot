@@ -9,6 +9,7 @@ public class Song
     public String youtubeLink { get; set; }
     public String youtubeTitle { get; set; }
     public int durationInSeconds { get; set; } = 0;
+    public int index { get; set; } = 0;
     public String tuning { get; set; }
     public String customsForgeLink { get; set; }
     public String parts { get; set; }

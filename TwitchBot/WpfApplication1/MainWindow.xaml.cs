@@ -19,22 +19,13 @@ using System.Windows.Data;
 
 namespace WpfApplication1
 {
-    public partial class MainWindow : INotifyPropertyChanged
+    public partial class MainWindow 
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public static TwitchBot bot;
+        public static TwitchBot bot = new TwitchBot();
+
         public String dudebotdirectory = Path.GetTempPath() + "dudebotdirectory.txt";
         public String dudebotupdateinfo = Path.GetTempPath() + "dudebotupdateinfo.txt";
-        private void OnPropertyChanged(string propertyName = "")
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler == null) return;
-            handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-        // TODO : Backup JSON file!
-
+        
         String selectedQuote = "", selectedFavSong = "";
         Process rockSnifferWindow = null;
         [DllImport("User32")]
@@ -57,12 +48,38 @@ namespace WpfApplication1
                         }
                         else
                         {
-                            bot.processMessage(bot.streamer, c.output);
+                            if (c.output.StartsWith("!"))
+                            {
+                                bot.processMessage(bot.streamer, c.output);
+                            }
+                            else
+                            {
+                                bot.client.SendMessage(bot.userVariables(c.output, bot.channel, bot.streamer,
+                                    Utils.getFollowingText(c.output), c.output, false));
+                            }
                         }
                     }
                     catch (Exception)
                     {
                     }
+                }
+            }
+        }
+        
+        public async void addsongtofavorites(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+                var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+                MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Add to favorites?", "Would you like to add this song to your favorite songs list?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
+                if (messageBoxResult == MessageDialogResult.Affirmative)
+                {
+                    Thread.Sleep(200);
+                    TextBlock textBlock = (sender as TextBlock);
+                    object datacontext = textBlock.DataContext;
+                    String c = (String)datacontext;
+                    bot.requestSystem.favSongs.Add(c.Substring(c.IndexOf('-') + 2));
                 }
             }
         }
@@ -79,6 +96,7 @@ namespace WpfApplication1
                         bot.resetAllCommands();
                         editHotKeyInput.Text = "";
                         editHotKeyCommand.Text = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
@@ -87,6 +105,7 @@ namespace WpfApplication1
                 bot.resetAllCommands();
                 editHotKeyInput.Text = "";
                 editHotKeyCommand.Text = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -98,7 +117,7 @@ namespace WpfApplication1
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editHotKeyInput.Text)) && !string.IsNullOrWhiteSpace(editHotKeyCommand.Text))
             {
-                foreach (Command c in bot.userCommandList)
+                foreach (Command c in bot.hotkeyCommandList)
                 {
                     if (c.input[0].Equals(editHotKeyInput.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -109,6 +128,7 @@ namespace WpfApplication1
                 bot.resetAllCommands();
                 editHotKeyInput.Text = "";
                 editHotKeyCommand.Text = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -119,7 +139,10 @@ namespace WpfApplication1
         private void editHotKeyInput_KeyDown(object sender, KeyEventArgs e)
         {
             editHotKeyInput.Text = "";
-            editHotKeyInput.Text = e.Key.ToString();
+            if (e.Key.ToString().StartsWith("F"))
+            {
+                editHotKeyInput.Text = e.Key.ToString();
+            }
         }
 
         private void editHotKeyButtonClick(object sender, MouseButtonEventArgs e)
@@ -144,17 +167,25 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommand.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         c.output = editResponse.Text;
+                        c.level = editCommandLevel.SelectedIndex;
+                        c.costToUse = (int)editCommandCost.Value;
                         bot.resetAllCommands();
+                        editCommandCost.Value = 0;
                         editCommand.Text = "";
                         editResponse.Text = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
-                String[] str = { editCommand.Text };
-                bot.commandList.Add(new Command(str, editCommandLevel.SelectedIndex, editResponse.Text, "user", true));
+                String[] str = { formatCommand(editCommand.Text) };
+                Command d = new Command(str, editCommandLevel.SelectedIndex, editResponse.Text, "user", true);
+                d.costToUse = (int)editCommandCost.Value;
+                bot.commandList.Add(d);
                 bot.resetAllCommands();
+                editCommandCost.Value = 0;
                 editCommand.Text = "";
                 editResponse.Text = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -175,6 +206,7 @@ namespace WpfApplication1
                         bot.resetAllCommands();
                         editRewardName.Text = "";
                         editRewardOutput.Text = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
@@ -185,6 +217,7 @@ namespace WpfApplication1
                 bot.resetAllCommands();
                 editRewardName.Text = "";
                 editRewardOutput.Text = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -201,12 +234,14 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editRewardName.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.commandList.Remove(c);
+                        writeToConfig(null, null);
                         break;
                     }
                 }
                 editRewardName.Text = "";
                 editRewardOutput.Text = "";
                 bot.resetAllCommands();
+                writeToConfig(null, null);
             }
             else
             {
@@ -235,20 +270,20 @@ namespace WpfApplication1
                         b.points = (int)editCurrencyAmount.Value;
                         b.time = (int)editCurrencyTime.Value;
                         b.subCredits = (int)editCurrencySubCredits.Value;
-                        writeToConfig(null, null);
                         editCurrencyAmount.Value = 0;
                         editCurrencyTime.Value = 0;
                         editCurrencySubCredits.Value = 0;
                         editCurrencyUserName.Text = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
                 bot.users.Add(new BotUser(editCurrencyUserName.Text, 0, false, false, false, (int)editCurrencyAmount.Value, (int)editCurrencyTime.Value, null, 0, 0, (int)editCurrencySubCredits.Value));
-                writeToConfig(null, null);
                 editCurrencyAmount.Value = 0;
                 editCurrencyTime.Value = 0;
                 editCurrencySubCredits.Value = 0;
                 editCurrencyUserName.Text = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -265,16 +300,16 @@ namespace WpfApplication1
                     if (s.Key.Equals(editEventUser.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.events[s.Key] = editEventMessage.Text;
-                        writeToConfig(null, null);
                         editEventUser.Text = "";
                         editEventMessage.Text = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
                 bot.events.Add(editEventUser.Text, editEventMessage.Text);
-                writeToConfig(null, null);
                 editEventUser.Text = "";
                 editEventMessage.Text = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -291,17 +326,24 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommandImage.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         c.output = editResponseImage.Text;
+                        c.costToUse = (int)editImagecost.Value;
                         bot.resetAllCommands();
+                        editImagecost.Value = 0;
                         editCommandImage.Text = "";
                         editResponseImage.Text = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
-                String[] str = { editCommandImage.Text };
-                bot.commandList.Add(new Command(str, 0, editResponseImage.Text, "image", true));
+                String[] str = { formatCommand(editCommandImage.Text) };
+                Command d = new Command(str, 0, editResponseImage.Text, "image", true);
+                d.costToUse = (int)editImagecost.Value;
+                bot.commandList.Add(d);
                 bot.resetAllCommands();
+                editImagecost.Value = 0;
                 editCommandImage.Text = "";
                 editResponseImage.Text = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -318,9 +360,9 @@ namespace WpfApplication1
                     if (bot.quote.quotes[i].Equals(selectedQuote))
                     {
                         bot.quote.quotes[i] = quoteEdit.Text;
-                        writeToConfig(null, null);
                         quoteEdit.Text = "";
                         selectedQuote = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
@@ -340,16 +382,16 @@ namespace WpfApplication1
                     if (bot.requestSystem.favSongs[i].Equals(selectedFavSong))
                     {
                         bot.requestSystem.favSongs[i] = favSongEdit.Text;
-                        writeToConfig(null, null);
                         favSongEdit.Text = "";
                         selectedFavSong = "";
+                        writeToConfig(null, null);
                         return;
                     }
                 }
                 bot.requestSystem.favSongs.Add(favSongEdit.Text);
-                writeToConfig(null, null);
                 favSongEdit.Text = "";
                 selectedFavSong = "";
+                writeToConfig(null, null);
             }
             else
             {
@@ -411,6 +453,7 @@ namespace WpfApplication1
                         bot.resetAllCommands();
                         editRankTitle.Text = "";
                         editRankCost.Value = 0;
+                        writeToConfig(null, null);
                         return;
                     }
                 }
@@ -418,6 +461,7 @@ namespace WpfApplication1
                 bot.resetAllCommands();
                 editRankTitle.Text = "";
                 editRankCost.Value = 0;
+                writeToConfig(null, null);
             }
             else
             {
@@ -435,21 +479,27 @@ namespace WpfApplication1
                     {
                         c.output = editResponseSFX.Text;
                         c.volumeLevel = (int)volumeSetter.Value;
+                        c.costToUse = (int)editSFXcost.Value;
                         bot.resetAllCommands();
+                        editImagecost.Value = 0;
                         editCommandSFX.Text = "";
                         editResponseSFX.Text = "";
                         volumeSetter.Value = 100;
+                        writeToConfig(null, null);
                         return;
                     }
                 }
-                String[] str = { editCommandSFX.Text };
+                String[] str = { formatCommand(editCommandSFX.Text) };
                 Command d = new Command(str, 0, editResponseSFX.Text, "sfx", true);
                 d.volumeLevel = (int)volumeSetter.Value;
+                d.costToUse = (int)editSFXcost.Value;
                 bot.commandList.Add(d);
                 bot.resetAllCommands();
+                editImagecost.Value = 0;
                 editCommandSFX.Text = "";
                 editResponseSFX.Text = "";
                 volumeSetter.Value = 100;
+                writeToConfig(null, null);
             }
             else
             {
@@ -470,15 +520,17 @@ namespace WpfApplication1
                         editCommandTimed.Text = "";
                         editResponseTimed.Text = "";
                         editToggleTimed.IsChecked = false;
+                        writeToConfig(null, null);
                         return;
                     }
                 }
-                String[] str = { editCommandTimed.Text };
+                String[] str = { formatCommand(editCommandTimed.Text) };
                 bot.commandList.Add(new Command(str, 0, editResponseTimed.Text, "timer", true));
                 bot.resetAllCommands();
                 editCommandTimed.Text = "";
                 editResponseTimed.Text = "";
                 editToggleTimed.IsChecked = false;
+                writeToConfig(null, null);
             }
             else
             {
@@ -502,6 +554,7 @@ namespace WpfApplication1
                 editResponse.Text = "";
                 editCommandLevel.SelectedIndex = 0;
                 bot.resetAllCommands();
+                writeToConfig(null, null);
             }
             else
             {
@@ -700,30 +753,41 @@ namespace WpfApplication1
             }
         }
 
+        public void saveNotes(Object sender, RoutedEventArgs e)
+        {
+            StreamWriter sw = new StreamWriter(Utils.notesFile);
+            sw.Write(notestextbox.Text);
+            sw.Close();
+        }
+
         public void writeToConfig(Object sender, RoutedEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                refreshAllDataGrids();
-                Utils.saveData(bot);
-            });
+            refreshAllDataGrids();
+            Utils.saveData(bot);
         }
 
         public void refreshAllDataGrids()
         {
-            bot.requestSystem.formattedTotalTime = bot.requestSystem.formatTotalTime();
-            bot.requestSystem.songListLength = bot.requestSystem.songList.Count;
-            DataContext = bot;
             try
             {
                 foreach (DataGrid d in FindLogicalChildren<DataGrid>(App.Current.MainWindow))
                 {
-                    d.Items.Refresh();
+                    if (d.Name.Equals("songdatagrid"))
+                    {
+                        d.ItemsSource = null;
+                        d.ItemsSource = bot.requestSystem.songList;
+                    }
+                    else
+                    {
+                        d.Items.Refresh();
+                    }
                 }
             }
             catch (Exception)
             {
             }
+            bot.requestSystem.formattedTotalTime = bot.requestSystem.formatTotalTime();
+            bot.requestSystem.songListLength = bot.requestSystem.songList.Count;
         }
 
         public void killBot(Object sender, RoutedEventArgs e)
@@ -776,7 +840,7 @@ namespace WpfApplication1
             bot.botStartUpAsync();
             kill.IsEnabled = true;
             open.IsEnabled = false;
-            OnPropertyChanged();
+            //OnPropertyChanged(string.Empty);
             DataContext = bot;
             if (openRockSnifferOnStartUp.IsChecked == true)
             {
@@ -1052,14 +1116,24 @@ namespace WpfApplication1
             }
         }
         
-        public void getReady()
-        {
-            refresh.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-        }
-        
         private async void loaded(Object sender, RoutedEventArgs e)
         {
-            bot = new TwitchBot();
+            if (File.Exists(Utils.readmeFile))
+            {
+                readmetextbox.Text = File.ReadAllText(Utils.readmeFile);
+            }
+            else
+            {
+                readmetextbox.Text = "Readme file could not be found!";
+            }
+            if (File.Exists(Utils.notesFile))
+            {
+                notestextbox.Text = File.ReadAllText(Utils.notesFile);
+            }
+            else
+            {
+                notestextbox.Text = "Notes file could not be found!";
+            }
             if (!checkPrereqs())
             {
                 await this.ShowMessageAsync("Welcome to DudeBot!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, Bot Oauth, then scroll to the bottom and press 'APPLY'.");
@@ -1069,7 +1143,6 @@ namespace WpfApplication1
             {
                 try
                 {
-                    getReady();
                     _listener = new LowLevelKeyboardListener();
                     _listener.OnKeyPressed += _listener_OnKeyPressed;
                     _listener.HookKeyboard();
@@ -1103,6 +1176,7 @@ namespace WpfApplication1
                 {
                     openImages.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 }
+                
             }
         }
 
@@ -1150,7 +1224,7 @@ namespace WpfApplication1
                 try
                 {
                     string s = client.DownloadString("http://dudebot.webs.com/");
-                    if (s.Contains("Newest Release: (" + version))
+                    if (s.Contains("Newest Release: (" + version) || s.Contains("We're currently down for maintenance"))
                     {
                         return 0;
                     }
@@ -1242,13 +1316,14 @@ namespace WpfApplication1
         
         public async void clearlist(Object sender, RoutedEventArgs e)
         {
-            this.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
             MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Clear List?", "Are you sure you want to clear the current request queue?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
             if (messageBoxResult == MessageDialogResult.Affirmative)
             {
                 Thread.Sleep(1000);
                 bot.requestSystem.clearCOMMAND(bot.requestSystem.clearComm.input[0], bot.channel, bot.streamer);
+                writeToConfig(null, null);
             }
         }
         
@@ -1316,6 +1391,7 @@ namespace WpfApplication1
                     if (s.name.Equals(c.name, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.requestSystem.songList.Remove(s);
+                        bot.requestSystem.writeToCurrentSong(bot.channel, true);
                         break;
                     }
                 }
@@ -1366,9 +1442,10 @@ namespace WpfApplication1
             }
             if (!string.IsNullOrWhiteSpace(editSong.Text))
             {
-                Song oldsong = bot.requestSystem.songList[(int)songplace.Value];
-                Song newsong = new Song(uName, editRequester.Text, oldsong.level, bot);
-                bot.requestSystem.songList[(int)songplace.Value] = newsong;
+                Song oldsong = bot.requestSystem.songList[(int)songplace.Value - 1];
+                Song newsong = new Song(oldsong.name, uName, oldsong.level, bot);
+                newsong.index = oldsong.index;
+                bot.requestSystem.songList[(int)songplace.Value - 1] = newsong;
                 editSong.Text = "";
                 editRequester.Text = "";
                 songplace.Value = 1;
@@ -1407,7 +1484,6 @@ namespace WpfApplication1
             { 
                 killBot(null, null);
             }
-            // TODO : BACK UP JSON
             Process.GetCurrentProcess().CloseMainWindow();
         }
         
@@ -1419,6 +1495,7 @@ namespace WpfApplication1
             editCommand.Text = c.input[0];
             editResponse.Text = c.output;
             editCommandLevel.SelectedIndex = c.level;
+            editCommandCost.Value = c.costToUse;
         }
 
         private void editTimedCommandButtonClick(object sender, MouseButtonEventArgs e)
@@ -1467,6 +1544,7 @@ namespace WpfApplication1
             editCommandSFX.Text = c.input[0];
             editResponseSFX.Text = c.output;
             volumeSetter.Value = c.volumeLevel;
+            editSFXcost.Value = c.costToUse;
         }
 
         private void editImageButtonClick(object sender, MouseButtonEventArgs e)
@@ -1476,6 +1554,7 @@ namespace WpfApplication1
             Command c = (Command)datacontext;
             editCommandImage.Text = c.input[0];
             editResponseImage.Text = c.output;
+            editImagecost.Value = c.costToUse;
         }
 
         private void editEventsButtonClick(object sender, MouseButtonEventArgs e)
@@ -1593,11 +1672,38 @@ namespace WpfApplication1
             if (messageBoxResult == MessageDialogResult.Affirmative)
             {
                 File.WriteAllText(Utils.userDataFile, string.Empty);
-                // TODO : Set defaults 
+                bot = Utils.loadData(); // Sets up and connects bot object
+                loadPresets();
                 writeToConfig(null, null);
+                DataContext = bot;
                 await this.ShowMessageAsync("No Previous Data Found!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, and Bot Oauth, then press 'APPLY' and restart DudeBot!");
                 customization.Focus();
             }
+        }
+
+        public void loadPresets()
+        {
+            String[] str = { "F7" };
+            bot.commandList.Add(new Command(str, 3, "!next", "hotkey", true));
+            str[0] = "!harambe";
+            bot.commandList.Add(new Command(str, 0, "!Harambe would have loved $currentsong!", "user", true));
+            str[0] = "!8ball";
+            bot.commandList.Add(new Command(str, 0, "$8ball", "user", true));
+            str[0] = "!hug";
+            bot.commandList.Add(new Command(str, 0, "$user gives $input a hug!", "user", true));
+            str[0] = "!following";
+            bot.commandList.Add(new Command(str, 0, "$user has been following the stream for $following", "user", true));
+            str[0] = "!start";
+            bot.commandList.Add(new Command(str, 0, "$streamer joined Twitch on $start", "user", true));
+            str[0] = "!love";
+            bot.commandList.Add(new Command(str, 0, "There is $randomnumber3% <3 between $user and $input!", "user", true));
+            str[0] = "!uptime";
+            bot.commandList.Add(new Command(str, 0, "$streamer has been live for $uptime", "user", true));
+            str[0] = "!shoutout";
+            bot.commandList.Add(new Command(str, 0, "$shoutout", "user", true));
+            str[0] = "!roulette";
+            bot.commandList.Add(new Command(str, 0, "roulette", "user", true));
+            bot.resetAllCommands();
         }
 
         private void flyout(object sender, RoutedEventArgs e)
