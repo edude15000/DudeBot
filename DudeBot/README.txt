@@ -58,9 +58,9 @@ NOTE: MAKE SURE DUDEBOT ACCOUNT IS MODDED / SET AS BOT IN CHANNEL!
 14. Click on the blue share button at the top right of the Google Sheets webpage, 
 	then press the get shareable link button. This will make it viewable to everyone.
  
-*****RockSniffer
+*****RockSniffer (THANK YOU TO Kokolihapihvi FOR THIS FEATURE!)
 15. RockSniffer options are under the Rocksmith tab.
-	The RockSniffer window runs hiddent in the background.
+	The RockSniffer window runs hidden in the background.
 	All of the ouput data exists in bin/ouput.
 	These files can be used in OBS to display real time Rocksmith song data.
 

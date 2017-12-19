@@ -1,1 +1,23 @@
-!harambe	Harambe would have loved $currentsong!	0!dstrings	#dstringsoutforharambe	0!8ball	$8ball	0!hug	$user gives $input a hug!	0!following	$user has been following the stream for $following	0!start	$streamer joined Twitch on $start	0!xfiles	deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati	0!love	There is $randomnumber3% <3 between $user and $input!	0!uptime	$streamer has been live for $uptime	0!shoutout	$shoutout	0!roulette	$roulette	0!moist	$user is moist!	0!ohoh	Kreygasm $counter1 OHOH's! Kreygasm	0!kappa	Kappa	0!santa	Christmas isn't Christmas without ho's...	0
+!uptime	$streamer has been live for $uptime	0
+!shoutout	$shoutout	0
+!8ball	$8ball	0
+!hailjesus	Sure, why not? :P 	0
+!start	$streamer joined Twitch on $start	0
+!following	$user has been following the stream for $following	0
+!king	GRANDMAAAAAAAAAAAA!!!!!!!!	0
+!666	AMPEnergyCherry 666 The number of the beast, the one for you and me!! AMPEnergyCherry 	0
+!hailsatan	AMPEnergyCherry HashtagHailSatan HashtagHailSatan HashtagHailSatan AMPEnergyCherry 	0
+!helloween	CurseLit Pumpkins United!!!! CurseLit 	0
+!priest	Metal Meltdown!!!!	0
+!slayer	GOD HATES US ALL!!!!!!	0
+!bucket	MrDestructoid All praise our Lord Buckethead Kreygasm 	0
+!irons	bttvNice $counter1x IronsM IronsM IronsM  bttvNice	0
+!guardian	Welcome to dying!!!!!	0
+!sabaton	Noch ein Bier!!!	0
+!metallica	St Poker Face FailFish	0
+!anthrax	Among, Among, Among, Mamón, Mamón, Mamón!!!!!	0
+!megadeth	Fuck Yeah!!!!!	0
+!fuckoff	I told you to FUCK OFF $input $counter2 times!!
+!manowar	Wimps and posers leave the hall!!!!!	0
+!okkusenman	MegaMetal MegaMetal MegalMetal   	0
+!sorry	$input Disculpa!!!!	0

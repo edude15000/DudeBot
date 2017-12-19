@@ -13,3 +13,18 @@ C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater
 C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.csproj.CoreCompileInputs.cache
 C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.exe
 C:\Users\Evan Snitkey\Documents\Visual Studio 2017\Projects\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.pdb
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Debug\DudeBotConfigUpdater.exe.config
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Debug\DudeBotConfigUpdater.exe
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\bin\Debug\DudeBotConfigUpdater.pdb
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.csprojResolveAssemblyReference.cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\MainWindow.g.cs
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\App.g.cs
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater_MarkupCompile.cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater_MarkupCompile.lref
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\MainWindow.baml
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.g.resources
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.Properties.Resources.resources
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.csproj.GenerateResource.Cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.csproj.CoreCompileInputs.cache
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.exe
+C:\git\DudeBotWorkspace\DudeBotConfigUpdater\DudeBotConfigUpdater\obj\Debug\DudeBotConfigUpdater.pdb

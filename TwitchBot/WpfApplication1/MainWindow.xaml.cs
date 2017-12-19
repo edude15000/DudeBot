@@ -1022,6 +1022,9 @@ namespace WpfApplication1
                 vipsongcost.IsEnabled = true;
                 vipsongtoggle.IsEnabled = true;
                 vipRedeemCoolDownMinutes.IsEnabled = true;
+                currencyPerMinuteSubs.IsEnabled = true;
+                subCreditRedeemCost.IsEnabled = true;
+                creditsPerSub.IsEnabled = true;
             }
             else
             {
@@ -1034,6 +1037,9 @@ namespace WpfApplication1
                 vipsongcost.IsEnabled = false;
                 vipsongtoggle.IsEnabled = false;
                 vipRedeemCoolDownMinutes.IsEnabled = false;
+                currencyPerMinuteSubs.IsEnabled = false;
+                subCreditRedeemCost.IsEnabled = false;
+                creditsPerSub.IsEnabled = false;
             }
         }
 
@@ -1558,6 +1564,8 @@ namespace WpfApplication1
                 killBot(null, null);
             }
             Process.GetCurrentProcess().CloseMainWindow();
+            Application.Current.Shutdown();
+            Environment.Exit(0);
         }
         
         private void editCommandButtonClick(object sender, MouseButtonEventArgs e)

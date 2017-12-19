@@ -642,8 +642,7 @@ namespace DudeBotConfigUpdater
                 }
                 String[] str = line.Split('\t');
                 String[] s = { str[0] };
-                if (str[2] != null)
-                {
+                if (str.Length > 2 && str[2] != null) {
                     String s2 = createJSONCommand(new Command(str[1], str[2], s), "user");
                     output += s2;
                     allCommands += s2;
@@ -654,7 +653,6 @@ namespace DudeBotConfigUpdater
                     output += s2;
                     allCommands += s2;
                 }
-                
             }
             output = trimComma(output);
             output += "],\r";
@@ -734,7 +732,10 @@ namespace DudeBotConfigUpdater
                     break;
                 }
                 String[] str = line.Split('\t');
-                numRequests.Add(str[0], str[1]);
+                if (!numRequests.ContainsKey(str[0]))
+                {
+                    numRequests.Add(str[0], str[1]);
+                }
             }
             reader = new StreamReader(purchasedRanksFile);
             while ((line = reader.ReadLine()) != null)
