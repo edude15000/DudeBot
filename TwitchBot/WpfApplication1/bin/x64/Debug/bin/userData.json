@@ -18,7 +18,7 @@
   "minigameEndMessage": "Time has run out for the current game, guesses cannot be added now, $user!",
   "giveawaycommandname": "!raffle",
   "spreadsheetId": "1jLNPhuJ0Cwmd3xL64YXAb1FwYcPBmh5FMw16O33TUZk",
-  "botColor": null,
+  "botColor": "chocolate",
   "endMessage": "BYE FAM",
   "startupMessage": "SEXY TIME",
   "minigameTimer": 90,
@@ -137,7 +137,7 @@
     "ylrequests": true,
     "maxSongLength": false,
     "subOnlyRequests": "Only subs can request right now, $user!",
-    "formattedTotalTime": "00:35:33",
+    "formattedTotalTime": "00:43:56",
     "songListLength": 7,
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
@@ -145,7 +145,8 @@
     "maxSongLengthInMinutes": 10,
     "favSongs": [
       "acdc - big balls",
-      "new song test"
+      "new song test",
+      "lala"
     ],
     "bannedKeywords": [
       "asdf",
@@ -153,6 +154,14 @@
       " zxcv"
     ],
     "songHistory": [
+      "12/18/2017 15:07:35 - Subway Surfers - Launch Trailer",
+      "12/18/2017 14:56:21 - Zapatero: \"El PP habrá hecho poco pero el Gobierno Catalán ha roto toda la legalidad\" - Salvados",
+      "12/18/2017 14:50:44 - Zapatero: \"El PP habrá hecho poco pero el Gobierno Catalán ha roto toda la legalidad\" - Salvados",
+      "12/18/2017 14:45:05 - LIVE ACS Poli Timisoara - Dinamo Bucuresti [ Liga 1  Etapa a-22-a ] [ 18/12/2017 ]",
+      "12/18/2017 14:44:51 - qqr",
+      "12/18/2017 14:44:41 - c",
+      "12/18/2017 14:40:43 - Cardi B - Bodak Yellow [OFFICIAL MUSIC VIDEO]",
+      "12/17/2017 20:44:51 - lala",
       "12/13/2017 21:09:54 - Beach House - PPP",
       "12/13/2017 21:09:25 - オーバーロード ED  |  Overlord Ending - FULL",
       "12/08/2017 16:15:35 - A Day With Lucy!",
@@ -171,7 +180,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "songlistComm": {
       "output": null,
@@ -184,7 +194,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "getTotalComm": {
       "output": null,
@@ -197,7 +208,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "editComm": {
       "output": null,
@@ -209,7 +221,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "nextComm": {
       "output": null,
@@ -221,7 +234,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "addvipComm": {
       "output": null,
@@ -232,7 +246,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "addtopComm": {
       "output": null,
@@ -243,7 +258,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "adddonatorComm": {
       "output": null,
@@ -254,7 +270,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "getCurrentComm": {
       "output": null,
@@ -267,7 +284,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "clearComm": {
       "output": null,
@@ -278,7 +296,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "triggerRequestsComm": {
       "output": null,
@@ -289,7 +308,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "backupRequestAddComm": null,
     "getNextComm": {
@@ -301,7 +321,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "randomComm": {
       "output": null,
@@ -315,7 +336,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "favSongComm": {
       "output": null,
@@ -328,7 +350,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "editSongComm": {
       "output": null,
@@ -339,7 +362,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "removeSongComm": {
       "output": null,
@@ -351,7 +375,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "songPositionComm": {
       "output": null,
@@ -364,17 +389,60 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     "songList": [
       {
-        "name": "lala",
-        "requester": "edude15000",
-        "level": "VIP",
+        "name": "ll",
+        "requester": "edude1",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=cPAbx5kgCJo",
+        "youtubeTitle": "Auli'i Cravalho - How Far I'll Go",
+        "durationInSeconds": 156,
+        "index": 1,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:02:36"
+      },
+      {
+        "name": "a",
+        "requester": "edude15",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=TBfuGgBf5xw",
+        "youtubeTitle": "BUILDING A GLIDER SUIT - ARK SURVIVAL EVOLVED ABERRATION EXPANSION #6",
+        "durationInSeconds": 0,
+        "index": 2,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:00:00"
+      },
+      {
+        "name": "b",
+        "requester": "edud",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=PEGccV-NOm8",
+        "youtubeTitle": "Cardi B - Bodak Yellow [OFFICIAL MUSIC VIDEO]",
+        "durationInSeconds": 234,
+        "index": 3,
+        "tuning": null,
+        "customsForgeLink": null,
+        "parts": null,
+        "dlcCreator": null,
+        "formattedDuration": "00:03:54"
+      },
+      {
+        "name": "c",
+        "requester": "edud",
+        "level": "",
         "youtubeLink": null,
         "youtubeTitle": null,
         "durationInSeconds": 0,
-        "index": 1,
+        "index": 4,
         "tuning": null,
         "customsForgeLink": null,
         "parts": null,
@@ -382,105 +450,49 @@
         "formattedDuration": ""
       },
       {
-        "name": "pp",
+        "name": "hotel california",
         "requester": "edude15000",
         "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=dQY-qbYycLQ",
-        "youtubeTitle": "【ポケモンUSUM】テッカグヤのPPって∞だったら世界終わるよね【ウルトラサン ウルトラムーン】",
-        "durationInSeconds": 990,
-        "index": 2,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:16:30"
-      },
-      {
-        "name": "ksksks",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=KfSlVC5BcrY",
-        "youtubeTitle": "Ksksks",
-        "durationInSeconds": 18,
-        "index": 3,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:00:18"
-      },
-      {
-        "name": "qpqpqp",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=tYysQOHTimo",
-        "youtubeTitle": "Subway Surfers - Launch Trailer",
-        "durationInSeconds": 66,
-        "index": 4,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:01:06"
-      },
-      {
-        "name": "test",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=_nfREkI7Nsk",
-        "youtubeTitle": "MAKE THE HARDEST CHOICE EVER. PERSONALITY VIDEO TEST",
-        "durationInSeconds": 617,
+        "youtubeLink": "http://www.youtube.com/watch?v=BYlb_MnOhBs",
+        "youtubeTitle": "Hotel California",
+        "durationInSeconds": 410,
         "index": 5,
         "tuning": null,
         "customsForgeLink": null,
         "parts": null,
         "dlcCreator": null,
-        "formattedDuration": "00:10:17"
+        "formattedDuration": "00:06:50"
       },
       {
-        "name": "aaa",
-        "requester": "edude15000",
+        "name": "asdf",
+        "requester": "qq",
         "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=fnCjUsc7y2M",
-        "youtubeTitle": "AAA - The AAA Girls feat. Alaska Thunderfuck, Willam and Courtney Act",
-        "durationInSeconds": 225,
+        "youtubeLink": "http://www.youtube.com/watch?v=furTlhb-990",
+        "youtubeTitle": "asdfmovie 1-10 (Complete Collection)",
+        "durationInSeconds": 1093,
         "index": 6,
         "tuning": null,
         "customsForgeLink": null,
         "parts": null,
         "dlcCreator": null,
-        "formattedDuration": "00:03:45"
+        "formattedDuration": "00:18:13"
       },
       {
-        "name": "pls",
+        "name": "byob",
         "requester": "edude15000",
         "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=0cHI1DPwqkE",
-        "youtubeTitle": "Otsochodzi - PLS (Design)",
-        "durationInSeconds": 217,
+        "youtubeLink": "http://www.youtube.com/watch?v=zUzd9KyIDrM",
+        "youtubeTitle": "System Of A Down - B.Y.O.B.",
+        "durationInSeconds": 263,
         "index": 7,
         "tuning": null,
         "customsForgeLink": null,
         "parts": null,
         "dlcCreator": null,
-        "formattedDuration": "00:03:37"
-      },
-      {
-        "name": "a",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=LTAEVr5LGWY",
-        "youtubeTitle": "A Day With Lucy!",
-        "durationInSeconds": 471,
-        "index": 0,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:07:51"
+        "formattedDuration": "00:04:23"
       }
     ],
-    "songsPlayedTotal": 0
+    "songsPlayedTotal": 8
   },
   "sfxCommandList": [
     {
@@ -492,7 +504,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\boobs.mp3",
@@ -503,7 +516,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\angel.mp3",
@@ -514,7 +528,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ohoh.mp3",
@@ -525,7 +540,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\best2.mp3",
@@ -536,7 +552,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bickdutt.mp3",
@@ -547,7 +564,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bleedfuel.mp3",
@@ -558,7 +576,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bruh.mp3",
@@ -569,7 +588,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fart.mp3",
@@ -580,7 +600,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\cena.mp3",
@@ -591,7 +612,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\carbon621.mp3",
@@ -602,7 +624,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\demondrummer.mp3",
@@ -613,7 +636,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\devil.mp3",
@@ -624,7 +648,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\doit.mp3",
@@ -635,7 +660,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\dreams.mp3",
@@ -646,7 +672,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\elisa.mp3",
@@ -657,7 +684,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fuah.mp3",
@@ -668,7 +696,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\gta.mp3",
@@ -679,7 +708,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\hello.mp3",
@@ -690,7 +720,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\jeff.mp3",
@@ -701,7 +732,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\listen.mp3",
@@ -712,7 +744,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\love.mp3",
@@ -723,7 +756,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\mlg.mp3",
@@ -734,7 +768,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps1.mp3",
@@ -745,7 +780,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps2.mp3",
@@ -756,7 +792,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\redbeard.mp3",
@@ -767,7 +804,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\renage.mp3",
@@ -778,7 +816,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\sexy.mp3",
@@ -789,7 +828,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\troll.mp3",
@@ -800,7 +840,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\williambolding.mp3",
@@ -811,7 +852,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\wrong.mp3",
@@ -822,7 +864,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\xfiles.mp3",
@@ -833,7 +876,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yeah.mp3",
@@ -844,7 +888,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yes.mp3",
@@ -855,7 +900,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yell.mp3",
@@ -866,7 +912,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     }
   ],
   "userCommandList": [
@@ -879,7 +926,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "#dstringsoutforharambe",
@@ -890,7 +938,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$8ball",
@@ -901,7 +950,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$user gives $input a hug!",
@@ -912,7 +962,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$user has been following the stream for $following",
@@ -923,7 +974,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$streamer joined Twitch on $start",
@@ -934,7 +986,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
@@ -945,7 +998,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "There is $randomnumber3% <3 between $user and $input!",
@@ -956,7 +1010,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$streamer has been live for $uptime",
@@ -967,7 +1022,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$shoutout",
@@ -978,7 +1034,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$roulette",
@@ -989,7 +1046,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$user is moist!",
@@ -1000,7 +1058,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Kreygasm $counter1 OHOH's! Kreygasm",
@@ -1011,7 +1070,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Kappa",
@@ -1022,7 +1082,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Christmas isn't Christmas without ho's...",
@@ -1033,7 +1094,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     }
   ],
   "timerCommandList": [
@@ -1046,7 +1108,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
@@ -1057,7 +1120,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type !quote for a random quote!",
@@ -1068,7 +1132,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
@@ -1079,7 +1144,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Join my discord here: https://discord.gg/9TcVCmY",
@@ -1090,7 +1156,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
@@ -1101,7 +1168,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
@@ -1112,7 +1180,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
@@ -1123,7 +1192,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
@@ -1134,7 +1204,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type '!position' to display your song's position in the song list!",
@@ -1145,7 +1216,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
@@ -1156,7 +1228,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
@@ -1167,7 +1240,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     }
   ],
   "botCommandList": [
@@ -1182,7 +1256,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "triggerRequestsComm",
@@ -1193,7 +1268,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "requestComm",
@@ -1207,7 +1283,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "songlistComm",
@@ -1220,7 +1297,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getTotalComm",
@@ -1233,7 +1311,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getViewerCountCommands",
@@ -1244,7 +1323,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "addtopComm",
@@ -1255,7 +1335,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "addvipComm",
@@ -1266,7 +1347,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "adddonatorComm",
@@ -1277,7 +1359,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "editComm",
@@ -1289,7 +1372,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "nextComm",
@@ -1301,7 +1385,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "clearComm",
@@ -1312,7 +1397,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getCurrentComm",
@@ -1325,7 +1411,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getNextComm",
@@ -1336,7 +1423,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "randomComm",
@@ -1350,7 +1438,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "editSongComm",
@@ -1361,7 +1450,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "removeSongComm",
@@ -1373,7 +1463,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "songPositionComm",
@@ -1386,7 +1477,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     }
   ],
   "imageCommandList": [
@@ -1399,7 +1491,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\13131558_10206308382203578_8436449390544094618_o.jpg",
@@ -1410,7 +1503,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\dudebot.jpg",
@@ -1421,7 +1515,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     }
   ],
   "hotkeyCommandList": [
@@ -1434,18 +1529,22 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
-    },
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "overrideCommandList": [
     {
-      "output": "!kappa",
-      "commandType": "hotkey",
-      "level": 3,
+      "output": "EVERYONE LOVES PIZZA!",
+      "commandType": "override",
+      "level": 0,
       "input": [
-        "F5"
+        "pizza"
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     }
   ],
   "rewardCommandList": [
@@ -1458,7 +1557,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 1
+      "costToUse": 1,
+      "overrideType": 0
     },
     {
       "output": "test2",
@@ -1469,18 +1569,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
-    },
-    {
-      "output": "tttt",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test3"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$length wow",
@@ -1491,7 +1581,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 5
+      "costToUse": 5,
+      "overrideType": 0
     }
   ],
   "commandList": [
@@ -1504,7 +1595,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\boobs.mp3",
@@ -1515,7 +1607,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\angel.mp3",
@@ -1526,7 +1619,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ohoh.mp3",
@@ -1537,7 +1631,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\best2.mp3",
@@ -1548,7 +1643,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bickdutt.mp3",
@@ -1559,7 +1655,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bleedfuel.mp3",
@@ -1570,7 +1667,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\bruh.mp3",
@@ -1581,7 +1679,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fart.mp3",
@@ -1592,7 +1691,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\cena.mp3",
@@ -1603,7 +1703,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\carbon621.mp3",
@@ -1614,7 +1715,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\demondrummer.mp3",
@@ -1625,7 +1727,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\devil.mp3",
@@ -1636,7 +1739,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\doit.mp3",
@@ -1647,7 +1751,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\dreams.mp3",
@@ -1658,7 +1763,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\elisa.mp3",
@@ -1669,7 +1775,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\fuah.mp3",
@@ -1680,7 +1787,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\gta.mp3",
@@ -1691,7 +1799,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\hello.mp3",
@@ -1702,7 +1811,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\jeff.mp3",
@@ -1713,7 +1823,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\listen.mp3",
@@ -1724,7 +1835,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\love.mp3",
@@ -1735,7 +1847,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\mlg.mp3",
@@ -1746,7 +1859,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps1.mp3",
@@ -1757,7 +1871,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps2.mp3",
@@ -1768,7 +1883,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\redbeard.mp3",
@@ -1779,7 +1895,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\renage.mp3",
@@ -1790,7 +1907,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\sexy.mp3",
@@ -1801,7 +1919,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\troll.mp3",
@@ -1812,7 +1931,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\williambolding.mp3",
@@ -1823,7 +1943,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\wrong.mp3",
@@ -1834,7 +1955,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\xfiles.mp3",
@@ -1845,7 +1967,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yeah.mp3",
@@ -1856,7 +1979,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yes.mp3",
@@ -1867,7 +1991,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\RS custom toolkit\\audio\\yell.mp3",
@@ -1878,7 +2003,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Harambe would have loved $currentsong!",
@@ -1889,7 +2015,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "#dstringsoutforharambe",
@@ -1900,7 +2027,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$8ball",
@@ -1911,7 +2039,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$user gives $input a hug!",
@@ -1922,7 +2051,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$user has been following the stream for $following",
@@ -1933,7 +2063,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$streamer joined Twitch on $start",
@@ -1944,7 +2075,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
@@ -1955,7 +2087,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "There is $randomnumber3% <3 between $user and $input!",
@@ -1966,7 +2099,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$streamer has been live for $uptime",
@@ -1977,7 +2111,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$shoutout",
@@ -1988,7 +2123,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$roulette",
@@ -1999,7 +2135,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$user is moist!",
@@ -2010,7 +2147,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Kreygasm $counter1 OHOH's! Kreygasm",
@@ -2021,7 +2159,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Kappa",
@@ -2032,7 +2171,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Christmas isn't Christmas without ho's...",
@@ -2043,7 +2183,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it's available, request it! I'll play it if it works! :D",
@@ -2054,7 +2195,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
@@ -2065,7 +2207,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type !quote for a random quote!",
@@ -2076,7 +2219,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
@@ -2087,7 +2231,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Join my discord here: https://discord.gg/9TcVCmY",
@@ -2098,7 +2243,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
@@ -2109,7 +2255,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
@@ -2120,7 +2267,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
@@ -2131,7 +2279,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
@@ -2142,7 +2291,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Type '!position' to display your song's position in the song list!",
@@ -2153,7 +2303,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
@@ -2164,7 +2315,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
@@ -2175,7 +2327,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "favSongComm",
@@ -2188,7 +2341,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "triggerRequestsComm",
@@ -2199,7 +2353,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "requestComm",
@@ -2213,7 +2368,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "songlistComm",
@@ -2226,7 +2382,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getTotalComm",
@@ -2239,7 +2396,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getViewerCountCommands",
@@ -2250,7 +2408,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "addtopComm",
@@ -2261,7 +2420,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "addvipComm",
@@ -2272,7 +2432,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "adddonatorComm",
@@ -2283,7 +2444,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "editComm",
@@ -2295,7 +2457,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "nextComm",
@@ -2307,7 +2470,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "clearComm",
@@ -2318,7 +2482,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getCurrentComm",
@@ -2331,7 +2496,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "getNextComm",
@@ -2342,7 +2508,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "randomComm",
@@ -2356,7 +2523,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "editSongComm",
@@ -2367,7 +2535,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "removeSongComm",
@@ -2379,7 +2548,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "songPositionComm",
@@ -2392,7 +2562,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\15251863-Cheeseburger-isolated-on-white-background-Stock-Photo-hamburger-cheeseburger.jpg",
@@ -2403,7 +2574,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\13131558_10206308382203578_8436449390544094618_o.jpg",
@@ -2414,7 +2586,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "F:\\Desktop\\Rocksmith\\emotes\\dudebot.jpg",
@@ -2425,7 +2598,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "!next",
@@ -2436,18 +2610,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
-    },
-    {
-      "output": "!kappa",
-      "commandType": "hotkey",
-      "level": 3,
-      "input": [
-        "F5"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$user redeemed test reward!",
@@ -2458,7 +2622,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 1
+      "costToUse": 1,
+      "overrideType": 0
     },
     {
       "output": "test2",
@@ -2469,18 +2634,8 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 0
-    },
-    {
-      "output": "tttt",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test3"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0
+      "costToUse": 0,
+      "overrideType": 0
     },
     {
       "output": "$length wow",
@@ -2491,7 +2646,20 @@
       ],
       "toggle": true,
       "volumeLevel": 100,
-      "costToUse": 5
+      "costToUse": 5,
+      "overrideType": 0
+    },
+    {
+      "output": "EVERYONE LOVES PIZZA!",
+      "commandType": "override",
+      "level": 0,
+      "input": [
+        "pizza"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
     }
   ],
   "users": [
@@ -4782,10 +4950,10 @@
       "sub": false,
       "mod": true,
       "gaveSpot": false,
-      "time": 218,
+      "time": 271,
       "subCredits": 0,
-      "points": 212,
-      "numRequests": 212,
+      "points": 265,
+      "numRequests": 220,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4827,9 +4995,9 @@
       "sub": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 440,
+      "time": 498,
       "subCredits": 0,
-      "points": 440,
+      "points": 498,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,
@@ -4890,9 +5058,7 @@
     "!redeem",
     "!redeeminfo"
   ],
-  "events": {
-    "test": "test!"
-  },
+  "events": {},
   "getViewerComm": {
     "output": null,
     "commandType": "bot",
@@ -4902,7 +5068,8 @@
     ],
     "toggle": true,
     "volumeLevel": 100,
-    "costToUse": 0
+    "costToUse": 0,
+    "overrideType": 0
   },
   "guiBackgroundColor": 3,
   "guiTextColor": 1,

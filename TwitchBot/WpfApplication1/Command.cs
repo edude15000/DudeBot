@@ -11,7 +11,7 @@ public class Command
     public Boolean toggle { get; set; }
     public int volumeLevel { get; set; } = 100;
     public int costToUse { get; set; } = 0;
-
+    public int overrideType { get; set; } = 0;
 
     public Command(String[] input, int level, String output, String commandType, Boolean toggle)
     {
@@ -22,6 +22,7 @@ public class Command
         this.commandType = commandType;
         volumeLevel = 100;
         costToUse = 0;
+        overrideType = 0;
     }
 
     public void playSound()

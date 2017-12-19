@@ -338,6 +338,13 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref HotkeyCommandList, value, nameof(hotkeyCommandList)); }
     }
     [JsonIgnore]
+    public List<Command> OverrideCommandList = new List<Command>();
+    public List<Command> overrideCommandList
+    {
+        get => OverrideCommandList;
+        set { SetField(ref OverrideCommandList, value, nameof(overrideCommandList)); }
+    }
+    [JsonIgnore]
     public List<Command> RewardCommandList = new List<Command>();
     public List<Command> rewardCommandList
     {
@@ -458,7 +465,6 @@ public class TwitchBot : INotifyPropertyChanged
             client.OnReSubscriber += onReSubscriber;
             client.OverrideBeingHostedCheck = true;
             client.OnBeingHosted += onBeingHosted;
-            client.Connect();
             checkAtBeginningAsync();
             setClasses();
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
@@ -471,6 +477,7 @@ public class TwitchBot : INotifyPropertyChanged
             Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
         }
+        
     }
     
     private void onUserLeft(object sender, OnUserLeftArgs e)
@@ -640,6 +647,7 @@ public class TwitchBot : INotifyPropertyChanged
         requestSystem.songList = Utils.loadSongs();
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
         requestSystem.songListLength = requestSystem.songList.Count;
+        requestSystem.songsPlayedThisStream = 0;
     }
 
     public void resetAllCommands()
@@ -655,13 +663,13 @@ public class TwitchBot : INotifyPropertyChanged
         commandList = commands;
         botCommandList = getCommands("bot");
         hotkeyCommandList = getCommands("hotkey");
+        overrideCommandList = getCommands("override");
         rewardCommandList = getCommands("reward");
         sfxCommandList = getCommands("sfx");
         userCommandList = getCommands("user");
         timerCommandList = getCommands("timer");
         imageCommandList = getCommands("image");
         extraCommandNames = setExtraCommandNames();
-        App.guiWindow.writeToConfig(null, null);
     }
 
     public void syncFileTimerThread()
@@ -2834,6 +2842,13 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (response.Contains("$randomnumber3"))
         {
+            foreach (Command c in overrideCommandList)
+            {
+                if (c.overrideType == 0 && message.Contains(c.input[0]))
+                {
+                    return c.output;
+                }
+            }
             if (message.Contains("coffee") && sender.Equals("hardrockangelart", StringComparison.InvariantCultureIgnoreCase))
             {
                 response = response.Replace("$randomnumber3", "1000");
@@ -3065,11 +3080,6 @@ public class TwitchBot : INotifyPropertyChanged
         {
             response = response.Replace("$currentsongduration", s.formattedDuration);
         }
-        if (response.Contains("$currentsongduration") && s != null)
-        {
-            response = response.Replace("$currentsongduration", s.formattedDuration);
-        }
-
         return response;
     }
 
@@ -3103,6 +3113,13 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Contains("edude15000") || message.Contains("edude"))
         {
             return "Edude15000 is too sexy for this question, " + sender;
+        }
+        foreach (Command c in overrideCommandList)
+        {
+            if (c.overrideType == 1 && message.Contains(c.input[0]))
+            {
+                return c.output;
+            }
         }
         String line = "";
         Random rand = new Random();

@@ -100,3 +100,7 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Securit
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Security.Cryptography.Encoding.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Security.Cryptography.Primitives.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Security.Cryptography.X509Certificates.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\ImagesWindow.baml
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\ImagesWindow.g.cs
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\GeneratedInternalTypeHelper.g.cs
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\DudeBot_MarkupCompile.lref

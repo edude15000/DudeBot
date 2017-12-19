@@ -21,7 +21,7 @@ namespace WpfApplication1
 {
     public partial class MainWindow 
     {
-        public static TwitchBot bot = new TwitchBot();
+        public static TwitchBot bot;
 
         public String dudebotdirectory = Path.GetTempPath() + "dudebotdirectory.txt";
         public String dudebotupdateinfo = Path.GetTempPath() + "dudebotupdateinfo.txt";
@@ -80,6 +80,7 @@ namespace WpfApplication1
                     object datacontext = textBlock.DataContext;
                     String c = (String)datacontext;
                     bot.requestSystem.favSongs.Add(c.Substring(c.IndexOf('-') + 2));
+                    writeToConfig(null, null);
                 }
             }
         }
@@ -193,6 +194,44 @@ namespace WpfApplication1
             }
         }
 
+        public async void addoverride(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(formatCommand(editOverrideInput.Text)) && !string.IsNullOrWhiteSpace(editOverrideOutput.Text))
+            {
+                if (editOverrideType.SelectedIndex < 0)
+                {
+                    editOverrideType.SelectedIndex = 0;
+                }
+                foreach (Command c in bot.overrideCommandList)
+                {
+                    if (c.input[0].Equals(editOverrideInput.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        c.output = editOverrideOutput.Text;
+                        c.overrideType = editOverrideType.SelectedIndex;
+                        bot.resetAllCommands();
+                        editOverrideType.SelectedIndex = 0;
+                        editOverrideInput.Text = "";
+                        editOverrideOutput.Text = "";
+                        writeToConfig(null, null);
+                        return;
+                    }
+                }
+                String[] str = { editOverrideInput.Text };
+                Command d = new Command(str, 0, editOverrideOutput.Text, "override", true);
+                d.overrideType = editOverrideType.SelectedIndex;
+                bot.commandList.Add(d);
+                bot.resetAllCommands();
+                editOverrideType.SelectedIndex = 0;
+                editOverrideInput.Text = "";
+                editOverrideOutput.Text = "";
+                writeToConfig(null, null);
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "Please enter the override input and output!");
+            }
+        }
+        
         public async void addreward(Object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editRewardName.Text)))
@@ -562,6 +601,30 @@ namespace WpfApplication1
             }
         }
 
+        public async void removeoverride(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(formatCommand(editOverrideInput.Text)))
+            {
+                foreach (Command c in bot.overrideCommandList)
+                {
+                    if (c.input[0].Equals(editOverrideInput.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.commandList.Remove(c);
+                        break;
+                    }
+                }
+                editOverrideInput.Text = "";
+                editOverrideOutput.Text = "";
+                editOverrideType.SelectedIndex = 0;
+                bot.resetAllCommands();
+                writeToConfig(null, null);
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "To delete or edit an override, click on it in the box and then press the desired button!");
+            }
+        }
+
         public async void removecurrency(Object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editCurrencyUserName.Text)))
@@ -772,15 +835,7 @@ namespace WpfApplication1
             {
                 foreach (DataGrid d in FindLogicalChildren<DataGrid>(App.Current.MainWindow))
                 {
-                    if (d.Name.Equals("songdatagrid"))
-                    {
-                        d.ItemsSource = null;
-                        d.ItemsSource = bot.requestSystem.songList;
-                    }
-                    else
-                    {
-                        d.Items.Refresh();
-                    }
+                    d.Items.Refresh();
                 }
             }
             catch (Exception)
@@ -798,6 +853,8 @@ namespace WpfApplication1
                 bot.clearUpTempData();
                 Utils.saveData(bot);
                 bot.client.Disconnect();
+                open.IsEnabled = true;
+                kill.IsEnabled = false;
             }
             catch (Exception e1)
             {
@@ -806,7 +863,7 @@ namespace WpfApplication1
             }
         }
 
-        public void openBot(Object sender, RoutedEventArgs e)
+        public async void openBot(Object sender, RoutedEventArgs e)
         {
             try
             {
@@ -819,8 +876,9 @@ namespace WpfApplication1
 
             if (bot == null)
             {
-                MessageBox.Show("Missing or corrupt 'userData.json' file. If you are updating from DudeBot 2 to DudeBot 3," +
-                    " please run 'DudeBotConfigUpdater.exe' in the bin folder, this will create an updated configuration file. To restore DudeBot and fix the configuration file, press 'reset dudebot'.", "Notice");
+                customization.Focus();
+                await this.ShowMessageAsync("Notice", "Missing or corrupt 'userData.json' file. If you are updating from DudeBot 2 to DudeBot 3," +
+                    " please run 'DudeBotConfigUpdater.exe' in the bin folder, this will create an updated configuration file. To restore DudeBot and fix the configuration file, press 'reset dudebot'.");
                 return;
             }
             if (bot.streamer != null && bot.streamer != "")
@@ -838,9 +896,19 @@ namespace WpfApplication1
                 browser.Navigate("http://www.twitch.tv/" + bot.streamer + "/chat");
             }
             bot.botStartUpAsync();
-            kill.IsEnabled = true;
-            open.IsEnabled = false;
-            //OnPropertyChanged(string.Empty);
+            try
+            {
+                bot.client.Connect();
+                kill.IsEnabled = true;
+                open.IsEnabled = false;
+            }
+            catch (Exception)
+            {
+                customization.Focus();
+                await this.ShowMessageAsync("Connection Failure", "DudeBot failed to connect to Twitch, please ensure that your streamer and bot names and oauths are correct!");
+                kill.IsEnabled = false;
+                open.IsEnabled = true;
+            }
             DataContext = bot;
             if (openRockSnifferOnStartUp.IsChecked == true)
             {
@@ -1136,8 +1204,8 @@ namespace WpfApplication1
             }
             if (!checkPrereqs())
             {
-                await this.ShowMessageAsync("Welcome to DudeBot!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, Bot Oauth, then scroll to the bottom and press 'APPLY'.");
                 customization.Focus();
+                await this.ShowMessageAsync("Welcome to DudeBot!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, Bot Oauth, then scroll to the bottom and press 'APPLY'.");
             }
             else
             {
@@ -1151,6 +1219,7 @@ namespace WpfApplication1
                     {
                         if (checkUpdate() == 1)
                         {
+                            customization.Focus();
                             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
                             var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
                             MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Update Available!", "An update was found, would you like to update?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
@@ -1198,6 +1267,7 @@ namespace WpfApplication1
                     String line = sr.ReadToEnd();
                     if (!line.Equals("fail"))
                     {
+                        customization.Focus();
                         this.ShowMessageAsync("DudeBot Updated: " + line, "UPDATED");
                     }
                 }
@@ -1245,6 +1315,7 @@ namespace WpfApplication1
         {
             if (checkUpdate() == 1)
             {
+                customization.Focus();
                 MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
                 var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
                 MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Update Available!", "An update was found, would you like to update?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
@@ -1267,10 +1338,12 @@ namespace WpfApplication1
             }
             else if (checkUpdate() == 0)
             {
+                customization.Focus();
                 await this.ShowMessageAsync("", "DudeBot is up to date!");
             }
             else
             {
+                customization.Focus();
                 await this.ShowMessageAsync("", "Could not reach server, please check again later.");
             }
         }
@@ -1427,7 +1500,7 @@ namespace WpfApplication1
         public async void editsong(object sender, RoutedEventArgs e)
         {
             String uName = "";
-            if (bot.requestSystem.songList.Count <= songplace.Value)
+            if (bot.requestSystem.songList.Count < songplace.Value)
             {
                 await this.ShowMessageAsync("Warning", "Place # " + songplace.Value + " does not exist!");
                 return;
@@ -1443,7 +1516,7 @@ namespace WpfApplication1
             if (!string.IsNullOrWhiteSpace(editSong.Text))
             {
                 Song oldsong = bot.requestSystem.songList[(int)songplace.Value - 1];
-                Song newsong = new Song(oldsong.name, uName, oldsong.level, bot);
+                Song newsong = new Song(editSong.Text, uName, oldsong.level, bot);
                 newsong.index = oldsong.index;
                 bot.requestSystem.songList[(int)songplace.Value - 1] = newsong;
                 editSong.Text = "";
@@ -1496,6 +1569,16 @@ namespace WpfApplication1
             editResponse.Text = c.output;
             editCommandLevel.SelectedIndex = c.level;
             editCommandCost.Value = c.costToUse;
+        }
+
+        private void editOverrideButtonClick(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (sender as TextBlock);
+            object datacontext = textBlock.DataContext;
+            Command c = (Command)datacontext;
+            editOverrideType.SelectedIndex = c.overrideType;
+            editOverrideInput.Text = c.input[0];
+            editOverrideOutput.Text = c.output;
         }
 
         private void editTimedCommandButtonClick(object sender, MouseButtonEventArgs e)
@@ -1571,15 +1654,7 @@ namespace WpfApplication1
             TextBlock textBlock = (sender as TextBlock);
             object datacontext = textBlock.DataContext;
             Song c = (Song)datacontext;
-            int index = bot.requestSystem.songList.Count;
-            for (int i = 0; i < bot.requestSystem.songList.Count; i++)
-            {
-                if (bot.requestSystem.songList[i].name.Equals(c.name, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    index = i;
-                }
-            }
-            songplace.Value = index;
+            songplace.Value = c.index;
             editSong.Text = c.name;
             editRequester.Text = c.requester;
             if (e.ClickCount == 2)
@@ -1666,6 +1741,7 @@ namespace WpfApplication1
 
         public async void resetbot(Object sender, RoutedEventArgs e)
         {
+            customization.Focus();
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
             MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Reset Confirmation", "Are you sure you want to reset DudeBot? All user data will be deleted, but this will fix any problems with DudeBot.", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
@@ -1685,8 +1761,10 @@ namespace WpfApplication1
         {
             String[] str = { "F7" };
             bot.commandList.Add(new Command(str, 3, "!next", "hotkey", true));
+            str[0] = "pizza";
+            bot.commandList.Add(new Command(str, 0, "EVERYONE LOVES PIZZA!", "override", true));
             str[0] = "!harambe";
-            bot.commandList.Add(new Command(str, 0, "!Harambe would have loved $currentsong!", "user", true));
+            bot.commandList.Add(new Command(str, 0, "Harambe would have loved $currentsong!", "user", true));
             str[0] = "!8ball";
             bot.commandList.Add(new Command(str, 0, "$8ball", "user", true));
             str[0] = "!hug";
@@ -1708,6 +1786,7 @@ namespace WpfApplication1
 
         private void flyout(object sender, RoutedEventArgs e)
         {
+            customization.Focus();
             supportflyout.IsOpen = true;
         }
 
@@ -1804,7 +1883,7 @@ namespace WpfApplication1
             bot.requestSystem.songHistory.Clear();
             writeToConfig(null, null);
         }
-
+        
         private void clearFavorites_Click(object sender, RoutedEventArgs e)
         {
             bot.requestSystem.favSongs.Clear();

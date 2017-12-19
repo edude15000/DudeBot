@@ -310,8 +310,8 @@ public class RequestSystem : INotifyPropertyChanged
     public int SongsPlayedTotal = 0;
     public int songsPlayedTotal
     {
-        get => SongsPlayedThisStream;
-        set { SetField(ref SongsPlayedThisStream, value, nameof(songsPlayedTotal)); }
+        get => SongsPlayedTotal;
+        set { SetField(ref SongsPlayedTotal, value, nameof(songsPlayedTotal)); }
     }
 
     public int getNumRequests(String sender)
@@ -397,10 +397,10 @@ public class RequestSystem : INotifyPropertyChanged
                             }
                             else
                             {
-                                response += "You have a request in place # " + (spots[j] + 1) + ", ";
+                                response += "You have a request in place #" + (spots[j] + 1) + " (Estimated wait time: " + getEstimatedTimeUntilSong(spots[j] + 1) + "), ";
                             }
                         }
-                        bot.client.SendMessage(response.ToLower().Substring(1) + sender + "!");
+                        bot.client.SendMessage("Y" + response.ToLower().Substring(1) + sender + "!");
                     }
                     catch (Exception e)
                     {
@@ -410,6 +410,23 @@ public class RequestSystem : INotifyPropertyChanged
                 }
             }
         }
+    }
+    
+    public String getEstimatedTimeUntilSong(int position)
+    {
+        int totalSeconds = 0;
+        for (int i = 0; i < position - 1; i++)
+        {
+            if (songList[i].durationInSeconds == 0)
+            {
+                totalSeconds += 240;
+            }
+            else
+            {
+                totalSeconds += songList[i].durationInSeconds;
+            }
+        }
+        return Utils.timeConversion(totalSeconds);
     }
 
     public List<Int32> checkPosition(String message, String channel, String sender)
@@ -696,7 +713,7 @@ public class RequestSystem : INotifyPropertyChanged
                                                 }
                                                 else
                                                 {
-                                                    addSong(channel, favSongs[index], sender);
+                                                    addSong(channel, favSongs[index] + " (FAV)", sender);
                                                 }
                                                 favSongsPlayedThisStream.Add(favSongs[index]);
                                             }
@@ -887,9 +904,16 @@ public class RequestSystem : INotifyPropertyChanged
     public String formatTotalTime()
     {
         int totalSeconds = 0;
-        foreach (Song s in songList)
+        for (int i = 0; i < songList.Count; i++)
         {
-            totalSeconds += s.durationInSeconds;
+            if (songList[i].durationInSeconds == 0)
+            {
+                totalSeconds += 240;
+            }
+            else
+            {
+                totalSeconds += songList[i].durationInSeconds;
+            }
         }
         return TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss");
     }
@@ -1082,8 +1106,6 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     bot.client.SendMessage(getNextSong(channel));
                 }
-                songsPlayedThisStream += 1;
-                SongsPlayedTotal += 1;
             }
             else
             {

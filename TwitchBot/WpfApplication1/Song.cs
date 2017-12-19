@@ -26,10 +26,10 @@ public class Song
             try
             {
                 Video s = bot.youtube.searchYoutubeByTitle(name);
-                youtubeLink = "http://www.youtube.com/watch?v=" + ((Video)s).Id;
-                durationInSeconds = Utils.getDurationOfVideoInSeconds(((Video)s).ContentDetails.Duration);
+                youtubeLink = "http://www.youtube.com/watch?v=" + s.Id;
+                durationInSeconds = Utils.getDurationOfVideoInSeconds(s.ContentDetails.Duration);
                 formattedDuration = TimeSpan.FromSeconds(durationInSeconds).ToString(@"hh\:mm\:ss");
-                youtubeTitle = ((Video)s).Snippet.Title;
+                youtubeTitle = s.Snippet.Title;
             }
             catch
             {

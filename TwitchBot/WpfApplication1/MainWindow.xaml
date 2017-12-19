@@ -409,7 +409,7 @@
                                     <ComboBoxItem Content="Streamer"/>
                                 </ComboBox>
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Song Position:" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="17" />
+                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Song Position: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="17" />
                                 <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="songPositionName" FontSize="12" Grid.Column="1" Grid.Row="17" Text="{Binding Path=requestSystem.songPositionComm.input, Converter={StaticResource ListToStringConverter}}" />
                                 <ComboBox x:Name="songPositionLevel" FontSize="12" Grid.Column="2" Grid.Row="17" SelectedIndex="{Binding requestSystem.songPositionComm.level, UpdateSourceTrigger=PropertyChanged}" >
                                     <ComboBoxItem Content="Everyone"/>
@@ -953,6 +953,8 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50*"/>
@@ -991,7 +993,13 @@
                                 <TextBlock VerticalAlignment="Center"  FontSize="12" Grid.Row="10" Grid.Column="0" Text="VIP Song Redeem Cool Down (minutes): " HorizontalAlignment="Right"/>
                                 <Controls:NumericUpDown x:Name="vipRedeemCoolDownMinutes" Minimum = "0" Maximum = "1000" Interval = "1" Grid.Column="1" Grid.Row="10" HorizontalAlignment="Left" Value="{Binding currency.vipRedeemCoolDownMinutes, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                <Button Style="{DynamicResource SquareButtonStyle}" x:Name="GO2" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11" Grid.RowSpan="2"/>
+                                <TextBlock VerticalAlignment="Center"  FontSize="12" Text="Sub Credit Song Redeem Cost: " HorizontalAlignment="Right" Grid.Row="11" Grid.Column="0" />
+                                <Controls:NumericUpDown x:Name="subCreditRedeemCost" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="11" HorizontalAlignment="Left" Value="{Binding currency.subCreditRedeemCost, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <TextBlock VerticalAlignment="Center"  FontSize="12" Text="Sub Credit Rewarded Per Sub: " HorizontalAlignment="Right" Grid.Row="12" Grid.Column="0" />
+                                <Controls:NumericUpDown x:Name="creditsPerSub" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="12" HorizontalAlignment="Left" Value="{Binding currency.creditsPerSub, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <Button Style="{DynamicResource SquareButtonStyle}" x:Name="GO2" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Grid.RowSpan="2"/>
 
 
                             </Grid>
@@ -1127,28 +1135,6 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
-
-                        </Grid>
-                    </TabItem>
-
-                    <TabItem Header="Sub Credits" FontSize="15">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50*"/>
-                                <ColumnDefinition Width="50*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center"  FontSize="12" Text="Sub Credit Song Redeem Cost: " HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" />
-                            <Controls:NumericUpDown x:Name="subCreditRedeemCost" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Value="{Binding currency.subCreditRedeemCost, UpdateSourceTrigger=PropertyChanged}"/>
-
-                            <TextBlock VerticalAlignment="Center"  FontSize="12" Text="Sub Credit Rewarded Per Sub: " HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" />
-                            <Controls:NumericUpDown x:Name="creditsPerSub" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Value="{Binding currency.creditsPerSub, UpdateSourceTrigger=PropertyChanged}"/>
-
-                            <Button Style="{DynamicResource SquareButtonStyle}" x:Name="GO6" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2"/>
 
                         </Grid>
                     </TabItem>
@@ -1447,35 +1433,6 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Subs" FontSize="12">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*"/>
-                    </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="subdatagrid" GridLinesVisibility="All" ItemsSource="{Binding imageCommandList, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" >
-                        <DataGrid.Columns >
-                            <DataGridTemplateColumn x:Name="subName" Header="User Name" Width=".15*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock TextWrapping="Wrap" Text="{Binding input[0]}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn x:Name="subMonths" Header="Months Subscribed" Width=".50*">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock TextWrapping="Wrap" Text="{Binding output}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </TabItem>
-
             <TabItem Header="Games" FontSize="12">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
                     <Grid>
@@ -1679,6 +1636,60 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock TextWrapping="Wrap" Text="{Binding output, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit command." MouseLeftButtonDown="editHotKeyButtonClick" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Overrides" FontSize="12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="9*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="40*"/>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="15*"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" x:Name="editOverrideType" >
+                            <ComboBoxItem IsSelected="True">Love</ComboBoxItem>
+                            <ComboBoxItem>8-Ball</ComboBoxItem>
+                        </ComboBox>
+                        <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Override Input" TextWrapping="Wrap" x:Name="editOverrideInput" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="1" />
+                        <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Override Output" TextWrapping="Wrap" x:Name="editOverrideOutput" VerticalScrollBarVisibility="Auto" Text="" Grid.Column="2" />
+
+                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addoverride" Grid.Column="3" />
+                        <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeoverride" Grid.Column="4" />
+                    </Grid>
+                    <Grid Grid.Row="1" >
+                        <DataGrid x:Name="overridedatagrid" GridLinesVisibility="All" ItemsSource="{Binding overrideCommandList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn x:Name="overrideType" Header="Override Type" Width=".2*" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding overrideType, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit override." MouseLeftButtonDown="editOverrideButtonClick" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn x:Name="overrideInput" Header="Override Input" Width=".2*" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding input[0], UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit override." MouseLeftButtonDown="editOverrideButtonClick" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn x:Name="overrideOutput" Header="Override Output" Width=".6*" >
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding output, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit override." MouseLeftButtonDown="editOverrideButtonClick" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
