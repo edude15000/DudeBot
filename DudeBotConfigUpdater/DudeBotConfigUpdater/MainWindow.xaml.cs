@@ -722,7 +722,15 @@ namespace DudeBotConfigUpdater
                     break;
                 }
                 String[] str = line.Split('\t');
-                users.Add(new User(str[0], str[1], str[2], str[3]));
+                if (str.Length > 3)
+                {
+                    users.Add(new User(str[0], str[1], str[2], str[3]));
+                }
+                else
+                {
+                    users.Add(new User(str[0], str[1], str[2], "0"));
+                }
+               
             }
             reader = new StreamReader(usersFile);
             while ((line = reader.ReadLine()) != null)

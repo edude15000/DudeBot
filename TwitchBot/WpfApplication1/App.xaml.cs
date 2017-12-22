@@ -8,6 +8,7 @@ namespace WpfApplication1
     {
         public static MainWindow guiWindow = new MainWindow();
         public static Images.MainWindow imagesWindow = new Images.MainWindow();
+        public static CustomsForgeLogin.MainWindow customsForgeWindow;
         
         static void Main(String[] args)
         {

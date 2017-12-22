@@ -22,6 +22,7 @@ public class Utils
     public static String notesFile = @"bin\notes.txt";
     public static String songListTextFile = @"bin\song.txt";
     public static String googleApiKey = "AIzaSyDU4bPym2G64rrPgk7B9a5L6LWtIyLhFQg";
+    public static String customsForgeAuthKey = "880ea6a14ea49e853634fbdc5015a024";
 
     public static int getDurationOfVideoInSeconds(String time)
     {

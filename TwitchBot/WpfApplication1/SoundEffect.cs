@@ -44,20 +44,23 @@ public class SoundEffect : INotifyPropertyChanged
             String temp = message.ToLower();
             if (temp.StartsWith(comList[i].input[0]))
             {
-                if (SFXstartTime == 0 || (Environment.TickCount >= SFXstartTime + (SFXOverallCoolDown * 1000)))
+                if (SFXstartTime == 0 || (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= SFXstartTime + (SFXOverallCoolDown * 1000)))
                 {
                     for (int j = 0; j < userCoolDowns.Count; j++)
                     {
                         if (userCoolDowns[b.username] != 0)
                         {
-                            if (Environment.TickCount >= userCoolDowns[b.username] + (sfxTimer * 1000))
+                            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= userCoolDowns[b.username] + (sfxTimer * 1000))
                             {
-                                if (b.points >= comList[i].costToUse)
+                                if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
                                 {
-                                    b.points -= comList[i].costToUse;
+                                    if (comList[i].costToUse != 0)
+                                    {
+                                        b.points -= comList[i].costToUse;
+                                    }
                                     comList[i].playSound();
-                                    userCoolDowns.Add(b.username, Environment.TickCount);
-                                    SFXstartTime = Environment.TickCount;
+                                    userCoolDowns.Add(b.username, DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                                    SFXstartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                 }
                                 return;
                             }
@@ -67,12 +70,15 @@ public class SoundEffect : INotifyPropertyChanged
                             }
                         }
                     }
-                    if (b.points >= comList[i].costToUse)
+                    if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
                     {
-                        b.points -= comList[i].costToUse;
+                        if (comList[i].costToUse != 0)
+                        {
+                            b.points -= comList[i].costToUse;
+                        }
                         comList[i].playSound();
-                        userCoolDowns.Add(b.username, Environment.TickCount);
-                        SFXstartTime = Environment.TickCount;
+                        userCoolDowns.Add(b.username, DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                        SFXstartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }
                     return;
                 }

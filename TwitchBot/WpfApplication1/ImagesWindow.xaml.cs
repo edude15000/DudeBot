@@ -9,20 +9,11 @@ namespace Images
     public partial class MainWindow : Window
     {
         int displaySeconds = 3;
-        private TwitchBot twitchBot;
-        private object bot;
-
         public MainWindow()
         {
             InitializeComponent();
         }
-
-        public MainWindow(TwitchBot twitchBot, object bot)
-        {
-            this.twitchBot = twitchBot;
-            this.bot = bot;
-        }
-
+        
         public void startUp(int displaySeconds)
         {
             this.displaySeconds = displaySeconds;

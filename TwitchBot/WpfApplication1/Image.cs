@@ -59,20 +59,23 @@ public class Image : INotifyPropertyChanged
             if (temp.StartsWith(comList[i].input[0]))
             {
                 if (imageStartTime == 0
-                        || (Environment.TickCount >= imageStartTime + (imageOverallCoolDown * 1000)))
+                        || (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= imageStartTime + (imageOverallCoolDown * 1000)))
                 {
                     for (int j = 0; j < userCoolDowns.Count; j++)
                     {
                         if (userCoolDowns[b.username] != 0)
                         {
-                            if (Environment.TickCount >= userCoolDowns[b.username] + (imageCoolDown * 1000))
+                            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= userCoolDowns[b.username] + (imageCoolDown * 1000))
                             {
-                                if (b.points >= comList[i].costToUse)
+                                if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
                                 {
-                                    b.points -= comList[i].costToUse;
+                                    if (comList[i].costToUse != 0)
+                                    {
+                                        b.points -= comList[i].costToUse;
+                                    }
                                     comList[i].playImage();
-                                    imageStartTime = Environment.TickCount;
-                                    userCoolDowns[b.username] = Environment.TickCount;
+                                    imageStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                                    userCoolDowns[b.username] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                 }
                                 return;
                             }
@@ -82,12 +85,15 @@ public class Image : INotifyPropertyChanged
                             }
                         }
                     }
-                    if (b.points >= comList[i].costToUse)
+                    if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
                     {
-                        b.points -= comList[i].costToUse;
+                        if (comList[i].costToUse != 0)
+                        {
+                            b.points -= comList[i].costToUse;
+                        }
                         comList[i].playImage();
-                        imageStartTime = Environment.TickCount;
-                        userCoolDowns[b.username] = Environment.TickCount;
+                        imageStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                        userCoolDowns[b.username] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }
                     return;
                 }

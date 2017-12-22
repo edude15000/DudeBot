@@ -103,3 +103,5 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\GeneratedInterna
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\DudeBot_MarkupCompile.lref
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\ImagesWindow.baml
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\ImagesWindow.g.cs
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\CustomsForgeLogin.baml
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\CustomsForgeLogin.g.cs

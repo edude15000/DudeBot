@@ -1,11 +1,17 @@
 ﻿using Google.Apis.YouTube.v3.Data;
+using IgnitionHelper.CDLC;
+using IgnitionHelper.Ignition;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 public class RequestSystem : INotifyPropertyChanged
 {
@@ -313,7 +319,301 @@ public class RequestSystem : INotifyPropertyChanged
         get => SongsPlayedTotal;
         set { SetField(ref SongsPlayedTotal, value, nameof(songsPlayedTotal)); }
     }
+    [JsonIgnore]
+    public Boolean CheckCustomsForge = false;
+    public Boolean checkCustomsForge
+    {
+        get => CheckCustomsForge;
+        set { SetField(ref CheckCustomsForge, value, nameof(checkCustomsForge)); }
+    }
+    [JsonIgnore]
+    public Boolean CheckCustomsForgeLead = false;
+    public Boolean checkCustomsForgeLead
+    {
+        get => CheckCustomsForgeLead;
+        set { SetField(ref CheckCustomsForgeLead, value, nameof(checkCustomsForgeLead)); }
+    }
+    [JsonIgnore]
+    public Boolean CheckCustomsForgeRhythm = false;
+    public Boolean checkCustomsForgeRhythm
+    {
+        get => CheckCustomsForgeRhythm;
+        set { SetField(ref CheckCustomsForgeRhythm, value, nameof(checkCustomsForgeRhythm)); }
+    }
+    [JsonIgnore]
+    public Boolean CheckCustomsForgeBass = false;
+    public Boolean checkCustomsForgeBass
+    {
+        get => CheckCustomsForgeBass;
+        set { SetField(ref CheckCustomsForgeBass, value, nameof(checkCustomsForgeBass)); }
+    }
+    [JsonIgnore]
+    public Boolean DisplayCFLink = false;
+    public Boolean displayCFLink
+    {
+        get => DisplayCFLink;
+        set { SetField(ref DisplayCFLink, value, nameof(displayCFLink)); }
+    }
+    [JsonIgnore]
+    public int LowestTuning = 0;
+    public int lowestTuning
+    {
+        get => LowestTuning;
+        set { SetField(ref LowestTuning, value, nameof(lowestTuning)); }
+    }
+    public String cfUserName = "";
+    public String cfPassword = "";
+    [JsonIgnore]
+    public String laravel_session = "";
+    [JsonIgnore]
+    public String community_pass_hash = "";
+    [JsonIgnore]
+    public String ipsconnect = "";
+    [JsonIgnore]
+    public IgnitionSearch search;
+    [JsonIgnore]
+    private static readonly Dictionary<int, string> tunings
+        = new Dictionary<int, string>
+        {
+            { 0, "All" },
+            { 1, "E_STANDARD" },
+            { 2, "DROP_D" },
+            { 3, "Eb_STANDARD" },
+            { 4, "Eb_DROP_Db" },
+            { 5, "D_STANDARD" },
+            { 6, "D_DROP_C" },
+            { 7, "Cs_STANDARD" },
+            { 8, "Cs_DROP_B" },
+            { 9, "C_STANDARD" },
+            { 10, "C_DROP_Bb" },
+            { 11, "B_STANDARD" },
+            { 12, "B_DROP_A" },
+            { 13, "Bb_STANDARD" },
+            { 14, "Bb_DROP_Ab" }
+        };
+    
+    public async Task<bool> getCookieFromCF()
+    {
+        if (!cfUserName.Equals("") && !cfPassword.Equals(""))
+        {
+            try
+            {
+                CookieContainer cookies = new CookieContainer();
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.CookieContainer = cookies;
+                HttpClient client = new HttpClient(handler);
+                var values = new Dictionary<string, string>
+                {
+                    { "ips_username", cfUserName },
+                    { "ips_password", cfPassword },
+                    { "rememberMe", "1" },
+                    { "auth_key", Utils.customsForgeAuthKey }
+                };
+                var content = new FormUrlEncodedContent(values);
+                String uri = "https://customsforge.com/index.php?app=core&module=global&section=login&do=process";
+                var response = await client.PostAsync(uri, content);
+                IEnumerable<Cookie> responseCookies = cookies.GetCookies(new Uri(uri)).Cast<Cookie>();
+                foreach (Cookie cookie in responseCookies)
+                {
+                    if (cookie.Name.Equals("-community-pass_hash"))
+                    {
+                        community_pass_hash = cookie.Value;
+                    }
+                    if (cookie.Name.StartsWith("ipsconnect_"))
+                    {
+                        ipsconnect = cookie.Name;
+                    }
+                    handler.CookieContainer.Add(cookie);
+                }
+                if (community_pass_hash.Equals(""))
+                {
+                    return false;
+                }
+                uri = "http://ignition.customsforge.com";
+                response = await client.GetAsync(uri);
+                responseCookies = cookies.GetCookies(new Uri(uri)).Cast<Cookie>();
+                foreach (Cookie cookie in responseCookies)
+                {
+                    if (cookie.Name.Equals("laravel_session"))
+                    {
+                        laravel_session = cookie.Value;
+                    }
+                }
+                if (laravel_session.Equals(""))
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+            }
+        }
+        return false;
+    }
 
+    public String formatSongTitle(String str)
+    {
+        str = str.Replace("\"", " ");
+        str = str.Replace("'", " ");
+        str = str.Replace(",", " ");
+        str = str.Replace(".", " ");
+        str = str.Replace(")", " ");
+        str = str.Replace("(", " ");
+        str = str.Replace("[", " ");
+        str = str.Replace("]", " ");
+        str = str.Replace(@"\", " ");
+        str = str.Replace("/", " ");
+        str = str.Replace("!", " ");
+        str = str.Replace("?", " ");
+        str = str.Replace("@", " ");
+        str = str.Replace("#", " ");
+        str = str.Replace("$", " ");
+        str = str.Replace("%", " ");
+        str = str.Replace("^", " ");
+        str = str.Replace("&", " ");
+        str = str.Replace("*", " ");
+        str = str.Replace("=", " ");
+        str = str.Replace("-", " ");
+        str = str.Replace("_", " ");
+        str = str.Replace("+", " ");
+        str = str.Replace("~", " ");
+        str = str.Replace("`", " ");
+        str = str.Replace(">", " ");
+        str = str.Replace("<", " ");
+        str = str.Replace("|", " ");
+        str = str.Replace(":", " ");
+        str = str.Replace(";", " ");
+        return str.ToLower();
+    }
+
+    public CDLCEntry getSongFromIgnition(String songname)
+    {
+        if (!laravel_session.Equals("") && !community_pass_hash.Equals("") && !ipsconnect.Equals(""))
+        {
+            try
+            {
+                search = new IgnitionSearch(cfUserName, laravel_session, community_pass_hash, ipsconnect);
+                songname = songname.Replace("-", "");
+                CDLCEntryList results = search.Search(0, 100, songname);
+
+                if (results.Count == 0)
+                {
+                    return null;
+                }
+                CDLCEntry entry = null;
+                if (results.Count == 1)
+                {
+                    entry = results.GetNewest();
+                    entry.noInfo = false;
+                }
+                else
+                {
+                    long dls = 0;
+                    foreach (CDLCEntry e in results)
+                    {
+                        if (formatSongTitle(songname).Contains(formatSongTitle(e.title)))
+                        {
+                            if (e.downloadCount >= dls)
+                            {
+                                dls = e.downloadCount;
+                                entry = e;
+                                e.noInfo = false;
+                            }
+                        }
+                    }
+                }
+                if (entry == null)
+                {
+                    entry = results.GetNewest();
+                    entry.noInfo = true;
+                }
+                if (CheckCustomsForgeLead && !entry.parts.HasFlag(Part.LEAD))
+                {
+                    return null;
+                }
+                if (CheckCustomsForgeRhythm && !entry.parts.HasFlag(Part.RHYTHM))
+                {
+                    return null;
+                }
+                if (CheckCustomsForgeBass && !entry.parts.HasFlag(Part.BASS))
+                {
+                    return null;
+                }
+                if (lowestTuning != 0)
+                {
+                    String tuning = entry.tuning.ToString();
+                    int currentSongTuningValue = 15;
+                    foreach (KeyValuePair<int, String> t in tunings)
+                    {
+                        if (t.Value.Equals(tuning))
+                        {
+                            currentSongTuningValue = t.Key;
+                            break;
+                        }
+                    }
+                    if (lowestTuning < currentSongTuningValue)
+                    {
+                        return null;
+                    }
+                }
+                return entry;
+            }
+            catch (Exception e)
+            {
+                Utils.errorReport(e);
+                Console.WriteLine(e.ToString());
+                CDLCEntry entry = new CDLCEntry();
+                entry.failed = true;
+                return entry;
+            }
+        }
+        Utils.errorReport(new Exception("Either CustomsForge Username or Password is incorrect!"));
+        return null;
+    }
+
+    public Boolean addSongToList(String song, String requestedby, String level, int place)
+    {
+        CDLCEntry entry = null;
+        Song s = new Song(song, requestedby, level, bot);
+        if (checkCustomsForge && cfUserName != "" && cfPassword != "")
+        {
+            try
+            {
+                entry = getSongFromIgnition(song);
+                if (entry == null)
+                {
+                    bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                    return false;
+                }
+                else if (entry.failed)
+                {
+                    bot.client.SendMessage("Could not connect to CustomsForge! :(");
+                }
+                else
+                {
+                    s.setEntry(entry, search);
+                    if (s.officialSong)
+                    {
+                        bot.client.SendMessage("NOTE: '" + song + "' is an official song and has been added to the queue. " + requestedby + " please check with " + bot.streamer + " to make sure they have the song!");
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+        if (place < 0)
+        {
+            songList.Add(s);
+        }
+        else
+        {
+            songList.Insert(place, s);
+        }
+        return true;
+    }
+    
     public int getNumRequests(String sender)
     {
         foreach (BotUser user in bot.users)
@@ -552,12 +852,14 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            songList.Add(new Song(song, requestedby, "$$$", bot));
+            addSongToList(song, requestedby, "$$$", -1);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            songList[0].level = "$$$";
-            songList.Add(new Song(song, requestedby, "$$$", bot));
+            if (addSongToList(song, requestedby, "$$$", -1))
+            {
+                songList[0].level = "$$$";
+            }
         }
         else
         {
@@ -565,12 +867,15 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 if (!songList[i].level.Equals("$$$"))
                 {
-                    songList.Insert(i, new Song(song, requestedby, "$$$", bot));
+                    if (addSongToList(song, requestedby, "$$$", i))
+                    {
+                        songList[0].level = "$$$";
+                    }
                     writeToCurrentSong(bot.channel, true);
                     return;
                 }
             }
-            songList.Add(new Song(song, requestedby, "$$$", bot));
+            addSongToList(song, requestedby, "$$$", -1);
         }
         writeToCurrentSong(bot.channel, true);
     }
@@ -1798,7 +2103,7 @@ public class RequestSystem : INotifyPropertyChanged
             doNotWriteToHistory = false;
             songList.RemoveAt(0);
             songsPlayedThisStream += 1;
-            SongsPlayedTotal += 1;
+            songsPlayedTotal += 1;
             return true;
         }
     }
@@ -1811,6 +2116,7 @@ public class RequestSystem : INotifyPropertyChanged
         }
         String song = songList[0].name;
         String requestedby = songList[0].requester;
+        String output = "";
         if (displayIfUserIsHere)
         {
             if (bot.checkIfUserIsHere(requestedby, channel))
@@ -1824,18 +2130,22 @@ public class RequestSystem : INotifyPropertyChanged
                                 + "' is being played next in " + bot.streamer + "'s stream!");
                     }
                 }
-                return "The next song is: '" + song + "' - " + requestedby + " HERE! :) ";
+                output = "The next song is: '" + song + "' - " + requestedby + " HERE! :)";
             }
             else
             {
-                return "The next song is: '" + song + "' - " + requestedby;
+                output = "The next song is: '" + song + "' - " + requestedby;
             }
         }
         else
         {
-            return "The next song is: '" + song + "' - " + requestedby;
+            output = "The next song is: '" + song + "' - " + requestedby;
         }
-
+        if (displayCFLink && !songList[0].customsForgeLink.Equals(""))
+        {
+            output += " CF LINK: " + songList[0].customsForgeLink;
+        }
+        return output;
     }
 
     public String getNumberOfSongs()
@@ -1847,10 +2157,12 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if ((Int32.Parse(getNumberOfSongs()) == 0))
         {
-            songList.Add(new Song(newSong, sender, "", bot));
-            bot.client.SendMessage("Since there are no songs in the song list, song '" + newSong
-                    + "' has been added to the song list, " + sender + "!");
-            writeToCurrentSong(channel, false);
+            if (addSongToList(newSong, sender, "", -1))
+            {
+                bot.client.SendMessage("Since there are no songs in the song list, song '" + newSong
+                        + "' has been added to the song list, " + sender + "!");
+                writeToCurrentSong(channel, false);
+            }
             return false;
         }
         songList[0].name = newSong;
@@ -1956,11 +2268,13 @@ public class RequestSystem : INotifyPropertyChanged
 
     public void addSong(String channel, String song, String requestedby)
     {
-        songList.Add(new Song(song, requestedby, "", bot));
-        bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
-                + requestedby + "!");
-        bot.addUserRequestAmount(requestedby, true);
-        writeToCurrentSong(channel, false);
+        if (addSongToList(song, requestedby, "", -1))
+        {
+            bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
+                    + requestedby + "!");
+            bot.addUserRequestAmount(requestedby, true);
+            writeToCurrentSong(channel, false);
+        }
     }
 
     public void insertSong(String song, String requestedby, int place)
@@ -1972,18 +2286,18 @@ public class RequestSystem : INotifyPropertyChanged
         }
         if (place >= songList.Count)
         {
-            songList.Add(new Song(song, requestedby, level, bot));
+            addSongToList(song, requestedby, "", -1);
         }
         else
         {
-            songList.Insert(place, new Song(song, requestedby, level, bot));
+            addSongToList(song, requestedby, "", place);
         }
         writeToCurrentSong(bot.channel, true);
     }
 
     public void addTop(String channel, String song, String requestedby)
     {
-        songList.Insert(0, new Song(song, requestedby, "$$$", bot));
+        addSongToList(song, requestedby, "$$$", 0);
         writeToCurrentSong(bot.channel, true);
     }
 
@@ -1991,12 +2305,14 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            songList.Insert(0, new Song(song, requestedby, "VIP", bot));
+            addSongToList(song, requestedby, "VIP", 0);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            songList[0].level = "VIP";
-            songList.Add(new Song(song, requestedby, "VIP", bot));
+            if (addSongToList(song, requestedby, "VIP", -1))
+            {
+                songList[0].level = "VIP";
+            }
         }
         else
         {
@@ -2005,12 +2321,12 @@ public class RequestSystem : INotifyPropertyChanged
                 Song s = songList[i];
                 if (s.level.Equals(""))
                 {
-                    songList.Insert(i, new Song(song, requestedby, "VIP", bot));
+                    addSongToList(song, requestedby, "VIP", i);
                     writeToCurrentSong(bot.channel, true);
                     return;
                 }
             }
-            songList.Add(new Song(song, requestedby, "VIP", bot));
+            addSongToList(song, requestedby, "VIP", -1);
         }
         writeToCurrentSong(bot.channel, true);
     }

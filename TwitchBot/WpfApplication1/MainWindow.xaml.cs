@@ -786,6 +786,11 @@ namespace WpfApplication1
             }
         }
 
+        public void customsForgeWindow(Object sender, RoutedEventArgs e)
+        {
+            App.customsForgeWindow = new CustomsForgeLogin.MainWindow(bot);
+        }
+
         public void openRockSniffer(Object sender, RoutedEventArgs e)
         {
             if (rockSnifferWindow != null)
@@ -975,7 +980,7 @@ namespace WpfApplication1
                 gambleCoolDown.IsEnabled = false;
             }
         }
-
+        
         public void minigame_changed(object sender, RoutedEventArgs e)
         {
             CheckBox cb = sender as CheckBox;
@@ -1525,6 +1530,10 @@ namespace WpfApplication1
                 Song newsong = new Song(editSong.Text, uName, oldsong.level, bot);
                 newsong.index = oldsong.index;
                 bot.requestSystem.songList[(int)songplace.Value - 1] = newsong;
+                if (bot.requestSystem.checkCustomsForge)
+                {
+                    bot.requestSystem.songList[(int)songplace.Value - 1].setEntry(bot.requestSystem.getSongFromIgnition(editSong.Text), bot.requestSystem.search);
+                }
                 editSong.Text = "";
                 editRequester.Text = "";
                 songplace.Value = 1;
@@ -1886,16 +1895,30 @@ namespace WpfApplication1
             Process.Start(link);
         }
 
-        private void clearHistory_Click(object sender, RoutedEventArgs e)
+        private async void clearHistory_Click(object sender, RoutedEventArgs e)
         {
-            bot.requestSystem.songHistory.Clear();
-            writeToConfig(null, null);
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+            MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Clear?", "Are you sure you want to clear your history? ;)", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
+            if (messageBoxResult == MessageDialogResult.Affirmative)
+            {
+                Thread.Sleep(1000);
+                bot.requestSystem.songHistory.Clear();
+                writeToConfig(null, null);
+            }
         }
         
-        private void clearFavorites_Click(object sender, RoutedEventArgs e)
+        private async void clearFavorites_Click(object sender, RoutedEventArgs e)
         {
-            bot.requestSystem.favSongs.Clear();
-            writeToConfig(null, null);
+            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+            var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+            MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Clear?", "Are you sure you want to clear your favorites?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
+            if (messageBoxResult == MessageDialogResult.Affirmative)
+            {
+                Thread.Sleep(1000);
+                bot.requestSystem.favSongs.Clear();
+                writeToConfig(null, null);
+            }
         }
     }
     [ValueConversion(typeof(String[]), typeof(string))]

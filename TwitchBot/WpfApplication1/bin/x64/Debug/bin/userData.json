@@ -127,6 +127,8 @@
     ]
   },
   "requestSystem": {
+    "cfUserName": "",
+    "cfPassword": "",
     "vipSongToggle": true,
     "mustFollowToRequest": true,
     "requestsTrigger": true,
@@ -137,36 +139,22 @@
     "ylrequests": true,
     "maxSongLength": false,
     "subOnlyRequests": "Only subs can request right now, $user!",
-    "formattedTotalTime": "00:43:56",
-    "songListLength": 7,
+    "formattedTotalTime": "00:00:00",
+    "songListLength": 0,
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
     "maxSongLengthInMinutes": 10,
-    "favSongs": [
-      "acdc - big balls",
-      "new song test",
-      "lala"
-    ],
+    "favSongs": [],
     "bannedKeywords": [
       "asdf",
       " qwer",
       " zxcv"
     ],
     "songHistory": [
-      "12/18/2017 15:07:35 - Subway Surfers - Launch Trailer",
-      "12/18/2017 14:56:21 - Zapatero: \"El PP habrá hecho poco pero el Gobierno Catalán ha roto toda la legalidad\" - Salvados",
-      "12/18/2017 14:50:44 - Zapatero: \"El PP habrá hecho poco pero el Gobierno Catalán ha roto toda la legalidad\" - Salvados",
-      "12/18/2017 14:45:05 - LIVE ACS Poli Timisoara - Dinamo Bucuresti [ Liga 1  Etapa a-22-a ] [ 18/12/2017 ]",
-      "12/18/2017 14:44:51 - qqr",
-      "12/18/2017 14:44:41 - c",
-      "12/18/2017 14:40:43 - Cardi B - Bodak Yellow [OFFICIAL MUSIC VIDEO]",
-      "12/17/2017 20:44:51 - lala",
-      "12/13/2017 21:09:54 - Beach House - PPP",
-      "12/13/2017 21:09:25 - オーバーロード ED  |  Overlord Ending - FULL",
-      "12/08/2017 16:15:35 - A Day With Lucy!",
-      "12/08/2017 16:17:47 - asdqwe",
-      "12/10/2017 17:16:51 - 【绝地求生QQQ】神仙会,Q叔四喷诛仙"
+      "12/21/2017 22:50:53 - Metallica - One [Official Music Video]",
+      "12/21/2017 22:50:47 - System Of A Down - B.Y.O.B.",
+      "12/21/2017 22:49:16 - Hotel California"
     ],
     "requestComm": {
       "output": null,
@@ -392,107 +380,14 @@
       "costToUse": 0,
       "overrideType": 0
     },
-    "songList": [
-      {
-        "name": "ll",
-        "requester": "edude1",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=cPAbx5kgCJo",
-        "youtubeTitle": "Auli'i Cravalho - How Far I'll Go",
-        "durationInSeconds": 156,
-        "index": 1,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:02:36"
-      },
-      {
-        "name": "a",
-        "requester": "edude15",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=TBfuGgBf5xw",
-        "youtubeTitle": "BUILDING A GLIDER SUIT - ARK SURVIVAL EVOLVED ABERRATION EXPANSION #6",
-        "durationInSeconds": 0,
-        "index": 2,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:00:00"
-      },
-      {
-        "name": "b",
-        "requester": "edud",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=PEGccV-NOm8",
-        "youtubeTitle": "Cardi B - Bodak Yellow [OFFICIAL MUSIC VIDEO]",
-        "durationInSeconds": 234,
-        "index": 3,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:03:54"
-      },
-      {
-        "name": "c",
-        "requester": "edud",
-        "level": "",
-        "youtubeLink": null,
-        "youtubeTitle": null,
-        "durationInSeconds": 0,
-        "index": 4,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": ""
-      },
-      {
-        "name": "hotel california",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=BYlb_MnOhBs",
-        "youtubeTitle": "Hotel California",
-        "durationInSeconds": 410,
-        "index": 5,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:06:50"
-      },
-      {
-        "name": "asdf",
-        "requester": "qq",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=furTlhb-990",
-        "youtubeTitle": "asdfmovie 1-10 (Complete Collection)",
-        "durationInSeconds": 1093,
-        "index": 6,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:18:13"
-      },
-      {
-        "name": "byob",
-        "requester": "edude15000",
-        "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=zUzd9KyIDrM",
-        "youtubeTitle": "System Of A Down - B.Y.O.B.",
-        "durationInSeconds": 263,
-        "index": 7,
-        "tuning": null,
-        "customsForgeLink": null,
-        "parts": null,
-        "dlcCreator": null,
-        "formattedDuration": "00:04:23"
-      }
-    ],
-    "songsPlayedTotal": 8
+    "songList": [],
+    "songsPlayedTotal": 12,
+    "checkCustomsForge": true,
+    "checkCustomsForgeLead": true,
+    "checkCustomsForgeRhythm": false,
+    "checkCustomsForgeBass": false,
+    "displayCFLink": true,
+    "lowestTuning": 0
   },
   "sfxCommandList": [
     {
@@ -1559,30 +1454,6 @@
       "volumeLevel": 100,
       "costToUse": 1,
       "overrideType": 0
-    },
-    {
-      "output": "test2",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test2"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0,
-      "overrideType": 0
-    },
-    {
-      "output": "$length wow",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test4"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 5,
-      "overrideType": 0
     }
   ],
   "commandList": [
@@ -2623,30 +2494,6 @@
       "toggle": true,
       "volumeLevel": 100,
       "costToUse": 1,
-      "overrideType": 0
-    },
-    {
-      "output": "test2",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test2"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0,
-      "overrideType": 0
-    },
-    {
-      "output": "$length wow",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test4"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 5,
       "overrideType": 0
     },
     {
@@ -4950,10 +4797,10 @@
       "sub": false,
       "mod": true,
       "gaveSpot": false,
-      "time": 271,
+      "time": 304,
       "subCredits": 0,
-      "points": 265,
-      "numRequests": 220,
+      "points": 298,
+      "numRequests": 232,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4995,9 +4842,9 @@
       "sub": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 498,
+      "time": 533,
       "subCredits": 0,
-      "points": 498,
+      "points": 533,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,

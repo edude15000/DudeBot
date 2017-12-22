@@ -1,4 +1,6 @@
 ﻿using Google.Apis.YouTube.v3.Data;
+using IgnitionHelper.CDLC;
+using IgnitionHelper.Ignition;
 using System;
 
 public class Song
@@ -15,6 +17,7 @@ public class Song
     public String parts { get; set; }
     public String dlcCreator { get; set; }
     public String formattedDuration { get; set; } = "";
+    public Boolean officialSong { get; set; } = false;
 
     public Song(String name, String requester, String level, TwitchBot bot)
     {
@@ -35,9 +38,28 @@ public class Song
             {
             }
         }
+        
+    }
 
-        // TODO : CF integration
-
+    public void setEntry(CDLCEntry entry, IgnitionSearch iS)
+    {
+        if (entry != null && !entry.noInfo)
+        {
+            try
+            {
+                customsForgeLink = iS.ResolveDownloadURL(entry.cdlcid).ToString();
+                dlcCreator = entry.creator;
+                tuning = entry.tuning.ToString();
+                parts = entry.parts.ToString();
+                if (entry.official)
+                {
+                    officialSong = true;
+                }
+            }
+            catch
+            {
+            }
+        }
     }
     
 }

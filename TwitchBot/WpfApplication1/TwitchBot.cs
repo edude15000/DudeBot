@@ -428,7 +428,6 @@ public class TwitchBot : INotifyPropertyChanged
         get => GuiButtonColor;
         set { SetField(ref GuiButtonColor, value, nameof(guiButtonColor)); }
     }
-
     public int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0, counter5 = 0;
     [JsonIgnore]
     public List<String> gameUser { get; set; } = new List<String>();
@@ -543,7 +542,7 @@ public class TwitchBot : INotifyPropertyChanged
         client.SendMessage("Just received " + e.BitsUsed + " bits from " + e.Username + ". That brings their total to " + e.TotalBitsUsed + " bits!");
     }
 
-    private void onNewFollower(object sender, OnNewFollowersDetectedArgs e) // TODO : TEST!
+    private void onNewFollower(object sender, OnNewFollowersDetectedArgs e)
     {
         if (followerMessage.Contains("$user"))
         {
@@ -635,19 +634,23 @@ public class TwitchBot : INotifyPropertyChanged
         }
     }
     
-    public void setClasses()
+    public async void setClasses()
     { // Resets classes within bot using bot as passed variables to request system and
       // quote, resets google
         requestSystem.bot = this;
         quote.bot = this;
         currency.users = users;
-        google = new GoogleHandler(spreadsheetId);
+        if (spreadsheetId != "")
+        {
+            google = new GoogleHandler(spreadsheetId);
+        }
         youtube = new YoutubeHandler();
         textAdventure.setUpText();
         requestSystem.songList = Utils.loadSongs();
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
         requestSystem.songListLength = requestSystem.songList.Count;
         requestSystem.songsPlayedThisStream = 0;
+        await requestSystem.getCookieFromCF();
     }
 
     public void resetAllCommands()
@@ -683,15 +686,15 @@ public class TwitchBot : INotifyPropertyChanged
             Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
         }
-        double start_time = Environment.TickCount;
+        double start_time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         int i = 0;
         while (true)
         {
             try
             {
-                if ((Environment.TickCount - start_time) >= (timerTotal * 60000))
+                if ((DateTimeOffset.Now.ToUnixTimeMilliseconds() - start_time) >= (timerTotal * 60000))
                 {
-                    start_time = Environment.TickCount;
+                    start_time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     if (timerCommandList[i].output.Equals("$songlist"))
                     {
                         try
@@ -813,7 +816,7 @@ public class TwitchBot : INotifyPropertyChanged
             client.SendMessage("Not enough people joined the adventure, at least 3 people are required to start an adventure. Try again later!");
         }
         startAdventure = false;
-        textAdventure.adventureStartTime = Environment.TickCount;
+        textAdventure.adventureStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         waitForAdventureCoolDown = true;
     }
 
@@ -944,7 +947,7 @@ public class TwitchBot : INotifyPropertyChanged
         String temp = message.ToLower();
         if (minigameTriggered && !timeFinished)
         {
-            if (gameStartTime + minigameTimer < Environment.TickCount)
+            if (gameStartTime + minigameTimer < DateTimeOffset.Now.ToUnixTimeMilliseconds())
             {
                 timeFinished = true;
             }
@@ -1722,7 +1725,7 @@ public class TwitchBot : INotifyPropertyChanged
                         requestSystem.addtopCOMMAND(requestSystem.addtopComm.input[0] + " " + requestSystem.lastSong,
                                 channel, sender);
                         requestSystem.songsPlayedThisStream -= 1;
-                        requestSystem.SongsPlayedTotal -= 1;
+                        requestSystem.songsPlayedTotal -= 1;
                     }
                     catch (Exception e1)
                     {
@@ -1979,7 +1982,7 @@ public class TwitchBot : INotifyPropertyChanged
                         client.SendMessage("The guessing game has started! You may only enter once! You have "
                                 + (minigameTimer / 1000) + " seconds to enter a guess by typing '!guess amount'");
                         minigameTriggered = true;
-                        gameStartTime = Environment.TickCount;
+                        gameStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                         timeFinished = false;
                         return;
                     }
@@ -2147,13 +2150,13 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 if (waitForAdventureCoolDown)
                 {
-                    if (textAdventure.adventureStartTime + (textAdventure.adventureCoolDown * 60000) <= Environment.TickCount)
+                    if (textAdventure.adventureStartTime + (textAdventure.adventureCoolDown * 60000) <= DateTimeOffset.Now.ToUnixTimeMilliseconds())
                     {
                         waitForAdventureCoolDown = false;
                     }
                     else
                     {
-                        double timeLeft = Math.Abs(Math.Ceiling((Double)((Environment.TickCount
+                        double timeLeft = Math.Abs(Math.Ceiling((Double)((DateTimeOffset.Now.ToUnixTimeMilliseconds()
                                 - (textAdventure.adventureStartTime + (textAdventure.adventureCoolDown * 60000)))
                                 / 60000)));
                         if (timeLeft == 0.0)
@@ -2532,7 +2535,7 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Equals("!edudebot", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!bot", StringComparison.InvariantCultureIgnoreCase)
                 || message.Equals("!edude15000", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!dudebot", StringComparison.InvariantCultureIgnoreCase))
         {
-            client.SendMessage("Dudebot is a free bot programmed by Edude15000 using PircBot. "
+            client.SendMessage("Dudebot is a free bot programmed by Edude15000. "
                     + "If you would like to use Dudebot, the download link is here: http://dudebot.webs.com/ Make sure to join the DudeBot Discord also: https://discord.gg/NFehx5h");
         }
         if (message.Equals("!version", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!botversion", StringComparison.InvariantCultureIgnoreCase)
@@ -2742,9 +2745,12 @@ public class TwitchBot : INotifyPropertyChanged
                     && checkUserLevelCustomCommands(sender, userCommandList[i].level, channel))
             {
                 BotUser b = getBotUser(sender);
-                if (b.points >= userCommandList[i].costToUse)
+                if (userCommandList[i].costToUse == 0 || b.points >= userCommandList[i].costToUse)
                 {
-                    b.points -= userCommandList[i].costToUse;
+                    if (userCommandList[i].costToUse != 0)
+                    {
+                        b.points -= userCommandList[i].costToUse;
+                    }
                     client.SendMessage(userVariables(userCommandList[i].output, channel, sender,
                         Utils.getFollowingText(message), message, false));
                 }
@@ -2959,16 +2965,13 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (response.Contains("$uptime"))
         {
-            String info = Utils.callURL("https://api.twitch.tv/kraken/streams/" + streamer);
+            String info = Utils.callURL("https://api.twitch.tv/kraken/streams/" + "bloomerforthewin"); // TODO
             var a = JsonConvert.DeserializeObject<dynamic>(info)["stream"];
             try
             {
-                String name = a["created_at"];
-                DateTime d = Convert.ToDateTime(name);
-                String str = d.ToString("MM/dd/yyyy");
-                long millisFromEpoch = (long)(d - new DateTime(1970, 1, 1)).TotalMilliseconds;
-                response = response.Replace("$uptime",
-                                            Utils.timeConversion((int)((Environment.TickCount - millisFromEpoch) / 1000)));
+                String start = a["created_at"];
+                TimeSpan diff = DateTime.Now.ToUniversalTime() - Convert.ToDateTime(start);
+                response = response.Replace("$uptime", Utils.timeConversion((int)diff.TotalSeconds));
             }
             catch (Exception)
             {
@@ -2991,7 +2994,7 @@ public class TwitchBot : INotifyPropertyChanged
                     String created = a["created_at"];
                     DateTime d = Convert.ToDateTime(created);
                     long millisFromEpoch = (long)(d - new DateTime(1970, 1, 1)).TotalMilliseconds;
-                    long diff = ((Environment.TickCount - millisFromEpoch) / 1000);
+                    long diff = ((DateTimeOffset.Now.ToUnixTimeMilliseconds() - millisFromEpoch) / 1000);
                     response = response.Replace("$following", Utils.timeConversionYears(diff));
                 }
                 catch (Exception)
@@ -3039,46 +3042,53 @@ public class TwitchBot : INotifyPropertyChanged
         {
             response = response.Replace("$lifetimeplays", requestSystem.songsPlayedTotal.ToString());
         }
-        if (response.Contains("$userrank"))
+        BotUser b = getBotUser(sender);
+        if (b != null)
         {
-            response = response.Replace("$userrank", getBotUser(sender).rank);
+            if (response.Contains("$userrank"))
+            {
+                response = response.Replace("$userrank", getBotUser(sender).rank);
+            }
+            if (response.Contains("$usertime"))
+            {
+                response = response.Replace("$usertime", Utils.timeConversion(getBotUser(sender).time));
+            }
+            if (response.Contains("$usersubcredits"))
+            {
+                response = response.Replace("$usersubcredits", getBotUser(sender).subCredits.ToString());
+            }
+            if (response.Contains("$userpoints"))
+            {
+                response = response.Replace("$userpoints", getBotUser(sender).points.ToString());
+            }
+            if (response.Contains("$usernumrequests"))
+            {
+                response = response.Replace("$usernumrequests", getBotUser(sender).numRequests.ToString());
+            }
+            if (response.Contains("$usermonths"))
+            {
+                response = response.Replace("$usermonths", getBotUser(sender).months.ToString());
+            }
         }
-        if (response.Contains("$usertime"))
+        if (requestSystem.songList.Count != 0)
         {
-            response = response.Replace("$usertime", Utils.timeConversion(getBotUser(sender).time));
-        }
-        if (response.Contains("$usersubcredits"))
-        {
-            response = response.Replace("$usersubcredits", getBotUser(sender).subCredits.ToString());
-        }
-        if (response.Contains("$userpoints"))
-        {
-            response = response.Replace("$userpoints", getBotUser(sender).points.ToString());
-        }
-        if (response.Contains("$usernumrequests"))
-        {
-            response = response.Replace("$usernumrequests", getBotUser(sender).numRequests.ToString());
-        }
-        if (response.Contains("$usermonths"))
-        {
-            response = response.Replace("$usermonths", getBotUser(sender).months.ToString());
-        }
-        Song s = requestSystem.songList[0];
-        if (response.Contains("$currentsonglevel") && s != null)
-        {
-            response = response.Replace("$currentsonglevel", s.level);
-        }
-        if (response.Contains("$currentsongyoutubelink") && s != null)
-        {
-            response = response.Replace("$currentsongyoutubelink", s.youtubeLink);
-        }
-        if (response.Contains("$currentsongyoutubetitle") && s != null)
-        {
-            response = response.Replace("$currentsongyoutubetitle", s.youtubeTitle);
-        }
-        if (response.Contains("$currentsongduration") && s != null)
-        {
-            response = response.Replace("$currentsongduration", s.formattedDuration);
+            Song s = requestSystem.songList[0];
+            if (response.Contains("$currentsonglevel") && s != null)
+            {
+                response = response.Replace("$currentsonglevel", s.level);
+            }
+            if (response.Contains("$currentsongyoutubelink") && s != null)
+            {
+                response = response.Replace("$currentsongyoutubelink", s.youtubeLink);
+            }
+            if (response.Contains("$currentsongyoutubetitle") && s != null)
+            {
+                response = response.Replace("$currentsongyoutubetitle", s.youtubeTitle);
+            }
+            if (response.Contains("$currentsongduration") && s != null)
+            {
+                response = response.Replace("$currentsongduration", s.formattedDuration);
+            }
         }
         return response;
     }

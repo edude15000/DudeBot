@@ -195,6 +195,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CDLCEntry.cs" />
+    <Compile Include="CDLCEntryList.cs" />
+    <Compile Include="CDLCFlags.cs" />
+    <Compile Include="CustomsForgeLogin.xaml.cs">
+      <DependentUpon>CustomsForgeLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IgnitionSearch.cs" />
     <Compile Include="ImagesWindow.xaml.cs">
       <DependentUpon>ImagesWindow.xaml</DependentUpon>
     </Compile>
@@ -206,6 +213,10 @@
     <Compile Include="TwitchBot.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="YoutubeHandler.cs" />
+    <Page Include="CustomsForgeLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImagesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
