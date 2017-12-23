@@ -19,12 +19,16 @@ public class Song
     public String dlcCreator { get; set; } = "";
     public String formattedDuration { get; set; } = "";
     public Boolean officialSong { get; set; } = false;
+    public String cfSongName { get; set; } = "";
+    public String cfSongArtist { get; set; } = "";
+    public String cfAlbum { get; set; } = "";
 
     public Song(String name, String requester, String level, TwitchBot bot)
     {
         this.name = name;
         this.requester = requester;
         this.level = level;
+        cfSongArtist = name;
         if (youtubeLink == null || youtubeLink == "")
         {
             try
@@ -56,6 +60,10 @@ public class Song
                 {
                     officialSong = true;
                 }
+                name = entry.artist + " " + entry.title;
+                cfSongName = entry.title;
+                cfSongArtist = entry.artist;
+                cfAlbum = entry.album;
             }
             catch
             {

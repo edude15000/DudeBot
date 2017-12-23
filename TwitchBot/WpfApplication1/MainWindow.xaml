@@ -182,10 +182,12 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="30*"/>
+                                    <ColumnDefinition Width="8*"/>
                                     <ColumnDefinition Width="20*"/>
                                     <ColumnDefinition Width="35*" />
                                 </Grid.ColumnDefinitions>
@@ -220,7 +222,15 @@
                                 <CheckBox x:Name="songduration" FontSize="14" Checked="songduration_changed" Unchecked="songduration_changed" Grid.Column="1" Grid.Row="10" IsChecked="{Binding requestSystem.maxSongLength, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBlock VerticalAlignment="Center" FontSize="14" Text="Limit (minutes): " Grid.Row="11" Grid.Column="0" HorizontalAlignment="Right"/>
                                 <Controls:NumericUpDown x:Name="songdurationlimit" Minimum = "1" Maximum = "59" Interval = "1" Grid.Column="1" Grid.Row="11" HorizontalAlignment="Left" Value="{Binding requestSystem.maxSongLengthInMinutes, UpdateSourceTrigger=PropertyChanged}" />
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO4" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="4"  />
+
+                                <TextBlock VerticalAlignment="Center" FontSize="14" Text="Default song duration: " Grid.Row="12" Grid.Column="0" HorizontalAlignment="Right"/>
+                                <Controls:NumericUpDown x:Name="defaultMinsSong" Minimum = "1" Maximum = "10" Interval = "1" Grid.Column="1" Grid.Row="12" HorizontalAlignment="Left" Value="{Binding requestSystem.defaultMinsSong, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock VerticalAlignment="Center" FontSize="14" Text="Only estimate requesters in chat: " Grid.Column="0" Grid.Row="13" HorizontalAlignment="Right" />
+                                <CheckBox x:Name="inChatEstimateTime" FontSize="14" Grid.Column="1" Grid.Row="13" IsChecked="{Binding requestSystem.inChatEstimateTime, UpdateSourceTrigger=PropertyChanged}" />
+
+
+                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO4" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="4"  />
 
                             </Grid>
                         </ScrollViewer>
@@ -686,8 +696,9 @@
                                             <DataTemplate >
                                                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" >
                                                     <TextBlock.Text>
-                                                        <MultiBinding StringFormat="{}{0} {1} {2}">
-                                                            <Binding Path="name" UpdateSourceTrigger="PropertyChanged" />
+                                                        <MultiBinding StringFormat="{}{0} {1} &#x0a;{2} {3}">
+                                                            <Binding Path="cfSongArtist" UpdateSourceTrigger="PropertyChanged" />
+                                                            <Binding Path="cfSongName" UpdateSourceTrigger="PropertyChanged" />
                                                             <Binding Path="requesterIsHere" UpdateSourceTrigger="PropertyChanged" />
                                                             <Binding Path="tuning" UpdateSourceTrigger="PropertyChanged" />
                                                         </MultiBinding>
@@ -1772,6 +1783,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="33*"/>
@@ -1786,19 +1798,22 @@
 
                         <TextBlock HorizontalAlignment="Right" FontSize="12" Text="CustomsForge link on next song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
                         <CheckBox x:Name="displayCFLink" FontSize="14" Grid.Column="1" Grid.Row="3" IsChecked="{Binding requestSystem.displayCFLink, UpdateSourceTrigger=PropertyChanged}"/>
-                        
+
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Dynamic Difficulty: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
+                        <CheckBox x:Name="requireDD" FontSize="14" Grid.Column="1" Grid.Row="4" IsChecked="{Binding requestSystem.requireDD, UpdateSourceTrigger=PropertyChanged}"/>
+
                         <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Check CustomsForge for requests: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
                         <CheckBox x:Name="checkCustomsForge" FontSize="14" Grid.Column="1" Grid.Row="2" IsChecked="{Binding requestSystem.checkCustomsForge, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Lead Guitar: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
-                        <CheckBox x:Name="checkCustomsForgeLead" FontSize="14" Grid.Column="1" Grid.Row="4" IsChecked="{Binding requestSystem.checkCustomsForgeLead, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Rhythm Guitar: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
-                        <CheckBox x:Name="checkCustomsForgeRhythm" FontSize="14" Grid.Column="1" Grid.Row="5" IsChecked="{Binding requestSystem.checkCustomsForgeRhythm, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Bass Guitar: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
-                        <CheckBox x:Name="checkCustomsForgeBass" FontSize="14" Grid.Column="1" Grid.Row="6" IsChecked="{Binding requestSystem.checkCustomsForgeBass, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Lead Guitar: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" />
+                        <CheckBox x:Name="checkCustomsForgeLead" FontSize="14" Grid.Column="1" Grid.Row="5" IsChecked="{Binding requestSystem.checkCustomsForgeLead, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Rhythm Guitar: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" />
+                        <CheckBox x:Name="checkCustomsForgeRhythm" FontSize="14" Grid.Column="1" Grid.Row="6" IsChecked="{Binding requestSystem.checkCustomsForgeRhythm, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Bass Guitar: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
+                        <CheckBox x:Name="checkCustomsForgeBass" FontSize="14" Grid.Column="1" Grid.Row="7" IsChecked="{Binding requestSystem.checkCustomsForgeBass, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Tunings: Between E_STANDARD and " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
-                        <ComboBox x:Name="lowestTuning"  MaxDropDownHeight="200" Grid.Row="7" Grid.Column="1" SelectedIndex="{Binding requestSystem.lowestTuning, UpdateSourceTrigger=PropertyChanged}" >
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Tunings: Between E_STANDARD and " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
+                        <ComboBox x:Name="lowestTuning"  MaxDropDownHeight="200" Grid.Row="8" Grid.Column="1" SelectedIndex="{Binding requestSystem.lowestTuning, UpdateSourceTrigger=PropertyChanged}" >
                             <ComboBoxItem>All Tunings</ComboBoxItem>
                             <ComboBoxItem>E_STANDARD</ComboBoxItem>
                             <ComboBoxItem>DROP_D</ComboBoxItem>
@@ -1816,7 +1831,7 @@
                             <ComboBoxItem>Bb_DROP_Ab</ComboBoxItem>
                         </ComboBox>
                         
-                        <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4"  />
+                        <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4"  />
                         
                     </Grid>
                 </ScrollViewer>

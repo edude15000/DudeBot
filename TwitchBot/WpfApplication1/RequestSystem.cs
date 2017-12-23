@@ -361,6 +361,27 @@ public class RequestSystem : INotifyPropertyChanged
         get => LowestTuning;
         set { SetField(ref LowestTuning, value, nameof(lowestTuning)); }
     }
+    [JsonIgnore]
+    public Boolean RequireDD = false;
+    public Boolean requireDD
+    {
+        get => RequireDD;
+        set { SetField(ref RequireDD, value, nameof(requireDD)); }
+    }
+    [JsonIgnore]
+    public int DefaultMinsSong = 4;
+    public int defaultMinsSong
+    {
+        get => DefaultMinsSong;
+        set { SetField(ref DefaultMinsSong, value, nameof(defaultMinsSong)); }
+    }
+    [JsonIgnore]
+    public Boolean InChatEstimateTime = false;
+    public Boolean inChatEstimateTime
+    {
+        get => InChatEstimateTime;
+        set { SetField(ref InChatEstimateTime, value, nameof(inChatEstimateTime)); }
+    }
     public String cfUserName = "";
     public String cfPassword = "";
     [JsonIgnore]
@@ -495,8 +516,11 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 search = new IgnitionSearch(cfUserName, laravel_session, community_pass_hash, ipsconnect);
                 songname = songname.Replace("-", "");
+                if (songname.ToLower().StartsWith("any "))
+                {
+                    songname = songname.Substring(3).Trim();
+                }
                 CDLCEntryList results = search.Search(0, 100, songname);
-
                 if (results.Count == 0)
                 {
                     return null;
@@ -509,52 +533,39 @@ public class RequestSystem : INotifyPropertyChanged
                 }
                 else
                 {
-                    long dls = 0;
+                    if (results.data.First().artist.Equals(songname, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        entry = results.data.First();
+                        entry.noInfo = true;
+                        return entry;
+                    }
+                    Dictionary<CDLCEntry, int> entries = new Dictionary<CDLCEntry, int>();
                     foreach (CDLCEntry e in results)
                     {
-                        if (formatSongTitle(songname).Contains(formatSongTitle(e.title)))
+                        entries.Add(e, Utils.LevenshteinDistance(formatSongTitle(songname), formatSongTitle(e.artist + " " + e.title)));
+                    }
+                    var sortedDict = entries.OrderBy(x => x.Value).Select(x => x.Key);
+                    int lowestChange = entries[sortedDict.First()];
+                    List<CDLCEntry> goodSongs = new List<CDLCEntry>();
+                    foreach (KeyValuePair<CDLCEntry, int> en in entries)
+                    {
+                        if (en.Value == lowestChange)
                         {
-                            if (e.downloadCount >= dls)
-                            {
-                                dls = e.downloadCount;
-                                entry = e;
-                                e.noInfo = false;
-                            }
+                            goodSongs.Add(en.Key);
                         }
                     }
-                }
-                if (entry == null)
-                {
-                    entry = results.GetNewest();
-                    entry.noInfo = true;
-                }
-                if (CheckCustomsForgeLead && !entry.parts.HasFlag(Part.LEAD))
-                {
-                    return null;
-                }
-                if (CheckCustomsForgeRhythm && !entry.parts.HasFlag(Part.RHYTHM))
-                {
-                    return null;
-                }
-                if (CheckCustomsForgeBass && !entry.parts.HasFlag(Part.BASS))
-                {
-                    return null;
-                }
-                if (lowestTuning != 0)
-                {
-                    String tuning = entry.tuning.ToString();
-                    int currentSongTuningValue = 15;
-                    foreach (KeyValuePair<int, String> t in tunings)
+                    long dls = -1;
+                    foreach (CDLCEntry e in goodSongs)
                     {
-                        if (t.Value.Equals(tuning))
-                        {
-                            currentSongTuningValue = t.Key;
+                        if (!checkEntryForInfo(entry)) {
                             break;
                         }
-                    }
-                    if (lowestTuning < currentSongTuningValue)
-                    {
-                        return null;
+                        if (e.downloadCount > dls)
+                        {
+                            dls = e.downloadCount;
+                            entry = e;
+                            entry.noInfo = false;
+                        }
                     }
                 }
                 return entry;
@@ -570,6 +581,45 @@ public class RequestSystem : INotifyPropertyChanged
         }
         Utils.errorReport(new Exception("Either CustomsForge Username or Password is incorrect!"));
         return null;
+    }
+
+    public Boolean checkEntryForInfo(CDLCEntry entry)
+    {
+        if (CheckCustomsForgeLead && !entry.parts.HasFlag(Part.LEAD))
+        {
+            return false;
+        }
+        if (CheckCustomsForgeRhythm && !entry.parts.HasFlag(Part.RHYTHM))
+        {
+            return false;
+        }
+        if (CheckCustomsForgeBass && !entry.parts.HasFlag(Part.BASS))
+        {
+            return false;
+        }
+        if (lowestTuning != 0)
+        {
+            String tuning = entry.tuning.ToString();
+            int currentSongTuningValue = 15;
+            foreach (KeyValuePair<int, String> t in tunings)
+            {
+                if (t.Value.Equals(tuning))
+                {
+                    currentSongTuningValue = t.Key;
+                    break;
+                }
+            }
+            if (lowestTuning < currentSongTuningValue)
+            {
+                return false;
+            }
+        }
+        if (requireDD && !entry.dd)
+        {
+            return false;
+        }
+        // TODO : DD
+        return true;
     }
 
     public Boolean addSongToList(String song, String requestedby, String level, int place)
@@ -717,10 +767,10 @@ public class RequestSystem : INotifyPropertyChanged
         int totalSeconds = 0;
         for (int i = 0; i < position - 1; i++)
         {
-            if (!songList[i].requesterIsHere.Equals("")) {
+            if (!inChatEstimateTime || (inChatEstimateTime && !songList[i].requesterIsHere.Equals(""))) {
                 if (songList[i].durationInSeconds == 0)
                 {
-                    totalSeconds += 240;
+                    totalSeconds += (60 * defaultMinsSong);
                 }
                 else
                 {
@@ -1218,10 +1268,10 @@ public class RequestSystem : INotifyPropertyChanged
         int totalSeconds = 0;
         for (int i = 0; i < songList.Count; i++)
         {
-            if (!songList[i].requesterIsHere.Equals("")) {
+            if (!inChatEstimateTime || (inChatEstimateTime && !songList[i].requesterIsHere.Equals(""))) {
                 if (songList[i].durationInSeconds == 0)
                 {
-                    totalSeconds += 240;
+                    totalSeconds += (60 * defaultMinsSong);
                 }
                 else
                 {
@@ -2126,7 +2176,8 @@ public class RequestSystem : INotifyPropertyChanged
                 songList[i].requesterIsHere = "";
                 foreach (String s in Utils.getAllViewers(bot.streamer))
                 {
-                    if (s.Equals(songList[i].requester, StringComparison.InvariantCultureIgnoreCase))
+                    if (s.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) 
+                        || s.Equals(songList[i].requester, StringComparison.InvariantCultureIgnoreCase))
                     {
                         songList[i].requesterIsHere = "[IN CHAT]";
                         break;
