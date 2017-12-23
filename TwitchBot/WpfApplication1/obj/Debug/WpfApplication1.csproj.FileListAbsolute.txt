@@ -204,3 +204,9 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\WpfApplication1.cspr
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\WpfApplication1.csproj.CoreCompileInputs.cache
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\DudeBot.exe
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\DudeBot.pdb
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\CustomsForgeLogin.baml
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\ImagesWindow.baml
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\CustomsForgeLogin.g.cs
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\ImagesWindow.g.cs
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\Debug\DudeBot_MarkupCompile.lref

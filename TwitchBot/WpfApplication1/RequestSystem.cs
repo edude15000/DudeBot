@@ -717,13 +717,15 @@ public class RequestSystem : INotifyPropertyChanged
         int totalSeconds = 0;
         for (int i = 0; i < position - 1; i++)
         {
-            if (songList[i].durationInSeconds == 0)
-            {
-                totalSeconds += 240;
-            }
-            else
-            {
-                totalSeconds += songList[i].durationInSeconds;
+            if (!songList[i].requesterIsHere.Equals("")) {
+                if (songList[i].durationInSeconds == 0)
+                {
+                    totalSeconds += 240;
+                }
+                else
+                {
+                    totalSeconds += songList[i].durationInSeconds;
+                }
             }
         }
         return Utils.timeConversion(totalSeconds);
@@ -863,6 +865,10 @@ public class RequestSystem : INotifyPropertyChanged
         }
         else
         {
+            if (songList[0].level.Equals(""))
+            {
+                songList[0].level = "$$$";
+            }
             for (int i = 1; i < songList.Count; i++)
             {
                 if (!songList[i].level.Equals("$$$"))
@@ -997,9 +1003,9 @@ public class RequestSystem : INotifyPropertyChanged
                                 {
                                     if (mustFollowToRequest && !Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users) && !sender.Equals(Utils.botMaker))
                                     {
-                                        bot.checkAtBeginningAsync();
+                                        bot.checkAtBeginningAsync(false);
                                         BotUser u = bot.getBotUser(sender);
-                                        if (u == null || !u.follower)
+                                        if (u != null && !u.follower)
                                         {
                                             check = false;
                                         }
@@ -1180,6 +1186,7 @@ public class RequestSystem : INotifyPropertyChanged
 
     public void writeToCurrentSong(String channel, Boolean nextCom)
     {
+        setSongsIfUserIsHere();
         setIndexesForSongs();
         StreamWriter output;
         output = new StreamWriter(Utils.currentSongFile, false);
@@ -1188,7 +1195,7 @@ public class RequestSystem : INotifyPropertyChanged
         output = new StreamWriter(Utils.currentRequesterFile, false);
         output.Write(getCurrentSongRequester(channel));
         output.Close();
-        if (bot.spreadsheetId != null)
+        if (bot.google != null && bot.spreadsheetId != null)
         {
             bot.google.writeToGoogleSheets(nextCom, songList, songHistory);
         }
@@ -1211,13 +1218,15 @@ public class RequestSystem : INotifyPropertyChanged
         int totalSeconds = 0;
         for (int i = 0; i < songList.Count; i++)
         {
-            if (songList[i].durationInSeconds == 0)
-            {
-                totalSeconds += 240;
-            }
-            else
-            {
-                totalSeconds += songList[i].durationInSeconds;
+            if (!songList[i].requesterIsHere.Equals("")) {
+                if (songList[i].durationInSeconds == 0)
+                {
+                    totalSeconds += 240;
+                }
+                else
+                {
+                    totalSeconds += songList[i].durationInSeconds;
+                }
             }
         }
         return TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss");
@@ -1877,9 +1886,9 @@ public class RequestSystem : INotifyPropertyChanged
                                     {
                                         if (mustFollowToRequest && !Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users) && !sender.Equals(Utils.botMaker))
                                         {
-                                            bot.checkAtBeginningAsync();
+                                            bot.checkAtBeginningAsync(false);
                                             BotUser u = bot.getBotUser(sender);
-                                            if (u == null || !u.follower)
+                                            if (u != null && !u.follower)
                                             { 
                                                 check = false;
                                             }
@@ -2108,6 +2117,25 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
+    public void setSongsIfUserIsHere()
+    {
+        if (songList.Count > 1)
+        {
+            for (int i = 1; i < songList.Count; i++)
+            {
+                songList[i].requesterIsHere = "";
+                foreach (String s in Utils.getAllViewers(bot.streamer))
+                {
+                    if (s.Equals(songList[i].requester, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        songList[i].requesterIsHere = "[IN CHAT]";
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     public String getNextSong(String channel)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
@@ -2316,6 +2344,10 @@ public class RequestSystem : INotifyPropertyChanged
         }
         else
         {
+            if (songList[0].level.Equals(""))
+            {
+                songList[0].level = "VIP";
+            }
             for (int i = 1; i < songList.Count; i++)
             {
                 Song s = songList[i];

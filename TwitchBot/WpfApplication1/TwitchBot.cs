@@ -13,6 +13,7 @@ using TwitchLib.Events.PubSub;
 using WMPLib;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TwitchLib.Interfaces;
 
 public class TwitchBot : INotifyPropertyChanged
 {
@@ -49,7 +50,7 @@ public class TwitchBot : INotifyPropertyChanged
     [JsonIgnore]
     ConnectionCredentials credentials;
     [JsonIgnore]
-    public YoutubeHandler youtube;
+    public YoutubeHandler youtube = new YoutubeHandler();
     [JsonIgnore]
     public GoogleHandler google;
     [JsonIgnore]
@@ -85,6 +86,7 @@ public class TwitchBot : INotifyPropertyChanged
         get => BotName;
         set { SetField(ref BotName, value, nameof(botName)); }
     }
+    public Boolean reloadedAllFollowers { get; set; } = false;
     [JsonIgnore]
     public String FollowerMessage = "$user just followed the stream! Thank you!";
     public String followerMessage
@@ -254,7 +256,7 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref OpenRockSnifferOnStartUp, value, nameof(openRockSnifferOnStartUp)); }
     }
     [JsonIgnore]
-    public TextAdventure _TextAdventure;
+    public TextAdventure _TextAdventure = new TextAdventure();
     public TextAdventure textAdventure
     {
         get => _TextAdventure;
@@ -268,28 +270,28 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref _Currency, value, nameof(currency)); }
     }
     [JsonIgnore]
-    public Image _Image;
+    public Image _Image = new Image();
     public Image image
     {
         get => _Image;
         set { SetField(ref _Image, value, nameof(image)); }
     }
     [JsonIgnore]
-    public SoundEffect _SoundEffect;
+    public SoundEffect _SoundEffect = new SoundEffect();
     public SoundEffect soundEffect
     {
         get => _SoundEffect;
         set { SetField(ref _SoundEffect, value, nameof(soundEffect)); }
     }
     [JsonIgnore]
-    public Quote _quote;
+    public Quote _quote = new Quote();
     public Quote quote
     {
         get => _quote;
         set { SetField(ref _quote, value, nameof(quote)); }
     }
     [JsonIgnore]
-    public RequestSystem _RequestSystem;
+    public RequestSystem _RequestSystem = new RequestSystem();
     public RequestSystem requestSystem
     {
         get => _RequestSystem;
@@ -441,10 +443,7 @@ public class TwitchBot : INotifyPropertyChanged
     { // Starts bot up, calls necessary threads and methods
         try
         {
-            if (channel.Contains("#"))
-            {
-                channel = channel.Replace("#", "");
-            }
+            channel = streamer; 
             credentials = new ConnectionCredentials(botName, oauth);
             client = new TwitchClient(credentials, channel);
             api = new TwitchAPI(Utils.twitchClientID);
@@ -464,7 +463,15 @@ public class TwitchBot : INotifyPropertyChanged
             client.OnReSubscriber += onReSubscriber;
             client.OverrideBeingHostedCheck = true;
             client.OnBeingHosted += onBeingHosted;
-            checkAtBeginningAsync();
+            if (!reloadedAllFollowers)
+            {
+                checkAtBeginningAsync(true);
+                reloadedAllFollowers = true;
+            }
+            else
+            {
+                checkAtBeginningAsync(false);
+            }
             setClasses();
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
             textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
@@ -552,43 +559,81 @@ public class TwitchBot : INotifyPropertyChanged
         {
             client.SendMessage(followerMessage);
         }
+        foreach (IFollow follower in e.NewFollowers)
+        {
+            BotUser b = getBotUser(follower.User.Name);
+            if (b != null)
+            {
+                b.follower = true;
+            }
+            else
+            {
+                users.Add(new BotUser(follower.User.Name, 0, false, true, false, 0, 0, null, 0, 0, 0));
+            }
+        }
     }
 
-    public async void checkAtBeginningAsync() // TODO : FIX!
+    public async void checkAtBeginningAsync(Boolean onstart)
     {
-        /*
-        var allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync(channel);
-        var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync(channel);
-        foreach (BotUser user in users)
+        String channel_id = "";
+        String info = Utils.callURL("https://api.twitch.tv/kraken/channels/" + channel);
+        var a = JsonConvert.DeserializeObject<dynamic>(info);
+        try
         {
-            Boolean follows = false, isSubbed = false;
-            if (user.follower || user.sub)
+            channel_id = a["_id"];
+        }
+        catch (Exception)
+        {
+            return;
+        }
+        if (onstart)
+        {
+            var channelFollowers = await api.Channels.v5.GetAllFollowersAsync(channel_id);
+            foreach (BotUser user in users)
             {
-                foreach (var u in allSubscriptions)
+                foreach (var u in channelFollowers)
                 {
                     if (u.User.Name.Equals(user.username, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        follows = true;
+                        user.follower = true;
+                        break;
                     }
                 }
             }
-            if (user.sub)
+        }
+        else
+        {
+            var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync(channel_id);
+            foreach (BotUser user in users)
             {
                 foreach (var u in channelFollowers.Follows)
                 {
                     if (u.User.Name.Equals(user.username, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        isSubbed = true;
+                        user.follower = true;
+                        break;
                     }
                 }
             }
-            user.follower = follows;
-            user.sub = isSubbed;
-            if (!user.sub) {
-                user.months = 0;
+        }
+        /*
+        var allSubscriptions = await api.Channels.v5.GetChannelSubscribersAsync(channel_id); // TODO
+        foreach (BotUser user in users)
+        {
+            foreach (var u in allSubscriptions.Subscriptions)
+            {
+                if (u.User.Name.Equals(user.username, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    user.sub = true;
+                    if (!user.sub)
+                    {
+                        user.months = 0;
+                    }
+                    break;
+                }
             }
         }
-         */
+        */
     }
 
     private void onMessageReceived(object sender, OnMessageReceivedArgs e)
@@ -639,12 +684,11 @@ public class TwitchBot : INotifyPropertyChanged
       // quote, resets google
         requestSystem.bot = this;
         quote.bot = this;
-        currency.users = users;
+        currency = new Currency(users);
         if (spreadsheetId != "")
         {
             google = new GoogleHandler(spreadsheetId);
         }
-        youtube = new YoutubeHandler();
         textAdventure.setUpText();
         requestSystem.songList = Utils.loadSongs();
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
@@ -3235,8 +3279,7 @@ public class TwitchBot : INotifyPropertyChanged
         client.SendRaw("JOIN: " + login);
         if (!containsUser(users, login))
         {
-            BotUser u = new BotUser(login, 0, false, false, false, 0, 0, null, 0, 0, 0);
-            users.Add(u);
+            users.Add(new BotUser(login, 0, false, false, false, 0, 0, null, 0, 0, 0));
         }
         if (events.ContainsKey(login))
         {

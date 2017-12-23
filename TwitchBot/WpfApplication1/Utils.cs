@@ -29,7 +29,7 @@ public class Utils
         TimeSpan youTubeDuration = System.Xml.XmlConvert.ToTimeSpan(time);
         return (youTubeDuration.Hours * 3600) + (youTubeDuration.Minutes * 60) + youTubeDuration.Seconds;
     }
-
+    
     public static List<Song> loadSongs()
     {
         try
@@ -108,6 +108,7 @@ public class Utils
             StreamWriter sw = new StreamWriter(userDataFile);
             sw.Write(json);
             sw.Close();
+            saveSongs(twitchBot.requestSystem.songList);
         }
         catch (Exception)
         {
@@ -118,6 +119,7 @@ public class Utils
                 StreamWriter sw = new StreamWriter(userDataFile);
                 sw.Write(json);
                 sw.Close();
+                saveSongs(twitchBot.requestSystem.songList);
             }
             catch (Exception e)
             {
@@ -125,7 +127,6 @@ public class Utils
                 Debug.WriteLine(e.ToString());
             }
         }
-        saveSongs(twitchBot.requestSystem.songList);
     }
 
     public static void copyFile(String f1, String f2)

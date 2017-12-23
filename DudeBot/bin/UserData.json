@@ -8,6 +8,7 @@
   "streamer": "edude15000",
   "channel": "edude15000",
   "botName": "edudebot2",
+  "reloadedAllFollowers": true,
   "followerMessage": "$user just followed the stream! Thank you!",
   "subMessage": "$user just subscribed to the stream! Thank you!",
   "resubMessage": "$user just resubscribed for $months months! Thank you!",
@@ -39,10 +40,10 @@
     "adventureCoolDown": 20
   },
   "currency": {
-    "currencyName": "notes",
-    "currencyCommand": "!notes",
+    "currencyName": "points",
+    "currencyCommand": "!points",
     "currencyPerMinute": 1,
-    "currencyPerMinuteSubs": 2,
+    "currencyPerMinuteSubs": 1,
     "maxGamble": 10000,
     "vipSongCost": 500,
     "subCreditRedeemCost": 1,
@@ -53,15 +54,7 @@
     "gambleToggle": true,
     "gambleCoolDownMinutes": 5,
     "vipRedeemCoolDownMinutes": 60,
-    "ranks": {
-      "Bronze": 100,
-      "Iron": 250,
-      "Steel": 500,
-      "Mithril": 1000,
-      "Adamantite": 5000,
-      "Rune": 10000,
-      "Dragon": 25000
-    }
+    "ranks": {}
   },
   "image": {
     "imageOverallCoolDown": 0,
@@ -127,6 +120,8 @@
     ]
   },
   "requestSystem": {
+    "cfUserName": "",
+    "cfPassword": "",
     "vipSongToggle": true,
     "mustFollowToRequest": true,
     "requestsTrigger": true,
@@ -137,36 +132,37 @@
     "ylrequests": true,
     "maxSongLength": false,
     "subOnlyRequests": "Only subs can request right now, $user!",
-    "formattedTotalTime": "00:00:00",
-    "songListLength": 0,
+    "formattedTotalTime": "00:28:36",
+    "songListLength": 5,
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
     "maxSongLengthInMinutes": 10,
-    "favSongs": [
-      "acdc - big balls",
-      "new song test",
-      "lala"
-    ],
+    "favSongs": [],
     "bannedKeywords": [
       "asdf",
       " qwer",
       " zxcv"
     ],
     "songHistory": [
-      "12/18/2017 15:07:35 - Subway Surfers - Launch Trailer",
-      "12/18/2017 14:56:21 - Zapatero: \"El PP habrá hecho poco pero el Gobierno Catalán ha roto toda la legalidad\" - Salvados",
-      "12/18/2017 14:50:44 - Zapatero: \"El PP habrá hecho poco pero el Gobierno Catalán ha roto toda la legalidad\" - Salvados",
-      "12/18/2017 14:45:05 - LIVE ACS Poli Timisoara - Dinamo Bucuresti [ Liga 1  Etapa a-22-a ] [ 18/12/2017 ]",
-      "12/18/2017 14:44:51 - qqr",
-      "12/18/2017 14:44:41 - c",
-      "12/18/2017 14:40:43 - Cardi B - Bodak Yellow [OFFICIAL MUSIC VIDEO]",
-      "12/17/2017 20:44:51 - lala",
-      "12/13/2017 21:09:54 - Beach House - PPP",
-      "12/13/2017 21:09:25 - オーバーロード ED  |  Overlord Ending - FULL",
-      "12/08/2017 16:15:35 - A Day With Lucy!",
-      "12/08/2017 16:17:47 - asdqwe",
-      "12/10/2017 17:16:51 - 【绝地求生QQQ】神仙会,Q叔四喷诛仙"
+      "12/22/2017 23:58:36 - Lonzo Ball - BBB (Official Music Video)",
+      "12/22/2017 23:57:26 - AAA - The AAA Girls feat. Alaska Thunderfuck, Willam and Courtney Act",
+      "12/22/2017 21:07:37 - AAA - The AAA Girls feat. Alaska Thunderfuck, Willam and Courtney Act",
+      "12/22/2017 21:06:42 - Triple H returns to join Team Raw at Survivor Series: Raw, Nov. 13, 2017",
+      "12/22/2017 21:06:15 - Bebe Rexha - F.F.F. (feat. G-Eazy) [Official Music Video]",
+      "12/22/2017 21:05:36 - Extraordinarily Excellent Entities Episode 4: EEE = mc^2",
+      "12/22/2017 21:05:19 - ccc",
+      "12/22/2017 20:35:01 - Lonzo Ball - BBB (Official Music Video)",
+      "12/22/2017 20:33:08 - AAA - The AAA Girls feat. Alaska Thunderfuck, Willam and Courtney Act",
+      "12/22/2017 20:24:11 - llll",
+      "12/22/2017 20:22:27 - PPPP",
+      "12/22/2017 20:06:19 - xcv",
+      "12/22/2017 20:06:08 - yui",
+      "12/22/2017 19:55:21 - Dfgh",
+      "12/22/2017 19:38:37 - Green Day: \"Holiday\" - [Official Video]",
+      "12/21/2017 22:50:53 - Metallica - One [Official Music Video]",
+      "12/21/2017 22:50:47 - System Of A Down - B.Y.O.B.",
+      "12/21/2017 22:49:16 - Hotel California"
     ],
     "requestComm": {
       "output": null,
@@ -392,8 +388,95 @@
       "costToUse": 0,
       "overrideType": 0
     },
-    "songList": [],
-    "songsPlayedTotal": 8
+    "songList": [
+      {
+        "name": "aaa",
+        "requester": "edude15000",
+        "requesterIsHere": "[IN CHAT]",
+        "level": "$$$",
+        "youtubeLink": "http://www.youtube.com/watch?v=fnCjUsc7y2M",
+        "youtubeTitle": "AAA - The AAA Girls feat. Alaska Thunderfuck, Willam and Courtney Act",
+        "durationInSeconds": 225,
+        "index": 1,
+        "tuning": "",
+        "customsForgeLink": "",
+        "parts": "",
+        "dlcCreator": "",
+        "formattedDuration": "00:03:45",
+        "officialSong": false
+      },
+      {
+        "name": "bbb",
+        "requester": "edude15000",
+        "requesterIsHere": "[IN CHAT]",
+        "level": "VIP",
+        "youtubeLink": "http://www.youtube.com/watch?v=uUHftaxKjKk",
+        "youtubeTitle": "Lonzo Ball - BBB (Official Music Video)",
+        "durationInSeconds": 210,
+        "index": 2,
+        "tuning": "",
+        "customsForgeLink": "",
+        "parts": "",
+        "dlcCreator": "",
+        "formattedDuration": "00:03:30",
+        "officialSong": false
+      },
+      {
+        "name": "ccc",
+        "requester": "edude15000",
+        "requesterIsHere": "[IN CHAT]",
+        "level": "",
+        "youtubeLink": "",
+        "youtubeTitle": "",
+        "durationInSeconds": 0,
+        "index": 3,
+        "tuning": "",
+        "customsForgeLink": "",
+        "parts": "",
+        "dlcCreator": "",
+        "formattedDuration": "",
+        "officialSong": false
+      },
+      {
+        "name": "ddd",
+        "requester": "edude15000",
+        "requesterIsHere": "[IN CHAT]",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=axVvZrDz60k",
+        "youtubeTitle": "[EXID(이엑스아이디)] 덜덜덜(DDD) 뮤직 비디오 (Official Music Video)",
+        "durationInSeconds": 207,
+        "index": 4,
+        "tuning": "",
+        "customsForgeLink": "",
+        "parts": "",
+        "dlcCreator": "",
+        "formattedDuration": "00:03:27",
+        "officialSong": false
+      },
+      {
+        "name": "eee",
+        "requester": "edude15000",
+        "requesterIsHere": "[IN CHAT]",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=XlhKQKb30xY",
+        "youtubeTitle": "Extraordinarily Excellent Entities Episode 4: EEE = mc^2",
+        "durationInSeconds": 834,
+        "index": 5,
+        "tuning": "",
+        "customsForgeLink": "",
+        "parts": "",
+        "dlcCreator": "",
+        "formattedDuration": "00:13:54",
+        "officialSong": false
+      }
+    ],
+    "songsPlayedTotal": 27,
+    "checkCustomsForge": false,
+    "checkCustomsForgeLead": false,
+    "checkCustomsForgeRhythm": false,
+    "checkCustomsForgeBass": false,
+    "displayCFLink": false,
+    "lowestTuning": 0
   },
   "sfxCommandList": [
     {
@@ -1460,30 +1543,6 @@
       "volumeLevel": 100,
       "costToUse": 1,
       "overrideType": 0
-    },
-    {
-      "output": "test2",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test2"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0,
-      "overrideType": 0
-    },
-    {
-      "output": "$length wow",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test4"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 5,
-      "overrideType": 0
     }
   ],
   "commandList": [
@@ -2527,30 +2586,6 @@
       "overrideType": 0
     },
     {
-      "output": "test2",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test2"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 0,
-      "overrideType": 0
-    },
-    {
-      "output": "$length wow",
-      "commandType": "reward",
-      "level": 0,
-      "input": [
-        "test4"
-      ],
-      "toggle": true,
-      "volumeLevel": 100,
-      "costToUse": 5,
-      "overrideType": 0
-    },
-    {
       "output": "EVERYONE LOVES PIZZA!",
       "commandType": "override",
       "level": 0,
@@ -2567,7 +2602,7 @@
     {
       "username": "allstarsniper32",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2582,7 +2617,7 @@
     {
       "username": "anclave",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2627,7 +2662,7 @@
     {
       "username": "bleedfuel",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2657,7 +2692,7 @@
     {
       "username": "brak145",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2717,7 +2752,7 @@
     {
       "username": "derkeyno",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2732,7 +2767,7 @@
     {
       "username": "desarus",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2867,7 +2902,7 @@
     {
       "username": "kazzasleeps",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2882,7 +2917,7 @@
     {
       "username": "killbandit360",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2927,7 +2962,7 @@
     {
       "username": "mylastserenade88",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -2987,7 +3022,7 @@
     {
       "username": "tyannatalie",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3002,7 +3037,7 @@
     {
       "username": "vespers_haven",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3077,7 +3112,7 @@
     {
       "username": "MarluxiaPetals",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3137,7 +3172,7 @@
     {
       "username": "chatspamgreyface123",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3227,7 +3262,7 @@
     {
       "username": "nharsmusic",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3242,7 +3277,7 @@
     {
       "username": "one2h",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3257,7 +3292,7 @@
     {
       "username": "rutledgex",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3287,7 +3322,7 @@
     {
       "username": "steplery",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3347,7 +3382,7 @@
     {
       "username": "stallionducky03",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3377,7 +3412,7 @@
     {
       "username": "colt_sparta",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3392,7 +3427,7 @@
     {
       "username": "d0mlno",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3482,7 +3517,7 @@
     {
       "username": "spicytofu2",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3527,7 +3562,7 @@
     {
       "username": "xxgreenven0mxx",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3572,7 +3607,7 @@
     {
       "username": "punkestmf",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3662,7 +3697,7 @@
     {
       "username": "hieronimus68",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3737,7 +3772,7 @@
     {
       "username": "bardzerker",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3947,7 +3982,7 @@
     {
       "username": "latarielle",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -3992,7 +4027,7 @@
     {
       "username": "alpuka",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4022,7 +4057,7 @@
     {
       "username": "yarr_finloid",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4037,7 +4072,7 @@
     {
       "username": "thewookieway",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4082,7 +4117,7 @@
     {
       "username": "dastulumen",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4097,7 +4132,7 @@
     {
       "username": "btiddy",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4172,7 +4207,7 @@
     {
       "username": "osko1ok",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4217,7 +4252,7 @@
     {
       "username": "novofine",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4247,7 +4282,7 @@
     {
       "username": "natalie_moore",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4262,7 +4297,7 @@
     {
       "username": "rake1off",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4292,7 +4327,7 @@
     {
       "username": "soulflys_",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4307,7 +4342,7 @@
     {
       "username": "hammerhead0158",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4337,7 +4372,7 @@
     {
       "username": "andyopolis77",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4352,7 +4387,7 @@
     {
       "username": "aoarms",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4397,7 +4432,7 @@
     {
       "username": "rawarck",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4427,7 +4462,7 @@
     {
       "username": "reversihide",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4457,7 +4492,7 @@
     {
       "username": "maltn",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4472,7 +4507,7 @@
     {
       "username": "destiny_spores",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4502,7 +4537,7 @@
     {
       "username": "ultranova5000",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4517,7 +4552,7 @@
     {
       "username": "hologrammer",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4532,7 +4567,7 @@
     {
       "username": "symboliccross95",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4547,7 +4582,7 @@
     {
       "username": "brianfnpillman",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4562,7 +4597,7 @@
     {
       "username": "papamaanbeer",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4577,7 +4612,7 @@
     {
       "username": "avenici",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4607,7 +4642,7 @@
     {
       "username": "bigdamscooters",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4622,7 +4657,7 @@
     {
       "username": "jake_seattlex19",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4652,7 +4687,7 @@
     {
       "username": "vexed2dodplants",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4667,7 +4702,7 @@
     {
       "username": "hollybombay",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4682,7 +4717,7 @@
     {
       "username": "bearsfan5051",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4697,7 +4732,7 @@
     {
       "username": "spookyone_1",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4712,7 +4747,7 @@
     {
       "username": "felipegrox",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4727,7 +4762,7 @@
     {
       "username": "mesoniclake",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4742,7 +4777,7 @@
     {
       "username": "kokolihapihvi",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4757,7 +4792,7 @@
     {
       "username": "vickevi",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4817,7 +4852,7 @@
     {
       "username": "kilian737ngx",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4832,7 +4867,7 @@
     {
       "username": "demon_drummer",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4851,10 +4886,10 @@
       "sub": false,
       "mod": true,
       "gaveSpot": false,
-      "time": 359,
+      "time": 366,
       "subCredits": 0,
-      "points": 353,
-      "numRequests": 220,
+      "points": 360,
+      "numRequests": 268,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4862,14 +4897,14 @@
     {
       "username": "zdude15000",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 0,
+      "time": 7,
       "subCredits": 0,
-      "points": 0,
-      "numRequests": 7,
+      "points": 206,
+      "numRequests": 8,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4877,7 +4912,7 @@
     {
       "username": "xscarface",
       "rank": null,
-      "follower": false,
+      "follower": true,
       "sub": false,
       "mod": false,
       "gaveSpot": false,
@@ -4896,9 +4931,24 @@
       "sub": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 557,
+      "time": 595,
       "subCredits": 0,
-      "points": 557,
+      "points": 595,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "inckowaty",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,
@@ -4937,7 +4987,7 @@
     "!raffle",
     "!gamble",
     "!currency",
-    "!notes",
+    "!points",
     "!vipsong",
     "!vipsongon",
     "!vipsongoff",

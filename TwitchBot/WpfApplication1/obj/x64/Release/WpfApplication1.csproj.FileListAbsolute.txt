@@ -104,3 +104,5 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\ImagesWindow.b
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\ImagesWindow.g.cs
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\GeneratedInternalTypeHelper.g.cs
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\DudeBot_MarkupCompile.lref
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\CustomsForgeLogin.baml
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\CustomsForgeLogin.g.cs

@@ -1,0 +1,70 @@
+12/23/2017 01:12:40 - DudeBot 2.12.1 Error : System.MissingMethodException: Method not found: 'Void WebSocket4Net.WebSocket.add_Error(System.EventHandler`1<SuperSocket.ClientEngine.ErrorEventArgs>)'.
+   at TwitchLib.TwitchClient..ctor(ConnectionCredentials credentials, String channel, Char chatCommandIdentifier, Char whisperCommandIdentifier, Boolean logging, ILogger logger, Boolean autoReListenOnExceptions)
+   at TwitchBot.botStartUpAsync()12/23/2017 01:12:58 - DudeBot 2.12.1 Error : System.NullReferenceException: Object reference not set to an instance of an object.
+   at WpfApplication1.MainWindow.killBot(Object sender, RoutedEventArgs e)12/23/2017 01:16:06 - DudeBot 2.12.1 Error : System.IO.FileNotFoundException: Could not load file or assembly 'System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' ---> System.IO.FileNotFoundException: Could not load file or assembly 'System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+   at Google.Apis.Services.BaseClientService..ctor(Initializer initializer)
+   at Google.Apis.YouTube.v3.YouTubeService..ctor(Initializer initializer)
+   at YoutubeHandler..ctor() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\YoutubeHandler.cs:line 13
+   at TwitchBot..ctor() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 53
+   at CreateTwitchBot()
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean& createdFromNonDefaultCreator)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at Utils.loadData() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 93
+
+12/23/2017 01:16:43 - DudeBot 2.12.1 Error : System.IO.FileNotFoundException: Could not load file or assembly 'System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' ---> System.IO.FileNotFoundException: Could not load file or assembly 'System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+   at Google.Apis.Services.BaseClientService..ctor(Initializer initializer)
+   at Google.Apis.YouTube.v3.YouTubeService..ctor(Initializer initializer)
+   at YoutubeHandler..ctor() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\YoutubeHandler.cs:line 13
+   at TwitchBot..ctor() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 53
+   at CreateTwitchBot()
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean& createdFromNonDefaultCreator)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at Utils.loadData() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 93
+
+12/23/2017 01:17:03 - DudeBot 2.12.1 Error : System.IO.FileNotFoundException: Could not load file or assembly 'System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' ---> System.IO.FileNotFoundException: Could not load file or assembly 'System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+File name: 'System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+   at Google.Apis.Services.BaseClientService..ctor(Initializer initializer)
+   at Google.Apis.YouTube.v3.YouTubeService..ctor(Initializer initializer)
+   at YoutubeHandler..ctor()
+   at TwitchBot..ctor()
+   at CreateTwitchBot()
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean& createdFromNonDefaultCreator)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at Utils.loadData()
+
+

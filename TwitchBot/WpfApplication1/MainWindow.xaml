@@ -11,6 +11,7 @@
         Closing="Window_Closing"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       Title="{Binding version, StringFormat=DUDEBOT {0}}" Height="400" Width="950"
+                      ShowIconOnTitleBar="True"
         MinHeight="400" MinWidth="950">
     
     <Window.Resources>
@@ -88,7 +89,7 @@
                     </Grid>
                 </ControlTemplate>
             </TabControl.Template>
-            <TabItem Header="Dashboard" FontSize="12">
+            <TabItem Header="Dashboard" x:Name="dashboard" FontSize="12">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20*"/>
@@ -614,7 +615,11 @@
                 </TabControl>
             </TabItem>
 
-            <TabItem Header="Music" FontSize="12">
+            <TabItem FontSize="12" >
+                <TabItem.Header>
+                    <Label Content="Music" 
+                        MouseLeftButtonDown="music_click"/>
+                </TabItem.Header>
                 <TabControl x:Name="musictabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
@@ -665,35 +670,43 @@
                                     <DataGridTemplateColumn x:Name="songnumber" Header="#" Width=".05*" >
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding index}" />
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding index, UpdateSourceTrigger=PropertyChanged}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn x:Name="songlevelinfo" Header="Level" Width=".1*" >
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding level}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding level, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn x:Name="songnamecolumn" Header="Song" Width=".35*">
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding name}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" >
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} {1} {2}">
+                                                            <Binding Path="name" UpdateSourceTrigger="PropertyChanged" />
+                                                            <Binding Path="requesterIsHere" UpdateSourceTrigger="PropertyChanged" />
+                                                            <Binding Path="tuning" UpdateSourceTrigger="PropertyChanged" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn x:Name="songinfoduration" Header="Duration" Width=".1*" >
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding formattedDuration}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding formattedDuration, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn x:Name="requestercolumn" Header="Requester" Width=".1*">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding requester}" ToolTipService.ToolTip="Double click to open requester's Twitch page." MouseLeftButtonDown="editRequesterButtonClick" />
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding requester, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Double click to open requester's Twitch page." MouseLeftButtonDown="editRequesterButtonClick" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -1404,7 +1417,6 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
-                            <Button Style="{DynamicResource SquareButtonStyle}" Visibility="Visible" x:Name="refreshcurrency" IsDefault="True" Background="White" Content="Refresh" Click="writeToConfig" FontSize="16" Grid.Column="0" Grid.Row="2"/>
 
                         </Grid>
                     </TabItem>
@@ -1624,13 +1636,11 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
                         <ColumnDefinition Width="50*"/>
                     </Grid.ColumnDefinitions>
-
                     <TextBlock VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Text="Raffle" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
                     <TextBlock FontSize="12" Text="Command Name: " Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="giveawaycommandname"  FontSize="12" Grid.Column="1" Grid.Row="1" Controls:TextBoxHelper.Watermark="Raffle command name here (default: !raffle)" Text="{Binding giveawaycommandname, UpdateSourceTrigger=PropertyChanged}"/>
@@ -1638,7 +1648,6 @@
             </TabItem>
 
             <TabItem Header="Events" FontSize="12">
-
                 <TabControl x:Name="eventstabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue" >
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
@@ -1748,8 +1757,6 @@
                     </TabItem>
                 </TabControl>
             </TabItem>
-
-           
 
             <TabItem Header="Rocksmith" FontSize="12">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >

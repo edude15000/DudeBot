@@ -5,17 +5,18 @@ using System;
 
 public class Song
 {
-    public String name { get; set; }
-    public String requester { get; set; }
+    public String name { get; set; } = "";
+    public String requester { get; set; } = "";
+    public String requesterIsHere { get; set; } = "[IN CHAT]";
     public String level { get; set; } = "";
-    public String youtubeLink { get; set; }
-    public String youtubeTitle { get; set; }
+    public String youtubeLink { get; set; } = "";
+    public String youtubeTitle { get; set; } = "";
     public int durationInSeconds { get; set; } = 0;
     public int index { get; set; } = 0;
-    public String tuning { get; set; }
-    public String customsForgeLink { get; set; }
-    public String parts { get; set; }
-    public String dlcCreator { get; set; }
+    public String tuning { get; set; } = "";
+    public String customsForgeLink { get; set; } = "";
+    public String parts { get; set; } = "";
+    public String dlcCreator { get; set; } = "";
     public String formattedDuration { get; set; } = "";
     public Boolean officialSong { get; set; } = false;
 

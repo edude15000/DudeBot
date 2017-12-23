@@ -830,10 +830,32 @@ namespace WpfApplication1
 
         public void writeToConfig(Object sender, RoutedEventArgs e)
         {
-            refreshAllDataGrids();
+            if (bot == null)
+            {
+                bot = new TwitchBot();
+                bot.streamer = streamerName.Text;
+                bot.botName = botName.Text;
+                bot.oauth = oauth.Text;
+                loadPresets();
+                openBot(null, null);
+            }
+            else
+            {
+                if (bot.client == null)
+                {
+                    bot.streamer = streamerName.Text;
+                    bot.botName = botName.Text;
+                    bot.oauth = oauth.Text;
+                    openBot(null, null);
+                }
+                else
+                {
+                    refreshAllDataGrids();
+                }
+            }
             Utils.saveData(bot);
         }
-
+        
         public void refreshAllDataGrids()
         {
             try
@@ -842,12 +864,17 @@ namespace WpfApplication1
                 {
                     d.Items.Refresh();
                 }
+                bot.requestSystem.formattedTotalTime = bot.requestSystem.formatTotalTime();
+                bot.requestSystem.songListLength = bot.requestSystem.songList.Count;
             }
             catch (Exception)
             {
             }
-            bot.requestSystem.formattedTotalTime = bot.requestSystem.formatTotalTime();
-            bot.requestSystem.songListLength = bot.requestSystem.songList.Count;
+        }
+
+        private void music_click(object sender, MouseButtonEventArgs e)
+        {
+            refreshAllDataGrids();
         }
 
         public void killBot(Object sender, RoutedEventArgs e)
@@ -877,28 +904,21 @@ namespace WpfApplication1
             catch
             {
             }
-            bot = Utils.loadData(); // Sets up and connects bot object
-
+            if (bot == null)
+            {
+                bot = Utils.loadData(); // Sets up and connects bot object
+            }
             if (bot == null)
             {
                 customization.Focus();
                 await this.ShowMessageAsync("Notice", "Missing or corrupt 'userData.json' file. If you are updating from DudeBot 2 to DudeBot 3," +
-                    " please run 'DudeBotConfigUpdater.exe' in the bin folder, this will create an updated configuration file. To restore DudeBot and fix the configuration file, press 'reset dudebot'.");
+                    " please run 'DudeBotConfigUpdater.exe' in the bin folder, this will create an updated configuration file. If you are a new user, please enter your stream information and press 'apply'. " +
+                    "To restore DudeBot and fix the configuration file, press 'reset dudebot'.");
                 return;
             }
-            if (bot.streamer != null && bot.streamer != "")
+            if (bot.streamer != null && bot.streamer != "" && bot.client != null)
             {
-                dynamic activeX = browser.GetType().InvokeMember("ActiveXInstance",
-                    BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
-                    null, browser, new object[] { });
-                activeX.Silent = true;
-                browser.LoadCompleted += (s, e1) =>
-                {
-                    mshtml.IHTMLDocument2 doc = browser.Document as mshtml.IHTMLDocument2;
-                    //doc.parentWindow.execScript("document.body.style.zoom=0.9");
-                    //doc.parentWindow.execScript("document.body.style.transformrigin=​\"scale(0.9, 0)\";"); // TODO : FIX!
-                };
-                browser.Navigate("http://www.twitch.tv/" + bot.streamer + "/chat");
+                showBrowser();
             }
             bot.botStartUpAsync();
             try
@@ -906,19 +926,41 @@ namespace WpfApplication1
                 bot.client.Connect();
                 kill.IsEnabled = true;
                 open.IsEnabled = false;
+                showBrowser();
+                dashboard.Focus();
             }
             catch (Exception)
             {
                 customization.Focus();
                 await this.ShowMessageAsync("Connection Failure", "DudeBot failed to connect to Twitch, please ensure that your streamer and bot names and oauths are correct!");
+                if (bot != null)
+                {
+                    bot.client = null;
+                }
                 kill.IsEnabled = false;
                 open.IsEnabled = true;
+                return;
             }
             DataContext = bot;
-            if (openRockSnifferOnStartUp.IsChecked == true)
+            if (bot.openRockSnifferOnStartUp == true)
             {
                 openRockSniffer(null, null);
             }
+        }
+
+        public void showBrowser()
+        {
+            dynamic activeX = browser.GetType().InvokeMember("ActiveXInstance",
+                    BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                    null, browser, new object[] { });
+            activeX.Silent = true;
+            browser.LoadCompleted += (s, e1) =>
+            {
+                mshtml.IHTMLDocument2 doc = browser.Document as mshtml.IHTMLDocument2;
+                //doc.parentWindow.execScript("document.body.style.zoom=0.9");
+                //doc.parentWindow.execScript("document.body.style.transformrigin=​\"scale(0.9, 0)\";"); // TODO : FIX!
+            };
+            browser.Navigate("http://www.twitch.tv/" + bot.streamer + "/chat");
         }
         
         public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
@@ -1454,8 +1496,12 @@ namespace WpfApplication1
                         return;
                     }
                     Song a = bot.requestSystem.songList[i];
+                    String bottomSongLevel = a.level;
+                    String topSongLevel = bot.requestSystem.songList[i - 1].level;
                     bot.requestSystem.songList.Remove(a);
                     bot.requestSystem.insertSong(a.name, a.requester, i-1);
+                    bot.requestSystem.songList[i - 1].level = topSongLevel;
+                    bot.requestSystem.songList[i].level = bottomSongLevel;
                     break;
                 }
             }
@@ -1761,16 +1807,14 @@ namespace WpfApplication1
             customization.Focus();
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
-            MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Reset Confirmation", "Are you sure you want to reset DudeBot? All user data will be deleted, but this will fix any problems with DudeBot.", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
+            MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Reset Confirmation", "Are you sure you want to reset DudeBot? All user data will be deleted, but this will fix any problems with DudeBot. This will close the bot and you will need to reopen it.", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
             if (messageBoxResult == MessageDialogResult.Affirmative)
             {
-                File.WriteAllText(Utils.userDataFile, string.Empty);
-                bot = Utils.loadData(); // Sets up and connects bot object
-                loadPresets();
-                writeToConfig(null, null);
-                DataContext = bot;
-                await this.ShowMessageAsync("No Previous Data Found!", "This is your first time using DudeBot. Please Enter your Streamer Name, Bot Name, and Bot Oauth, then press 'APPLY' and restart DudeBot!");
-                customization.Focus();
+                StreamWriter strm = File.CreateText(Utils.userDataFile);
+                strm.Flush();
+                strm.Close();
+                bot = null;
+                Window_Closing(null, null);
             }
         }
 
@@ -1778,26 +1822,102 @@ namespace WpfApplication1
         {
             String[] str = { "F7" };
             bot.commandList.Add(new Command(str, 3, "!next", "hotkey", true));
-            str[0] = "pizza";
-            bot.commandList.Add(new Command(str, 0, "EVERYONE LOVES PIZZA!", "override", true));
-            str[0] = "!harambe";
-            bot.commandList.Add(new Command(str, 0, "Harambe would have loved $currentsong!", "user", true));
-            str[0] = "!8ball";
-            bot.commandList.Add(new Command(str, 0, "$8ball", "user", true));
-            str[0] = "!hug";
-            bot.commandList.Add(new Command(str, 0, "$user gives $input a hug!", "user", true));
-            str[0] = "!following";
-            bot.commandList.Add(new Command(str, 0, "$user has been following the stream for $following", "user", true));
-            str[0] = "!start";
-            bot.commandList.Add(new Command(str, 0, "$streamer joined Twitch on $start", "user", true));
-            str[0] = "!love";
-            bot.commandList.Add(new Command(str, 0, "There is $randomnumber3% <3 between $user and $input!", "user", true));
-            str[0] = "!uptime";
-            bot.commandList.Add(new Command(str, 0, "$streamer has been live for $uptime", "user", true));
-            str[0] = "!shoutout";
-            bot.commandList.Add(new Command(str, 0, "$shoutout", "user", true));
-            str[0] = "!roulette";
-            bot.commandList.Add(new Command(str, 0, "roulette", "user", true));
+
+            String[] str2 = { "pizza" };
+            bot.commandList.Add(new Command(str2, 0, "EVERYONE LOVES PIZZA!", "override", true));
+
+            String[] str3 = { "!harambe" };
+            bot.commandList.Add(new Command(str3, 0, "Harambe would have loved $currentsong!", "user", true));
+            String[] str4 = { "!8ball" };
+            bot.commandList.Add(new Command(str4, 0, "$8ball", "user", true));
+            String[] str5 = { "!hug" };
+            bot.commandList.Add(new Command(str5, 0, "$user gives $input a hug!", "user", true));
+            String[] str6 = { "!following" };
+            bot.commandList.Add(new Command(str6, 0, "$user has been following the stream for $following", "user", true));
+            String[] str7 = { "!start" };
+            bot.commandList.Add(new Command(str7, 0, "$streamer joined Twitch on $start", "user", true));
+            String[] str8 = { "!love" };
+            bot.commandList.Add(new Command(str8, 0, "There is $randomnumber3% <3 between $user and $input!", "user", true));
+            String[] str9 = { "!uptime" };
+            bot.commandList.Add(new Command(str9, 0, "$streamer has been live for $uptime", "user", true));
+            String[] str10 = { "!shoutout" };
+            bot.commandList.Add(new Command(str10, 0, "$shoutout", "user", true));
+            String[] str11 = { "!roulette" };
+            bot.commandList.Add(new Command(str11, 0, "$roulette", "user", true));
+
+            String[] str12 = { "!requestfav", "!songfav", "!playfav" };
+            bot.requestSystem.favSongComm = new Command(str12, 0, "favSongComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.favSongComm);
+
+            String[] str13 = { "!requests" };
+            bot.requestSystem.triggerRequestsComm = new Command(str13, 2, "triggerRequestsComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.triggerRequestsComm);
+
+            String[] str14 = { "!request", "!song", "!play", "!songrequest", "!sr" };
+            bot.requestSystem.requestComm = new Command(str14, 0, "requestComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.requestComm);
+
+            String[] str15 = { "!songlist", "!list", "!playlist" };
+            bot.requestSystem.songlistComm = new Command(str15, 0, "songlistComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.songlistComm);
+
+            String[] str16 = { "!queue", "!length", "!total" };
+            bot.requestSystem.getTotalComm = new Command(str16, 0, "getTotalComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.getTotalComm);
+
+            String[] str17 = { "!viewers" };
+            bot.getViewerComm = new Command(str17, 0, "getViewerCountCommands", "bot", true);
+            bot.commandList.Add(bot.getViewerComm);
+
+            String[] str18 = { "!addtop" };
+            bot.requestSystem.addtopComm = new Command(str18, 2, "addtopComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.addtopComm);
+
+            String[] str19 = { "!addvip" };
+            bot.requestSystem.addvipComm = new Command(str19, 2, "addvipComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.addvipComm);
+
+            String[] str20 = { "!adddonator" };
+            bot.requestSystem.adddonatorComm = new Command(str20, 2, "adddonatorComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.adddonatorComm);
+
+            String[] str21 = { "!edit", "!change" };
+            bot.requestSystem.editComm = new Command(str21, 2, "editComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.editComm);
+
+            String[] str22 = { "!next", "!skip" };
+            bot.requestSystem.nextComm = new Command(str22, 2, "nextComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.nextComm);
+
+            String[] str23 = { "!clear" };
+            bot.requestSystem.clearComm = new Command(str23, 2, "clearComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.clearComm);
+
+            String[] str24 = { "!current", "!playing", "!currentsong" };
+            bot.requestSystem.getCurrentComm = new Command(str24, 0, "getCurrentComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.getCurrentComm);
+
+            String[] str25 = { "!nextsong" };
+            bot.requestSystem.getNextComm = new Command(str25, 0, "getNextComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.getNextComm);
+
+            String[] str26 = { "!randomnext", "!nextrandom", "!randomsong", "!songrandom" };
+            bot.requestSystem.randomComm = new Command(str26, 2, "randomComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.randomComm);
+
+            String[] str27 = { "!editsong" };
+            bot.requestSystem.editSongComm = new Command(str27, 0, "editSongComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.editSongComm);
+
+            String[] str28 = { "!removesong", "!wrongsong" };
+            bot.requestSystem.removeSongComm = new Command(str28, 0, "removeSongComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.removeSongComm);
+
+            String[] str29 = { "!mysong", "!position", "!songposition" };
+            bot.requestSystem.songPositionComm = new Command(str29, 0, "songPositionComm", "bot", true);
+            bot.commandList.Add(bot.requestSystem.songPositionComm);
+
+            bot.currency = new Currency(null);
             bot.resetAllCommands();
         }
 

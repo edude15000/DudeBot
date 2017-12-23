@@ -354,13 +354,13 @@ public class Currency : INotifyPropertyChanged
         return result;
     }
 
-    public Dictionary<String, Int32> sortHashMapByValuesMax(Dictionary<String, Int32> passedMap) // TODO : TEST!
+    public Dictionary<String, Int32> sortHashMapByValuesMax(Dictionary<String, Int32> passedMap)
     {
         var sortedDict = from entry in passedMap orderby entry.Value descending select entry;
         return sortedDict.ToDictionary(pair => pair.Key, pair => pair.Value);
     }
 
-    public Dictionary<String, Int32> sortHashMapByValuesMin(Dictionary<String, Int32> passedMap) // TODO : TEST!
+    public Dictionary<String, Int32> sortHashMapByValuesMin(Dictionary<String, Int32> passedMap)
     {
         var sortedDict = from entry in passedMap orderby entry.Value ascending select entry;
         return sortedDict.ToDictionary(pair => pair.Key, pair => pair.Value);
@@ -368,17 +368,22 @@ public class Currency : INotifyPropertyChanged
 
     public String getRank(String user, String streamer, String botname)
     {
+        if (user.Equals(streamer, StringComparison.InvariantCultureIgnoreCase))
+        {
+            return "This is your stream!";
+        }
         int currentUserCurrency = -1, currentUserHours = -1;
         List<Int32> currencies = new List<Int32>();
         List<Int32> hours = new List<Int32>();
-        BotUser botUser;
-        if ((botUser = getBotUser(user)) != null)
-        {
-            currentUserCurrency = botUser.points;
-            currentUserHours = botUser.time;
+        foreach (BotUser botUser in users) {
+            if (botUser.username.Equals(user))
+            {
+                currentUserCurrency = botUser.points;
+                currentUserHours = botUser.time;
+            }
             if (!botUser.username.Equals("moobot", StringComparison.InvariantCultureIgnoreCase) && !botUser.username.Equals("revlobot", StringComparison.InvariantCultureIgnoreCase)
-                    && !botUser.username.Equals("deepbot", StringComparison.InvariantCultureIgnoreCase) && !botUser.username.Equals("nightbot", StringComparison.InvariantCultureIgnoreCase)
-                    && !botUser.username.Equals(streamer, StringComparison.InvariantCultureIgnoreCase) && !botUser.username.Equals(botname, StringComparison.InvariantCultureIgnoreCase))
+                        && !botUser.username.Equals("deepbot", StringComparison.InvariantCultureIgnoreCase) && !botUser.username.Equals("nightbot", StringComparison.InvariantCultureIgnoreCase)
+                        && !botUser.username.Equals(streamer, StringComparison.InvariantCultureIgnoreCase) && !botUser.username.Equals(botname, StringComparison.InvariantCultureIgnoreCase))
             {
                 currencies.Add(botUser.points);
                 hours.Add(botUser.time);
