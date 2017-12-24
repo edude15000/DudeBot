@@ -68,7 +68,6 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\MahApps.Metro.dl
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\Newtonsoft.Json.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\SuperSocket.ClientEngine.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.Windows.Interactivity.dll
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\WebSocket4Net.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\Zlib.Portable.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\Google.Apis.xml
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\Google.Apis.Auth.xml
@@ -107,3 +106,11 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\CustomsForgeLogi
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.AppContext.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.IO.Compression.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\Microsoft.Win32.Primitives.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.Console.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.Globalization.Calendars.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.IO.Compression.ZipFile.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.IO.FileSystem.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.IO.FileSystem.Primitives.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\System.Xml.ReaderWriter.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\TwitchLib.dll

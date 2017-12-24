@@ -1,0 +1,4958 @@
+{
+  "counter1": 1,
+  "counter2": 2,
+  "counter3": 3,
+  "counter4": 0,
+  "counter5": 0,
+  "oauth": "oauth:a2401fzypn6x3oimbf1sgh4b8x14z7",
+  "streamer": "edude15000",
+  "channel": "edude15000",
+  "botName": "edudebot2",
+  "reloadedAllFollowers": true,
+  "followerMessage": "$user just followed the stream! Thank you!",
+  "subMessage": "$user just subscribed to the stream! Thank you!",
+  "resubMessage": "$user just resubscribed for $months months! Thank you!",
+  "raidViewersRequired": 5,
+  "hostMessage": "Thanks for the host! $shoutout",
+  "raidMessage": "We are getting raided! Thanks for the $viewers viewer raid! $shoutout",
+  "subOnlyRequests": "Only sub requests are being accepted right now, $user",
+  "minigameEndMessage": "Time has run out for the current game, guesses cannot be added now, $user!",
+  "giveawaycommandname": "!raffle",
+  "spreadsheetId": "1jLNPhuJ0Cwmd3xL64YXAb1FwYcPBmh5FMw16O33TUZk",
+  "botColor": "chocolate",
+  "endMessage": "BYE FAM",
+  "startupMessage": "SEXY TIME",
+  "minigameTimer": 90,
+  "timerTotal": 10,
+  "minigameTriggered": false,
+  "timeFinished": false,
+  "minigameOn": true,
+  "adventureToggle": true,
+  "startAdventure": false,
+  "waitForAdventureCoolDown": false,
+  "raffleInProgress": false,
+  "autoShoutoutOnHost": true,
+  "openRockSnifferOnStartUp": false,
+  "textAdventure": {
+    "adventureStartTime": 90,
+    "adventurePointsMin": 25,
+    "adventurePointsMax": 75,
+    "adventureCoolDown": 20
+  },
+  "currency": {
+    "currencyName": "points",
+    "currencyCommand": "!points",
+    "currencyPerMinute": 1,
+    "currencyPerMinuteSubs": 1,
+    "maxGamble": 10000,
+    "vipSongCost": 500,
+    "subCreditRedeemCost": 1,
+    "creditsPerSub": 1,
+    "rankupUnitCost": 1,
+    "toggle": true,
+    "vipSongToggle": true,
+    "gambleToggle": true,
+    "gambleCoolDownMinutes": 5,
+    "vipRedeemCoolDownMinutes": 60,
+    "ranks": {}
+  },
+  "image": {
+    "imageOverallCoolDown": 0,
+    "imageCoolDown": 60,
+    "imageDisplayTimeSeconds": 10,
+    "openImageWindowOnStart": false
+  },
+  "soundEffect": {
+    "sfxTimer": 60,
+    "SFXOverallCoolDown": 0
+  },
+  "quote": {
+    "quotesModOnly": true,
+    "quotesOn": true,
+    "quotes": [
+      "\"I bought socks. There are red ones, blue ones, and white ones. They are good.\" -edude15000 2/5/2016",
+      "\"I do like this song. It reminds me of puppies running around. Happy puppy song. Like a big happy puppy day.\" -edude15000 2/5/2016 ",
+      "\"*Hears steam message* Is someone calling me on skype?\" -edude15000 2/7/2016 ",
+      "\"Good in bed? Sometimes. Only if it is a full moon though\" -edude15000 2/7/2016 ",
+      "\"I'm sorry we just played that song, well not that recently, it was like 2 hours ago.\" -edude15000 2/15/2016 ",
+      "\"Walmart is a great place to pick up chicks\" -edude15000 2/15/2016 ",
+      "\"Deadpool could be a horror documentary, where people turn up dead in pools across the country, so detective John Travolta has to investigate. Susan Boyle is also in it. Summer hit for sure.\" -edude15000 2/15/2016 ",
+      "\"So many graphs, so little time\" -edude15000 2/16/2016 ",
+      "\"Back when I was in junior high, I had this teacher that was very hot and taught english. Me and my friends said that we have B's in our english class.\" -edude15000 2/16/2016 ",
+      "\"I have a reoccurring dream where aliens come and... Get me. It makes me paranoid in the day\" -edude15000 2/16/2016 ",
+      "\"Ooh, look at that underboob. Nothing is more sexy than an underboob in the summer.\" -edude15000 2/17/2016 ",
+      "\"I really wish I had boobs, but like nice boobs.\" -edude15000 2/17/2016 ",
+      "\"This song is for all the ladies in the world, who wake up and look in the mirror, and say, Should I wear makeup today?\" -edude15000 2/17/2016 ",
+      "\"I had some tacos that weren't very good. The meat wasn't good\" -edude15000 2/17/2016 ",
+      "\"I had the mongolian buffet tonight, and now my stomach kind of hurts.\" -edude15000 2/25/2016 ",
+      "\"I can just fart on stream\" -edude15000 2/25/2016 ",
+      "\"Viva la vivda. viava vavavav vidddvaa.\" -edude15000 2/25/2016 ",
+      "\"oh baby\" -edude15000 2/4/2016 ",
+      "\"That's not a quote, that's two words.\" -edude15000 2/4/2016 ",
+      "\"I used to be Japanese...but then I made the change. Like every young boy goes through.\" -edude15000 3/5/2016 ",
+      "\"Sometimes this game is just complete utter shit\" -edude15000 4/12/2016 ",
+      "\"My friend got his nipple pierced.\" -edude15000 9/3/2016 ",
+      "\"I feel like a stripper\" -edude15000 9/12/2016 ",
+      "\"I was there with my buddies, and these two girls talked to us, we were having a conversation, and one of them just kissed me, and I was like What The Hell?!\" -edude15000 2/16/2016 ",
+      "\"Sassy sisters? I wanna be a sassy sister. I was a sassy sister when I was younger.\" -edude15000 2/7/2016 ",
+      "\"I would show my true colors, but I'd get banned from twitch\" -edude15000 9/23/2016 ",
+      "\"Went down the wrong hole....like last night! That was a horrible joke.\" -edude15000 9/23/2016 ",
+      "\"I wish I was doing the solo... FeelsBadMan\" -edude15000 9/25/2016 ",
+      "\" *** on my tits! This killed my tone!! \" -edude15000 9/30/2016 ",
+      "\" If you have a problem with spoilers then you shouldn't be on my stream \" -edude15000 10/14/2016 ",
+      "\" I got a new tinder match. Oh wow \" -edude15000 10/23/2016 ",
+      "\" That really hurt, my guitar cord got stuck in my junk when I pulled it back. Now my junk doesn't feel good \" -edude15000 12/29/2016 ",
+      "\"This tone makes me more moist than a moist towelette.\" -edude15000 2/4/2016 ",
+      "\"Just some awkward quiet sexy sex\" -edude15000 2/5/2016 ",
+      "\"I always break the D. I always break my D.\" -edude15000 2/7/2016 ",
+      "\"This song is about getting semen on the seat.\" -edude15000 2/5/2016 ",
+      "\"My favorite super bowl was when the singer girl's boob popped out\" -edude15000 2/7/2016 ",
+      "\"That'd be fast sex. A fast Sexy sex.\" -edude15000 2/13/2016 ",
+      "\"Cornhub.com, where real men go to get corn.\" -edude15000 2/7/2016 ",
+      "\" mate \" -mate 3/11/2017 ",
+      "\" Hollybombay, you had sex to Barney the Dinosaur? I feel guilty knocking one out when the dog is in the room \" -spookyone_1 3/11/2017 ",
+      "\" Apple Juice is gone..... \" -edude15000 3/11/2017 ",
+      "\" can we get !ass in the chat? Not saying I'm eating *** or anything \" -edude15000 3/11/2017 ",
+      "\" y'all eat ass? \" -edude15000 3/11/2017 ",
+      "\" I love everyone...just don't want to have everyone's children \" - Hollybombay 3/11/2017 ",
+      "\" There's nothing sexier than a man blowing his nose, let me tell you. \" -edude15000 3/11/2017 ",
+      "\" Alright Alright Alright Alright Alright Alright Alright Alright \" -Outkast 3/11/2017 "
+    ]
+  },
+  "requestSystem": {
+    "cfUserName": "",
+    "cfPassword": "",
+    "vipSongToggle": true,
+    "mustFollowToRequest": true,
+    "requestsTrigger": true,
+    "displayIfUserIsHere": true,
+    "displayOneLine": true,
+    "whisperToUser": true,
+    "direquests": true,
+    "ylrequests": true,
+    "maxSongLength": false,
+    "subOnlyRequests": "Only subs can request right now, $user!",
+    "formattedTotalTime": "00:00:00",
+    "songListLength": 0,
+    "maxSonglistLength": 100,
+    "numOfSongsToDisplay": 8,
+    "numOfSongsInQueuePerUser": 1,
+    "maxSongLengthInMinutes": 10,
+    "favSongs": [],
+    "bannedKeywords": [
+      "asdf",
+      " qwer",
+      " zxcv"
+    ],
+    "songHistory": [],
+    "requestComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!request",
+        "!song",
+        "!play",
+        "!songrequest"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "songlistComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!songlist",
+        "!list",
+        "!playlist"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "getTotalComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!queue",
+        "!length",
+        "!total"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "editComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!edit",
+        "!change"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "nextComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!next",
+        "!skip"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "addvipComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addvip"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "addtopComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addtop"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "adddonatorComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!adddonator"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "getCurrentComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!current",
+        "!playing",
+        "!currentsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "clearComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!clear"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "triggerRequestsComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!requests"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "backupRequestAddComm": null,
+    "getNextComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!nextsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "randomComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!randomnext",
+        " !nextrandom",
+        " !randomsong",
+        " !songrandom"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "favSongComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!requestfav",
+        "!songfav",
+        "!playfav"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "editSongComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!editsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "removeSongComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!removesong",
+        "!wrongsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "songPositionComm": {
+      "output": null,
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!mysong",
+        "!position",
+        "!songposition"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    "songList": [],
+    "songsPlayedTotal": 29,
+    "checkCustomsForge": true,
+    "checkCustomsForgeLead": false,
+    "checkCustomsForgeRhythm": false,
+    "checkCustomsForgeBass": false,
+    "displayCFLink": true,
+    "lowestTuning": 0,
+    "requireDD": false,
+    "defaultMinsSong": 4,
+    "inChatEstimateTime": false
+  },
+  "sfxCommandList": [
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ass.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ass"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\boobs.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!boobs"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\angel.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!angel"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ohoh.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ohoh"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\best2.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!amazing"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\bickdutt.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!bickdutt"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\bleedfuel.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!bleedfuel"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\bruh.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!bruh"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\fart.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!fart"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\cena.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!cena"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\carbon621.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!carbon621"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\demondrummer.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!demondrummer"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\devil.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!devilsnightmare"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\doit.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!doit"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\dreams.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!dreams"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\elisa.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!elisa"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\fuah.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!fuah"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\gta.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!gta"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\hello.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!hello"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\jeff.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!jeff"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\listen.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!listen"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\love.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!love"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\mlg.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!mlg"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps1.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ps1"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps2.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ps2"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\redbeard.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!redbeard26"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\renage.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!renage"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\sexy.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!sexy"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\troll.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!troll"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\williambolding.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!williambolding"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\wrong.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!wrong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\xfiles.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!xfiles"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\yeah.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!yeah"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\yes.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!yes"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\yell.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!yell"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "userCommandList": [
+    {
+      "output": "Harambe would have loved $currentsong!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!harambe"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "#dstringsoutforharambe",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!dstrings"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$8ball",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!8ball"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$user gives $input a hug!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!hug"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$user has been following the stream for $following",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!following"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$streamer joined Twitch on $start",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!start"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!xfiles"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "There is $randomnumber3% <3 between $user and $input!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!love"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$streamer has been live for $uptime",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!uptime"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$shoutout",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!shoutout"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$roulette",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!roulette"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$user is moist!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!moist"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Kreygasm $counter1 OHOH's! Kreygasm",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!ohoh"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Kappa",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!kappa"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Christmas isn't Christmas without ho's...",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!santa"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$cleverbot",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!cleverbot"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "timerCommandList": [
+    {
+      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it's available, request it! I'll play it if it works! :D",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!customs"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!inlays"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type !quote for a random quote!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!quoteinfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!share"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Join my discord here: https://discord.gg/9TcVCmY",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!discord"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!noteinfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!story"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!songinfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!social"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type '!position' to display your song's position in the song list!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!positioninfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!game"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!donate"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "botCommandList": [
+    {
+      "output": "favSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!requestfav",
+        "!songfav",
+        "!playfav"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "triggerRequestsComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!requests"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "requestComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!request",
+        "!song",
+        "!play",
+        "!songrequest"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "songlistComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!songlist",
+        "!list",
+        "!playlist"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getTotalComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!queue",
+        "!length",
+        "!total"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getViewerCountCommands",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!viewers"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "addtopComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addtop"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "addvipComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addvip"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "adddonatorComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!adddonator"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "editComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!edit",
+        "!change"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "nextComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!next",
+        "!skip"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "clearComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!clear"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getCurrentComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!current",
+        "!playing",
+        "!currentsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getNextComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!nextsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "randomComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!randomnext",
+        "!nextrandom",
+        "!randomsong",
+        "!songrandom"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "editSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!editsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "removeSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!removesong",
+        "!wrongsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "songPositionComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!mysong",
+        "!position",
+        "!songposition"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "imageCommandList": [
+    {
+      "output": "F:\\Desktop\\Rocksmith\\emotes\\15251863-Cheeseburger-isolated-on-white-background-Stock-Photo-hamburger-cheeseburger.jpg",
+      "commandType": "image",
+      "level": 0,
+      "input": [
+        "!image1"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\Rocksmith\\emotes\\13131558_10206308382203578_8436449390544094618_o.jpg",
+      "commandType": "image",
+      "level": 0,
+      "input": [
+        "!image2"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\Rocksmith\\emotes\\dudebot.jpg",
+      "commandType": "image",
+      "level": 0,
+      "input": [
+        "!love"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "hotkeyCommandList": [
+    {
+      "output": "!next",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F7"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "overrideCommandList": [
+    {
+      "output": "EVERYONE LOVES PIZZA!",
+      "commandType": "override",
+      "level": 0,
+      "input": [
+        "pizza"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "rewardCommandList": [
+    {
+      "output": "$user redeemed test reward!",
+      "commandType": "reward",
+      "level": 0,
+      "input": [
+        "test"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 1,
+      "overrideType": 0
+    }
+  ],
+  "commandList": [
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ass.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ass"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\boobs.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!boobs"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\angel.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!angel"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ohoh.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ohoh"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\best2.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!amazing"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\bickdutt.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!bickdutt"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\bleedfuel.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!bleedfuel"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\bruh.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!bruh"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\fart.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!fart"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\cena.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!cena"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\carbon621.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!carbon621"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\demondrummer.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!demondrummer"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\devil.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!devilsnightmare"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\doit.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!doit"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\dreams.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!dreams"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\elisa.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!elisa"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\fuah.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!fuah"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\gta.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!gta"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\hello.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!hello"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\jeff.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!jeff"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\listen.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!listen"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\love.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!love"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\mlg.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!mlg"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps1.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ps1"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\ps2.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!ps2"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\redbeard.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!redbeard26"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\renage.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!renage"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\sexy.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!sexy"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\troll.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!troll"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\williambolding.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!williambolding"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\wrong.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!wrong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\xfiles.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!xfiles"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\yeah.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!yeah"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\yes.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!yes"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\RS custom toolkit\\audio\\yell.mp3",
+      "commandType": "sfx",
+      "level": 0,
+      "input": [
+        "!yell"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Harambe would have loved $currentsong!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!harambe"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "#dstringsoutforharambe",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!dstrings"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$8ball",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!8ball"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$user gives $input a hug!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!hug"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$user has been following the stream for $following",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!following"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$streamer joined Twitch on $start",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!start"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "deIlluminati deIlluminati deIlluminati deIlluminati deIlluminati",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!xfiles"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "There is $randomnumber3% <3 between $user and $input!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!love"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$streamer has been live for $uptime",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!uptime"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$shoutout",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!shoutout"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$roulette",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!roulette"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$user is moist!",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!moist"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Kreygasm $counter1 OHOH's! Kreygasm",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!ohoh"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Kappa",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!kappa"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Christmas isn't Christmas without ho's...",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!santa"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Go to: http://customsforge.com/ to check out the large database (20,000+) of custom songs available for download. For a tutorial, go to this link: http://customsforge.com/topic/4776-video-guide-how-to-use-cdlc-in-rocksmith-2014-pc/ If it's available, request it! I'll play it if it works! :D",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!customs"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Like my custom inlays on Rocksmith? Go to: http://customsforge.com/topic/5236-custom-inlays/ for how to create/use custom inlays for Rocksmith!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!inlays"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type !quote for a random quote!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!quoteinfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "If you enjoy the stream, please share it with your friends, grandma, dentist, and favorite florist. Here's the link: https://www.twitch.tv/edude15000",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!share"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Join my discord here: https://discord.gg/9TcVCmY",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!discord"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type \"!notes\" for the amount of points you have in stream. You gain 2 notes per minute in stream. You can spend 500 notes on a VIP song once per stream. To request a VIP song type \"!vipsong artist song\"!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!noteinfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Evan (Edude15000) started playing bass and acoustic guitar 10 years ago. He started playing electric guitar 3 years ago. He played in a band in highschool called 'Shadyview Boulevard'! OHOH! :)",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!story"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type: !request 'artist_name - song_name' to request a song, !songrequest 'artist_name - song_name' for VIP request (costs 500 notes) !nextsong for the next song, !songlist to see a list of songs in queue, or !wrongsong to delete your previous request! :D Donators get their songs moved to the top of the list!!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!songinfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Follow me on Twitter (you get 300 notes free!): https://twitter.com/edude15000  or Youtube: https://www.youtube.com/channel/UC5cLmPUKsjIIKd6JIUIbFfQ for updates!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!social"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Type '!position' to display your song's position in the song list!",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!positioninfo"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "The game I am playing is Rocksmith 2014 for the PC. You can get the game here: http://rocksmith.ubi.com/rocksmith/en-us/home/",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!game"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "Donations help me continue streaming, and help improve the stream!! To donate and have your song request pushed to the top of the list and have your message read by Mrs. Robot, press this link: https://www.twitchalerts.com/donate/edude15000  (Put your song request in the donation message please) Donations of all amounts help and I will love you forever :)",
+      "commandType": "timer",
+      "level": 0,
+      "input": [
+        "!donate"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "favSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!requestfav",
+        "!songfav",
+        "!playfav"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "triggerRequestsComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!requests"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "requestComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!request",
+        "!song",
+        "!play",
+        "!songrequest"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "songlistComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!songlist",
+        "!list",
+        "!playlist"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getTotalComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!queue",
+        "!length",
+        "!total"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getViewerCountCommands",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!viewers"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "addtopComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addtop"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "addvipComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!addvip"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "adddonatorComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!adddonator"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "editComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!edit",
+        "!change"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "nextComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!next",
+        "!skip"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "clearComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!clear"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getCurrentComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!current",
+        "!playing",
+        "!currentsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "getNextComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!nextsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "randomComm",
+      "commandType": "bot",
+      "level": 2,
+      "input": [
+        "!randomnext",
+        "!nextrandom",
+        "!randomsong",
+        "!songrandom"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "editSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!editsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "removeSongComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!removesong",
+        "!wrongsong"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "songPositionComm",
+      "commandType": "bot",
+      "level": 0,
+      "input": [
+        "!mysong",
+        "!position",
+        "!songposition"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\Rocksmith\\emotes\\15251863-Cheeseburger-isolated-on-white-background-Stock-Photo-hamburger-cheeseburger.jpg",
+      "commandType": "image",
+      "level": 0,
+      "input": [
+        "!image1"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\Rocksmith\\emotes\\13131558_10206308382203578_8436449390544094618_o.jpg",
+      "commandType": "image",
+      "level": 0,
+      "input": [
+        "!image2"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "F:\\Desktop\\Rocksmith\\emotes\\dudebot.jpg",
+      "commandType": "image",
+      "level": 0,
+      "input": [
+        "!love"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "!next",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F7"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$user redeemed test reward!",
+      "commandType": "reward",
+      "level": 0,
+      "input": [
+        "test"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 1,
+      "overrideType": 0
+    },
+    {
+      "output": "EVERYONE LOVES PIZZA!",
+      "commandType": "override",
+      "level": 0,
+      "input": [
+        "pizza"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "$cleverbot",
+      "commandType": "user",
+      "level": 0,
+      "input": [
+        "!cleverbot"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    }
+  ],
+  "users": [
+    {
+      "username": "allstarsniper32",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "anclave",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bastian0532",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bigkiste",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bleedfuel",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bobthebu1lder3",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "brak145",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "brendant02",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "darkmantik",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "deadhead72",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "derkeyno",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "desarus",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "elentwitch",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "felipelu4ri",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "greggyfonzo",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "hard83",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "highdad",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "hippunen",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "johnsonke",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "jrace1193",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "kazzasleeps",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "killbandit360",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "lynxwhite_",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mehdiboha",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mylastserenade88",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "opertune",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "papercat84",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "radderzuk",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "tyannatalie",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "vespers_haven",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "wilddogo",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "zlpl",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "zynixxdzik",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 1,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "b",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 1,
+      "subCredits": 0,
+      "points": 109,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "MarluxiaPetals",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 163,
+      "subCredits": 0,
+      "points": 260,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "aguyplayinggames",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "ardarionus",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "champasoruswrex",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "chatspamgreyface123",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "downeastgamers",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "frozenraintv",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "lazercore",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mortalperiltwitch",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mrmojorisin_",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "nharsmusic",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "one2h",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "rutledgex",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "ryanburnsred",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "steplery",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "vicrattlehead62621",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "zultnezulu",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "zwick_zwick_der_zwicker",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "stallionducky03",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "18star18",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "colt_sparta",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "d0mlno",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "ihateregistering123",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "kloderrz",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "notorious1325",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "painkiller003",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "pretzal",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "spicytofu2",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "turboman50",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "vengefuldeaths",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "xxgreenven0mxx",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 3,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "botzerker",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "nightbot",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "punkestmf",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "pure__pazaak",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 3,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "7_kyren",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "asaptpet",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "endemolde",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "godsock",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "hieronimus68",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "isshan",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "kappuccinocappuccino",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "outland71",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "tearingithupp",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bardzerker",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 4,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "necromss",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 5,
+      "subCredits": 0,
+      "points": 5,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "nighttprowler",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 5,
+      "subCredits": 0,
+      "points": 5,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "rt_zontar",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 5,
+      "subCredits": 0,
+      "points": 5,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "topyosh",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 5,
+      "subCredits": 0,
+      "points": 5,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "vurs_ik",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 5,
+      "subCredits": 0,
+      "points": 5,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "arielglzc",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 6,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "auscultare",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 6,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "kllavier",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 6,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mattyice8701",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 6,
+      "subCredits": 0,
+      "points": 6,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "amrk_",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 7,
+      "subCredits": 0,
+      "points": 7,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "grand_black_overlord",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 7,
+      "subCredits": 0,
+      "points": 7,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "hopbidi",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 7,
+      "subCredits": 0,
+      "points": 7,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "ksuaes",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 8,
+      "subCredits": 0,
+      "points": 8,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "latarielle",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 8,
+      "subCredits": 0,
+      "points": 8,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "razgarize",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 8,
+      "subCredits": 0,
+      "points": 8,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "suiggetsu17",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 8,
+      "subCredits": 0,
+      "points": 8,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "alpuka",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 9,
+      "subCredits": 0,
+      "points": 9,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mkmarciano",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 9,
+      "subCredits": 0,
+      "points": 9,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "yarr_finloid",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 9,
+      "subCredits": 0,
+      "points": 9,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "thewookieway",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 10,
+      "subCredits": 0,
+      "points": 10,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "nemata",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 12,
+      "subCredits": 0,
+      "points": 12,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "xdylanxloverx",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 12,
+      "subCredits": 0,
+      "points": 12,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "dastulumen",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 13,
+      "subCredits": 0,
+      "points": 13,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "btiddy",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 14,
+      "subCredits": 0,
+      "points": 14,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "dreadwasdert",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 15,
+      "subCredits": 0,
+      "points": 15,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "gde_moi_kotletki",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 15,
+      "subCredits": 0,
+      "points": 15,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "sylethh",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 15,
+      "subCredits": 0,
+      "points": 15,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "maverix23",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 16,
+      "subCredits": 0,
+      "points": 16,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "osko1ok",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 18,
+      "subCredits": 0,
+      "points": 18,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "boss_rubix",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 19,
+      "subCredits": 0,
+      "points": 19,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "pendragorn1",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 20,
+      "subCredits": 0,
+      "points": 20,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "novofine",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 21,
+      "subCredits": 0,
+      "points": 21,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "thecrazydeath",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 21,
+      "subCredits": 0,
+      "points": 21,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "natalie_moore",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 22,
+      "subCredits": 0,
+      "points": 22,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "rake1off",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 22,
+      "subCredits": 0,
+      "points": 22,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "maethofastora",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 23,
+      "subCredits": 0,
+      "points": 23,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "soulflys_",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 23,
+      "subCredits": 0,
+      "points": 23,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "hammerhead0158",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 26,
+      "subCredits": 0,
+      "points": 26,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mizzzero",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 27,
+      "subCredits": 0,
+      "points": 27,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "andyopolis77",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 29,
+      "subCredits": 0,
+      "points": 29,
+      "numRequests": 2,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "aoarms",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 29,
+      "subCredits": 0,
+      "points": 29,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bigbubba45",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 29,
+      "subCredits": 0,
+      "points": 29,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "adamducky",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 30,
+      "subCredits": 0,
+      "points": 30,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "rawarck",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 31,
+      "subCredits": 0,
+      "points": 31,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "revlobot",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 32,
+      "subCredits": 0,
+      "points": 76,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "reversihide",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 36,
+      "subCredits": 0,
+      "points": 36,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "l9_elias",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 38,
+      "subCredits": 0,
+      "points": 41,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "maltn",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 39,
+      "subCredits": 0,
+      "points": 39,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "destiny_spores",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 40,
+      "subCredits": 0,
+      "points": 40,
+      "numRequests": 2,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "squidstormtv",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 43,
+      "subCredits": 0,
+      "points": 43,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "ultranova5000",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 43,
+      "subCredits": 0,
+      "points": 112,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "hologrammer",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 44,
+      "subCredits": 0,
+      "points": 110,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "symboliccross95",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 48,
+      "subCredits": 0,
+      "points": 1548,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "brianfnpillman",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 49,
+      "subCredits": 0,
+      "points": 49,
+      "numRequests": 2,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "papamaanbeer",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 50,
+      "subCredits": 0,
+      "points": 50,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "avenici",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 53,
+      "subCredits": 0,
+      "points": 53,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "korgull_the_exterminator",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 56,
+      "subCredits": 0,
+      "points": 4,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bigdamscooters",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 61,
+      "subCredits": 0,
+      "points": 507,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "jake_seattlex19",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 62,
+      "subCredits": 0,
+      "points": 62,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "tenebreux35",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 65,
+      "subCredits": 0,
+      "points": 65,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "vexed2dodplants",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 69,
+      "subCredits": 0,
+      "points": 69,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "hollybombay",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 72,
+      "subCredits": 0,
+      "points": 165,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "bearsfan5051",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 73,
+      "subCredits": 0,
+      "points": 73,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "spookyone_1",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 76,
+      "subCredits": 0,
+      "points": 79,
+      "numRequests": 1,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "felipegrox",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 83,
+      "subCredits": 0,
+      "points": 83,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "mesoniclake",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 83,
+      "subCredits": 0,
+      "points": 83,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "kokolihapihvi",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 87,
+      "subCredits": 0,
+      "points": 87,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "vickevi",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 88,
+      "subCredits": 0,
+      "points": 88,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "darkmarkiz",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 96,
+      "subCredits": 0,
+      "points": 96,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "rydersousa",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 97,
+      "subCredits": 0,
+      "points": 97,
+      "numRequests": 3,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "nahvec",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 108,
+      "subCredits": 0,
+      "points": 203,
+      "numRequests": 2,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "kilian737ngx",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 111,
+      "subCredits": 0,
+      "points": 111,
+      "numRequests": 2,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "demon_drummer",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 158,
+      "subCredits": 0,
+      "points": 158,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "edude15000",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": true,
+      "gaveSpot": false,
+      "time": 413,
+      "subCredits": 0,
+      "points": 407,
+      "numRequests": 286,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "zdude15000",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 7,
+      "subCredits": 0,
+      "points": 206,
+      "numRequests": 8,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "xscarface",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 0,
+      "subCredits": 0,
+      "points": 0,
+      "numRequests": 2,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "edudebot2",
+      "rank": null,
+      "follower": false,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 642,
+      "subCredits": 0,
+      "points": 642,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    },
+    {
+      "username": "inckowaty",
+      "rank": null,
+      "follower": true,
+      "sub": false,
+      "mod": false,
+      "gaveSpot": false,
+      "time": 2,
+      "subCredits": 0,
+      "points": 2,
+      "numRequests": 0,
+      "months": 0,
+      "gambleCoolDown": 0,
+      "vipCoolDown": 0
+    }
+  ],
+  "raffleUsers": [],
+  "extraCommandNames": [
+    "!givespot",
+    "!regnext",
+    "!nextreg",
+    "!regularnext",
+    "!nextregular",
+    "!quote",
+    "!addquote",
+    "!quotes",
+    "!minigame",
+    "!startgame",
+    "!guess",
+    "!endgame",
+    "!sfx",
+    "!images",
+    "!totalrequests",
+    "!toprequester",
+    "!setcounter1",
+    "!setcounter2",
+    "!setcounter3",
+    "!setcounter4",
+    "!setcounter5",
+    "!addcom",
+    "!botcolor",
+    "!colorbot",
+    "!adventure",
+    "!bonus",
+    "!bonusall",
+    "!raffle",
+    "!gamble",
+    "!currency",
+    "!points",
+    "!vipsong",
+    "!vipsongon",
+    "!vipsongoff",
+    "!info",
+    "!rank",
+    "!join",
+    "!leaderboards",
+    "!removesong",
+    "!promote",
+    "!rankup",
+    "!editquote",
+    "!changequote",
+    "!removequote",
+    "!deletequote",
+    "!subcredits",
+    "!givecredits",
+    "!subsong",
+    "!addfav",
+    "!redeem",
+    "!redeeminfo"
+  ],
+  "events": {},
+  "getViewerComm": {
+    "output": null,
+    "commandType": "bot",
+    "level": 0,
+    "input": [
+      "!viewers"
+    ],
+    "toggle": true,
+    "volumeLevel": 100,
+    "costToUse": 0,
+    "overrideType": 0
+  },
+  "guiBackgroundColor": 3,
+  "guiTextColor": 1,
+  "guiTextBlockColor": 0,
+  "guiInputFontStyle": 0,
+  "guiButtonColor": 0,
+  "version": "2.12.1"
+}

@@ -13,7 +13,10 @@
     "parts": "",
     "dlcCreator": "",
     "formattedDuration": "00:03:45",
-    "officialSong": false
+    "officialSong": false,
+    "cfSongName": "",
+    "cfSongArtist": "aaa",
+    "cfAlbum": ""
   },
   {
     "name": "bbb",
@@ -29,23 +32,10 @@
     "parts": "",
     "dlcCreator": "",
     "formattedDuration": "00:03:30",
-    "officialSong": false
-  },
-  {
-    "name": "ccc",
-    "requester": "edude15000",
-    "requesterIsHere": "[IN CHAT]",
-    "level": "",
-    "youtubeLink": "",
-    "youtubeTitle": "",
-    "durationInSeconds": 0,
-    "index": 3,
-    "tuning": "",
-    "customsForgeLink": "",
-    "parts": "",
-    "dlcCreator": "",
-    "formattedDuration": "",
-    "officialSong": false
+    "officialSong": false,
+    "cfSongName": "",
+    "cfSongArtist": "bbb",
+    "cfAlbum": ""
   },
   {
     "name": "ddd",
@@ -55,13 +45,16 @@
     "youtubeLink": "http://www.youtube.com/watch?v=axVvZrDz60k",
     "youtubeTitle": "[EXID(이엑스아이디)] 덜덜덜(DDD) 뮤직 비디오 (Official Music Video)",
     "durationInSeconds": 207,
-    "index": 4,
+    "index": 3,
     "tuning": "",
     "customsForgeLink": "",
     "parts": "",
     "dlcCreator": "",
     "formattedDuration": "00:03:27",
-    "officialSong": false
+    "officialSong": false,
+    "cfSongName": "",
+    "cfSongArtist": "ddd",
+    "cfAlbum": ""
   },
   {
     "name": "eee",
@@ -71,12 +64,53 @@
     "youtubeLink": "http://www.youtube.com/watch?v=XlhKQKb30xY",
     "youtubeTitle": "Extraordinarily Excellent Entities Episode 4: EEE = mc^2",
     "durationInSeconds": 834,
-    "index": 5,
+    "index": 4,
     "tuning": "",
     "customsForgeLink": "",
     "parts": "",
     "dlcCreator": "",
     "formattedDuration": "00:13:54",
-    "officialSong": false
+    "officialSong": false,
+    "cfSongName": "",
+    "cfSongArtist": "eee",
+    "cfAlbum": ""
+  },
+  {
+    "name": "ppp",
+    "requester": "edude15000",
+    "requesterIsHere": "[IN CHAT]",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=NFhJRTdmviA",
+    "youtubeTitle": "Beach House - PPP",
+    "durationInSeconds": 369,
+    "index": 5,
+    "tuning": "",
+    "customsForgeLink": "",
+    "parts": "",
+    "dlcCreator": "",
+    "formattedDuration": "00:06:09",
+    "officialSong": false,
+    "cfSongName": "",
+    "cfSongArtist": "ppp",
+    "cfAlbum": ""
+  },
+  {
+    "name": "alalalalalalalvallavla",
+    "requester": "edude15000",
+    "requesterIsHere": "[IN CHAT]",
+    "level": "",
+    "youtubeLink": "",
+    "youtubeTitle": "",
+    "durationInSeconds": 0,
+    "index": 6,
+    "tuning": "",
+    "customsForgeLink": "",
+    "parts": "",
+    "dlcCreator": "",
+    "formattedDuration": "~00:04:00",
+    "officialSong": false,
+    "cfSongName": "",
+    "cfSongArtist": "alalalalalalalvallavla",
+    "cfAlbum": ""
   }
 ]

@@ -25,6 +25,7 @@ public class Command
         overrideType = 0;
     }
 
+    [STAThread]
     public void playSound()
     {
         try
@@ -40,6 +41,7 @@ public class Command
         }
     }
 
+    [STAThread]
     public void playImage()
     {
         try

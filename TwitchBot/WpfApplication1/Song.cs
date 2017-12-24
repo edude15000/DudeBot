@@ -31,17 +31,7 @@ public class Song
         cfSongArtist = name;
         if (youtubeLink == null || youtubeLink == "")
         {
-            try
-            {
-                Video s = bot.youtube.searchYoutubeByTitle(name);
-                youtubeLink = "http://www.youtube.com/watch?v=" + s.Id;
-                durationInSeconds = Utils.getDurationOfVideoInSeconds(s.ContentDetails.Duration);
-                formattedDuration = TimeSpan.FromSeconds(durationInSeconds).ToString(@"hh\:mm\:ss");
-                youtubeTitle = s.Snippet.Title;
-            }
-            catch
-            {
-            }
+            setYoutubeData(bot);
         }
         
     }
@@ -81,6 +71,11 @@ public class Song
         cfSongName = "";
         cfSongArtist = name;
         cfAlbum = "";
+        setYoutubeData(bot);
+    }
+
+    public void setYoutubeData(TwitchBot bot)
+    {
         try
         {
             Video s = bot.youtube.searchYoutubeByTitle(name);
@@ -91,6 +86,10 @@ public class Song
         }
         catch
         {
+            try
+            {
+                formattedDuration = "~" + TimeSpan.FromSeconds(bot.requestSystem.defaultMinsSong * 60).ToString(@"hh\:mm\:ss");
+            } catch (Exception) { }
         }
     }
     

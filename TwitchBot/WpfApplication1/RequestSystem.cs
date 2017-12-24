@@ -1244,8 +1244,6 @@ public class RequestSystem : INotifyPropertyChanged
 
     public void writeToCurrentSong(String channel, Boolean nextCom)
     {
-        setSongsIfUserIsHere();
-        setIndexesForSongs();
         StreamWriter output;
         output = new StreamWriter(Utils.currentSongFile, false);
         output.Write(getCurrentSongTitle(channel));
@@ -1266,6 +1264,8 @@ public class RequestSystem : INotifyPropertyChanged
         output = new StreamWriter(Utils.songListTextFile, false);
         output.Write(songs);
         output.Close();
+        setSongsIfUserIsHere();
+        setIndexesForSongs();
         Utils.saveSongs(songList);
         // TODO : Call refresh some how???
     }

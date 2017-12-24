@@ -625,7 +625,7 @@
                 </TabControl>
             </TabItem>
 
-            <TabItem FontSize="12" >
+            <TabItem FontSize="12" Header="Music">
                 <TabControl x:Name="musictabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">

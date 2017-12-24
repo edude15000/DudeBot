@@ -43,7 +43,6 @@ C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\x64\Release\WpfApplicat
 C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\x64\Release\DudeBot.exe
 C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\x64\Release\DudeBot.pdb
 C:\git\DudeBotWorkspace\TwitchBotGUI\WpfApplication1\obj\x64\Release\WpfApplication1.csprojResolveAssemblyReference.cache
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\WpfApplication1.csprojResolveAssemblyReference.cache
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\Interop.WMPLib.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\WpfApplication1.csproj.ResolveComReference.cache
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\MainWindow.baml
@@ -77,7 +76,6 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Net.Htt
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Net.Http.Primitives.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Windows.Interactivity.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\TwitchLib.dll
-C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\WebSocket4Net.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Zlib.Portable.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Google.Apis.xml
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Google.Apis.Auth.xml
@@ -106,3 +104,14 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\GeneratedInter
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\DudeBot_MarkupCompile.lref
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\CustomsForgeLogin.baml
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\CustomsForgeLogin.g.cs
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Microsoft.Win32.Primitives.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.AppContext.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Console.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Globalization.Calendars.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.IO.Compression.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.IO.Compression.ZipFile.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.IO.FileSystem.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.IO.FileSystem.Primitives.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\System.Xml.ReaderWriter.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\WpfApplication1.csprojResolveAssemblyReference.cache
