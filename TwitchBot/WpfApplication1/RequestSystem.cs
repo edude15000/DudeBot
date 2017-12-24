@@ -11,7 +11,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
+using WpfApplication1;
 
 public class RequestSystem : INotifyPropertyChanged
 {
@@ -520,7 +522,7 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     songname = songname.Substring(3).Trim();
                 }
-                CDLCEntryList results = search.Search(0, 100, songname);
+                CDLCEntryList results = search.Search(0, 50, songname);
                 if (results.Count == 0)
                 {
                     return null;
@@ -1026,8 +1028,14 @@ public class RequestSystem : INotifyPropertyChanged
                         return;
                     }
                 }
-                songList[i].name = Utils.getFollowingText(message);
-                writeToCurrentSong(bot.channel, true);
+                String previousSong = songList[i].name;
+                if (addSongToList(Utils.getFollowingText(message), sender, songList[i].level, songList[i].index))
+                {
+                    songList.Remove(songList[i]);
+                    bot.client.SendMessage("Your next request '" + previousSong
+                           + "' has been changed to " + songList[i].name + ", " + sender + "!");
+                    writeToCurrentSong(channel, false);
+                }
                 return;
             }
         }
@@ -1259,8 +1267,7 @@ public class RequestSystem : INotifyPropertyChanged
         output.Write(songs);
         output.Close();
         Utils.saveSongs(songList);
-        songList = Utils.loadSongs();
-
+        // TODO : Call refresh some how???
     }
 
     public String formatTotalTime()
@@ -2169,19 +2176,15 @@ public class RequestSystem : INotifyPropertyChanged
 
     public void setSongsIfUserIsHere()
     {
-        if (songList.Count > 1)
+        if (songList.Count > 0)
         {
-            for (int i = 1; i < songList.Count; i++)
+            List<String> str = Utils.getAllViewers(bot.streamer);
+            for (int i = 0; i < songList.Count; i++)
             {
                 songList[i].requesterIsHere = "";
-                foreach (String s in Utils.getAllViewers(bot.streamer))
+                if (songList[i].requester.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || str.Contains(songList[i].requester))
                 {
-                    if (s.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) 
-                        || s.Equals(songList[i].requester, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        songList[i].requesterIsHere = "[IN CHAT]";
-                        break;
-                    }
+                    songList[i].requesterIsHere = "[IN CHAT]";
                 }
             }
         }
@@ -2220,9 +2223,9 @@ public class RequestSystem : INotifyPropertyChanged
         {
             output = "The next song is: '" + song + "' - " + requestedby;
         }
-        if (displayCFLink && !songList[0].customsForgeLink.Equals(""))
+        if (displayCFLink && !SongList[0].officialSong && !songList[0].customsForgeLink.Equals(""))
         {
-            output += " CF LINK: " + songList[0].customsForgeLink;
+            Process.Start(songList[0].customsForgeLink);
         }
         return output;
     }
@@ -2245,6 +2248,7 @@ public class RequestSystem : INotifyPropertyChanged
             return false;
         }
         songList[0].name = newSong;
+        songList[0].clearExtraData(bot);
         writeToCurrentSong(channel, false);
         return true;
     }

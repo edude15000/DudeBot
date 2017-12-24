@@ -872,11 +872,6 @@ namespace WpfApplication1
             }
         }
 
-        private void music_click(object sender, MouseButtonEventArgs e)
-        {
-            refreshAllDataGrids();
-        }
-
         public void killBot(Object sender, RoutedEventArgs e)
         {
             try
@@ -1722,12 +1717,21 @@ namespace WpfApplication1
             editRequester.Text = c.requester;
             if (e.ClickCount == 2)
             {
+                var backgroundWorker = new BackgroundWorker();
+                if (c.customsForgeLink == null || c.customsForgeLink.Equals(""))
+                {
+                    backgroundWorker.DoWork += (s, e1) =>
+                    {
+                        Thread.Sleep(250);
+                    };
+                    Process.Start(c.customsForgeLink);
+                    return;
+                }
                 String link = "https://www.youtube.com/results?search_query=" + c.name;
                 if (c.youtubeLink != null && c.youtubeLink != "")
                 {
                     link = c.youtubeLink;
                 }
-                var backgroundWorker = new BackgroundWorker();
                 backgroundWorker.DoWork += (s, e1) =>
                 {
                     Thread.Sleep(250);

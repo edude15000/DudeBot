@@ -694,6 +694,8 @@ public class TwitchBot : INotifyPropertyChanged
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
         requestSystem.songListLength = requestSystem.songList.Count;
         requestSystem.songsPlayedThisStream = 0;
+        requestSystem.setSongsIfUserIsHere();
+        requestSystem.setIndexesForSongs();
         await requestSystem.getCookieFromCF();
     }
 
@@ -3133,6 +3135,10 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 response = response.Replace("$currentsongduration", s.formattedDuration);
             }
+        }
+        if (response.Contains("$cleverbot"))
+        {
+           // TODO
         }
         return response;
     }

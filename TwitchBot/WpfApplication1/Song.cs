@@ -70,5 +70,28 @@ public class Song
             }
         }
     }
+
+    public void clearExtraData(TwitchBot bot)
+    {
+        customsForgeLink = "";
+        dlcCreator = "";
+        tuning = "";
+        parts = "";
+        officialSong = false;
+        cfSongName = "";
+        cfSongArtist = name;
+        cfAlbum = "";
+        try
+        {
+            Video s = bot.youtube.searchYoutubeByTitle(name);
+            youtubeLink = "http://www.youtube.com/watch?v=" + s.Id;
+            durationInSeconds = Utils.getDurationOfVideoInSeconds(s.ContentDetails.Duration);
+            formattedDuration = TimeSpan.FromSeconds(durationInSeconds).ToString(@"hh\:mm\:ss");
+            youtubeTitle = s.Snippet.Title;
+        }
+        catch
+        {
+        }
+    }
     
 }

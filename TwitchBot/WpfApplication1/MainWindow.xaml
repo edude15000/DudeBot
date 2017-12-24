@@ -186,8 +186,8 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30*"/>
-                                    <ColumnDefinition Width="8*"/>
+                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="20*"/>
                                     <ColumnDefinition Width="35*" />
                                 </Grid.ColumnDefinitions>
@@ -226,7 +226,7 @@
                                 <TextBlock VerticalAlignment="Center" FontSize="14" Text="Default song duration: " Grid.Row="12" Grid.Column="0" HorizontalAlignment="Right"/>
                                 <Controls:NumericUpDown x:Name="defaultMinsSong" Minimum = "1" Maximum = "10" Interval = "1" Grid.Column="1" Grid.Row="12" HorizontalAlignment="Left" Value="{Binding requestSystem.defaultMinsSong, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <TextBlock VerticalAlignment="Center" FontSize="14" Text="Only estimate requesters in chat: " Grid.Column="0" Grid.Row="13" HorizontalAlignment="Right" />
+                                <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14" Text="Only estimate time based on requesters in chat: " Grid.Column="0" Grid.Row="13" HorizontalAlignment="Right" />
                                 <CheckBox x:Name="inChatEstimateTime" FontSize="14" Grid.Column="1" Grid.Row="13" IsChecked="{Binding requestSystem.inChatEstimateTime, UpdateSourceTrigger=PropertyChanged}" />
 
 
@@ -626,10 +626,6 @@
             </TabItem>
 
             <TabItem FontSize="12" >
-                <TabItem.Header>
-                    <Label Content="Music" 
-                        MouseLeftButtonDown="music_click"/>
-                </TabItem.Header>
                 <TabControl x:Name="musictabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
@@ -694,7 +690,7 @@
                                     <DataGridTemplateColumn x:Name="songnamecolumn" Header="Song" Width=".35*">
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" >
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" ToolTipService.ToolTip="Click to edit song, double click to open song link." MouseLeftButtonDown="editSongButtonClick" >
                                                     <TextBlock.Text>
                                                         <MultiBinding StringFormat="{}{0} {1} &#x0a;{2} {3}">
                                                             <Binding Path="cfSongArtist" UpdateSourceTrigger="PropertyChanged" />
@@ -710,7 +706,7 @@
                                     <DataGridTemplateColumn x:Name="songinfoduration" Header="Duration" Width=".1*" >
                                         <DataGridTemplateColumn.CellTemplate >
                                             <DataTemplate >
-                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding formattedDuration, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit song, double click to open song in Youtube." MouseLeftButtonDown="editSongButtonClick" />
+                                                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding formattedDuration, UpdateSourceTrigger=PropertyChanged}" ToolTipService.ToolTip="Click to edit song, double click to open song link." MouseLeftButtonDown="editSongButtonClick" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -1796,7 +1792,7 @@
 
                         <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Connect With CustomsForge" Click="customsForgeWindow" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" />
 
-                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="CustomsForge link on next song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Open CustomsForge link on next song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
                         <CheckBox x:Name="displayCFLink" FontSize="14" Grid.Column="1" Grid.Row="3" IsChecked="{Binding requestSystem.displayCFLink, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Require Dynamic Difficulty: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
