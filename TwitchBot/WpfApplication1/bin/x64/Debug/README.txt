@@ -155,6 +155,7 @@ $currentsonglevel = Current playing song level
 $currentsongyoutubelink = Current playing song Youtube link
 $currentsongyoutubetitle = Current playing song Youtube video title
 $currentsongduration = Current playing song duration
+$cleverbot = Generic cleverbot response to whatever input follows the command
 
 Example:	!songlist	$songlist
 Example:	!burp		$streamer has burped $counter1 times!

@@ -1,158 +1,187 @@
-﻿using Dropbox.Api;
-using System;
-using System.ComponentModel;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace updater
 {
     public partial class MainWindow : Window
     {
+        String dudebotdirectory = "";
+
         public MainWindow()
         {
-            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            this.Show();
-
-            // TODO :::: RUN ON THREAD (SO THAT BAR WILL MOVE ASYNCRONOUSLY!
-            new Thread(() =>
+            Show();
+            
+            if (Directory.GetCurrentDirectory().Contains("bin"))
             {
-                Thread.CurrentThread.IsBackground = true;
-                if (Directory.GetCurrentDirectory().Contains("bin"))
+                Environment.Exit(0);
+                Application.Current.Shutdown();
+            }
+            else
+            {
+                String dudebot = Path.GetTempPath() + "dudebotdirectory.txt";
+                String dudebotupdateinfo = Path.GetTempPath() + "dudebotupdateinfo.txt";
+                String backupdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\backupdudebot\\";
+                using (StreamReader sr = new StreamReader(dudebot))
                 {
-                    Application.Current.Shutdown();
+                    dudebotdirectory = sr.ReadToEnd();
                 }
-                else
+                try
                 {
-                    String dudebot = System.IO.Path.GetTempPath() + "dudebotdirectory.txt";
-                    String dudebotupdateinfo = System.IO.Path.GetTempPath() + "dudebotupdateinfo.txt";
-                    String dudebotdirectory = "";
-                    String backupdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\backupdudebot\\";
-                    using (StreamReader sr = new StreamReader(dudebot))
+                    using (MyWebClient client = new MyWebClient())
                     {
-                        dudebotdirectory = sr.ReadToEnd();
-                    }
-                    try
-                    {
-                        using (MyWebClient client = new MyWebClient())
+                        String link = "";
+                        try
                         {
-                            String link = "";
-                            try
+                            string s = client.DownloadString("http://dudebot.webs.com/");
+                            if (s.Contains("https://www.dropbox.com/"))
                             {
-                                string s = client.DownloadString("http://dudebot.webs.com/");
-                                if (s.Contains("https://www.dropbox.com/"))
+                                String[] info = s.Split(new string[] { "href=" }, StringSplitOptions.None);
+                                for (int i = 0; i < info.Length; i++)
                                 {
-                                    String[] info = s.Split(new string[] { "href=" }, StringSplitOptions.None);
-                                    for (int i = 0; i < info.Length; i++)
+                                    if (info[i].Contains("https://www.dropbox.com/"))
                                     {
-                                        if (info[i].Contains("https://www.dropbox.com/"))
+                                        link = info[i];
+                                        link = link.Substring(link.IndexOf('"') + 1, link.IndexOf("?dl=1") + 5);
+                                        int index = link.IndexOf('"');
+                                        if (index > 0)
                                         {
-                                            link = info[i];
-                                            link = link.Substring(link.IndexOf('"') + 1, link.IndexOf("?dl=1") + 5);
-                                            int index = link.IndexOf('"');
-                                            if (index > 0)
-                                            {
-                                                link = link.Substring(0, index);
-                                            }
-                                            link = link.Replace(" ", "");
+                                            link = link.Substring(0, index);
                                         }
-                                    }
-                                    using (WebClient webClient = new WebClient())
-                                    {
-                                        if (link == null)
-                                        {
-                                            System.IO.File.WriteAllText(dudebotupdateinfo, "fail");
-                                            MessageBox.Show("Failed to update! Try again later!");
-                                            Application.Current.Shutdown();
-                                        }
-                                        webClient.DownloadFile(new Uri(link), dudebotdirectory + "DudeBotNew.zip");
-                                    }
-                                    try
-                                    {
-                                        // Copy to back up directory
-                                        if (Directory.Exists(backupdir))
-                                        {
-                                            Directory.Delete(backupdir, true);
-                                        }
-                                        Directory.CreateDirectory(backupdir);
-                                        DirectoryCopy(dudebotdirectory + "dudebot", backupdir, true);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.ToString());
-                                        System.IO.File.WriteAllText(dudebotupdateinfo, "fail");
-                                        MessageBox.Show("Failed to update! Try again later!");
-                                        this.Close();
-                                    }
-                                    try
-                                    {
-                                        EmptyFolder(new DirectoryInfo(dudebotdirectory + "DudeBot"));
-                                        ZipFile.ExtractToDirectory(dudebotdirectory + "DudeBotNew.zip", dudebotdirectory);
-                                        File.Delete(dudebotdirectory + "DudeBotNew.zip");
-                                        System.IO.File.WriteAllText(dudebotupdateinfo, "DudeBot successfully updated!");
-                                    }
-                                    catch (Exception)
-                                    {
-                                        // COPY BACK BACKED UP FOLDER
-                                        EmptyFolder(new DirectoryInfo(dudebotdirectory + "DudeBot"));
-                                        Directory.CreateDirectory(dudebotdirectory + "dudebot");
-                                        DirectoryCopy(backupdir, dudebotdirectory + "dudebot", true);
-
-                                        System.IO.File.WriteAllText(dudebotupdateinfo, "fail");
-                                        MessageBox.Show("Failed to contact server! Try again later! \n");
+                                        link = link.Replace(" ", "");
                                     }
                                 }
-                                else
+                                using (WebClient webClient = new WebClient())
                                 {
-                                    System.IO.File.WriteAllText(dudebotupdateinfo, "fail");
+                                    if (link == null)
+                                    {
+                                        File.WriteAllText(dudebotupdateinfo, "fail");
+                                        MessageBox.Show("Failed to update! Try again later!");
+                                        Application.Current.Shutdown();
+                                    }
+                                    webClient.DownloadFile(new Uri(link), Path.GetTempPath() + "DudeBotNew.zip");
+                                }
+                                try
+                                {
+                                    // Copy to back up directory
+                                    if (Directory.Exists(backupdir))
+                                    {
+                                        Directory.Delete(backupdir, true);
+                                    }
+                                    Directory.CreateDirectory(backupdir);
+                                    DirectoryCopy(dudebotdirectory, backupdir, true);
+                                }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.ToString());
+                                    File.WriteAllText(dudebotupdateinfo, "fail");
                                     MessageBox.Show("Failed to update! Try again later!");
+                                    Close();
+                                }
+                                try
+                                {
+                                    if (Directory.Exists(Path.GetTempPath() + "Dudebot"))
+                                    {
+                                        DeleteDirectory(Path.GetTempPath() + "Dudebot");
+                                    }
+
+                                    ZipFile.ExtractToDirectory(Path.GetTempPath() + "DudeBotNew.zip", Path.GetTempPath());
+                                    
+                                    CopyNewFiles();
+
+                                    if (File.Exists(dudebotdirectory + "DudeBotNew.zip"))
+                                    {
+
+                                        File.Delete(dudebotdirectory + "DudeBotNew.zip");
+                                    }
+
+                                    File.WriteAllText(dudebotupdateinfo, "DudeBot successfully updated!");
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine(e);
+                                    File.WriteAllText(dudebotupdateinfo, "fail");
+                                    MessageBox.Show("Failed to contact server! Try again later! \n");
                                 }
                             }
-                            catch (WebException e)
+                            else
                             {
-                                MessageBox.Show(e.ToString());
-                                System.IO.File.WriteAllText(dudebotupdateinfo, "fail");
+                                File.WriteAllText(dudebotupdateinfo, "fail");
                                 MessageBox.Show("Failed to update! Try again later!");
                             }
                         }
+                        catch (WebException e)
+                        {
+                            MessageBox.Show(e.ToString());
+                            File.WriteAllText(dudebotupdateinfo, "fail");
+                            MessageBox.Show("Failed to update! Try again later!");
+                        }
                     }
-                    catch (Exception f)
-                    {
-                        MessageBox.Show(f.StackTrace);
-                        System.IO.File.WriteAllText(dudebotupdateinfo, "fail");
-                        MessageBox.Show("Failed to update! Try again later!");
-                    }
-
-                    Process p = new Process();
-                    p.StartInfo.FileName = dudebotdirectory += @"\DudeBot\DudeBot.exe";
-                    p.Start();
                 }
-                Environment.Exit(0);
-            }).Start();
-            
+                catch (Exception f)
+                {
+                    MessageBox.Show(f.StackTrace);
+                    File.WriteAllText(dudebotupdateinfo, "fail");
+                    MessageBox.Show("Failed to update! Try again later!");
+                }
+
+                Process p = new Process();
+                p.StartInfo.FileName = dudebotdirectory += @"\DudeBot.exe";
+                p.Start();
+            }
+            Environment.Exit(0);
         }
 
-
-        private void EmptyFolder(DirectoryInfo directoryInfo)
+        public static void DeleteDirectory(string target_dir)
         {
-            foreach (FileInfo file in directoryInfo.GetFiles())
+            string[] files = Directory.GetFiles(target_dir);
+            string[] dirs = Directory.GetDirectories(target_dir);
+
+            foreach (string file in files)
             {
-                file.Delete();
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
             }
 
-            foreach (DirectoryInfo subfolder in directoryInfo.GetDirectories())
+            foreach (string dir in dirs)
             {
-                EmptyFolder(subfolder);
+                DeleteDirectory(dir);
             }
+
+            Directory.Delete(target_dir, false);
         }
 
-        private class MyWebClient : WebClient
+        public void CopyNewFiles()
+        {
+            if (File.Exists(dudebotdirectory + "DudeBot.exe"))
+            {
+                File.Delete(dudebotdirectory + "DudeBot.exe");
+            }
+            File.Copy(Path.GetTempPath() + @"DudeBot\DudeBot.exe", dudebotdirectory + "DudeBot.exe");
+            if (File.Exists(dudebotdirectory + "DudeBot.exe.config"))
+            {
+                File.Delete(dudebotdirectory + "DudeBot.exe.config");
+            }
+            File.Copy(Path.GetTempPath() + @"DudeBot\DudeBot.exe.config", dudebotdirectory + "DudeBot.exe.config");
+            if (File.Exists(dudebotdirectory + "README.txt"))
+            {
+                File.Delete(dudebotdirectory + "README.txt");
+            }
+            File.Copy(Path.GetTempPath() + @"DudeBot\README.txt", dudebotdirectory + "README.txt");
+            if (File.Exists(dudebotdirectory + @"bin\dudebotupdater.exe"))
+            {
+                File.Delete(dudebotdirectory + @"bin\dudebotupdater.exe");
+            }
+            File.Copy(Path.GetTempPath() + @"DudeBot\bin\dudebotupdater.exe", dudebotdirectory + @"bin\dudebotupdater.exe");
+            // TODO : Add new files as needed
+        }
+
+        public class MyWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri uri)
             {
@@ -162,8 +191,7 @@ namespace updater
             }
         }
 
-        private static void DirectoryCopy(
-       string sourceDirName, string destDirName, bool copySubDirs)
+        public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
             DirectoryInfo[] dirs = dir.GetDirectories();

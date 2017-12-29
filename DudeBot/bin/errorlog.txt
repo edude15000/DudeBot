@@ -1,0 +1,3 @@
+12/29/2017 01:27:27 - DudeBot 3.0.0 Error : TwitchLib.Exceptions.Client.BadStateException: Must be connected to at least one channel to use SendMessage.
+   at TwitchLib.TwitchClient.SendMessage(String message, Boolean dryRun)
+   at WpfApplication1.MainWindow.killBot(Object sender, RoutedEventArgs e)

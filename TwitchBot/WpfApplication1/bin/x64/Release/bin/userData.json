@@ -379,7 +379,8 @@
     "lowestTuning": 0,
     "requireDD": false,
     "defaultMinsSong": 4,
-    "inChatEstimateTime": false
+    "inChatEstimateTime": false,
+    "openCFLinkInsteadOfYoutube": false
   },
   "sfxCommandList": [
     {

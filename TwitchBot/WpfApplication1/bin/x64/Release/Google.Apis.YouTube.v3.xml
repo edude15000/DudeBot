@@ -6966,6 +6966,9 @@
         <member name="P:Google.Apis.YouTube.v3.Data.LiveBroadcastContentDetails.BoundStreamLastUpdateTimeMs">
             <summary><seealso cref="T:System.DateTime"/> representation of <see cref="P:Google.Apis.YouTube.v3.Data.LiveBroadcastContentDetails.BoundStreamLastUpdateTimeMsRaw"/>.</summary>
         </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.LiveBroadcastContentDetails.EnableAutoStart">
+            <summary>This setting indicates whether auto start is enabled for this broadcast.</summary>
+        </member>
         <member name="P:Google.Apis.YouTube.v3.Data.LiveBroadcastContentDetails.EnableClosedCaptions">
             <summary>This setting indicates whether HTTP POST closed captioning is enabled for this broadcast. The
             ingestion URL of the closed captions is returned through the liveStreams API. This is mutually exclusive

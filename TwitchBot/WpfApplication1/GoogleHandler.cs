@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 public class GoogleHandler
 {
@@ -44,7 +45,7 @@ public class GoogleHandler
         });
     }
     
-    public void setValue(String RowStart, List<Song> songlist, String file, List<String> songHistory)
+    public void setValue(String RowStart, ObservableCollection<Song> songlist, String file, List<String> songHistory)
     {
         String range = RowStart;
         ValueRange oRange = new ValueRange();
@@ -80,7 +81,7 @@ public class GoogleHandler
         return data;
     }
 
-    public IList<IList<Object>> getData(List<Song> songlist, String file, List<String> songHistory)
+    public IList<IList<Object>> getData(ObservableCollection<Song> songlist, String file, List<String> songHistory)
     {
         IList<IList<Object>> data = new List<IList<Object>>();
         try
@@ -127,7 +128,7 @@ public class GoogleHandler
         return null;
     }
 
-    public void writeToGoogleSheets(Boolean updateAllSongs, List<Song> songs, List<String> songHistory)
+    public void writeToGoogleSheets(Boolean updateAllSongs, ObservableCollection<Song> songs, List<String> songHistory)
     {
         try
         {

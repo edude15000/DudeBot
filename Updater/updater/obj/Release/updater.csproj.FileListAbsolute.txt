@@ -60,3 +60,35 @@ F:\Documents\Visual Studio 2015\Projects\updater\updater\obj\Release\dudebotupda
 F:\Documents\Visual Studio 2015\Projects\updater\updater\obj\Release\updater.csproj.GenerateResource.Cache
 F:\Documents\Visual Studio 2015\Projects\updater\updater\obj\Release\dudebotupdater.exe
 F:\Documents\Visual Studio 2015\Projects\updater\updater\obj\Release\dudebotupdater.pdb
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\dudebotupdater.exe.config
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\dudebotupdater.exe
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\dudebotupdater.pdb
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\crypto.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\Dropbox.Api.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\DropboxRestAPI.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\FontAwesome.WPF.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\MediaFireSDK.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\Newtonsoft.Json.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\System.Net.Http.Extensions.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\System.Net.Http.Formatting.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\System.Net.Http.Primitives.dll
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\crypto.xml
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\Dropbox.Api.xml
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\DropboxRestAPI.pdb
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\FontAwesome.WPF.xml
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\Newtonsoft.Json.xml
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\System.Net.Http.Extensions.xml
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\System.Net.Http.Formatting.xml
+C:\git\DudeBotWorkspace\Updater\updater\bin\Release\System.Net.Http.Primitives.xml
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\updater.csprojResolveAssemblyReference.cache
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\MainWindow.g.cs
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\App.g.cs
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\dudebotupdater_MarkupCompile.cache
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\dudebotupdater_MarkupCompile.lref
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\MainWindow.baml
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\dudebotupdater.g.resources
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\dudebotupdater.Properties.Resources.resources
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\updater.csproj.GenerateResource.Cache
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\updater.csproj.CoreCompileInputs.cache
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\dudebotupdater.exe
+C:\git\DudeBotWorkspace\Updater\updater\obj\Release\dudebotupdater.pdb

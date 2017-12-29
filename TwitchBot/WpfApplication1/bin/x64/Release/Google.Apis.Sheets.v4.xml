@@ -466,23 +466,6 @@
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.SpreadsheetId">
             <summary>The ID of the spreadsheet to retrieve data from.</summary>
         </member>
-        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.Ranges">
-            <summary>The A1 notation of the values to retrieve.</summary>
-        </member>
-        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.MajorDimension">
-             <summary>The major dimension that results should use.
-            
-             For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then requesting
-             `range=A1:B2,majorDimension=ROWS` will return `[[1,2],[3,4]]`, whereas requesting
-             `range=A1:B2,majorDimension=COLUMNS` will return `[[1,3],[2,4]]`.</summary>
-        </member>
-        <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.MajorDimensionEnum">
-             <summary>The major dimension that results should use.
-            
-             For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then requesting
-             `range=A1:B2,majorDimension=ROWS` will return `[[1,2],[3,4]]`, whereas requesting
-             `range=A1:B2,majorDimension=COLUMNS` will return `[[1,3],[2,4]]`.</summary>
-        </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.ValueRenderOption">
             <summary>How values should be represented in the output. The default render option is
             ValueRenderOption.FORMATTED_VALUE.</summary>
@@ -500,6 +483,23 @@
             <summary>How dates, times, and durations should be represented in the output. This is ignored if
             value_render_option is FORMATTED_VALUE. The default dateTime render option is
             [DateTimeRenderOption.SERIAL_NUMBER].</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.Ranges">
+            <summary>The A1 notation of the values to retrieve.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.MajorDimension">
+             <summary>The major dimension that results should use.
+            
+             For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then requesting
+             `range=A1:B2,majorDimension=ROWS` will return `[[1,2],[3,4]]`, whereas requesting
+             `range=A1:B2,majorDimension=COLUMNS` will return `[[1,3],[2,4]]`.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.MajorDimensionEnum">
+             <summary>The major dimension that results should use.
+            
+             For example, if the spreadsheet data is: `A1=1,B1=2,A2=3,B2=4`, then requesting
+             `range=A1:B2,majorDimension=ROWS` will return `[[1,2],[3,4]]`, whereas requesting
+             `range=A1:B2,majorDimension=COLUMNS` will return `[[1,3],[2,4]]`.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.MethodName">
             <summary>Gets the method name.</summary>
@@ -743,12 +743,6 @@
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.Range">
             <summary>The A1 notation of the values to update.</summary>
         </member>
-        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.IncludeValuesInResponse">
-            <summary>Determines if the update response should include the values of the cells that were updated.
-            By default, responses do not include the updated values. If the range to write was larger than than
-            the range actually written, the response will include all values in the requested range (excluding
-            trailing empty rows and columns).</summary>
-        </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ResponseValueRenderOption">
             <summary>Determines how values in the response should be rendered. The default render option is
             ValueRenderOption.FORMATTED_VALUE.</summary>
@@ -772,6 +766,12 @@
             <summary>Determines how dates, times, and durations in the response should be rendered. This is
             ignored if response_value_render_option is FORMATTED_VALUE. The default dateTime render option is
             [DateTimeRenderOption.SERIAL_NUMBER].</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.IncludeValuesInResponse">
+            <summary>Determines if the update response should include the values of the cells that were updated.
+            By default, responses do not include the updated values. If the range to write was larger than than
+            the range actually written, the response will include all values in the requested range (excluding
+            trailing empty rows and columns).</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.Body">
             <summary>Gets or sets the body of this request.</summary>
@@ -1293,6 +1293,10 @@
         <member name="T:Google.Apis.Sheets.v4.Data.BasicChartSeries">
             <summary>A single series of data in a chart. For example, if charting stock prices over time, multiple series
             may exist, one for the "Open Price", "High Price", "Low Price" and "Close Price".</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BasicChartSeries.LineStyle">
+            <summary>The line style of this series. Valid only if the chartType is AREA, LINE, or SCATTER. COMBO charts
+            are also supported if the series chart type is AREA or LINE.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.BasicChartSeries.Series">
             <summary>The data being visualized in this chart series.</summary>
@@ -1948,6 +1952,9 @@
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.ChartSpec.TitleTextPosition">
             <summary>The title text position. This field is optional.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.ChartSpec.WaterfallChart">
+            <summary>A waterfall chart specification.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.ChartSpec.ETag">
             <summary>The ETag of the item.</summary>
@@ -2870,6 +2877,18 @@
             perform.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.IterativeCalculationSettings.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.LineStyle">
+            <summary>Properties that describe the style of a line.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.LineStyle.Type">
+            <summary>The dash type of the line.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.LineStyle.Width">
+            <summary>The thickness of the line, in px.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.LineStyle.ETag">
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.MatchedDeveloperMetadata">
@@ -4148,6 +4167,77 @@
              to an empty value, set the string value to an empty string.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.ValueRange.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.WaterfallChartColumnStyle">
+            <summary>Styles for a waterfall chart column.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartColumnStyle.Color">
+            <summary>The color of the column.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartColumnStyle.Label">
+            <summary>The label of the column's legend.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartColumnStyle.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.WaterfallChartDomain">
+            <summary>The domain of a waterfall chart.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartDomain.Data">
+            <summary>The data of the WaterfallChartDomain.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartDomain.Reversed">
+            <summary>True to reverse the order of the domain values (horizontal axis).</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartDomain.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.WaterfallChartSeries">
+            <summary>A single series of data for a waterfall chart.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.Data">
+            <summary>The data being visualized in this series.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.HideTrailingSubtotal">
+            <summary>True to hide the subtotal column from the end of the series. By default, a subtotal column will
+            appear at the end of each series. Setting this field to true will hide that subtotal column for this
+            series.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.NegativeColumnsStyle">
+            <summary>Styles for all columns in this series with negative values.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.PositiveColumnsStyle">
+            <summary>Styles for all columns in this series with positive values.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.SubtotalColumnsStyle">
+            <summary>Styles for all subtotal columns in this series.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.WaterfallChartSpec">
+            <summary>A waterfall chart.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSpec.ConnectorLineStyle">
+            <summary>The line style for the connector lines.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSpec.Domain">
+            <summary>The domain data (horizontal axis) for the waterfall chart.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSpec.FirstValueIsTotal">
+            <summary>True to interpret the first value as a total.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSpec.HideConnectorLines">
+            <summary>True to hide connector lines between columns.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSpec.Series">
+            <summary>The data this waterfall chart is visualizing.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSpec.StackedType">
+            <summary>The stacked type.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSpec.ETag">
             <summary>The ETag of the item.</summary>
         </member>
     </members>

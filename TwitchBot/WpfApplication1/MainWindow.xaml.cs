@@ -21,20 +21,22 @@ namespace WpfApplication1
 {
     public partial class MainWindow 
     {
-        public static TwitchBot bot;
 
+        public static TwitchBot bot;
+        public static Boolean displayedBrowser = false;
         public String dudebotdirectory = Path.GetTempPath() + "dudebotdirectory.txt";
         public String dudebotupdateinfo = Path.GetTempPath() + "dudebotupdateinfo.txt";
         
         String selectedQuote = "", selectedFavSong = "";
         Process rockSnifferWindow = null;
+
         [DllImport("User32")]
         private static extern int SetForegroundWindow(IntPtr hwnd);
         [DllImportAttribute("User32.DLL")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         private LowLevelKeyboardListener _listener;
-
+        
         void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
         {
             foreach (Command c in bot.hotkeyCommandList) {
@@ -437,13 +439,15 @@ namespace WpfApplication1
                 await this.ShowMessageAsync("Warning", "Please enter the song!");
             }
         }
-
+        
+        [STAThread]
         public void playSound(Object sender, RoutedEventArgs e)
         {
             FrameworkElement fe = sender as FrameworkElement;
             ((Command)fe.DataContext).playSound();
         }
 
+        [STAThread]
         public void playImage(Object sender, RoutedEventArgs e)
         {
             FrameworkElement fe = sender as FrameworkElement;
@@ -879,7 +883,7 @@ namespace WpfApplication1
                 bot.client.SendMessage(bot.endMessage);
                 bot.clearUpTempData();
                 Utils.saveData(bot);
-                bot.client.Disconnect();
+                bot.botDisconnect();
                 open.IsEnabled = true;
                 kill.IsEnabled = false;
             }
@@ -894,7 +898,8 @@ namespace WpfApplication1
         {
             try
             {
-                bot.botDisconnect();
+                bot.client.Disconnect();
+                bot.client.LeaveChannel(bot.channel);
             }
             catch
             {
@@ -919,6 +924,7 @@ namespace WpfApplication1
             try
             {
                 bot.client.Connect();
+                bot.writeToEventLog("BOT CONNECTED");
                 kill.IsEnabled = true;
                 open.IsEnabled = false;
                 showBrowser();
@@ -937,6 +943,7 @@ namespace WpfApplication1
                 return;
             }
             DataContext = bot;
+            BindingOperations.EnableCollectionSynchronization(bot.requestSystem.songList, new object());
             if (bot.openRockSnifferOnStartUp == true)
             {
                 openRockSniffer(null, null);
@@ -945,6 +952,10 @@ namespace WpfApplication1
 
         public void showBrowser()
         {
+            if (displayedBrowser)
+            {
+                return;
+            }
             dynamic activeX = browser.GetType().InvokeMember("ActiveXInstance",
                     BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
                     null, browser, new object[] { });
@@ -956,6 +967,7 @@ namespace WpfApplication1
                 //doc.parentWindow.execScript("document.body.style.transformrigin=​\"scale(0.9, 0)\";"); // TODO : FIX!
             };
             browser.Navigate("http://www.twitch.tv/" + bot.streamer + "/chat");
+            displayedBrowser = true;
         }
         
         public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
@@ -1139,7 +1151,10 @@ namespace WpfApplication1
             }
             foreach (TextBox tb in FindLogicalChildren<TextBox>(this))
             {
-                tb.Foreground = brush;
+                if (!tb.Name.Equals("eventlog"))
+                {
+                    tb.Foreground = brush;
+                }
             }
             foreach (TextBlock tb in FindLogicalChildren<TextBlock>(this))
             {
@@ -1250,6 +1265,20 @@ namespace WpfApplication1
             {
                 notestextbox.Text = "Notes file could not be found!";
             }
+            if (!File.Exists(dudebotdirectory))
+            {
+                File.Create(dudebotdirectory).Close();
+            }
+            if (!File.Exists(dudebotupdateinfo))
+            {
+                File.Create(dudebotupdateinfo).Close();
+            }
+            StreamWriter writer = new StreamWriter(dudebotdirectory);
+            String location = Assembly.GetExecutingAssembly().Location.ToString();
+            writer.Write(location.Substring(0, location.IndexOf(@"DudeBot.exe")));
+            writer.Close();
+            copyUpdaterFile();
+
             if (!checkPrereqs())
             {
                 customization.Focus();
@@ -1293,8 +1322,17 @@ namespace WpfApplication1
                 {
                     openImages.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 }
-                
             }
+        }
+
+        public void copyUpdaterFile()
+        {
+            string fileName = "dudebotupdater.exe";
+            string sourcePath = @"bin";
+            string targetPath = Path.GetDirectoryName(Path.GetTempPath() + @"\dudebot");
+            string sourceFile = Path.Combine(sourcePath, fileName);
+            string destFile = Path.Combine(targetPath, fileName);
+            File.Copy(sourceFile, destFile, true);
         }
 
         public void openImageWindow(Object sender, RoutedEventArgs e)
@@ -1718,7 +1756,7 @@ namespace WpfApplication1
             if (e.ClickCount == 2)
             {
                 var backgroundWorker = new BackgroundWorker();
-                if (c.customsForgeLink == null || c.customsForgeLink.Equals(""))
+                if (bot.requestSystem.OpenCFLinkInsteadOfYoutube && c.customsForgeLink != null && !c.customsForgeLink.Equals(""))
                 {
                     backgroundWorker.DoWork += (s, e1) =>
                     {
@@ -2031,7 +2069,12 @@ namespace WpfApplication1
                 writeToConfig(null, null);
             }
         }
-        
+
+        private void eventlog_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            eventlog.ScrollToEnd();
+        }
+
         private async void clearFavorites_Click(object sender, RoutedEventArgs e)
         {
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;

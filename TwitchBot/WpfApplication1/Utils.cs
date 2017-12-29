@@ -7,11 +7,12 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 public class Utils
 {
-    public static String version { get; set; } = "2.12.1"; // UPDATE AS NECESSARY
-    public static String releaseDate = "7/17/2017"; // UPDATE AS NECESSARY
+    public static String version { get; set; } = "3.0.0"; // UPDATE AS NECESSARY
+    public static String releaseDate = "12/29/2017"; // UPDATE AS NECESSARY
     public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
     public static String currentSongFile = @"bin\currentsong.txt";
@@ -31,30 +32,8 @@ public class Utils
         TimeSpan youTubeDuration = System.Xml.XmlConvert.ToTimeSpan(time);
         return (youTubeDuration.Hours * 3600) + (youTubeDuration.Minutes * 60) + youTubeDuration.Seconds;
     }
-    
-    public static List<Song> loadSongs()
-    {
-        try
-        {
-            StreamReader r = new StreamReader(songListFile);
-            string json = r.ReadToEnd();
-            List<Song> list = JsonConvert.DeserializeObject<List<Song>>(json);
-            if (list == null)
-            {
-                list = new List<Song>();
-            }
-            r.Close();
-            return list;
-        }
-        catch (Exception e)
-        {
-            errorReport(e);
-            Debug.WriteLine(e.ToString());
-        }
-        return new List<Song>();
-    }
 
-    public static void saveSongs(List<Song> songs)
+    public static void saveSongs(ObservableCollection<Song> songs)
     {
         try
         {
@@ -435,6 +414,10 @@ public class Utils
             {
                 return reader.ReadToEnd();
             }
+        }
+        catch (WebException e1)
+        {
+            return "";
         }
         catch (Exception e1)
         {

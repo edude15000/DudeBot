@@ -14,6 +14,7 @@ using WMPLib;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TwitchLib.Interfaces;
+using Cleverbot.Net;
 
 public class TwitchBot : INotifyPropertyChanged
 {
@@ -290,13 +291,7 @@ public class TwitchBot : INotifyPropertyChanged
         get => _quote;
         set { SetField(ref _quote, value, nameof(quote)); }
     }
-    [JsonIgnore]
-    public RequestSystem _RequestSystem = new RequestSystem();
-    public RequestSystem requestSystem
-    {
-        get => _RequestSystem;
-        set { SetField(ref _RequestSystem, value, nameof(requestSystem)); }
-    }
+    public RequestSystem requestSystem { get; set; } = new RequestSystem();
     [JsonIgnore]
     public List<Command> SfxCommandList = new List<Command>();
     public List<Command> sfxCommandList
@@ -437,9 +432,18 @@ public class TwitchBot : INotifyPropertyChanged
     public List<Double> gameGuess { get; set; } = new List<Double>();
     [JsonIgnore]
     public long gameStartTime { get; set; }
-    public String version { get; set; } = Utils.version;
+    [JsonIgnore]
+    public CleverbotSession cleverbotSession = null;
+    [JsonIgnore]
+    public String Eventlog = "";
+    [JsonIgnore]
+    public String eventlog
+    {
+        get => Eventlog;
+        set { SetField(ref Eventlog, value, nameof(eventlog)); }
+    }
 
-    public void botStartUpAsync()
+    public async void botStartUpAsync()
     { // Starts bot up, calls necessary threads and methods
         try
         {
@@ -449,13 +453,13 @@ public class TwitchBot : INotifyPropertyChanged
             api = new TwitchAPI(Utils.twitchClientID);
             service = new FollowerService(api);
             service.OnNewFollowersDetected += onNewFollower;
-            service.StartService();
+            service.SetChannelByName(channel);
+            await service.StartService();
             TwitchPubSub pubsub = new TwitchPubSub();
             pubsub.OnBitsReceived += onPubSubBitsReceived;
             pubsub.Connect();
             client.OnJoinedChannel += onJoinedChannel;
             client.OnMessageReceived += onMessageReceived;
-            client.OnChatCommandReceived += onChatCommandReceived;
             client.OnWhisperReceived += onWhisperReceived;
             client.OnNewSubscriber += onNewSubscriber;
             client.OnUserJoined += onUserJoined;
@@ -474,21 +478,28 @@ public class TwitchBot : INotifyPropertyChanged
             }
             setClasses();
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
+            writeToEventLog("DudeBot Version: " + Utils.version + "\nRelease Date: " + Utils.releaseDate);
             textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
             resetAllCommands();
             threads();
+            cleverbotSession = await CleverbotSession.NewSessionAsync(Utils.cleverbotIOuser, Utils.cleverbotIOkey);
         }
         catch (Exception e1)
         {
             Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
         }
-        
     }
     
     private void onUserLeft(object sender, OnUserLeftArgs e)
     {
-        client.SendRaw("PART: " + e.Username);
+        writeToEventLog("PART: " + e.Username);
+    }
+
+    public void writeToEventLog(String str)
+    {
+        eventlog += Utils.getTime() + "---\n" + str + "\n\n";
+        
     }
 
     private void onBeingHosted(object sender, OnBeingHostedArgs e)
@@ -499,10 +510,12 @@ public class TwitchBot : INotifyPropertyChanged
             if (e.Viewers < raidViewersRequired)
             {
                 message = hostMessage;
+                writeToEventLog("HOST: " + e.HostedByChannel + " (" + e.Viewers + " viewers)");
             }
             else
             {
                 message = raidMessage;
+                writeToEventLog("RAID: " + e.HostedByChannel + " (" + e.Viewers + " viewers)");
             }
             if (hostMessage.Contains("shoutout"))
             {
@@ -539,6 +552,7 @@ public class TwitchBot : INotifyPropertyChanged
                 botUser.subCredits += currency.creditsPerSub;
                 botUser.sub = true;
                 botUser.months = e.ReSubscriber.Months;
+                writeToEventLog("RESUB: " + e.ReSubscriber.DisplayName + " (" + e.ReSubscriber.Months + " months)");
                 break;
             }
         }
@@ -547,6 +561,7 @@ public class TwitchBot : INotifyPropertyChanged
     private void onPubSubBitsReceived(object sender, OnBitsReceivedArgs e) // TODO : Bits message, test
     {
         client.SendMessage("Just received " + e.BitsUsed + " bits from " + e.Username + ". That brings their total to " + e.TotalBitsUsed + " bits!");
+        writeToEventLog("BITS RECEIVED: " + e.Username + " (" + e.TotalBitsUsed + " bits)");
     }
 
     private void onNewFollower(object sender, OnNewFollowersDetectedArgs e)
@@ -570,6 +585,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 users.Add(new BotUser(follower.User.Name, 0, false, true, false, 0, 0, null, 0, 0, 0));
             }
+            writeToEventLog("FOLLOW: " + follower.User.Name);
         }
     }
 
@@ -638,13 +654,16 @@ public class TwitchBot : INotifyPropertyChanged
 
     private void onMessageReceived(object sender, OnMessageReceivedArgs e)
     {
-        // TODO : moderation
+        String s = e.ChatMessage.Username;
+        String message = e.ChatMessage.Message;
+        processMessage(s, message);
     }
     
     public void botDisconnect()
     {
         client.Disconnect();
         client.LeaveChannel(channel);
+        writeToEventLog("BOT DISCONNECTED");
     }
 
     private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
@@ -674,6 +693,7 @@ public class TwitchBot : INotifyPropertyChanged
                 botUser.subCredits += currency.creditsPerSub;
                 botUser.sub = true;
                 botUser.months = 1;
+                writeToEventLog("SUB: " + e.Subscriber.DisplayName);
                 break;
             }
         }
@@ -690,7 +710,6 @@ public class TwitchBot : INotifyPropertyChanged
             google = new GoogleHandler(spreadsheetId);
         }
         textAdventure.setUpText();
-        requestSystem.songList = Utils.loadSongs();
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
         requestSystem.songListLength = requestSystem.songList.Count;
         requestSystem.songsPlayedThisStream = 0;
@@ -973,13 +992,6 @@ public class TwitchBot : INotifyPropertyChanged
         Utils.saveData(this);
     }
     
-    public void onChatCommandReceived(object s, OnChatCommandReceivedArgs e)
-    {
-        String sender = e.Command.ChatMessage.Username;
-        String message = e.Command.ChatMessage.Message;
-        processMessage(sender, message);
-    }
-
     public void processMessage(String sender, String message)
     {
         if (!message.StartsWith("!"))
@@ -2527,10 +2539,9 @@ public class TwitchBot : INotifyPropertyChanged
                 }
             }
         }
-
-        
     }
 
+    [STAThread]
     public void read()
     {
         try
@@ -3136,9 +3147,16 @@ public class TwitchBot : INotifyPropertyChanged
                 response = response.Replace("$currentsongduration", s.formattedDuration);
             }
         }
-        if (response.Contains("$cleverbot"))
+        if (response.Contains("$cleverbot") )
         {
-           // TODO
+            if (cleverbotSession != null)
+            {
+                response = cleverbotSession.Send(Utils.getFollowingText(message));
+            }
+            else
+            {
+                return "";
+            }
         }
         return response;
     }
@@ -3282,7 +3300,7 @@ public class TwitchBot : INotifyPropertyChanged
     private void onUserJoined(object s, OnUserJoinedArgs e)
     {
         String login = e.Username;
-        client.SendRaw("JOIN: " + login);
+        writeToEventLog("JOIN: " + login);
         if (!containsUser(users, login))
         {
             users.Add(new BotUser(login, 0, false, false, false, 0, 0, null, 0, 0, 0));

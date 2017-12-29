@@ -4,6 +4,7 @@ using IgnitionHelper.Ignition;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -11,9 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
-using WpfApplication1;
 
 public class RequestSystem : INotifyPropertyChanged
 {
@@ -300,8 +299,8 @@ public class RequestSystem : INotifyPropertyChanged
         set { SetField(ref SongPositionComm, value, nameof(songPositionComm)); }
     }
     [JsonIgnore]
-    public List<Song> SongList = new List<Song>();
-    public List<Song> songList
+    public ObservableCollection<Song> SongList = new ObservableCollection<Song>();
+    public ObservableCollection<Song> songList
     {
         get => SongList;
         set { SetField(ref SongList, value, nameof(songList)); }
@@ -383,6 +382,13 @@ public class RequestSystem : INotifyPropertyChanged
     {
         get => InChatEstimateTime;
         set { SetField(ref InChatEstimateTime, value, nameof(inChatEstimateTime)); }
+    }
+    [JsonIgnore]
+    public Boolean OpenCFLinkInsteadOfYoutube = false;
+    public Boolean openCFLinkInsteadOfYoutube
+    {
+        get => OpenCFLinkInsteadOfYoutube;
+        set { SetField(ref OpenCFLinkInsteadOfYoutube, value, nameof(openCFLinkInsteadOfYoutube)); }
     }
     public String cfUserName = "";
     public String cfPassword = "";
@@ -523,15 +529,10 @@ public class RequestSystem : INotifyPropertyChanged
                     songname = songname.Substring(3).Trim();
                 }
                 CDLCEntryList results = search.Search(0, 50, songname);
+                CDLCEntry entry = null;
                 if (results.Count == 0)
                 {
                     return null;
-                }
-                CDLCEntry entry = null;
-                if (results.Count == 1)
-                {
-                    entry = results.GetNewest();
-                    entry.noInfo = false;
                 }
                 else
                 {
@@ -559,7 +560,7 @@ public class RequestSystem : INotifyPropertyChanged
                     long dls = -1;
                     foreach (CDLCEntry e in goodSongs)
                     {
-                        if (!checkEntryForInfo(entry)) {
+                        if (!checkEntryForInfo(e)) {
                             break;
                         }
                         if (e.downloadCount > dls)
@@ -620,7 +621,13 @@ public class RequestSystem : INotifyPropertyChanged
         {
             return false;
         }
-        // TODO : DD
+        foreach (String s in bannedKeywords)
+        {
+            if (entry.artist.Contains(s) || entry.title.Contains(s))
+            {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -1267,7 +1274,7 @@ public class RequestSystem : INotifyPropertyChanged
         setSongsIfUserIsHere();
         setIndexesForSongs();
         Utils.saveSongs(songList);
-        // TODO : Call refresh some how???
+
     }
 
     public String formatTotalTime()
