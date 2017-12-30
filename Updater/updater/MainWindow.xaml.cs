@@ -17,7 +17,7 @@ namespace updater
             InitializeComponent();
             Show();
             
-            if (Directory.GetCurrentDirectory().Contains("bin"))
+            if (!Directory.GetCurrentDirectory().Contains("bin"))
             {
                 Environment.Exit(0);
                 Application.Current.Shutdown();

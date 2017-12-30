@@ -5016,6 +5016,5 @@
   "guiTextColor": 1,
   "guiTextBlockColor": 0,
   "guiInputFontStyle": 0,
-  "guiButtonColor": 0,
-  "version": "2.12.1"
+  "guiButtonColor": 0
 }

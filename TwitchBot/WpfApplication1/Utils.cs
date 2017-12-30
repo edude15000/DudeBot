@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 
 public class Utils
 {
-    public static String version { get; set; } = "3.0.0"; // UPDATE AS NECESSARY
+    public static String version = "3.0.0"; // UPDATE AS NECESSARY
     public static String releaseDate = "12/29/2017"; // UPDATE AS NECESSARY
     public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";

@@ -1274,7 +1274,6 @@ public class RequestSystem : INotifyPropertyChanged
         setSongsIfUserIsHere();
         setIndexesForSongs();
         Utils.saveSongs(songList);
-
     }
 
     public String formatTotalTime()
