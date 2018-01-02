@@ -78,7 +78,7 @@ public class Song
     {
         try
         {
-            Video s = bot.youtube.searchYoutubeByTitle(name);
+            Video s = bot.youtube.searchYoutubeByTitle(name, bot.requestSystem.maxSongLengthInMinutes);
             youtubeLink = "http://www.youtube.com/watch?v=" + s.Id;
             durationInSeconds = Utils.getDurationOfVideoInSeconds(s.ContentDetails.Duration);
             formattedDuration = TimeSpan.FromSeconds(durationInSeconds).ToString(@"hh\:mm\:ss");

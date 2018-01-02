@@ -1,4 +1,4 @@
 {
   "_NOTE": "Enabling addons will enable a local web server, listening on localhost port 9938",
-  "enableAddons": false
+  "enableAddons": true
 }

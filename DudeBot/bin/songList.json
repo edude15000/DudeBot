@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "name": "August Burns Red The Wake",
+    "requester": "edude15000",
+    "requesterIsHere": "[IN CHAT]",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=vxWnl_aUXB4",
+    "youtubeTitle": "August Burns Red - The Wake (Lyric Video)",
+    "durationInSeconds": 217,
+    "index": 1,
+    "tuning": "D_DROP_C",
+    "customsForgeLink": "https://www.mediafire.com/folder/7juv80phh015c/ABR_-_The_Wake",
+    "parts": "LEAD, RHYTHM, BASS",
+    "dlcCreator": "KRAZEEnRECKLESS",
+    "formattedDuration": "00:03:37",
+    "officialSong": false,
+    "cfSongName": "The Wake",
+    "cfSongArtist": "August Burns Red",
+    "cfAlbum": "Found In Far Away Places"
+  }
+]

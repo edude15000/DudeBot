@@ -8,8 +8,6 @@ using System.Collections.Generic;
 public class YoutubeHandler
 {
     [JsonIgnore]
-    public YoutubeHandler youtube;
-    [JsonIgnore]
     YouTubeService youtubeService = new YouTubeService(new BaseClientService.Initializer()
     {
         ApiKey = Utils.googleApiKey,
@@ -24,15 +22,28 @@ public class YoutubeHandler
         IList<Video> videoList = listResponse.Items;
         return videoList[0];
     }
-
-
-    public Video searchYoutubeByTitle(String title)
+    
+    public Video searchYoutubeByTitle(String title, int maxDuration)
     {
         var searchListRequest = youtubeService.Search.List("id,snippet");
         searchListRequest.Q = title;
-        searchListRequest.MaxResults = 1;
+        searchListRequest.MaxResults = 2;
         var searchListResponse = searchListRequest.Execute();
-		return searchYoutubeByID(searchListResponse.Items[0].Id.VideoId);
+        if (searchListResponse.Items[0] == null)
+        {
+            return null;
+        }
+        String id = searchListResponse.Items[0].Id.VideoId;
+        Video vid = searchYoutubeByID(id);
+        if (Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > 2700 || Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > maxDuration)
+        {
+            if (searchListResponse.Items[1] == null)
+            {
+                return null;
+            }
+            id = searchListResponse.Items[1].Id.VideoId;
+        }
+		return searchYoutubeByID(id);
     }
     
 }

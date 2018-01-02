@@ -201,6 +201,13 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref MinigameTriggered, value, nameof(minigameTriggered)); }
     }
     [JsonIgnore]
+    public int GuessingGamePayout = 0;
+    public int guessingGamePayout
+    {
+        get => GuessingGamePayout;
+        set { SetField(ref GuessingGamePayout, value, nameof(guessingGamePayout)); }
+    }
+    [JsonIgnore]
     public Boolean TimeFinished = false;
     public Boolean timeFinished
     {
@@ -262,6 +269,13 @@ public class TwitchBot : INotifyPropertyChanged
     {
         get => _TextAdventure;
         set { SetField(ref _TextAdventure, value, nameof(textAdventure)); }
+    }
+    [JsonIgnore]
+    public int AutoFollowPayout = 0;
+    public int autoFollowPayout
+    {
+        get => AutoFollowPayout;
+        set { SetField(ref AutoFollowPayout, value, nameof(autoFollowPayout)); }
     }
     [JsonIgnore]
     public Currency _Currency;
@@ -444,7 +458,7 @@ public class TwitchBot : INotifyPropertyChanged
     }
 
     public async void botStartUpAsync()
-    { // Starts bot up, calls necessary threads and methods
+    {
         try
         {
             channel = streamer; 
@@ -476,6 +490,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 checkAtBeginningAsync(false);
             }
+            removeAllUselessUsers();
             setClasses();
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
             writeToEventLog("DudeBot Version: " + Utils.version + "\nRelease Date: " + Utils.releaseDate);
@@ -490,7 +505,20 @@ public class TwitchBot : INotifyPropertyChanged
             Utils.errorReport(e1);
         }
     }
-    
+
+    private void removeAllUselessUsers()
+    {
+        List<BotUser> list = new List<BotUser>();
+        foreach (BotUser botUser in users)
+        {
+            if (botUser.time > 1)
+            {
+                list.Add(botUser);
+            }
+        }
+        users = list;
+    }
+
     private void onUserLeft(object sender, OnUserLeftArgs e)
     {
         writeToEventLog("PART: " + e.Username);
@@ -568,7 +596,12 @@ public class TwitchBot : INotifyPropertyChanged
     {
         if (followerMessage.Contains("$user"))
         {
-            client.SendMessage(followerMessage.Replace("$user", String.Join(", ", e.NewFollowers)));
+            List<String> str = new List<String>();
+            foreach (IFollow follower in e.NewFollowers)
+            {
+                str.Add(follower.User.Name);
+            }
+            client.SendMessage(followerMessage.Replace("$user", String.Join(", ", str)));
         }
         else
         {
@@ -580,10 +613,17 @@ public class TwitchBot : INotifyPropertyChanged
             if (b != null)
             {
                 b.follower = true;
+                if (!b.receivedFollowPayout)
+                {
+                    b.points += autoFollowPayout;
+                }
             }
             else
             {
-                users.Add(new BotUser(follower.User.Name, 0, false, true, false, 0, 0, null, 0, 0, 0));
+                BotUser user = new BotUser(follower.User.Name, 0, false, true, false, 0, 0, null, 0, 0, 0);
+                user.receivedFollowPayout = true;
+                user.points += autoFollowPayout;
+                users.Add(user);
             }
             writeToEventLog("FOLLOW: " + follower.User.Name);
         }
@@ -698,13 +738,15 @@ public class TwitchBot : INotifyPropertyChanged
             }
         }
     }
-    
+
     public async void setClasses()
-    { // Resets classes within bot using bot as passed variables to request system and
-      // quote, resets google
+    {
         requestSystem.bot = this;
         quote.bot = this;
-        currency = new Currency(users);
+        if (currency != null)
+        {
+            currency.users = users;
+        }
         if (spreadsheetId != "")
         {
             google = new GoogleHandler(spreadsheetId);
@@ -1005,7 +1047,7 @@ public class TwitchBot : INotifyPropertyChanged
         String temp = message.ToLower();
         if (minigameTriggered && !timeFinished)
         {
-            if (gameStartTime + minigameTimer < DateTimeOffset.Now.ToUnixTimeMilliseconds())
+            if (gameStartTime + (minigameTimer * 1000) < DateTimeOffset.Now.ToUnixTimeMilliseconds())
             {
                 timeFinished = true;
             }
@@ -2038,7 +2080,7 @@ public class TwitchBot : INotifyPropertyChanged
                         gameGuess.Clear();
                         gameUser.Clear();
                         client.SendMessage("The guessing game has started! You may only enter once! You have "
-                                + (minigameTimer / 1000) + " seconds to enter a guess by typing '!guess amount'");
+                                + minigameTimer + " seconds to enter a guess by typing '!guess amount'");
                         minigameTriggered = true;
                         gameStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                         timeFinished = false;
@@ -2148,6 +2190,10 @@ public class TwitchBot : INotifyPropertyChanged
                         if (currency.toggle)
                         {
                             String[] winnersArray = winners.Split(',');
+                            if (guessingGamePayout != 0)
+                            {
+                                temp2 = guessingGamePayout.ToString();
+                            }
                             foreach (String str in winnersArray)
                             {
                                 client.SendMessage(currency.bonus(str.Trim(), (int)Math.Round(Double.Parse(temp2))));
@@ -2612,7 +2658,7 @@ public class TwitchBot : INotifyPropertyChanged
         String line = "!givespot, !totalrequests, !toprequester, !subcredits";
         if (sfxCommandList.Count > 0)
         {
-            line += "!sfx, ";
+            line += " !sfx, ";
         }
         if (imageCommandList.Count > 0)
         {
@@ -2631,6 +2677,7 @@ public class TwitchBot : INotifyPropertyChanged
                     if (command.level == 0)
                     {
                         line += command.input[i] + ", ";
+                        break;
                     }
                 }
             }
@@ -3022,7 +3069,7 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (response.Contains("$uptime"))
         {
-            String info = Utils.callURL("https://api.twitch.tv/kraken/streams/" + "bloomerforthewin"); // TODO
+            String info = Utils.callURL("https://api.twitch.tv/kraken/streams/" + streamer);
             var a = JsonConvert.DeserializeObject<dynamic>(info)["stream"];
             try
             {
@@ -3151,14 +3198,17 @@ public class TwitchBot : INotifyPropertyChanged
         {
             if (cleverbotSession != null)
             {
-                response = cleverbotSession.Send(Utils.getFollowingText(message));
+                var t = new Thread(() => cleverbotThread(message));
+                t.Start();
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
         return response;
+    }
+
+    public void cleverbotThread(String message)
+    {
+        client.SendMessage(cleverbotSession.Send(Utils.getFollowingText(message)));
     }
 
     public void updateValue(String counter, int val)

@@ -61,8 +61,10 @@ namespace WpfApplication1
                             }
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e1)
                     {
+                        Console.WriteLine(e1.ToString());
+                        Utils.errorReport(e1);
                     }
                 }
             }
@@ -918,7 +920,7 @@ namespace WpfApplication1
             }
             if (bot.streamer != null && bot.streamer != "" && bot.client != null)
             {
-                showBrowser();
+                new Thread(new ThreadStart(showBrowser)).Start();
             }
             bot.botStartUpAsync();
             try

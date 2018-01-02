@@ -6,6 +6,7 @@ public class BotUser
     public String rank { get; set; }
     public Boolean follower { get; set; }
     public Boolean sub { get; set; }
+    public Boolean receivedFollowPayout { get; set; } = false;
     public Boolean mod { get; set; }
     public Boolean gaveSpot { get; set; } = false;
     public int time { get; set; }

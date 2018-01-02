@@ -588,17 +588,19 @@ public class RequestSystem : INotifyPropertyChanged
 
     public Boolean checkEntryForInfo(CDLCEntry entry)
     {
-        if (CheckCustomsForgeLead && !entry.parts.HasFlag(Part.LEAD))
-        {
-            return false;
-        }
-        if (CheckCustomsForgeRhythm && !entry.parts.HasFlag(Part.RHYTHM))
-        {
-            return false;
-        }
-        if (CheckCustomsForgeBass && !entry.parts.HasFlag(Part.BASS))
-        {
-            return false;
+        if (!entry.parts.HasFlag(Part.ALL)) {
+            if (CheckCustomsForgeLead && !entry.parts.HasFlag(Part.LEAD))
+            {
+                return false;
+            }
+            if (CheckCustomsForgeRhythm && !entry.parts.HasFlag(Part.RHYTHM))
+            {
+                return false;
+            }
+            if (CheckCustomsForgeBass && !entry.parts.HasFlag(Part.BASS))
+            {
+                return false;
+            }
         }
         if (lowestTuning != 0)
         {
@@ -1040,7 +1042,7 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     songList.Remove(songList[i]);
                     bot.client.SendMessage("Your next request '" + previousSong
-                           + "' has been changed to " + songList[i].name + ", " + sender + "!");
+                           + "' has been changed to '" + songList[i].name + "', " + sender + "!");
                     writeToCurrentSong(channel, false);
                 }
                 return;
@@ -1973,25 +1975,19 @@ public class RequestSystem : INotifyPropertyChanged
                                                         else
                                                         {
                                                             Video v = bot.youtube.searchYoutubeByTitle(
-                                                                    Utils.getFollowingText(message));
-                                                            time = v.ContentDetails.Duration;
-                                                            temp = v.Snippet.Title;
-                                                        }
-                                                        time = time.Replace("PT", "");
-                                                        if (time.Contains("H"))
-                                                        {
-                                                            bot.client.SendMessage(temp
+                                                                    Utils.getFollowingText(message), maxSongLengthInMinutes);
+                                                            if (v == null)
+                                                            {
+                                                                bot.client.SendMessage(temp
                                                                     + " is longer than " + maxSongLengthInMinutes
                                                                     + " minutes, which is the limit for standard requests, "
                                                                     + sender);
-                                                            return;
+                                                                return;
+                                                            }
+                                                            time = v.ContentDetails.Duration;
+                                                            temp = v.Snippet.Title;
                                                         }
-                                                        int minutes = Int32
-                                                                .Parse(time.Substring(0, time.IndexOf('M')));
-                                                        int seconds = Int32.Parse(time
-                                                                .Substring(time.IndexOf('M') + 1, time.IndexOf('S')));
-                                                        int songlengthmaxseconds = maxSongLengthInMinutes * 60;
-                                                        if (songlengthmaxseconds < ((minutes * 60) + seconds))
+                                                        if ((maxSongLengthInMinutes * 60) < (Utils.getDurationOfVideoInSeconds(time)))
                                                         {
                                                             bot.client.SendMessage(temp
                                                                     + " is longer than " + maxSongLengthInMinutes
