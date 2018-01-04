@@ -140,8 +140,10 @@ public class GoogleHandler
         }
         catch (Exception e)
         {
-            Utils.errorReport(e);
-            Debug.WriteLine(e.ToString());
+            if (!e.ToString().Contains("The caller does not have permission[403]")) {
+                Utils.errorReport(e);
+                Debug.WriteLine(e.ToString());
+            }
         }
     }
 }

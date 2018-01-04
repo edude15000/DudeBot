@@ -33,7 +33,7 @@
   "waitForAdventureCoolDown": false,
   "raffleInProgress": false,
   "autoShoutoutOnHost": true,
-  "openRockSnifferOnStartUp": false,
+  "openRockSnifferOnStartUp": true,
   "textAdventure": {
     "adventureStartTime": 1514873645195,
     "adventurePointsMin": 25,
@@ -41,9 +41,10 @@
     "adventureCoolDown": 20
   },
   "autoFollowPayout": 0,
+  "autoSubPayout": 0,
   "currency": {
-    "currencyName": "points",
-    "currencyCommand": "!points",
+    "currencyName": "notes",
+    "currencyCommand": "!notes",
     "currencyPerMinute": 1,
     "currencyPerMinuteSubs": 1,
     "maxGamble": 10000,
@@ -118,12 +119,12 @@
       "\" y'all eat ass? \" -edude15000 3/11/2017 ",
       "\" I love everyone...just don't want to have everyone's children \" - Hollybombay 3/11/2017 ",
       "\" There's nothing sexier than a man blowing his nose, let me tell you. \" -edude15000 3/11/2017 ",
-      "\" Alright Alright Alright Alright Alright Alright Alright Alright \" -Outkast 3/11/2017 "
+      "\" Alright Alright Alright Alright Alright Alright Alright Alright \" -Outkast 3/11/2017 ",
+      "\" asd \" -edude15000 01/02/2018",
+      "\" creamo  \" -ninja_frosk 01/02/2018"
     ]
   },
   "requestSystem": {
-    "cfUserName": "",
-    "cfPassword": "",
     "vipSongToggle": true,
     "mustFollowToRequest": true,
     "requestsTrigger": true,
@@ -147,6 +148,19 @@
       " zxcv"
     ],
     "songHistory": [
+      "01/02/2018 19:36:48 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:36:46 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:36:43 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:36:41 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:36:19 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:36:12 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:35:39 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:35:24 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:35:16 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:35:10 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:35:07 - The Eagles Hotel California Lyrics",
+      "01/02/2018 19:35:01 - new song ",
+      "01/02/2018 19:34:40 - The Eagles Hotel California Lyrics",
       "01/01/2018 23:59:14 - The Eagles Hotel California Lyrics",
       "12/28/2017 20:19:13 - Extraordinarily Excellent Entities Episode 4: EEE = mc^2",
       "12/28/2017 20:19:05 - Daya - New",
@@ -377,17 +391,17 @@
       "overrideType": 0
     },
     "songList": [],
-    "songsPlayedTotal": 33,
+    "songsPlayedTotal": 46,
     "checkCustomsForge": true,
-    "checkCustomsForgeLead": true,
+    "checkCustomsForgeLead": false,
     "checkCustomsForgeRhythm": false,
     "checkCustomsForgeBass": false,
-    "displayCFLink": true,
+    "displayCFLink": false,
     "lowestTuning": 0,
     "requireDD": false,
     "defaultMinsSong": 4,
     "inChatEstimateTime": false,
-    "openCFLinkInsteadOfYoutube": true
+    "openCFLinkInsteadOfYoutube": false
   },
   "sfxCommandList": [
     {
@@ -4430,10 +4444,10 @@
       "receivedFollowPayout": false,
       "mod": true,
       "gaveSpot": false,
-      "time": 490,
+      "time": 537,
       "subCredits": 0,
-      "points": 484,
-      "numRequests": 309,
+      "points": 531,
+      "numRequests": 324,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4462,9 +4476,9 @@
       "receivedFollowPayout": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 719,
+      "time": 768,
       "subCredits": 0,
-      "points": 719,
+      "points": 768,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,
@@ -4519,7 +4533,7 @@
     "!raffle",
     "!gamble",
     "!currency",
-    "!points",
+    "!notes",
     "!vipsong",
     "!vipsongon",
     "!vipsongoff",

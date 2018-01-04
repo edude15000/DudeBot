@@ -815,7 +815,6 @@ namespace WpfApplication1
                 rockSnifferWindow = new Process();
                 rockSnifferWindow.StartInfo.FileName = "bin\\RockSniffer.exe";
                 rockSnifferWindow.StartInfo.WorkingDirectory = "bin\\";
-                rockSnifferWindow.StartInfo.RedirectStandardOutput = true;
                 rockSnifferWindow.StartInfo.UseShellExecute = false;
                 rockSnifferWindow.StartInfo.CreateNoWindow = true;
                 rockSnifferWindow.Start();
@@ -2075,6 +2074,11 @@ namespace WpfApplication1
         private void eventlog_TextChanged(object sender, TextChangedEventArgs e)
         {
             eventlog.ScrollToEnd();
+        }
+
+        private void reloadFollowersButton_Click(object sender, RoutedEventArgs e)
+        {
+            bot.checkAtBeginningAsync(true);
         }
 
         private async void clearFavorites_Click(object sender, RoutedEventArgs e)

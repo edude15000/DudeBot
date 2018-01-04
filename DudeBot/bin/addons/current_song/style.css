@@ -1,6 +1,6 @@
 /* This applies to all the text */
 body {
-	font-family: arial;
+	font-family: Consolas;
 }
 
 /* This is the popup container, hide it by default */
@@ -10,20 +10,20 @@ div.popup {
 
 /* This is the header of the popup, the section containing the text "CURRENT SONG" */
 div.header {
-	font-family: Arial;
+	font-family: Consolas;
 	width: 100%;
 	height: 5vw;
 	background-color: rgb(40, 56, 72);
-	border-radius: 8px 8px 0 0;
+	border-radius: 10px 8px 0 0;
 	border-bottom: 0.5vw solid black;
 }
 
 /* This is the popup block that contains all the data */
 div.content {
 	overflow: hidden;
-	padding-left: 2vw;
+	padding-left: 3vw;
 	background-color: rgba(85, 98, 111, 0.84);
-	border-radius: 0 0 7px 7px;
+	border-radius: 0 0 9px 7px;
 }
 
 /* This applies to the information text */

@@ -483,36 +483,10 @@ public class RequestSystem : INotifyPropertyChanged
 
     public String formatSongTitle(String str)
     {
-        str = str.Replace("\"", " ");
-        str = str.Replace("'", " ");
-        str = str.Replace(",", " ");
-        str = str.Replace(".", " ");
-        str = str.Replace(")", " ");
-        str = str.Replace("(", " ");
-        str = str.Replace("[", " ");
-        str = str.Replace("]", " ");
-        str = str.Replace(@"\", " ");
-        str = str.Replace("/", " ");
-        str = str.Replace("!", " ");
-        str = str.Replace("?", " ");
-        str = str.Replace("@", " ");
-        str = str.Replace("#", " ");
-        str = str.Replace("$", " ");
-        str = str.Replace("%", " ");
-        str = str.Replace("^", " ");
-        str = str.Replace("&", " ");
-        str = str.Replace("*", " ");
-        str = str.Replace("=", " ");
-        str = str.Replace("-", " ");
-        str = str.Replace("_", " ");
-        str = str.Replace("+", " ");
-        str = str.Replace("~", " ");
-        str = str.Replace("`", " ");
-        str = str.Replace(">", " ");
-        str = str.Replace("<", " ");
-        str = str.Replace("|", " ");
-        str = str.Replace(":", " ");
-        str = str.Replace(";", " ");
+        str = str.Replace("\"", " ").Replace("'", " ").Replace(",", " ").Replace(".", " ").Replace(")", " ").Replace("(", " ").Replace("[", " ").Replace("]", " ");
+        str = str.Replace(@"\", " ").Replace("/", " ").Replace("!", " ").Replace("?", " ").Replace("@", " ").Replace("#", " ").Replace("$", " ").Replace("%", " ");
+        str = str.Replace("^", " ").Replace("&", " ").Replace("*", " ").Replace("=", " ").Replace("-", " ").Replace("_", " ").Replace("+", " ").Replace("~", " ");
+        str = str.Replace("`", " ").Replace(">", " ").Replace("<", " ").Replace("|", " ").Replace(":", " ").Replace(";", " ");
         return str.ToLower();
     }
 
@@ -524,12 +498,19 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 search = new IgnitionSearch(cfUserName, laravel_session, community_pass_hash, ipsconnect);
                 songname = songname.Replace("-", "");
+                songname = Utils.replaceAcronyms(songname);
+                CDLCEntry entry = null;
+                if (songname.ToLower().EndsWith("choice") || songname.ToLower().Contains("streamer") || songname.ToLower().Contains(bot.streamer.ToLower()))
+                {
+                    entry = new CDLCEntry();
+                    entry.noInfo = true;
+                    return entry;
+                }
                 if (songname.ToLower().StartsWith("any "))
                 {
                     songname = songname.Substring(3).Trim();
                 }
                 CDLCEntryList results = search.Search(0, 50, songname);
-                CDLCEntry entry = null;
                 if (results.Count == 0)
                 {
                     return null;
@@ -867,8 +848,10 @@ public class RequestSystem : INotifyPropertyChanged
                         }
                         if (input.EndsWith(")"))
                         {
-                            String requester = input.Substring(input.LastIndexOf("(") + 1, input.Length - 1).Trim();
-                            input = input.Substring(0, input.LastIndexOf("(")).Trim();
+                            String[] str = input.Split(' ');
+                            String requester = str[str.Length - 1];
+                            input = input.Replace(requester, "");
+                            requester = requester.Replace("(", "").Replace(")", "");
                             if (ytvid != null)
                             {
                                 addDonator(channel, ytvid.Snippet.Title, requester);
@@ -976,7 +959,7 @@ public class RequestSystem : INotifyPropertyChanged
                 String songToDelete = songList[i].name;
                 songList.RemoveAt(i);
                 bot.client.SendMessage("Your next request '"
-                    + songToDelete.Substring(0, songToDelete.LastIndexOf("\t")) + "' has been removed, " + sender
+                    + songToDelete + "' has been removed, " + sender
                     + "!");
                 bot.addUserRequestAmount(sender, false);
                 writeToCurrentSong(bot.channel, true);
@@ -1028,7 +1011,7 @@ public class RequestSystem : INotifyPropertyChanged
         {
             if (songList[i].requester.Equals(sender, StringComparison.InvariantCultureIgnoreCase))
             {
-                if (i == 1)
+                if (i == 0)
                 {
                     if (!Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users)
                         && !sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) && !sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
@@ -1593,8 +1576,10 @@ public class RequestSystem : INotifyPropertyChanged
                         }
                         if (input.EndsWith(")"))
                         {
-                            String requester = input.Substring(input.LastIndexOf("(") + 1, input.Length - 1).Trim();
-                            input = input.Substring(0, input.LastIndexOf("(")).Trim();
+                            String[] str = input.Split(' ');
+                            String requester = str[str.Length - 1];
+                            input = input.Replace(requester, "");
+                            requester = requester.Replace("(", "").Replace(")", "");
                             if (ytvid != null)
                             {
                                 addVip(channel, ytvid.Snippet.Title, requester);
@@ -1697,8 +1682,10 @@ public class RequestSystem : INotifyPropertyChanged
                         }
                         if (input.EndsWith(")"))
                         {
-                            String requester = input.Substring(input.LastIndexOf("(") + 1, input.Length - 1).Trim();
-                            input = input.Substring(0, input.LastIndexOf("(")).Trim();
+                            String[] str = input.Split(' ');
+                            String requester = str[str.Length - 1];
+                            input = input.Replace(requester, "");
+                            requester = requester.Replace("(", "").Replace(")", "");
                             if (ytvid != null)
                             {
                                 addTop(channel, ytvid.Snippet.Title, requester);

@@ -27,6 +27,32 @@ public class Utils
     public static String cleverbotIOuser = "kwTO92eMLLzv5o7G";
     public static String cleverbotIOkey = "woNIQmZTDYfvm0uAg2QWyumoNfKjH37h";
 
+    public static Dictionary<string, string> bandAcronyms = new Dictionary<string, string>
+    {
+        { "ABR", "August Burns Red" },
+        { "ADTR", "A Day To Remember" },
+        { "BMTH", "Bring Me The Horizon" },
+        { "BFMV", "Bullet For My Valentine" },
+        { "SOAD", "System of a Down" },
+        { "A7X", "Avenged Sevenfold" },
+        { "OMAM", "Of Mice & Men" },
+        { "OM&M", "Of Mice & Men" }
+        // ADD AS NEEEDED
+    };
+
+    public static String replaceAcronyms(String str)
+    {
+        foreach (KeyValuePair<string, string> acronymPair in bandAcronyms)
+        {
+            if (str.StartsWith(acronymPair.Key + " ") || str.EndsWith(acronymPair.Key + " "))
+            {
+                str = str.Replace(acronymPair.Key, acronymPair.Value);
+                break;
+            }
+        }
+        return str;
+    }
+
     public static int getDurationOfVideoInSeconds(String time)
     {
         TimeSpan youTubeDuration = System.Xml.XmlConvert.ToTimeSpan(time);

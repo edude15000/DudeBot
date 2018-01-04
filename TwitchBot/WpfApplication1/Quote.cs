@@ -236,13 +236,15 @@ public class Quote : INotifyPropertyChanged
             }
             if (quote.EndsWith(")") && quote.Contains("("))
             {
-                String user = quote.Substring(quote.LastIndexOf("(") + 1, quote.Length - 1);
-                quote = quote.Substring(0, quote.LastIndexOf("(") - 1);
-                quote = "\" " + quote + " \"" + " -" + user + " " + Utils.getDate() + "\r";
+                String[] str = quote.Split(' ');
+                String user = str[str.Length - 1];
+                quote = quote.Replace(user, "");
+                user = user.Replace("(", "").Replace(")", "");
+                quote = "\" " + quote + " \"" + " -" + user + " " + Utils.getDate();
             }
             else
             {
-                quote = "\" " + quote + " \"" + " -" + bot.streamer + " " + Utils.getDate() + "\r";
+                quote = "\" " + quote + " \"" + " -" + bot.streamer + " " + Utils.getDate();
             }
             return quote;
         }

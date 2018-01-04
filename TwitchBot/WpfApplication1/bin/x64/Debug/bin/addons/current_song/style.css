@@ -13,7 +13,7 @@ div.header {
 	font-family: Arial;
 	width: 100%;
 	height: 5vw;
-	background-color: rgb(40, 56, 72);
+	background-color: #FFAC18;
 	border-radius: 8px 8px 0 0;
 	border-bottom: 0.5vw solid black;
 }
@@ -22,7 +22,7 @@ div.header {
 div.content {
 	overflow: hidden;
 	padding-left: 2vw;
-	background-color: rgba(85, 98, 111, 0.84);
+	background-color: #000000;
 	border-radius: 0 0 7px 7px;
 }
 
@@ -30,7 +30,7 @@ div.content {
 h1 {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size: 4.5vw;
-	color: white;
+	color: WHITE;
 	line-height: 4.3vw;
 	-webkit-text-stroke: 0.2vw black;
 }
@@ -39,7 +39,7 @@ h1 {
 h1.title {
 	font-size: 3.5vw;
 	line-height: 4vw;
-	color: white;
+	color: BLACK;
 	padding-top: 0.6vw;
 }
 

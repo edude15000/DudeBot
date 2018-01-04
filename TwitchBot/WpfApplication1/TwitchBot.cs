@@ -278,6 +278,13 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref AutoFollowPayout, value, nameof(autoFollowPayout)); }
     }
     [JsonIgnore]
+    public int AutoSubPayout = 0;
+    public int autoSubPayout
+    {
+        get => AutoSubPayout;
+        set { SetField(ref AutoSubPayout, value, nameof(autoSubPayout)); }
+    }
+    [JsonIgnore]
     public Currency _Currency;
     public Currency currency
     {
@@ -579,6 +586,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 botUser.subCredits += currency.creditsPerSub;
                 botUser.sub = true;
+                botUser.points += autoSubPayout;
                 botUser.months = e.ReSubscriber.Months;
                 writeToEventLog("RESUB: " + e.ReSubscriber.DisplayName + " (" + e.ReSubscriber.Months + " months)");
                 break;
@@ -732,6 +740,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 botUser.subCredits += currency.creditsPerSub;
                 botUser.sub = true;
+                botUser.points += autoSubPayout;
                 botUser.months = 1;
                 writeToEventLog("SUB: " + e.Subscriber.DisplayName);
                 break;

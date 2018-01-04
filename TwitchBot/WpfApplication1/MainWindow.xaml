@@ -453,6 +453,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="25*"/>
@@ -460,19 +461,21 @@
                                     <ColumnDefinition Width="10*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Startup Message: " Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center"/>
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="startupMessage" FontSize="12" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Row="0" Text="{Binding startupMessage, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Startup Message: " Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="startupMessage" FontSize="12" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Text="{Binding startupMessage, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Minigame End: " Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center"/>
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="minigameEndMessage" FontSize="12" Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding minigameEndMessage, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Minigame End: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="minigameEndMessage" FontSize="12" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding minigameEndMessage, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Sub only requests: " Grid.Row="4" Grid.Column="0"  Grid.RowSpan="2" VerticalAlignment="Center" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="subOnlyRequests" FontSize="12" Grid.Column="1" Grid.Row="4" Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding subOnlyRequests, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Sub only requests: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="subOnlyRequests" FontSize="12" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="2" Text="{Binding subOnlyRequests, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Closing Message: " Grid.Row="6" Grid.Column="0"  Grid.RowSpan="2" VerticalAlignment="Center" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="endMessage" FontSize="12" Grid.Column="1" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding endMessage, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Closing Message: " Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="endMessage" FontSize="12" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding endMessage, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO3" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="51" Grid.ColumnSpan="4"  />
+                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="reloadFollowersButton" Content="Reload all follower data" Click="reloadFollowersButton_Click" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4"  />
+
+                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO3" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4"  />
                             </Grid>
                         </ScrollViewer>
                     </TabItem>
@@ -1746,6 +1749,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50*" />
@@ -1757,21 +1761,25 @@
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Follower Message: "  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" />
                             <TextBox x:Name="followerMessage" TextWrapping="Wrap" FontSize="14" Grid.Column="1" Grid.Row="1" Text="{Binding followerMessage, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Currency Payout on Follow: "  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" />
-                            <Controls:NumericUpDown x:Name="autoFollowPayout" Minimum = "1" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Value="{Binding autoFollowPayout, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Currency Payout on Follow: " HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" />
+                            <Controls:NumericUpDown x:Name="autoFollowPayout" Minimum = "0" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Value="{Binding autoFollowPayout, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Subscriber Message: "  HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" />
                             <TextBox TextWrapping="Wrap" x:Name="subMessage" FontSize="14" Grid.Column="1" Grid.Row="3" Text="{Binding subMessage, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Resubscriber Message: "  HorizontalAlignment="Right" Grid.Row="4" Grid.Column="0" />
                             <TextBox TextWrapping="Wrap" x:Name="resubMessage" FontSize="14" Grid.Column="1" Grid.Row="4" Text="{Binding resubMessage, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Host Message: "  HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0" />
-                            <TextBox TextWrapping="Wrap" x:Name="hostMessage" FontSize="14" Grid.Column="1" Grid.Row="5" Text="{Binding hostMessage, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Host viewers required for raid: "  HorizontalAlignment="Right" Grid.Row="6" Grid.Column="0" />
-                            <Controls:NumericUpDown x:Name="raidViewersRequired" Minimum = "1" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" Value="{Binding raidViewersRequired, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Raid Message: "  HorizontalAlignment="Right" Grid.Row="7" Grid.Column="0" />
-                            <TextBox TextWrapping="Wrap" x:Name="raidMessage" FontSize="14" Grid.Column="1" Grid.Row="7" Text="{Binding raidMessage, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Currency Payout on Sub: " HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0" />
+                            <Controls:NumericUpDown x:Name="autoSubPayout" Minimum = "0" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Value="{Binding autoSubPayout, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Host Message: "  HorizontalAlignment="Right" Grid.Row="6" Grid.Column="0" />
+                            <TextBox TextWrapping="Wrap" x:Name="hostMessage" FontSize="14" Grid.Column="1" Grid.Row="6" Text="{Binding hostMessage, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Host viewers required for raid: "  HorizontalAlignment="Right" Grid.Row="7" Grid.Column="0" />
+                            <Controls:NumericUpDown x:Name="raidViewersRequired" Minimum = "1" Maximum = "100" Interval = "1" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" Value="{Binding raidViewersRequired, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Raid Message: "  HorizontalAlignment="Right" Grid.Row="8" Grid.Column="0" />
+                            <TextBox TextWrapping="Wrap" x:Name="raidMessage" FontSize="14" Grid.Column="1" Grid.Row="8" Text="{Binding raidMessage, UpdateSourceTrigger=PropertyChanged}" />
                             
-                            <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="apply_button" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4"  />
+                            <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="apply_button" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4"  />
 
 
 

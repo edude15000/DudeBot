@@ -9,7 +9,7 @@ $(function() {
 		$("h1.artist_name").text("Artist name");
 		$("h1.song_name").text("Song name");
 		$("h1.album_name").text("Album name (1234)");
-		$("img.album_cover").attr("src", "rs_pick.png");
+		$("img.album_cover").attr("src", "bolt.png");
 		showPopup();
 	}
 	else {
