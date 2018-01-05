@@ -75,6 +75,10 @@ public class Image : INotifyPropertyChanged
                                     }
                                     comList[i].playImage();
                                     imageStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                                    if (userCoolDowns.ContainsKey(b.username))
+                                    {
+                                        userCoolDowns.Remove(b.username);
+                                    }
                                     userCoolDowns[b.username] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                 }
                                 return;
@@ -93,6 +97,10 @@ public class Image : INotifyPropertyChanged
                         }
                         comList[i].playImage();
                         imageStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                        if (userCoolDowns.ContainsKey(b.username))
+                        {
+                            userCoolDowns.Remove(b.username);
+                        }
                         userCoolDowns[b.username] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }
                     return;

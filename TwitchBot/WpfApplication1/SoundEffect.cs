@@ -59,6 +59,10 @@ public class SoundEffect : INotifyPropertyChanged
                                         b.points -= comList[i].costToUse;
                                     }
                                     comList[i].playSound();
+                                    if (userCoolDowns.ContainsKey(b.username))
+                                    {
+                                        userCoolDowns.Remove(b.username);
+                                    }
                                     userCoolDowns.Add(b.username, DateTimeOffset.Now.ToUnixTimeMilliseconds());
                                     SFXstartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                 }
@@ -77,6 +81,10 @@ public class SoundEffect : INotifyPropertyChanged
                             b.points -= comList[i].costToUse;
                         }
                         comList[i].playSound();
+                        if (userCoolDowns.ContainsKey(b.username))
+                        {
+                            userCoolDowns.Remove(b.username);
+                        }
                         userCoolDowns.Add(b.username, DateTimeOffset.Now.ToUnixTimeMilliseconds());
                         SFXstartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }

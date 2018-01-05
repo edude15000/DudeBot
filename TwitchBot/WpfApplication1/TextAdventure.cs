@@ -34,6 +34,8 @@ public class TextAdventure : INotifyPropertyChanged
     [JsonIgnore]
     public Boolean enoughPlayers { get; set; } = false;
     [JsonIgnore]
+    public long lastAdventure = 0;
+    [JsonIgnore]
     public long AdventureStartTime = 90;
     public long adventureStartTime
     {
@@ -133,7 +135,6 @@ public class TextAdventure : INotifyPropertyChanged
         enoughPlayers = false;
         users.Clear();
         addUser(user);
-
         try
         {
             Thread.Sleep((int)startTimerInMS);

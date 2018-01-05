@@ -458,6 +458,8 @@ public class TwitchBot : INotifyPropertyChanged
     [JsonIgnore]
     public String Eventlog = "";
     [JsonIgnore]
+    public MessageEmoteCollection channelEmotes;
+    [JsonIgnore]
     public String eventlog
     {
         get => Eventlog;
@@ -480,6 +482,7 @@ public class TwitchBot : INotifyPropertyChanged
             pubsub.OnBitsReceived += onPubSubBitsReceived;
             pubsub.Connect();
             client.OnJoinedChannel += onJoinedChannel;
+            channelEmotes = client.ChannelEmotes;
             client.OnMessageReceived += onMessageReceived;
             client.OnWhisperReceived += onWhisperReceived;
             client.OnNewSubscriber += onNewSubscriber;
@@ -505,6 +508,7 @@ public class TwitchBot : INotifyPropertyChanged
             resetAllCommands();
             threads();
             cleverbotSession = await CleverbotSession.NewSessionAsync(Utils.cleverbotIOuser, Utils.cleverbotIOkey);
+            client.SendMessage(startupMessage);
         }
         catch (Exception e1)
         {
@@ -704,7 +708,8 @@ public class TwitchBot : INotifyPropertyChanged
     {
         String s = e.ChatMessage.Username;
         String message = e.ChatMessage.Message;
-        processMessage(s, message);
+        String noEmoteMessage = e.ChatMessage.EmoteReplacedMessage; // TODO : FIX
+        processMessage(s, message, noEmoteMessage);
     }
     
     public void botDisconnect()
@@ -716,7 +721,7 @@ public class TwitchBot : INotifyPropertyChanged
 
     private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
     {
-        client.SendMessage(startupMessage);
+        // TODO ?
     }
 
     private void onWhisperReceived(object sender, OnWhisperReceivedArgs e)
@@ -932,7 +937,7 @@ public class TwitchBot : INotifyPropertyChanged
             client.SendMessage("Not enough people joined the adventure, at least 3 people are required to start an adventure. Try again later!");
         }
         startAdventure = false;
-        textAdventure.adventureStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        textAdventure.lastAdventure = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         waitForAdventureCoolDown = true;
     }
 
@@ -1043,7 +1048,7 @@ public class TwitchBot : INotifyPropertyChanged
         Utils.saveData(this);
     }
     
-    public void processMessage(String sender, String message)
+    public void processMessage(String sender, String message, String noEmoteMessage)
     {
         if (!message.StartsWith("!"))
         {
@@ -1143,7 +1148,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.requestCOMMAND(message, channel, sender);
+                    requestSystem.requestCOMMAND(message, channel, sender, noEmoteMessage);
                 }
                 catch (Exception e1)
                 {
@@ -1194,7 +1199,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.editCOMMAND(message, channel, sender);
+                    requestSystem.editCOMMAND(message, channel, sender, noEmoteMessage);
                 }
                 catch (Exception e1)
                 {
@@ -1211,7 +1216,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.addvipCOMMAND(message, channel, sender);
+                    requestSystem.addvipCOMMAND(message, channel, sender, noEmoteMessage);
                 }
                 catch (Exception e1)
                 {
@@ -1228,7 +1233,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.addtopCOMMAND(message, channel, sender);
+                    requestSystem.addtopCOMMAND(message, channel, sender, noEmoteMessage);
                 }
                 catch (Exception e1)
                 {
@@ -1365,7 +1370,7 @@ public class TwitchBot : INotifyPropertyChanged
             }
             return;
         }
-        if (message.Equals(currency.currencyCommand, StringComparison.InvariantCultureIgnoreCase))
+        if (message.Equals(currency.currencyCommand, StringComparison.InvariantCultureIgnoreCase) || message.Equals("!points", StringComparison.InvariantCultureIgnoreCase))
         {
             if (currency.toggle)
             {
@@ -1559,7 +1564,7 @@ public class TwitchBot : INotifyPropertyChanged
                     {
                         if (currency.vipsong(sender) == 1)
                         {
-                            requestSystem.addVip(channel, Utils.getFollowingText(message), sender);
+                            requestSystem.addVip(channel, Utils.getFollowingText(message), sender, noEmoteMessage);
 
                             client.SendMessage(sender + " cashed in " + currency.vipSongCost
                                     + " " + currency.currencyName + " for a VIP song! '"
@@ -1690,7 +1695,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.editMySongCOMMAND(message, channel, sender);
+                    requestSystem.editMySongCOMMAND(message, channel, sender, noEmoteMessage);
                 }
                 catch (IOException e1)
                 {
@@ -1724,7 +1729,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.addDonatorCOMMAND(message, channel, sender);
+                    requestSystem.addDonatorCOMMAND(message, channel, sender, noEmoteMessage);
                 }
                 catch (Exception e1)
                 {
@@ -1767,7 +1772,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.chooseRandomFavorite(message, channel, sender);
+                    requestSystem.chooseRandomFavorite(message, channel, sender, noEmoteMessage);
                 }
                 catch (Exception e1)
                 {
@@ -1832,7 +1837,7 @@ public class TwitchBot : INotifyPropertyChanged
                     {
                         requestSystem.doNotWriteToHistory = true;
                         requestSystem.addtopCOMMAND(requestSystem.addtopComm.input[0] + " " + requestSystem.lastSong,
-                                channel, sender);
+                                channel, sender, noEmoteMessage);
                         requestSystem.songsPlayedThisStream -= 1;
                         requestSystem.songsPlayedTotal -= 1;
                     }
@@ -2263,14 +2268,14 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 if (waitForAdventureCoolDown)
                 {
-                    if (textAdventure.adventureStartTime + (textAdventure.adventureCoolDown * 60000) <= DateTimeOffset.Now.ToUnixTimeMilliseconds())
+                    if (textAdventure.lastAdventure + (textAdventure.adventureCoolDown * 60000) <= DateTimeOffset.Now.ToUnixTimeMilliseconds())
                     {
                         waitForAdventureCoolDown = false;
                     }
                     else
                     {
                         double timeLeft = Math.Abs(Math.Ceiling((Double)((DateTimeOffset.Now.ToUnixTimeMilliseconds()
-                                - (textAdventure.adventureStartTime + (textAdventure.adventureCoolDown * 60000)))
+                                - (textAdventure.lastAdventure + (textAdventure.adventureCoolDown * 60000)))
                                 / 60000)));
                         if (timeLeft == 0.0)
                         {
@@ -2306,9 +2311,7 @@ public class TwitchBot : INotifyPropertyChanged
                         {
                             if (textAdventure.addUser(sender) == 0)
                             {
-
-                                client.SendMessage("Please try again in a little bit, " + sender
-                                        + "!");
+                                client.SendMessage("Please try again in a little bit, " + sender + "!");
                                 startAdventure = false;
                             }
                         }
@@ -2470,7 +2473,7 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (message.Trim().ToLower().StartsWith("!promote "))
         {
-            requestSystem.promoteSongCommand(sender, channel, streamer, users, message);
+            requestSystem.promoteSongCommand(sender, channel, streamer, users, message, noEmoteMessage);
         }
 
         if (message.Trim().ToLower().Equals("!subcredits", StringComparison.InvariantCultureIgnoreCase))
@@ -2528,7 +2531,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 if (currency.redeemSubCredits(sender))
                 {
-                    requestSystem.addDonator(channel, Utils.getFollowingText(message), sender);
+                    requestSystem.addDonator(channel, Utils.getFollowingText(message), sender, noEmoteMessage);
                     client.SendMessage(sender + " cashed in " + currency.subCreditRedeemCost
                             + " " + " sub credits for a sub song! '" + Utils.getFollowingText(message)
                             + "' has been added as a $$$ song to the song list!");
@@ -2594,6 +2597,15 @@ public class TwitchBot : INotifyPropertyChanged
                 }
             }
         }
+        if (message.Trim().ToLower().Equals("!modcoms", StringComparison.InvariantCultureIgnoreCase) || message.Trim().ToLower().Equals("!modcommands", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+            {
+                client.SendMessage("Mod Command Guide: " + Utils.modCommandsLink);
+                return;
+            }
+        }
+
     }
 
     [STAThread]
@@ -2648,7 +2660,8 @@ public class TwitchBot : INotifyPropertyChanged
                 || message.Equals("!edude15000", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!dudebot", StringComparison.InvariantCultureIgnoreCase))
         {
             client.SendMessage("Dudebot is a free bot programmed by Edude15000. "
-                    + "If you would like to use Dudebot, the download link is here: http://dudebot.webs.com/ Make sure to join the DudeBot Discord also: https://discord.gg/NFehx5h");
+                    + "If you would like to use Dudebot, the download link is here: http://dudebot.webs.com/ Make sure to join the DudeBot Discord also: https://discord.gg/NFehx5h" +
+                    " Please checkout his band on Spotify here: https://open.spotify.com/album/1mleQbNkIbQ8kOG4yGmgBN?");
         }
         if (message.Equals("!version", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!botversion", StringComparison.InvariantCultureIgnoreCase)
                 || message.Equals("!dudebotversion", StringComparison.InvariantCultureIgnoreCase))
@@ -3203,7 +3216,7 @@ public class TwitchBot : INotifyPropertyChanged
                 response = response.Replace("$currentsongduration", s.formattedDuration);
             }
         }
-        if (response.Contains("$cleverbot") )
+        if (response.Contains("$cleverbot"))
         {
             if (cleverbotSession != null)
             {
@@ -3211,6 +3224,11 @@ public class TwitchBot : INotifyPropertyChanged
                 t.Start();
             }
             return "";
+        }
+        if (response.Contains("$accuracy") && File.Exists(Utils.accuracyFile))
+        {
+            String num = File.ReadAllText(Utils.accuracyFile);
+            response = response.Replace("$accuracy", num);
         }
         return response;
     }

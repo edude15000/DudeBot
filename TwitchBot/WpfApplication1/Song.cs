@@ -28,7 +28,6 @@ public class Song
         this.name = name;
         this.requester = requester;
         this.level = level;
-        cfSongArtist = name;
         if (youtubeLink == null || youtubeLink == "")
         {
             setYoutubeData(bot);
@@ -50,10 +49,9 @@ public class Song
                 {
                     officialSong = true;
                 }
-                name = entry.artist + " " + entry.title;
-                cfSongName = entry.title;
-                cfSongArtist = entry.artist;
                 cfAlbum = entry.album;
+                cfSongArtist = entry.artist;
+                cfSongName = entry.title;
             }
             catch
             {

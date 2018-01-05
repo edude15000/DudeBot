@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 public class RequestSystem : INotifyPropertyChanged
@@ -418,7 +419,12 @@ public class RequestSystem : INotifyPropertyChanged
             { 11, "B_STANDARD" },
             { 12, "B_DROP_A" },
             { 13, "Bb_STANDARD" },
-            { 14, "Bb_DROP_Ab" }
+            { 14, "Bb_DROP_Ab" },
+            { 15, "A_STANDARD" },
+            { 16, "Ab_STANDARD" },
+            { 17, "G_STANDARD" },
+            { 18, "LOW_Gb_STANDARD" },
+            { 19, "LOW_F_STANDARD" }
         };
     
     public async Task<bool> getCookieFromCF()
@@ -483,8 +489,12 @@ public class RequestSystem : INotifyPropertyChanged
 
     public String formatSongTitle(String str)
     {
+        if (!str.ToLower().Contains("ac/dc"))
+        {
+            str = str.Replace("/", " ");
+        }
         str = str.Replace("\"", " ").Replace("'", " ").Replace(",", " ").Replace(".", " ").Replace(")", " ").Replace("(", " ").Replace("[", " ").Replace("]", " ");
-        str = str.Replace(@"\", " ").Replace("/", " ").Replace("!", " ").Replace("?", " ").Replace("@", " ").Replace("#", " ").Replace("$", " ").Replace("%", " ");
+        str = str.Replace(@"\", " ").Replace("!", " ").Replace("?", " ").Replace("@", " ").Replace("#", " ").Replace("$", " ").Replace("%", " ");
         str = str.Replace("^", " ").Replace("&", " ").Replace("*", " ").Replace("=", " ").Replace("-", " ").Replace("_", " ").Replace("+", " ").Replace("~", " ");
         str = str.Replace("`", " ").Replace(">", " ").Replace("<", " ").Replace("|", " ").Replace(":", " ").Replace(";", " ");
         return str.ToLower();
@@ -498,6 +508,8 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 search = new IgnitionSearch(cfUserName, laravel_session, community_pass_hash, ipsconnect);
                 songname = songname.Replace("-", "");
+                songname = Regex.Replace(songname, @"\(.*?\)", "");
+                songname = Regex.Replace(songname, @"\s{2,}", " ");
                 songname = Utils.replaceAcronyms(songname);
                 CDLCEntry entry = null;
                 if (songname.ToLower().EndsWith("choice") || songname.ToLower().Contains("streamer") || songname.ToLower().Contains(bot.streamer.ToLower()))
@@ -513,7 +525,10 @@ public class RequestSystem : INotifyPropertyChanged
                 CDLCEntryList results = search.Search(0, 50, songname);
                 if (results.Count == 0)
                 {
-                    return null;
+                    entry = new CDLCEntry();
+                    entry.failed = true;
+                    entry.failMessage = "Your requested song does not exist for Rocksmith yet";
+                    return entry;
                 }
                 else
                 {
@@ -560,6 +575,7 @@ public class RequestSystem : INotifyPropertyChanged
                 Console.WriteLine(e.ToString());
                 CDLCEntry entry = new CDLCEntry();
                 entry.failed = true;
+                entry.failMessage = "Could not connect to CustomsForge! :( ";
                 return entry;
             }
         }
@@ -572,14 +588,23 @@ public class RequestSystem : INotifyPropertyChanged
         if (!entry.parts.HasFlag(Part.ALL)) {
             if (CheckCustomsForgeLead && !entry.parts.HasFlag(Part.LEAD))
             {
+                entry = new CDLCEntry();
+                entry.failed = true;
+                entry.failMessage = "There does not exist a LEAD GUITAR path for this song";
                 return false;
             }
             if (CheckCustomsForgeRhythm && !entry.parts.HasFlag(Part.RHYTHM))
             {
+                entry = new CDLCEntry();
+                entry.failed = true;
+                entry.failMessage = "There does not exist a RHYTHM GUITAR path for this song";
                 return false;
             }
             if (CheckCustomsForgeBass && !entry.parts.HasFlag(Part.BASS))
             {
+                entry = new CDLCEntry();
+                entry.failed = true;
+                entry.failMessage = "There does not exist a BASS GUITAR path for this song";
                 return false;
             }
         }
@@ -597,32 +622,49 @@ public class RequestSystem : INotifyPropertyChanged
             }
             if (lowestTuning < currentSongTuningValue)
             {
+                entry = new CDLCEntry();
+                entry.failed = true;
+                entry.failMessage = "Your requested song has a tuning that is out of range";
                 return false;
             }
         }
         if (requireDD && !entry.dd)
         {
+            entry = new CDLCEntry();
+            entry.failed = true;
+            entry.failMessage = "Your requested song does not have dynamic difficulty";
             return false;
         }
         foreach (String s in bannedKeywords)
         {
             if (entry.artist.Contains(s) || entry.title.Contains(s))
             {
+                entry = new CDLCEntry();
+                entry.failed = true;
+                entry.failMessage = "Your requested song contains '" + s + "' which is a banned keyword and may not be requested";
                 return false;
             }
         }
         return true;
     }
 
-    public Boolean addSongToList(String song, String requestedby, String level, int place)
+    public Boolean addSongToList(String song, String requestedby, String level, int place, String noEmoteMessage, Boolean checkCF)
     {
         CDLCEntry entry = null;
         Song s = new Song(song, requestedby, level, bot);
-        if (checkCustomsForge && cfUserName != "" && cfPassword != "")
+        if (checkCF && checkCustomsForge && cfUserName != "" && cfPassword != "")
         {
             try
             {
-                entry = getSongFromIgnition(song);
+                entry = getSongFromIgnition(song); // TODO : FIX noEmoteMessage
+                foreach (Song checkedSong in songList)
+                {
+                    if (checkedSong.cfSongArtist.Equals(entry.artist, StringComparison.InvariantCultureIgnoreCase) && checkedSong.cfSongName.Equals(entry.title, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.client.SendMessage("Your requested song is already in the request queue, " + requestedby + "!");
+                        return false;
+                    }
+                }
                 if (entry == null)
                 {
                     bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
@@ -630,7 +672,15 @@ public class RequestSystem : INotifyPropertyChanged
                 }
                 else if (entry.failed)
                 {
-                    bot.client.SendMessage("Could not connect to CustomsForge! :(");
+                    if (entry.failMessage == "")
+                    {
+                        bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                    }
+                    else
+                    {
+                        bot.client.SendMessage(entry.failMessage + ", " + requestedby + "!");
+                    }
+                    return false;
                 }
                 else
                 {
@@ -786,7 +836,7 @@ public class RequestSystem : INotifyPropertyChanged
         return songs;
     }
 
-    public void addDonatorCOMMAND(String message, String channel, String sender)
+    public void addDonatorCOMMAND(String message, String channel, String sender, String noEmoteMessage)
     {
         if (bot.checkUserLevel(sender, adddonatorComm, channel))
         {
@@ -854,13 +904,13 @@ public class RequestSystem : INotifyPropertyChanged
                             requester = requester.Replace("(", "").Replace(")", "");
                             if (ytvid != null)
                             {
-                                addDonator(channel, ytvid.Snippet.Title, requester);
+                                addDonator(channel, ytvid.Snippet.Title, requester, noEmoteMessage);
                                 bot.client.SendMessage("Donator Song '" + ytvid.Snippet.Title
                                                 + "' has been added to the song list, " + requester + "!");
                             }
                             else
                             {
-                                addDonator(channel, input, requester);
+                                addDonator(channel, input, requester, noEmoteMessage);
                                 bot.client.SendMessage("Donator Song '" + input
                                         + "' has been added to the song list, " + requester + "!");
                             }
@@ -871,13 +921,13 @@ public class RequestSystem : INotifyPropertyChanged
                         {
                             if (ytvid != null)
                             {
-                                addDonator(channel, ytvid.Snippet.Title, sender);
+                                addDonator(channel, ytvid.Snippet.Title, sender, noEmoteMessage);
                                 bot.client.SendMessage("Donator Song '" + ytvid.Snippet.Title
                                                 + "' has been added to the song list, " + sender + "!");
                             }
                             else
                             {
-                                addDonator(channel, input, sender);
+                                addDonator(channel, input, sender, noEmoteMessage);
                                 bot.client.SendMessage("Donator Song '" + input
                                         + "' has been added to the song list, " + sender + "!");
                             }
@@ -894,15 +944,15 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void addDonator(String channel, String song, String requestedby)
+    public void addDonator(String channel, String song, String requestedby, String noEmoteMessage)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            addSongToList(song, requestedby, "$$$", -1);
+            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            if (addSongToList(song, requestedby, "$$$", -1))
+            if (addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true))
             {
                 songList[0].level = "$$$";
             }
@@ -917,7 +967,7 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 if (!songList[i].level.Equals("$$$"))
                 {
-                    if (addSongToList(song, requestedby, "$$$", i))
+                    if (addSongToList(song, requestedby, "$$$", i, noEmoteMessage, true))
                     {
                         songList[0].level = "$$$";
                     }
@@ -925,7 +975,7 @@ public class RequestSystem : INotifyPropertyChanged
                     return;
                 }
             }
-            addSongToList(song, requestedby, "$$$", -1);
+            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true);
         }
         writeToCurrentSong(bot.channel, true);
     }
@@ -969,7 +1019,7 @@ public class RequestSystem : INotifyPropertyChanged
         bot.client.SendMessage("You have no requests in the list, " + sender + "!");
     }
 
-    public void editMySongCOMMAND(String message, String channel, String sender)
+    public void editMySongCOMMAND(String message, String channel, String sender, String noEmoteMessage)
     {
         if (bot.checkUserLevel(sender, editSongComm, channel))
         {
@@ -994,13 +1044,13 @@ public class RequestSystem : INotifyPropertyChanged
                             }
                         }
                     }
-                    editRequesterSong(message, channel, sender);
+                    editRequesterSong(message, channel, sender, noEmoteMessage);
                 }
             }
         }
     }
 
-    public void editRequesterSong(String message, String channel, String sender)
+    public void editRequesterSong(String message, String channel, String sender, String noEmoteMessage)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
@@ -1021,7 +1071,7 @@ public class RequestSystem : INotifyPropertyChanged
                     }
                 }
                 String previousSong = songList[i].name;
-                if (addSongToList(Utils.getFollowingText(message), sender, songList[i].level, songList[i].index))
+                if (addSongToList(Utils.getFollowingText(message), sender, songList[i].level, songList[i].index, noEmoteMessage, true))
                 {
                     songList.Remove(songList[i]);
                     bot.client.SendMessage("Your next request '" + previousSong
@@ -1034,7 +1084,7 @@ public class RequestSystem : INotifyPropertyChanged
         bot.client.SendMessage("You have no requests in the list, " + sender + "!");
     }
 
-    public void chooseRandomFavorite(String message, String channel, String sender)
+    public void chooseRandomFavorite(String message, String channel, String sender, String noEmoteMessage)
     {
         if (bot.checkUserLevel(sender, favSongComm, channel))
         {
@@ -1070,11 +1120,11 @@ public class RequestSystem : INotifyPropertyChanged
                                                 int index = rand.Next(favSongs.Count);
                                                 if (favSongsPlayedThisStream.Contains(favSongs[index]))
                                                 {
-                                                    addSong(channel, "streamer's Choice", sender);
+                                                    addSong(channel, "streamer's Choice", sender, noEmoteMessage);
                                                 }
                                                 else
                                                 {
-                                                    addSong(channel, favSongs[index] + " (FAV)", sender);
+                                                    addSong(channel, favSongs[index] + " (FAV)", sender, noEmoteMessage);
                                                 }
                                                 favSongsPlayedThisStream.Add(favSongs[index]);
                                             }
@@ -1086,7 +1136,7 @@ public class RequestSystem : INotifyPropertyChanged
                                         }
                                         else
                                         {
-                                            addSong(channel, "streamer's Choice", sender);
+                                            addSong(channel, "streamer's Choice", sender, noEmoteMessage);
                                         }
                                     }
                                     else
@@ -1483,7 +1533,7 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void editCOMMAND(String message, String channel, String sender)
+    public void editCOMMAND(String message, String channel, String sender, String noEmoteMessage)
     {
         if (bot.checkUserLevel(sender, editComm, channel))
         {
@@ -1498,7 +1548,7 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     try
                     {
-                        if (editCurrent(channel, Utils.getFollowingText(message), sender))
+                        if (editCurrent(channel, Utils.getFollowingText(message), sender, noEmoteMessage))
                         {
                             bot.client.SendMessage("Current song has been edited!");
                             writeToCurrentSong(channel, false);
@@ -1514,7 +1564,7 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void addvipCOMMAND(String message, String channel, String sender)
+    public void addvipCOMMAND(String message, String channel, String sender, String noEmoteMessage)
     {
         if (bot.checkUserLevel(sender, addvipComm, channel))
         {
@@ -1582,11 +1632,11 @@ public class RequestSystem : INotifyPropertyChanged
                             requester = requester.Replace("(", "").Replace(")", "");
                             if (ytvid != null)
                             {
-                                addVip(channel, ytvid.Snippet.Title, requester);
+                                addVip(channel, ytvid.Snippet.Title, requester, noEmoteMessage);
                             }
                             else
                             {
-                                addVip(channel, input, requester);
+                                addVip(channel, input, requester, noEmoteMessage);
                             }
                             bot.client.SendMessage("VIP Song '" + input
                                     + "' has been added to the song list, " + requester + "!");
@@ -1597,13 +1647,13 @@ public class RequestSystem : INotifyPropertyChanged
                         {
                             if (ytvid != null)
                             {
-                                addVip(channel, ytvid.Snippet.Title, sender);
+                                addVip(channel, ytvid.Snippet.Title, sender, noEmoteMessage);
                                 bot.client.SendMessage("VIP Song '" + ytvid.Snippet.Title
                                                 + "' has been added to the song list, " + sender + "!");
                             }
                             else
                             {
-                                addVip(channel, input, sender);
+                                addVip(channel, input, sender, noEmoteMessage);
                                 bot.client.SendMessage("VIP Song '" + input
                                         + "' has been added to the song list, " + sender + "!");
                             }
@@ -1620,7 +1670,7 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void addtopCOMMAND(String message, String channel, String sender)
+    public void addtopCOMMAND(String message, String channel, String sender, String noEmoteMessage)
     {
         if (bot.checkUserLevel(sender, addtopComm, channel))
         {
@@ -1688,13 +1738,13 @@ public class RequestSystem : INotifyPropertyChanged
                             requester = requester.Replace("(", "").Replace(")", "");
                             if (ytvid != null)
                             {
-                                addTop(channel, ytvid.Snippet.Title, requester);
+                                addTop(channel, ytvid.Snippet.Title, requester, noEmoteMessage);
                                 bot.client.SendMessage("Song '" + ytvid.Snippet.Title
                                         + "' has been added to the top of the song list, " + requester + "!");
                             }
                             else
                             {
-                                addTop(channel, input, requester);
+                                addTop(channel, input, requester, noEmoteMessage);
                                 bot.client.SendMessage("Song '" + input
                                         + "' has been added to the top of the song list, " + requester + "!");
                             }
@@ -1705,13 +1755,13 @@ public class RequestSystem : INotifyPropertyChanged
                         {
                             if (ytvid != null)
                             {
-                                addTop(channel, ytvid.Snippet.Title, sender);
+                                addTop(channel, ytvid.Snippet.Title, sender, noEmoteMessage);
                                 bot.client.SendMessage("Song '" + ytvid.Snippet.Title
                                         + "' has been added to the top of the song list, " + sender + "!");
                             }
                             else
                             {
-                                addTop(channel, input, sender);
+                                addTop(channel, input, sender, noEmoteMessage);
                                 bot.client.SendMessage("Song '" + input
                                         + "' has been added to the top of the song list, " + sender + "!");
                             }
@@ -1828,7 +1878,7 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void requestCOMMAND(String message, String channel, String sender)
+    public void requestCOMMAND(String message, String channel, String sender, String noEmoteMessage)
     {
         if (bot.checkUserLevel(sender, requestComm, channel))
         {
@@ -1993,14 +2043,14 @@ public class RequestSystem : INotifyPropertyChanged
                                                 }
                                                 if (ytvid != null)
                                                 {
-                                                    addSong(channel, ytvid.Snippet.Title, sender);
+                                                    addSong(channel, ytvid.Snippet.Title, sender, noEmoteMessage);
                                                     return;
                                                 }
                                                 else
                                                 {
                                                     if (direquests)
                                                     {
-                                                        addSong(channel, Utils.getFollowingText(message), sender);
+                                                        addSong(channel, Utils.getFollowingText(message), sender, noEmoteMessage);
                                                     }
                                                     else
                                                     {
@@ -2224,11 +2274,11 @@ public class RequestSystem : INotifyPropertyChanged
         return songList.Count.ToString();
     }
 
-    public Boolean editCurrent(String channel, String newSong, String sender)
+    public Boolean editCurrent(String channel, String newSong, String sender, String noEmoteMessage)
     {
         if ((Int32.Parse(getNumberOfSongs()) == 0))
         {
-            if (addSongToList(newSong, sender, "", -1))
+            if (addSongToList(newSong, sender, "", -1, noEmoteMessage, true))
             {
                 bot.client.SendMessage("Since there are no songs in the song list, song '" + newSong
                         + "' has been added to the song list, " + sender + "!");
@@ -2293,7 +2343,7 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void promoteSongCommand(String sender, String channel, String streamer, List<BotUser> users, String message)
+    public void promoteSongCommand(String sender, String channel, String streamer, List<BotUser> users, String message, String noEmoteMessage)
     {
         if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
                     || sender.Equals(Utils.botMaker))
@@ -2311,7 +2361,7 @@ public class RequestSystem : INotifyPropertyChanged
                     if (s.level.Equals("VIP"))
                     {
                         songList.RemoveAt(j);
-                        addDonator(channel, s.name, user);
+                        addDonator(channel, s.name, user, noEmoteMessage);
                         bot.client.SendMessage("VIP Song '" + s.name
                                 + "' has been promoted to $$$, " + sender + "!");
                         return;
@@ -2325,7 +2375,7 @@ public class RequestSystem : INotifyPropertyChanged
                     else
                     {
                         songList.RemoveAt(j);
-                        bot.requestSystem.addVip(channel, s.name, user);
+                        bot.requestSystem.addVip(channel, s.name, user, noEmoteMessage);
                         bot.client.SendMessage("Song '" + s.name + "' has been promoted to VIP, "
                                 + sender + "!");
                         return;
@@ -2338,9 +2388,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void addSong(String channel, String song, String requestedby)
+    public void addSong(String channel, String song, String requestedby, String noEmoteMessage)
     {
-        if (addSongToList(song, requestedby, "", -1))
+        if (addSongToList(song, requestedby, "", -1, noEmoteMessage, true))
         {
             bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
                     + requestedby + "!");
@@ -2349,7 +2399,7 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void insertSong(String song, String requestedby, int place)
+    public void insertSong(String song, String requestedby, int place, String noEmoteMessage, Boolean checkCF)
     {
         String level = "";
         if (songList.Count > place)
@@ -2358,30 +2408,30 @@ public class RequestSystem : INotifyPropertyChanged
         }
         if (place >= songList.Count)
         {
-            addSongToList(song, requestedby, "", -1);
+            addSongToList(song, requestedby, "", -1, noEmoteMessage, checkCF);
         }
         else
         {
-            addSongToList(song, requestedby, "", place);
+            addSongToList(song, requestedby, "", place, noEmoteMessage, checkCF);
         }
         writeToCurrentSong(bot.channel, true);
     }
 
-    public void addTop(String channel, String song, String requestedby)
+    public void addTop(String channel, String song, String requestedby, String noEmoteMessage)
     {
-        addSongToList(song, requestedby, "$$$", 0);
+        addSongToList(song, requestedby, "$$$", 0, noEmoteMessage, true);
         writeToCurrentSong(bot.channel, true);
     }
 
-    public void addVip(String channel, String song, String requestedby)
+    public void addVip(String channel, String song, String requestedby, String noEmoteMessage)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            addSongToList(song, requestedby, "VIP", 0);
+            addSongToList(song, requestedby, "VIP", 0, noEmoteMessage, true);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            if (addSongToList(song, requestedby, "VIP", -1))
+            if (addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true))
             {
                 songList[0].level = "VIP";
             }
@@ -2397,12 +2447,12 @@ public class RequestSystem : INotifyPropertyChanged
                 Song s = songList[i];
                 if (s.level.Equals(""))
                 {
-                    addSongToList(song, requestedby, "VIP", i);
+                    addSongToList(song, requestedby, "VIP", i, noEmoteMessage, true);
                     writeToCurrentSong(bot.channel, true);
                     return;
                 }
             }
-            addSongToList(song, requestedby, "VIP", -1);
+            addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true);
         }
         writeToCurrentSong(bot.channel, true);
     }

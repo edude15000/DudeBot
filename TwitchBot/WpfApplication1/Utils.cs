@@ -26,9 +26,12 @@ public class Utils
     public static String customsForgeAuthKey = "880ea6a14ea49e853634fbdc5015a024";
     public static String cleverbotIOuser = "kwTO92eMLLzv5o7G";
     public static String cleverbotIOkey = "woNIQmZTDYfvm0uAg2QWyumoNfKjH37h";
+    public static String modCommandsLink = "https://docs.google.com/document/d/1gc-Vabwssk6ekx3PpTVZvswmA5QEczX7WuKvnXX5AV0/edit?usp=sharing";
+    public static String accuracyFile = @"bin\output\accuracy.txt";
 
     public static Dictionary<string, string> bandAcronyms = new Dictionary<string, string>
     {
+        { "NLT", "Night Like This" },
         { "ABR", "August Burns Red" },
         { "ADTR", "A Day To Remember" },
         { "BMTH", "Bring Me The Horizon" },
@@ -36,7 +39,50 @@ public class Utils
         { "SOAD", "System of a Down" },
         { "A7X", "Avenged Sevenfold" },
         { "OMAM", "Of Mice & Men" },
-        { "OM&M", "Of Mice & Men" }
+        { "OM&M", "Of Mice & Men" },
+        { "FFDP", "Five Finger Death Punch" },
+        { "5FDP", "Five Finger Death Punch" },
+        { "RHCP", "Red Hot Chili Peppers" },
+        { "BTBAM", "Between The Buried And Me" },
+        { "ELO", "Electric Light Orchestra" },
+        { "RATM", "Rage Against The Machine" },
+        { "GNR", "Guns Roses" },
+        { "Guns N' Roses", "Guns Roses" },
+        { "G'N'R", "Guns Roses" },
+        { "NIN", "Nine Inch Nails" },
+        { "MCR", "My Chemical Romance" },
+        { "APC", "A Perfect Circle" },
+        { "CCR", "Creedence Clearwater Revival" },
+        { "ETF", "Escape the Fate" },
+        { "3EB", "Third Eye Blind" },
+        { "TEB", "Third Eye Blind" },
+        { "KSE", "Killswitch Engage" },
+        { "AILD", "As I Lay Dying" },
+        { "PTH", "Protest The Hero" },
+        { "WSS", "While She Sleeps" },
+        { "INK", "Ice Nine Kills" },
+        { "I9K", "Ice Nine Kills" },
+        { "AA", "Asking Alexandria" },
+        { "ACDC", "AC/DC" },
+        { "acdc", "AC/DC" },
+        { "MMI", "Miss May I" },
+        { "QOTSA", "Queens of the Stone Age" },
+        { "BOC", "Blue Oyster Cult" },
+        { "STP", "Stone Temple Pilots" },
+        { "BTO", "Bachman Turner Overdive" },
+        { "SYL", "Strapping Young Lad" },
+        { "CC", "Cannibal Corpse" },
+        { "AE", "Arch Enemy" },
+        { "DSO", "Diablo Swing Orchestra" },
+        { "NeO", "Ne Obliviscaris" },
+        { "TSO", "Trans Siberian Orchestra" },
+        { "APC", "A Perfect Circle" },
+        { "DGD", "Dance Gavin Dance" },
+        { "TFOT", "The Fall Of Troy" },
+        { "LTE", "Liquid Tension Experiment" },
+        { "CTE", "Cage The Elephant" },
+        { "CoCa", "Coheed & Cambria" }
+
         // ADD AS NEEEDED
     };
 

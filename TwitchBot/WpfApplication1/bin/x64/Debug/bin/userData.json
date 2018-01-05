@@ -35,7 +35,7 @@
   "autoShoutoutOnHost": true,
   "openRockSnifferOnStartUp": true,
   "textAdventure": {
-    "adventureStartTime": 1514873645195,
+    "adventureStartTime": 90,
     "adventurePointsMin": 25,
     "adventurePointsMax": 75,
     "adventureCoolDown": 20
@@ -133,7 +133,7 @@
     "whisperToUser": true,
     "direquests": true,
     "ylrequests": true,
-    "maxSongLength": false,
+    "maxSongLength": true,
     "subOnlyRequests": "Only subs can request right now, $user!",
     "formattedTotalTime": "00:00:00",
     "songListLength": 0,
@@ -400,7 +400,7 @@
     "lowestTuning": 0,
     "requireDD": false,
     "defaultMinsSong": 4,
-    "inChatEstimateTime": false,
+    "inChatEstimateTime": true,
     "openCFLinkInsteadOfYoutube": false
   },
   "sfxCommandList": [
@@ -1447,6 +1447,30 @@
       "level": 3,
       "input": [
         "F7"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "!endgame $accuracy",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F4"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "!startgame",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F3"
       ],
       "toggle": true,
       "volumeLevel": 100,
@@ -2540,6 +2564,30 @@
       "level": 0,
       "input": [
         "!cleverbot"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "!endgame $accuracy",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F4"
+      ],
+      "toggle": true,
+      "volumeLevel": 100,
+      "costToUse": 0,
+      "overrideType": 0
+    },
+    {
+      "output": "!startgame",
+      "commandType": "hotkey",
+      "level": 3,
+      "input": [
+        "F3"
       ],
       "toggle": true,
       "volumeLevel": 100,
@@ -4444,10 +4492,10 @@
       "receivedFollowPayout": false,
       "mod": true,
       "gaveSpot": false,
-      "time": 537,
+      "time": 582,
       "subCredits": 0,
-      "points": 531,
-      "numRequests": 324,
+      "points": 626,
+      "numRequests": 330,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4476,9 +4524,9 @@
       "receivedFollowPayout": false,
       "mod": false,
       "gaveSpot": false,
-      "time": 768,
+      "time": 809,
       "subCredits": 0,
-      "points": 768,
+      "points": 809,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,

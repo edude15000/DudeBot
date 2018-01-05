@@ -42,6 +42,7 @@ namespace IgnitionHelper.CDLC
         public Boolean noInfo = true;
 
         public Boolean failed = false;
+        public String failMessage = "";
 
         public CDLCEntry()
         {

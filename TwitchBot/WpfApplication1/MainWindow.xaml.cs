@@ -28,6 +28,7 @@ namespace WpfApplication1
         public String dudebotupdateinfo = Path.GetTempPath() + "dudebotupdateinfo.txt";
         
         String selectedQuote = "", selectedFavSong = "";
+        Command selectedHotKey;
         Process rockSnifferWindow = null;
 
         [DllImport("User32")]
@@ -50,14 +51,15 @@ namespace WpfApplication1
                         }
                         else
                         {
+                            String message = bot.userVariables(c.output, bot.channel, bot.streamer,
+                                    Utils.getFollowingText(c.output), c.output, false);
                             if (c.output.StartsWith("!"))
                             {
-                                bot.processMessage(bot.streamer, c.output);
+                                bot.processMessage(bot.streamer, message, bot.streamer);
                             }
                             else
                             {
-                                bot.client.SendMessage(bot.userVariables(c.output, bot.channel, bot.streamer,
-                                    Utils.getFollowingText(c.output), c.output, false));
+                                bot.client.SendMessage(message);
                             }
                         }
                     }
@@ -93,18 +95,15 @@ namespace WpfApplication1
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editHotKeyInput.Text)) && !string.IsNullOrWhiteSpace(editHotKeyCommand.Text))
             {
-                foreach (Command c in bot.hotkeyCommandList)
+                for (int i = 0; i < bot.hotkeyCommandList.Count; i++)
                 {
-                    if (c.input[0].Equals(editHotKeyInput.Text, StringComparison.InvariantCultureIgnoreCase))
+                    if (selectedHotKey != null && (bot.hotkeyCommandList[i].input[0].Equals(selectedHotKey.input[0]) || bot.hotkeyCommandList[i].output.Equals(selectedHotKey.output)))
                     {
-                        c.output = editHotKeyCommand.Text;
-                        bot.resetAllCommands();
-                        editHotKeyInput.Text = "";
-                        editHotKeyCommand.Text = "";
-                        writeToConfig(null, null);
-                        return;
+                        bot.commandList.Remove(bot.hotkeyCommandList[i]);
+                        break;
                     }
                 }
+                selectedHotKey = null;
                 String[] str = { editHotKeyInput.Text };
                 bot.commandList.Add(new Command(str, 3, editHotKeyCommand.Text, "hotkey", true));
                 bot.resetAllCommands();
@@ -155,8 +154,10 @@ namespace WpfApplication1
             TextBlock textBlock = (sender as TextBlock);
             object datacontext = textBlock.DataContext;
             Command c = (Command)datacontext;
+            selectedHotKey = c;
             editHotKeyInput.Text = c.input[0];
             editHotKeyCommand.Text = c.output;
+
         }
 
         public async void addcommand(Object sender, RoutedEventArgs e)
@@ -888,10 +889,8 @@ namespace WpfApplication1
                 open.IsEnabled = true;
                 kill.IsEnabled = false;
             }
-            catch (Exception e1)
+            catch (Exception)
             {
-                Utils.errorReport(e1);
-                Debug.WriteLine(e1.ToString());
             }
         }
 
@@ -1533,7 +1532,7 @@ namespace WpfApplication1
                     String bottomSongLevel = a.level;
                     String topSongLevel = bot.requestSystem.songList[i - 1].level;
                     bot.requestSystem.songList.Remove(a);
-                    bot.requestSystem.insertSong(a.name, a.requester, i-1);
+                    bot.requestSystem.insertSong(a.name, a.requester, i-1, "", false);
                     bot.requestSystem.songList[i - 1].level = topSongLevel;
                     bot.requestSystem.songList[i].level = bottomSongLevel;
                     break;
@@ -1576,7 +1575,7 @@ namespace WpfApplication1
             }
             if (!string.IsNullOrWhiteSpace(editSong.Text))
             {
-                bot.requestSystem.insertSong(editSong.Text, uName, (int)songplace.Value - 1);
+                bot.requestSystem.insertSong(editSong.Text, uName, (int)songplace.Value - 1, "", false);
                 editSong.Text = "";
                 editRequester.Text = "";
                 songplace.Value = 1;

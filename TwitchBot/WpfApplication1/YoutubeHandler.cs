@@ -4,6 +4,7 @@ using Google.Apis.YouTube.v3.Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public class YoutubeHandler
 {
@@ -26,6 +27,9 @@ public class YoutubeHandler
     public Video searchYoutubeByTitle(String title, int maxDuration)
     {
         var searchListRequest = youtubeService.Search.List("id,snippet");
+        title = title.Replace("-", "");
+        title = Regex.Replace(title, @"\(.*?\)", "");
+        title = Regex.Replace(title, @"\s{2,}", " ");
         searchListRequest.Q = title;
         searchListRequest.MaxResults = 2;
         var searchListResponse = searchListRequest.Execute();
@@ -35,7 +39,7 @@ public class YoutubeHandler
         }
         String id = searchListResponse.Items[0].Id.VideoId;
         Video vid = searchYoutubeByID(id);
-        if (Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > 2700 || Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > maxDuration)
+        if (Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > 2700 || Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > (maxDuration * 60))
         {
             if (searchListResponse.Items[1] == null)
             {

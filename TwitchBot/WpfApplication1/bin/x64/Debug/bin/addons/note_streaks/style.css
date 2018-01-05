@@ -84,56 +84,56 @@
 		opacity: 1;
 		font-size: 3.5vw;
 		transform: rotate(0deg);
-		color: #FAE35A;
+		color: magenta;
 	}
 
 	/*End of first bounce*/
 	25% {
 		font-size: 7vw;
 		transform: rotate(5deg);
-		color: #FFAA19;
+		color: red;
 	}
 
 	/*Start of second bounce*/
 	35% {
 		font-size: 3.5vw;
 		transform: rotate(0deg);
-		color: #F29D14;
+		color: DeepPink;
 	}
 
 	/*End of second bounce*/
 	45% {
 		font-size: 6vw;
 		transform: rotate(-4deg);
-		color: #310F00;
+		color: yellow;
 	}
 
 	/*Start of third bounce*/
 	50% {
 		font-size: 3.5vw;
 		transform: rotate(0deg);
-		color: #FAE35A;
+		color: green;
 	}
 
 	/*End of third bounce*/
 	60% {
 		font-size: 5vw;
 		transform: rotate(2deg);
-		color: #764705;
+		color: blue;
 	}
 
 	/*Start of fourth bounce*/
 	65% {
 		font-size: 3.5vw;
 		transform: rotate(0deg);
-		color: #F29D14;
+		color: aqua;
 	}
 
 	/*End of fourth bounce*/
 	75% {
 		font-size: 4vw;
 		transform: rotate(-1deg);
-		color: #FFAA19;
+		color: purple;
 	}
 
 	/*Start of exit animation*/
@@ -141,7 +141,7 @@
 		opacity: 1;
 		font-size: 3.5vw;
 		transform: rotate(0deg) translate(0,0);
-		color: #764705;
+		color: lime;
 	}
 
 	/*Final state and end of exit animation*/

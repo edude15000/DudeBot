@@ -699,9 +699,8 @@
                                             <DataTemplate >
                                                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" ToolTipService.ToolTip="Click to edit song, double click to open song link." MouseLeftButtonDown="editSongButtonClick" >
                                                     <TextBlock.Text>
-                                                        <MultiBinding StringFormat="{}{0} {1} &#x0a;{2} {3}">
-                                                            <Binding Path="cfSongArtist" UpdateSourceTrigger="PropertyChanged" />
-                                                            <Binding Path="cfSongName" UpdateSourceTrigger="PropertyChanged" />
+                                                        <MultiBinding StringFormat="{}{0}&#x0a;{2} {3}">
+                                                            <Binding Path="name" UpdateSourceTrigger="PropertyChanged" />
                                                             <Binding Path="requesterIsHere" UpdateSourceTrigger="PropertyChanged" />
                                                             <Binding Path="tuning" UpdateSourceTrigger="PropertyChanged" />
                                                         </MultiBinding>
@@ -1852,6 +1851,11 @@
                             <ComboBoxItem>B_DROP_A</ComboBoxItem>
                             <ComboBoxItem>Bb_STANDARD</ComboBoxItem>
                             <ComboBoxItem>Bb_DROP_Ab</ComboBoxItem>
+                            <ComboBoxItem>A_STANDARD</ComboBoxItem>
+                            <ComboBoxItem>Ab_STANDARD</ComboBoxItem>
+                            <ComboBoxItem>G_STANDARD</ComboBoxItem>
+                            <ComboBoxItem>LOW_Gb_STANDARD</ComboBoxItem>
+                            <ComboBoxItem>LOW_F_STANDARD</ComboBoxItem>
                         </ComboBox>
                         
                         <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="4"  />
