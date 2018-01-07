@@ -1288,7 +1288,14 @@ public class RequestSystem : INotifyPropertyChanged
     {
         StreamWriter output;
         output = new StreamWriter(Utils.currentSongFile, false);
-        output.Write(getCurrentSongTitle(channel));
+        if (getCurrentSongTitle(channel).Equals("Song list is empty"))
+        {
+            output.Write("");
+        }
+        else
+        {
+            output.Write(getCurrentSongTitle(channel));
+        }
         output.Close();
         output = new StreamWriter(Utils.currentRequesterFile, false);
         output.Write(getCurrentSongRequester(channel));

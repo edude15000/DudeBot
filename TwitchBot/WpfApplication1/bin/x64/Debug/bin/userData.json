@@ -125,6 +125,8 @@
     ]
   },
   "requestSystem": {
+    "cfUserName": "",
+    "cfPassword": "",
     "vipSongToggle": true,
     "mustFollowToRequest": true,
     "requestsTrigger": true,
@@ -4495,7 +4497,7 @@
       "time": 582,
       "subCredits": 0,
       "points": 626,
-      "numRequests": 330,
+      "numRequests": 331,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0

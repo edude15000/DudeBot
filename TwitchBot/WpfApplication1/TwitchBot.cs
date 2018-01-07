@@ -556,19 +556,22 @@ public class TwitchBot : INotifyPropertyChanged
                 message = raidMessage;
                 writeToEventLog("RAID: " + e.HostedByChannel + " (" + e.Viewers + " viewers)");
             }
-            if (hostMessage.Contains("shoutout"))
+            if (message.Contains("shoutout"))
             {
                 message = message.Replace("shoutout", userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true));
             }
-            else if (hostMessage.Contains("$user"))
+            else if (message.Contains("$user"))
             {
                 message = message.Replace("$user", e.HostedByChannel);
             }
-            if (hostMessage.Contains("shoutout"))
+            if (message.Contains("shoutout"))
             {
                 message = message.Replace("$viewers", e.Viewers.ToString());
             }
-            client.SendMessage(message);
+            if (!message.Equals(""))
+            {
+                client.SendMessage(message);
+            }
         }
     }
 
@@ -583,7 +586,10 @@ public class TwitchBot : INotifyPropertyChanged
         {
             message = message.Replace("$months", e.ReSubscriber.Months.ToString());
         }
-        client.SendMessage(message);
+        if (!message.Equals(""))
+        {
+            client.SendMessage(message);
+        }
         foreach (BotUser botUser in users)
         {
             if (botUser.username.Equals(e.ReSubscriber.DisplayName, StringComparison.InvariantCultureIgnoreCase))
@@ -606,18 +612,20 @@ public class TwitchBot : INotifyPropertyChanged
 
     private void onNewFollower(object sender, OnNewFollowersDetectedArgs e)
     {
-        if (followerMessage.Contains("$user"))
-        {
-            List<String> str = new List<String>();
-            foreach (IFollow follower in e.NewFollowers)
+        if (!followerMessage.Equals("")) {
+            if (followerMessage.Contains("$user"))
             {
-                str.Add(follower.User.Name);
+                List<String> str = new List<String>();
+                foreach (IFollow follower in e.NewFollowers)
+                {
+                    str.Add(follower.User.Name);
+                }
+                client.SendMessage(followerMessage.Replace("$user", String.Join(", ", str)));
             }
-            client.SendMessage(followerMessage.Replace("$user", String.Join(", ", str)));
-        }
-        else
-        {
-            client.SendMessage(followerMessage);
+            else
+            {
+                client.SendMessage(followerMessage);
+            }
         }
         foreach (IFollow follower in e.NewFollowers)
         {
@@ -731,13 +739,16 @@ public class TwitchBot : INotifyPropertyChanged
 
     private void onNewSubscriber(object sender, OnNewSubscriberArgs e)
     {
-        if (subMessage.Contains("$user"))
+        if (!subMessage.Equals(""))
         {
-            client.SendMessage(subMessage.Replace("$user", e.Subscriber.DisplayName));
-        }
-        else
-        {
-            client.SendMessage(streamer + " : " + subMessage);
+            if (subMessage.Contains("$user"))
+            {
+                client.SendMessage(subMessage.Replace("$user", e.Subscriber.DisplayName));
+            }
+            else
+            {
+                client.SendMessage(streamer + " : " + subMessage);
+            }
         }
         foreach (BotUser botUser in users)
         {

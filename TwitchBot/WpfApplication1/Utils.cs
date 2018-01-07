@@ -11,8 +11,8 @@ using System.Collections.ObjectModel;
 
 public class Utils
 {
-    public static String version = "2.12.1"; // UPDATE AS NECESSARY
-    public static String releaseDate = "12/30/2017"; // UPDATE AS NECESSARY
+    public static String version = "3.0.0"; // UPDATE AS NECESSARY
+    public static String releaseDate = "1/7/2018"; // UPDATE AS NECESSARY
     public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
     public static String currentSongFile = @"bin\currentsong.txt";
@@ -28,6 +28,10 @@ public class Utils
     public static String cleverbotIOkey = "woNIQmZTDYfvm0uAg2QWyumoNfKjH37h";
     public static String modCommandsLink = "https://docs.google.com/document/d/1gc-Vabwssk6ekx3PpTVZvswmA5QEczX7WuKvnXX5AV0/edit?usp=sharing";
     public static String accuracyFile = @"bin\output\accuracy.txt";
+    public static List<String> genericEmoteList = new List<String>
+    {
+        
+    };
 
     public static Dictionary<string, string> bandAcronyms = new Dictionary<string, string>
     {
@@ -64,7 +68,6 @@ public class Utils
         { "I9K", "Ice Nine Kills" },
         { "AA", "Asking Alexandria" },
         { "ACDC", "AC/DC" },
-        { "acdc", "AC/DC" },
         { "MMI", "Miss May I" },
         { "QOTSA", "Queens of the Stone Age" },
         { "BOC", "Blue Oyster Cult" },
@@ -76,12 +79,13 @@ public class Utils
         { "DSO", "Diablo Swing Orchestra" },
         { "NeO", "Ne Obliviscaris" },
         { "TSO", "Trans Siberian Orchestra" },
-        { "APC", "A Perfect Circle" },
         { "DGD", "Dance Gavin Dance" },
         { "TFOT", "The Fall Of Troy" },
         { "LTE", "Liquid Tension Experiment" },
         { "CTE", "Cage The Elephant" },
-        { "CoCa", "Coheed & Cambria" }
+        { "CoCa", "Coheed & Cambria" },
+        { "TTFAF", "Through The Fire And Flames" },
+        { "DF", "Dragon Force" }
 
         // ADD AS NEEEDED
     };

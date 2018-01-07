@@ -699,7 +699,7 @@
                                             <DataTemplate >
                                                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" ToolTipService.ToolTip="Click to edit song, double click to open song link." MouseLeftButtonDown="editSongButtonClick" >
                                                     <TextBlock.Text>
-                                                        <MultiBinding StringFormat="{}{0}&#x0a;{2} {3}">
+                                                        <MultiBinding StringFormat="{}{0}&#x0a;{1} {2}">
                                                             <Binding Path="name" UpdateSourceTrigger="PropertyChanged" />
                                                             <Binding Path="requesterIsHere" UpdateSourceTrigger="PropertyChanged" />
                                                             <Binding Path="tuning" UpdateSourceTrigger="PropertyChanged" />
