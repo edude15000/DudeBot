@@ -371,10 +371,12 @@ namespace WpfApplication1
                     {
                         c.output = editResponseImage.Text;
                         c.costToUse = (int)editImagecost.Value;
+                        c.level = editImageCommandLevel.SelectedIndex;
                         bot.resetAllCommands();
                         editImagecost.Value = 0;
                         editCommandImage.Text = "";
                         editResponseImage.Text = "";
+                        editImageCommandLevel.SelectedIndex = 0;
                         writeToConfig(null, null);
                         return;
                     }
@@ -382,11 +384,13 @@ namespace WpfApplication1
                 String[] str = { formatCommand(editCommandImage.Text) };
                 Command d = new Command(str, 0, editResponseImage.Text, "image", true);
                 d.costToUse = (int)editImagecost.Value;
+                d.level = editImageCommandLevel.SelectedIndex;
                 bot.commandList.Add(d);
                 bot.resetAllCommands();
                 editImagecost.Value = 0;
                 editCommandImage.Text = "";
                 editResponseImage.Text = "";
+                editImageCommandLevel.SelectedIndex = 0;
                 writeToConfig(null, null);
             }
             else
@@ -526,11 +530,13 @@ namespace WpfApplication1
                         c.output = editResponseSFX.Text;
                         c.volumeLevel = (int)volumeSetter.Value;
                         c.costToUse = (int)editSFXcost.Value;
+                        c.level = editSFXCommandLevel.SelectedIndex;
                         bot.resetAllCommands();
                         editImagecost.Value = 0;
                         editCommandSFX.Text = "";
                         editResponseSFX.Text = "";
                         volumeSetter.Value = 100;
+                        editSFXCommandLevel.SelectedIndex = 0;
                         writeToConfig(null, null);
                         return;
                     }
@@ -539,12 +545,14 @@ namespace WpfApplication1
                 Command d = new Command(str, 0, editResponseSFX.Text, "sfx", true);
                 d.volumeLevel = (int)volumeSetter.Value;
                 d.costToUse = (int)editSFXcost.Value;
+                d.level = editSFXCommandLevel.SelectedIndex;
                 bot.commandList.Add(d);
                 bot.resetAllCommands();
                 editImagecost.Value = 0;
                 editCommandSFX.Text = "";
                 editResponseSFX.Text = "";
                 volumeSetter.Value = 100;
+                editSFXCommandLevel.SelectedIndex = 0;
                 writeToConfig(null, null);
             }
             else
@@ -692,6 +700,7 @@ namespace WpfApplication1
                 }
                 editCommandImage.Text = "";
                 editResponseImage.Text = "";
+                editImageCommandLevel.SelectedIndex = 0;
                 writeToConfig(null, null);
                 bot.resetAllCommands();
             }
@@ -760,6 +769,7 @@ namespace WpfApplication1
                 editCommandSFX.Text = "";
                 editResponseSFX.Text = "";
                 volumeSetter.Value = 100;
+                editSFXCommandLevel.SelectedIndex = 0;
                 writeToConfig(null, null);
                 bot.resetAllCommands();
             }
@@ -916,19 +926,19 @@ namespace WpfApplication1
                     "To restore DudeBot and fix the configuration file, press 'reset dudebot'.");
                 return;
             }
-            if (bot.streamer != null && bot.streamer != "" && bot.client != null)
-            {
-                new Thread(new ThreadStart(showBrowser)).Start();
-            }
             bot.botStartUpAsync();
+            new Thread(new ThreadStart(copyToSupporters)).Start();
             try
             {
                 bot.client.Connect();
                 bot.writeToEventLog("BOT CONNECTED");
                 kill.IsEnabled = true;
                 open.IsEnabled = false;
-                showBrowser();
-                dashboard.Focus();
+                if (bot.streamer != null && bot.streamer != "" && bot.client != null)
+                {
+                    showBrowser();
+                    dashboard.Focus();
+                }
             }
             catch (Exception)
             {
@@ -970,51 +980,6 @@ namespace WpfApplication1
             displayedBrowser = true;
         }
         
-        public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj != null)
-            {
-                foreach (object rawChild in LogicalTreeHelper.GetChildren(depObj))
-                {
-                    if (rawChild is DependencyObject)
-                    {
-                        DependencyObject child = (DependencyObject)rawChild;
-                        if (child is T)
-                        {
-                            yield return (T)child;
-                        }
-
-                        foreach (T childOfChild in FindLogicalChildren<T>(child))
-                        {
-                            yield return childOfChild;
-                        }
-                    }
-                }
-            }
-        }
-
-        public void colorChange_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var cb = sender as ComboBox;
-            String color = cb.SelectedValue.ToString();
-            int num = cb.SelectedIndex;
-            color = color.Substring(color.IndexOf(":") + 1).Trim();
-            SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
-            tabholder.Background = brush;
-            this.Background = brush;
-            foreach (TabItem t in FindLogicalChildren<TabItem>(this))
-            {
-                t.Background = brush;
-            }
-            foreach (TextBlock tb in FindLogicalChildren<TextBlock>(this))
-            {
-                if (tb.Uid == null)
-                {
-                    tb.Background = brush;
-                }
-            }
-        }
-
         public void gamble_changed(object sender, RoutedEventArgs e)
         {
             CheckBox cb = sender as CheckBox;
@@ -1122,6 +1087,67 @@ namespace WpfApplication1
             else
             {
                 songdurationlimit.IsEnabled = false;
+            }
+        }
+
+        public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                foreach (object rawChild in LogicalTreeHelper.GetChildren(depObj))
+                {
+                    if (rawChild is DependencyObject)
+                    {
+                        DependencyObject child = (DependencyObject)rawChild;
+                        if (child is T)
+                        {
+                            yield return (T)child;
+                        }
+
+                        foreach (T childOfChild in FindLogicalChildren<T>(child))
+                        {
+                            yield return childOfChild;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void colorChange_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cb = sender as ComboBox;
+            String color = cb.SelectedValue.ToString();
+            int num = cb.SelectedIndex;
+            color = color.Substring(color.IndexOf(":") + 1).Trim();
+            SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
+            tabholder.Background = brush;
+            this.Background = brush;
+            foreach (ScrollViewer t in FindLogicalChildren<ScrollViewer>(this))
+            {
+                t.Background = brush;
+            }
+            foreach (StackPanel t in FindLogicalChildren<StackPanel>(this))
+            {
+                t.Background = brush;
+            }
+            foreach (Grid t in FindLogicalChildren<Grid>(this))
+            {
+                t.Background = brush;
+            }
+            foreach (TabItem t in FindLogicalChildren<TabItem>(this))
+            {
+                t.Background = brush;
+            }
+            foreach (TextBlock tb in FindLogicalChildren<TextBlock>(this))
+            {
+                if (tb.Uid == null)
+                {
+                    tb.Background = brush;
+                }
+            }
+            foreach (DataGridCell tb in FindLogicalChildren<DataGridCell>(this))
+            {
+                tb.Background = brush;
             }
         }
 
@@ -1278,7 +1304,6 @@ namespace WpfApplication1
             writer.Write(location.Substring(0, location.IndexOf(@"DudeBot.exe")));
             writer.Close();
             copyUpdaterFile();
-
             if (!checkPrereqs())
             {
                 customization.Focus();
@@ -1724,6 +1749,7 @@ namespace WpfApplication1
             editResponseSFX.Text = c.output;
             volumeSetter.Value = c.volumeLevel;
             editSFXcost.Value = c.costToUse;
+            editSFXCommandLevel.SelectedIndex = c.level;
         }
 
         private void editImageButtonClick(object sender, MouseButtonEventArgs e)
@@ -1734,6 +1760,7 @@ namespace WpfApplication1
             editCommandImage.Text = c.input[0];
             editResponseImage.Text = c.output;
             editImagecost.Value = c.costToUse;
+            editImageCommandLevel.SelectedIndex = c.level;
         }
 
         private void editEventsButtonClick(object sender, MouseButtonEventArgs e)
@@ -2078,6 +2105,81 @@ namespace WpfApplication1
         private void reloadFollowersButton_Click(object sender, RoutedEventArgs e)
         {
             bot.checkAtBeginningAsync(true);
+        }
+
+        private void giveAllFollowersFollowPayout_Click(object sender, RoutedEventArgs e)
+        {
+            if (bot.autoFollowPayout == 0)
+            {
+                return;
+            }
+            foreach (BotUser user in bot.users)
+            {
+                if (!user.receivedFollowPayout && user.follower)
+                {
+                    user.points += bot.autoFollowPayout;
+                    user.receivedFollowPayout = true;
+                }
+            }
+        }
+
+        private void sortSubsByUserName(object sender, RoutedEventArgs e)
+        {
+            // TODO
+        }
+        
+        private void sortSubsByBits(object sender, RoutedEventArgs e)
+        {
+            // TODO
+        }
+
+        private void sortSubsByMoney(object sender, RoutedEventArgs e)
+        {
+            // TODO
+        }
+
+        private void sortSubsByMonths(object sender, RoutedEventArgs e)
+        {
+            // TODO
+        }
+
+        private void sortSubsBySubbed(object sender, RoutedEventArgs e)
+        {
+            // TODO
+        }
+
+        public void copyToSupporters()
+        {
+            if (bot == null)
+            {
+                return;
+            }
+            while (true)
+            {
+                try
+                {
+                    try
+                    {
+                        bot.supporters.Clear();
+                        foreach (BotUser user in bot.users)
+                        {
+                            if (user.sub || user.bitsDonated > 0)
+                            {
+                                bot.supporters.Add(user);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Utils.errorReport(e);
+                        Console.WriteLine(e.ToString());
+                    }
+                    Thread.Sleep(10000);
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
 
         private async void clearFavorites_Click(object sender, RoutedEventArgs e)

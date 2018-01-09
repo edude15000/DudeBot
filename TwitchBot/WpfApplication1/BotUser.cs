@@ -10,6 +10,8 @@ public class BotUser
     public Boolean mod { get; set; }
     public Boolean gaveSpot { get; set; } = false;
     public int time { get; set; }
+    public int bitsDonated { get; set; } = 0;
+    public int moneyDonated { get; set; } = 0;
     public int subCredits { get; set; }
     public int points { get; set; }
     public int numRequests { get; set; }

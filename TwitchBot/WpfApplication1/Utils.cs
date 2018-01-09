@@ -8,6 +8,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Collections.ObjectModel;
+using NHunspell;
 
 public class Utils
 {
@@ -28,6 +29,7 @@ public class Utils
     public static String cleverbotIOkey = "woNIQmZTDYfvm0uAg2QWyumoNfKjH37h";
     public static String modCommandsLink = "https://docs.google.com/document/d/1gc-Vabwssk6ekx3PpTVZvswmA5QEczX7WuKvnXX5AV0/edit?usp=sharing";
     public static String accuracyFile = @"bin\output\accuracy.txt";
+
     public static List<String> genericEmoteList = new List<String>
     {
         
@@ -101,6 +103,47 @@ public class Utils
             }
         }
         return str;
+    }
+
+    public static string autoCorrect(String song)
+    {
+        String[] wordList = song.Split(' ');
+        try
+        {
+            using (Hunspell hunspell = new Hunspell("bin/en_us.aff", "bin/en_us.dic"))
+            {
+                for (int i = 0; i < wordList.Length; i++)
+                {
+                    if (!hunspell.Spell(wordList[i]))
+                    {
+                        List<string> suggestions = hunspell.Suggest(wordList[i]);
+                        if (suggestions.Count > 0)
+                        {
+                            wordList[i] = suggestions[0];
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+        return string.Join(" ", wordList);
+    }
+
+    public static String formatSongTitle(String str)
+    {
+        if (!str.ToLower().Contains("ac/dc"))
+        {
+            str = str.Replace("/", " ");
+        }
+        str = str.Replace("\"", " ").Replace("'", " ").Replace(",", " ").Replace(".", " ").Replace(")", " ").Replace("(", " ").Replace("[", " ").Replace("]", " ");
+        str = str.Replace(@"\", " ").Replace("!", " ").Replace("?", " ").Replace("@", " ").Replace("#", " ").Replace("$", " ").Replace("%", " ");
+        str = str.Replace("^", " ").Replace("&", " ").Replace("*", " ").Replace("=", " ").Replace("-", " ").Replace("_", " ").Replace("+", " ").Replace("~", " ");
+        str = str.Replace("`", " ").Replace(">", " ").Replace("<", " ").Replace("|", " ").Replace(":", " ").Replace(";", " ");
+        return str.ToLower();
     }
 
     public static int getDurationOfVideoInSeconds(String time)

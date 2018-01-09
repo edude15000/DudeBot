@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 public class RequestSystem : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-  
+    
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -487,19 +487,6 @@ public class RequestSystem : INotifyPropertyChanged
         return false;
     }
 
-    public String formatSongTitle(String str)
-    {
-        if (!str.ToLower().Contains("ac/dc"))
-        {
-            str = str.Replace("/", " ");
-        }
-        str = str.Replace("\"", " ").Replace("'", " ").Replace(",", " ").Replace(".", " ").Replace(")", " ").Replace("(", " ").Replace("[", " ").Replace("]", " ");
-        str = str.Replace(@"\", " ").Replace("!", " ").Replace("?", " ").Replace("@", " ").Replace("#", " ").Replace("$", " ").Replace("%", " ");
-        str = str.Replace("^", " ").Replace("&", " ").Replace("*", " ").Replace("=", " ").Replace("-", " ").Replace("_", " ").Replace("+", " ").Replace("~", " ");
-        str = str.Replace("`", " ").Replace(">", " ").Replace("<", " ").Replace("|", " ").Replace(":", " ").Replace(";", " ");
-        return str.ToLower();
-    }
-
     public CDLCEntry getSongFromIgnition(String songname)
     {
         if (!laravel_session.Equals("") && !community_pass_hash.Equals("") && !ipsconnect.Equals(""))
@@ -541,7 +528,7 @@ public class RequestSystem : INotifyPropertyChanged
                     Dictionary<CDLCEntry, int> entries = new Dictionary<CDLCEntry, int>();
                     foreach (CDLCEntry e in results)
                     {
-                        entries.Add(e, Utils.LevenshteinDistance(formatSongTitle(songname), formatSongTitle(e.artist + " " + e.title)));
+                        entries.Add(e, Utils.LevenshteinDistance(Utils.formatSongTitle(songname), Utils.formatSongTitle(e.artist + " " + e.title)));
                     }
                     var sortedDict = entries.OrderBy(x => x.Value).Select(x => x.Key);
                     int lowestChange = entries[sortedDict.First()];
@@ -657,6 +644,27 @@ public class RequestSystem : INotifyPropertyChanged
             try
             {
                 entry = getSongFromIgnition(song); // TODO : FIX noEmoteMessage
+                if (entry == null)
+                {
+                    bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                    return false;
+                }
+                String newSong = song;
+                if (entry.failMessage.Equals("Your requested song does not exist for Rocksmith yet"))
+                {
+                    newSong = Utils.autoCorrect(song);
+                }
+                if (!song.Equals(newSong))
+                {
+                    entry = null;
+                    song = newSong;
+                    entry = getSongFromIgnition(song); // TODO : FIX noEmoteMessage
+                }
+                if (entry == null)
+                {
+                    bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                    return false;
+                }
                 foreach (Song checkedSong in songList)
                 {
                     if (checkedSong.cfSongArtist.Equals(entry.artist, StringComparison.InvariantCultureIgnoreCase) && checkedSong.cfSongName.Equals(entry.title, StringComparison.InvariantCultureIgnoreCase))
@@ -665,12 +673,7 @@ public class RequestSystem : INotifyPropertyChanged
                         return false;
                     }
                 }
-                if (entry == null)
-                {
-                    bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
-                    return false;
-                }
-                else if (entry.failed)
+                if (entry.failed)
                 {
                     if (entry.failMessage == "")
                     {
@@ -1298,7 +1301,14 @@ public class RequestSystem : INotifyPropertyChanged
         }
         output.Close();
         output = new StreamWriter(Utils.currentRequesterFile, false);
-        output.Write(getCurrentSongRequester(channel));
+        if (getCurrentSongRequester(channel).Equals("Song list is empty"))
+        {
+            output.Write("");
+        }
+        else
+        {
+            output.Write(getCurrentSongRequester(channel));
+        }
         output.Close();
         if (bot.google != null && bot.spreadsheetId != null)
         {

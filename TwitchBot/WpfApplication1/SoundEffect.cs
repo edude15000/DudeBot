@@ -37,13 +37,17 @@ public class SoundEffect : INotifyPropertyChanged
     [JsonIgnore]
     public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
-    public void sfxCOMMANDS(String message, String channel, BotUser b, List<Command> comList)
+    public void sfxCOMMANDS(String message, String channel, BotUser b, List<Command> comList, TwitchBot bot)
     {
         for (int i = 0; i < comList.Count; i++)
         {
             String temp = message.ToLower();
             if (temp.StartsWith(comList[i].input[0]))
             {
+                if (!bot.checkUserLevel(b.username, comList[i], channel))
+                {
+                    return;
+                }
                 if (SFXstartTime == 0 || (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= SFXstartTime + (SFXOverallCoolDown * 1000)))
                 {
                     for (int j = 0; j < userCoolDowns.Count; j++)

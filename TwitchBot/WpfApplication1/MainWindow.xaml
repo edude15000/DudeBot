@@ -119,7 +119,6 @@
             </TabItem>
 
             <TabItem x:Name="customization" Header="Customize" FontSize="12">
-
                 <TabControl x:Name="customizationtabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue">
                     <TabControl.Template>
                         <ControlTemplate TargetType="TabControl">
@@ -141,32 +140,21 @@
                     </TabControl.Template>
 
                     <TabItem Header="Stream" FontSize="12">
+                        <Border Padding="10 0 10 0">
+                            <StackPanel>
+                                <TextBlock FontSize="14" Text="Streamer Name" />
+                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type streamer name here" x:Name="streamerName" FontSize="14" TextWrapping="Wrap" Text="{Binding streamer, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="40*"/>
-                                    <ColumnDefinition Width="10*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Streamer Name: " Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"/>
-                                <TextBlock  VerticalAlignment="Center" FontSize="14" Text="Bot Name: " Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"/>
-                                <TextBlock  VerticalAlignment="Center" FontSize="14" Text=" Oauth Token: " Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right"/>
-                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type streamer name here" x:Name="streamerName" FontSize="14" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="{Binding streamer, UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type bot name here" x:Name="botName" FontSize="14" Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="2" Text="{Binding botName, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type bot oauth token here" x:Name="oauth" FontSize="14" Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="2" Text="{Binding oauth, UpdateSourceTrigger=PropertyChanged}"  />
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO1" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="50" Grid.ColumnSpan="4"  />
-                            </Grid>
-                        </ScrollViewer>
+                                <TextBlock Padding="0 10 0 0" FontSize="14" Text="Bot Name" />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type bot name here" x:Name="botName" FontSize="14" Text="{Binding botName, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Padding="0 10 0 0" FontSize="14" Text=" Oauth Token" />
+                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type bot oauth token here" x:Name="oauth" FontSize="14" Text="{Binding oauth, UpdateSourceTrigger=PropertyChanged}"  />
+
+                                <Button Margin="0 10 0 0" FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO1" Content="Apply" Click="writeToConfig" />
+
+                            </StackPanel>
+                        </Border>
                     </TabItem>
 
                     <TabItem Header="Request" FontSize="12">
@@ -240,243 +228,310 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem Header="Music" FontSize="12">
+                    <TabItem Header="Music" FontSize="14">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="22*"/>
-                                    <ColumnDefinition Width="40*"/>
-                                    <ColumnDefinition Width="20*" />
-                                </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <Border Padding="10 0 10 0">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock FontSize="14" Text="Request" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Grid.Column="0" Controls:TextBoxHelper.ClearTextButton="True" x:Name="requestCommandNames" FontSize="14" Text="{Binding Path=requestSystem.requestComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="requestLevel" Grid.Column="1" FontSize="14" SelectedIndex="{Binding requestSystem.requestComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Trigger Requests: [on/off]" VerticalAlignment="Center" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Request: " Cursor="None" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="requestCommandNames" FontSize="12" Grid.Column="1" Grid.Row="0" Text="{Binding Path=requestSystem.requestComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="requestLevel" FontSize="12" Grid.Column="2" Grid.Row="0" SelectedIndex="{Binding requestSystem.requestComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                            <TextBox TextWrapping="Wrap" Grid.Column="0" Controls:TextBoxHelper.ClearTextButton="True" x:Name="triggerRequestsCommandNames" FontSize="14" Text="{Binding Path=requestSystem.triggerRequestsComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="triggerRequestsLevel" Grid.Column="1" FontSize="14" SelectedIndex="{Binding requestSystem.triggerRequestsComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Play Song from Favorites" Cursor="None" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Trigger Requests: [on/off]: " Cursor="None" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="triggerRequestsCommandNames" FontSize="12" Grid.Column="1" Grid.Row="1" Text="{Binding Path=requestSystem.triggerRequestsComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="triggerRequestsLevel" FontSize="12" Grid.Column="2" Grid.Row="1" SelectedIndex="{Binding requestSystem.triggerRequestsComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="playFavCommandNames" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.favSongComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="playFavLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.favSongComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Display Song List" Cursor="None" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Play Song from Favorites: " Cursor="None" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="playFavCommandNames" FontSize="12" Grid.Column="1" Grid.Row="2" Text="{Binding Path=requestSystem.favSongComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="playFavLevel" FontSize="12" Grid.Column="2" Grid.Row="2" SelectedIndex="{Binding requestSystem.favSongComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="songListCommandNames"  FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.songlistComm.input, Converter={StaticResource ListToStringConverter}}"/>
+                                            <ComboBox x:Name="songListLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.songlistComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Total # of Songs in List" Cursor="None" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Display Song List: " Cursor="None" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="songListCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="3" Text="{Binding Path=requestSystem.songlistComm.input, Converter={StaticResource ListToStringConverter}}"/>
-                                <ComboBox x:Name="songListLevel" FontSize="12" Grid.Column="2" Grid.Row="3" SelectedIndex="{Binding requestSystem.songlistComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getTotalSongsInListCommandNames" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.getTotalComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="getTotalSongsLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.getTotalComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Total Current Viewers" Cursor="None" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Total # of Songs in List: " Cursor="None" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getTotalSongsInListCommandNames" FontSize="12" Grid.Column="1" Grid.Row="4" Text="{Binding Path=requestSystem.getTotalComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="getTotalSongsLevel" FontSize="12" Grid.Column="2" Grid.Row="4" SelectedIndex="{Binding requestSystem.getTotalComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getViewerCountCommandNames" FontSize="14" Grid.Column="0" Text="{Binding Path=getViewerComm.input, Converter={StaticResource ListToStringConverter}}"  />
+                                            <ComboBox x:Name="getViewerCountLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding getViewerComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Add Song to Top of List" Cursor="None" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Total Current Viewers: " Cursor="None" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="getViewerCountCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="5" Text="{Binding Path=getViewerComm.input, Converter={StaticResource ListToStringConverter}}"  />
-                                <ComboBox x:Name="getViewerCountLevel" FontSize="12" Grid.Column="2" Grid.Row="5" SelectedIndex="{Binding getViewerComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addTopCommandNames" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.addtopComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="addTopLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.addtopComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Add VIP song" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Add Song to Top of List: " Cursor="None" VerticalAlignment="Center" Grid.Row="6" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addTopCommandNames" FontSize="12" Grid.Column="1" Grid.Row="6" Text="{Binding Path=requestSystem.addtopComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="addTopLevel" FontSize="12" Grid.Column="2" Grid.Row="6" SelectedIndex="{Binding requestSystem.addtopComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addVipCommandNames"  FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.addvipComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="addVipLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.addvipComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Edit Current Song" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Add VIP song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" />
-                                <TextBox TextWrapping="Wrap"  Controls:TextBoxHelper.ClearTextButton="True" x:Name="addVipCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="7" Text="{Binding Path=requestSystem.addvipComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="addVipLevel" FontSize="12" Grid.Column="2" Grid.Row="7" SelectedIndex="{Binding requestSystem.addvipComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editCommandNames"  FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.editComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="editLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.editComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Skip To Next Song" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Edit Current Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="8" Text="{Binding Path=requestSystem.editComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="editLevel" FontSize="12" Grid.Column="2" Grid.Row="8" SelectedIndex="{Binding requestSystem.editComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="nextCommandNames" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.nextComm.input, Converter={StaticResource ListToStringConverter}}"/>
+                                            <ComboBox x:Name="nextLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.nextComm.level, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Clear Song List" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Skip to Next Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="nextCommandNames" FontSize="12" Grid.Column="1" Grid.Row="9" Text="{Binding Path=requestSystem.nextComm.input, Converter={StaticResource ListToStringConverter}}"/>
-                                <ComboBox x:Name="nextLevel" FontSize="12" Grid.Column="2" Grid.Row="9" SelectedIndex="{Binding requestSystem.nextComm.level, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="clearCommandNames"  FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.clearComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="clearLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.clearComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Display Current Song" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Clear Song List: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="clearCommandNames"  FontSize="12" Grid.Column="1" Grid.Row="10" Text="{Binding Path=requestSystem.clearComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="clearLevel" FontSize="12" Grid.Column="2" Grid.Row="10" SelectedIndex="{Binding requestSystem.clearComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayCurrentCommandName" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.getCurrentComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="displayCurrentLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.getCurrentComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Display Next Song" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="14" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Display Current Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayCurrentCommandName" FontSize="12" Grid.Column="1" Grid.Row="11" Text="{Binding Path=requestSystem.getCurrentComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="displayCurrentLevel" FontSize="12" Grid.Column="2" Grid.Row="11" SelectedIndex="{Binding requestSystem.getCurrentComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayNextSongCommandName" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.getNextComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="displayNextLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.getNextComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Random Next Song" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Display Next Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="12" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="displayNextSongCommandName" FontSize="12" Grid.Column="1" Grid.Row="12" Text="{Binding Path=requestSystem.getNextComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="displayNextLevel" FontSize="12" Grid.Column="2" Grid.Row="12" SelectedIndex="{Binding requestSystem.getNextComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="randomNextSongCommandName"  FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.randomComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="randomNextSongLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.randomComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Edit Requester Song" Cursor="None" VerticalAlignment="Center" Grid.Row="14" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Random Next Song: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="13" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="randomNextSongCommandName"  FontSize="12" Grid.Column="1" Grid.Row="13" Text="{Binding Path=requestSystem.randomComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="randomNextSongLevel" FontSize="12" Grid.Column="2" Grid.Row="13" SelectedIndex="{Binding requestSystem.randomComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editReqSongCommandName" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.editSongComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="editReqSongLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.editSongComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Remove Requester Song" Cursor="None" VerticalAlignment="Center" Grid.Row="15" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Edit Requester Song: " Cursor="None" VerticalAlignment="Center" Grid.Row="14" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="editReqSongCommandName" FontSize="12" Grid.Column="1" Grid.Row="14" Text="{Binding Path=requestSystem.editSongComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="editReqSongLevel" FontSize="12" Grid.Column="2" Grid.Row="14" SelectedIndex="{Binding requestSystem.editSongComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="removeReqSongCommand"  FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.removeSongComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="removeReqSongLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.removeSongComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem>Everyone</ComboBoxItem>
+                                                <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                                <ComboBoxItem>Streamer</ComboBoxItem>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Add Donator Song" Cursor="None" VerticalAlignment="Center" Grid.Row="16" Grid.Column="0" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Remove Requester Song: " Cursor="None" VerticalAlignment="Center" Grid.Row="15" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="removeReqSongCommand"  FontSize="12" Grid.Column="1" Grid.Row="15" Text="{Binding Path=requestSystem.removeSongComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="removeReqSongLevel" FontSize="12" Grid.Column="2" Grid.Row="15" SelectedIndex="{Binding requestSystem.removeSongComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem>Everyone</ComboBoxItem>
-                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
-                                    <ComboBoxItem>Streamer</ComboBoxItem>
-                                </ComboBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="addDonationCommand" FontSize="14" Grid.Column="0" Text="{Binding Path=requestSystem.adddonatorComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="addDonationLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.adddonatorComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem Content="Everyone"/>
+                                                <ComboBoxItem Content="Subs, Mods, Streamer"/>
+                                                <ComboBoxItem Content="Mods, Streamer"/>
+                                                <ComboBoxItem Content="Streamer"/>
+                                            </ComboBox>
+                                        </Grid>
+                                        <TextBlock Margin="0 10 0 0" FontSize="14" Text="Song Position" Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="17" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Add Donator Song: " Cursor="None" VerticalAlignment="Center" Grid.Row="16" Grid.Column="0" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="addDonationCommand" FontSize="12" Grid.Column="1" Grid.Row="16" Text="{Binding Path=requestSystem.adddonatorComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="addDonationLevel" FontSize="12" Grid.Column="2" Grid.Row="16" SelectedIndex="{Binding requestSystem.adddonatorComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem Content="Everyone"/>
-                                    <ComboBoxItem Content="Subs, Mods, Streamer"/>
-                                    <ComboBoxItem Content="Mods, Streamer"/>
-                                    <ComboBoxItem Content="Streamer"/>
-                                </ComboBox>
-
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Song Position: " Cursor="None" VerticalAlignment="Center" Grid.Column="0" Grid.Row="17" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="songPositionName" FontSize="12" Grid.Column="1" Grid.Row="17" Text="{Binding Path=requestSystem.songPositionComm.input, Converter={StaticResource ListToStringConverter}}" />
-                                <ComboBox x:Name="songPositionLevel" FontSize="12" Grid.Column="2" Grid.Row="17" SelectedIndex="{Binding requestSystem.songPositionComm.level, UpdateSourceTrigger=PropertyChanged}" >
-                                    <ComboBoxItem Content="Everyone"/>
-                                    <ComboBoxItem Content="Subs, Mods, Streamer"/>
-                                    <ComboBoxItem Content="Mods, Streamer"/>
-                                    <ComboBoxItem Content="Streamer"/>
-                                </ComboBox>
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO5" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="50" Grid.ColumnSpan="4"  />
-
-                            </Grid>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="songPositionName" Grid.Column="0" FontSize="14" Text="{Binding Path=requestSystem.songPositionComm.input, Converter={StaticResource ListToStringConverter}}" />
+                                            <ComboBox x:Name="songPositionLevel" FontSize="14" Grid.Column="1" SelectedIndex="{Binding requestSystem.songPositionComm.level, UpdateSourceTrigger=PropertyChanged}" >
+                                                <ComboBoxItem Content="Everyone"/>
+                                                <ComboBoxItem Content="Subs, Mods, Streamer"/>
+                                                <ComboBoxItem Content="Mods, Streamer"/>
+                                                <ComboBoxItem Content="Streamer"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Button Margin="10 10 10 10" FontSize="14" Style="{DynamicResource SquareButtonStyle}" x:Name="GO5" Content="Apply" Click="writeToConfig" />
+                            </StackPanel>
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem Header="Custom" FontSize="12">
+                    <TabItem Header="Custom" FontSize="14">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="40*"/>
-                                    <ColumnDefinition Width="10*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Startup Message: " Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="startupMessage" FontSize="12" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Text="{Binding startupMessage, UpdateSourceTrigger=PropertyChanged}" />
+                            <Border Padding="10 0 10 0">
+                                <StackPanel>
+                                    <TextBlock FontSize="14" Text="Startup Message" VerticalAlignment="Center"/>
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Minigame End: " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="minigameEndMessage" FontSize="12" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding minigameEndMessage, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="startupMessage" FontSize="14" Text="{Binding startupMessage, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Sub only requests: " Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="subOnlyRequests" FontSize="12" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="2" Text="{Binding subOnlyRequests, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Margin="0 10 0 0" FontSize="14" Text="Minigame End" VerticalAlignment="Center"/>
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="minigameEndMessage" FontSize="14" Text="{Binding minigameEndMessage, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <TextBlock HorizontalAlignment="Right" FontSize="12" Text="Closing Message: " Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" />
-                                <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="endMessage" FontSize="12" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding endMessage, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Margin="0 10 0 0" FontSize="14" Text="Sub only requests" VerticalAlignment="Center" />
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="subOnlyRequests" FontSize="14" Text="{Binding subOnlyRequests, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="reloadFollowersButton" Content="Reload all follower data" Click="reloadFollowersButton_Click" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4"  />
+                                    <TextBlock Margin="0 10 0 0" FontSize="14" Text="Closing Message" VerticalAlignment="Center" />
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="endMessage" FontSize="14" Text="{Binding endMessage, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <Button FontSize="12" Style="{DynamicResource SquareButtonStyle}" x:Name="GO3" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4"  />
-                            </Grid>
+                                    <Button Margin="0 10 0 0" FontSize="14" Style="{DynamicResource SquareButtonStyle}" x:Name="reloadFollowersButton" Content="Reload all follower data" Click="reloadFollowersButton_Click" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4"  />
+                                    <Button Margin="0 10 0 0" FontSize="14" Style="{DynamicResource SquareButtonStyle}" x:Name="giveAllFollowersFollowPayout" Content="Give all followers the follower payout that missed it in the past" Click="giveAllFollowersFollowPayout_Click" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4"  />
+                                    <Button Margin="0 10 0 0" FontSize="14" Style="{DynamicResource SquareButtonStyle}" x:Name="GO3" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4"  />
+
+                                </StackPanel>
+                            </Border>
                         </ScrollViewer>
                     </TabItem>
 
@@ -630,6 +685,73 @@
                     </TabItem>
 
                 </TabControl>
+            </TabItem>
+
+            <TabItem Header="Supporters" FontSize="12">
+                <DataGrid x:Name="subsdatagrid" GridLinesVisibility="All" ItemsSource="{Binding supporters, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CanUserSortColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn x:Name="subsUserName" Header="User Name" Width=".25*" ToolTipService.ToolTip="Sort by Username">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <EventSetter Event="Click" Handler="sortSubsByUserName" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding username}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn x:Name="subsIsSubbed" Header="Subbed" Width=".25*" ToolTipService.ToolTip="Sort by Subbed">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <EventSetter Event="Click" Handler="sortSubsBySubbed" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding sub}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn x:Name="subsMonths" Header="Months" Width=".25*" ToolTipService.ToolTip="Sort by Months">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <EventSetter Event="Click" Handler="sortSubsByMonths" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding months}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn x:Name="subsMoneyDonated" Header="Money Donated" Width=".25*" ToolTipService.ToolTip="Sort by Money">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <EventSetter Event="Click" Handler="sortSubsByMoney" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding moneyDonated}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn x:Name="subsBitsDonated" Header="Bits Donated" Width=".25*" ToolTipService.ToolTip="Sort by Bits">
+                            <DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <EventSetter Event="Click" Handler="sortSubsByBits" />
+                                </Style>
+                            </DataGridTemplateColumn.HeaderStyle>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding bitsDonated}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
 
             <TabItem FontSize="12" Header="Music">
@@ -985,21 +1107,32 @@
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="10*"/>
-                                    <ColumnDefinition Width="8*"/>
-                                    <ColumnDefinition Width="15*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="10*"/>
                                 </Grid.ColumnDefinitions>
-                                <Controls:NumericUpDown x:Name="volumeSetter" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="3" Grid.Row="1" Value="100"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addSFX" Grid.Column="5" />
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeSFX" Grid.Column="6" />
-                                <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Cost for command" Minimum = "0" Maximum = "100000000" Interval = "1" x:Name="editSFXcost" Value="0" Grid.Column="4" />
 
                                 <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="!sfxCommandName" TextWrapping="Wrap" x:Name="editCommandSFX" Text="" Grid.Column="0"/>
                                 <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="SFX file path goes here after uploading" TextWrapping="Wrap" x:Name="editResponseSFX" IsEnabled="False" HorizontalScrollBarVisibility="Auto" Grid.Column="2" />
                                 <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Upload SFX" Click="uploadSFX" Grid.Column="1" />
+                                
+                                <Controls:NumericUpDown x:Name="volumeSetter" Minimum = "0" Maximum = "100" Interval = "1" Grid.Column="3" Grid.Row="1" Value="100"/>
+                                <ComboBox x:Name="editSFXCommandLevel" Grid.Column="5" Grid.Row="0" >
+                                    <ComboBoxItem>Everyone</ComboBoxItem>
+                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                    <ComboBoxItem>Streamer</ComboBoxItem>
+                                </ComboBox>
+                                
+                                <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addSFX" Grid.Column="6" />
+                                <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeSFX" Grid.Column="7" />
+                                <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Cost for command" Minimum = "0" Maximum = "100000000" Interval = "1" x:Name="editSFXcost" Value="0" Grid.Column="4" />
+
+                                
                             </Grid>
                             <Grid Grid.Row="2">
                                 <DataGrid x:Name="SFXdatagrid" GridLinesVisibility="All" ItemsSource="{Binding sfxCommandList, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" >
@@ -1011,7 +1144,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn x:Name="SFXResponse" Header="SFX" Width=".7*">
+                                        <DataGridTemplateColumn x:Name="SFXResponse" Header="SFX" Width=".55*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
@@ -1029,6 +1162,13 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock TextWrapping="Wrap" Text="{Binding costToUse}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn x:Name="sfxLevel" Header="Level" Width=".15*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding level}" ToolTipService.ToolTip="Click to edit SFX." MouseLeftButtonDown="editSFXButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1093,16 +1233,23 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="15*"/>
                                     <ColumnDefinition Width="15*"/>
-                                    <ColumnDefinition Width="40*"/>
+                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="15*"/>
                                     <ColumnDefinition Width="15*"/>
                                     <ColumnDefinition Width="15*"/>
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addImage" Grid.Column="4" />
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeImage" Grid.Column="5" />
+                                <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addImage" Grid.Column="5" />
+                                <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeImage" Grid.Column="6" />
                                 <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="!imageCommandName" TextWrapping="Wrap" x:Name="editCommandImage" Text="" Grid.Column="0"/>
                                 <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Image file path goes here after uploading" TextWrapping="Wrap" x:Name="editResponseImage" IsEnabled="False" HorizontalScrollBarVisibility="Auto" Grid.Column="2" />
                                 <Controls:NumericUpDown Controls:TextBoxHelper.Watermark="Cost for command" Minimum = "0" Maximum = "100000000" Interval = "1" x:Name="editImagecost" Value="0" Grid.Column="3" />
+                                <ComboBox x:Name="editImageCommandLevel" Grid.Column="4" Grid.Row="0" >
+                                    <ComboBoxItem>Everyone</ComboBoxItem>
+                                    <ComboBoxItem>Subs, Mods, Streamer</ComboBoxItem>
+                                    <ComboBoxItem>Mods, Streamer</ComboBoxItem>
+                                    <ComboBoxItem>Streamer</ComboBoxItem>
+                                </ComboBox>
 
                                 <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Upload Image" Click="uploadImage" Grid.Column="1" />
                             </Grid>
@@ -1116,7 +1263,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn x:Name="imageResponse" Header="Image" Width=".55*">
+                                        <DataGridTemplateColumn x:Name="imageResponse" Header="Image" Width=".40*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock TextWrapping="Wrap" Text="{Binding output}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="editImageButtonClick" />
@@ -1127,6 +1274,13 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock TextWrapping="Wrap" Text="{Binding costToUse}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="editImageButtonClick" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn x:Name="imageLevel" Header="Level" Width=".15*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock TextWrapping="Wrap" Text="{Binding level}" ToolTipService.ToolTip="Click to edit image." MouseLeftButtonDown="editImageButtonClick" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -1617,6 +1771,15 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*"/>
@@ -1630,9 +1793,8 @@
                         <TextBlock  VerticalAlignment="Center" TextWrapping="Wrap" FontSize="12" Grid.Row="2" Grid.Column="0" Text="Game Payout (Leave at 0 to payout winning guess amount): " HorizontalAlignment="Right"/>
                         <Controls:NumericUpDown x:Name="guessingGamePayout" Minimum = "0" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Value="{Binding guessingGamePayout, UpdateSourceTrigger=PropertyChanged}"/>
 
-
                         <TextBlock VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Text="Adventure Game: " Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right"/>
-                        <CheckBox x:Name="adventureToggle" FontSize="12" Checked="adventure_changed" Unchecked="adventure_changed" Grid.Row="3" Grid.Column="1" IsChecked="{Binding minigameTimer, UpdateSourceTrigger=PropertyChanged}"/>
+                        <CheckBox x:Name="adventureToggle" FontSize="12" Checked="adventure_changed" Unchecked="adventure_changed" Grid.Row="3" Grid.Column="1" IsChecked="{Binding adventureToggle, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="4" Text="Cool Down Time (minutes): " HorizontalAlignment="Right"/>
                         <Controls:NumericUpDown x:Name="adventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureCoolDown, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="5" Text="User Join Time (seconds): " HorizontalAlignment="Right"/>
@@ -1642,9 +1804,24 @@
                         <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="7" Text="Maximum Reward: " HorizontalAlignment="Right" />
                         <Controls:NumericUpDown x:Name="adventuremaxreward" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMax, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        
-                        <Button Style="{DynamicResource SquareButtonStyle}" x:Name="GO1_Copy" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Grid.RowSpan="2"/>
+                        <TextBlock VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Text="Custom Game: " Grid.Row="8" Grid.Column="0" HorizontalAlignment="Right"/>
+                        <CheckBox x:Name="customGameAdventure" FontSize="12" Grid.Row="8" Grid.Column="1" IsChecked="{Binding customGameAdventure, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Grid.Row="9" Text="Game Command: " Grid.Column="0" />
+                        <TextBox x:Name="customGameCommand" Controls:TextBoxHelper.ClearTextButton="True" Grid.Row="9" Grid.Column="1" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameCommand, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Grid.Row="10" Text="Start By Mod Only: " Grid.Column="0" />
+                        <CheckBox x:Name="customGameStartByModOnly" FontSize="12" Grid.Row="10" Grid.Column="1" IsChecked="{Binding textAdventure.customGameStartByModOnly, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="11" Text="Cool Down Time (minutes): " HorizontalAlignment="Right"/>
+                        <Controls:NumericUpDown x:Name="customadventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="1" Grid.Row="11" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurecooldowntime, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="12" Text="User Join Time (seconds): " HorizontalAlignment="Right"/>
+                        <Controls:NumericUpDown x:Name="customadventurejointime" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="12" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurejointime, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock  VerticalAlignment="Center"  FontSize="12" Grid.Column="0" Grid.Row="13" Text="Cost To Join: " HorizontalAlignment="Right"/>
+                        <Controls:NumericUpDown x:Name="customadventurejoincost" Minimum = "1" Maximum = "10000" Interval = "1" Grid.Column="1" Grid.Row="13" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurejoincost, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Grid.Row="14" Text="Game Start Message: " Grid.Column="0" />
+                        <TextBox x:Name="customGameStartMessage" Controls:TextBoxHelper.ClearTextButton="True" Grid.Row="14" Grid.Column="1" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameStartMessage, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock HorizontalAlignment="Right" FontSize="12" Grid.Row="15" Text="Game End Message: " Grid.Column="0" />
+                        <TextBox x:Name="customGameEndMessage" Controls:TextBoxHelper.ClearTextButton="True" Grid.Row="15" Grid.Column="1" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameEndMessage, UpdateSourceTrigger=PropertyChanged}" />
 
+                        <Button Style="{DynamicResource SquareButtonStyle}" x:Name="GO1_Copy" Content="Apply" Click="writeToConfig" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="118" Grid.RowSpan="2"/>
 
                     </Grid>
                 </ScrollViewer>

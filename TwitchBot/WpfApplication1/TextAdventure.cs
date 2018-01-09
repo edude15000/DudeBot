@@ -24,17 +24,25 @@ public class TextAdventure : INotifyPropertyChanged
     [JsonIgnore]
     public List<String> users { get; set; } = new List<String>();
     [JsonIgnore]
+    public List<String> usersCustom { get; set; } = new List<String>();
+    [JsonIgnore]
     public Dictionary<String, String[]> text { get; set; } = new Dictionary<String, String[]>();
     [JsonIgnore]
     public String choice { get; set; } = null;
     [JsonIgnore]
     public long startTimerInMS { get; set; } = 0;
     [JsonIgnore]
+    public long startTimerInMSCustom { get; set; } = 0;
+    [JsonIgnore]
     public Boolean allowUserAdds { get; set; } = true;
+    [JsonIgnore]
+    public Boolean allowUserAddsCustom { get; set; } = true;
     [JsonIgnore]
     public Boolean enoughPlayers { get; set; } = false;
     [JsonIgnore]
     public long lastAdventure = 0;
+    [JsonIgnore]
+    public long lastAdventureCustom = 0;
     [JsonIgnore]
     public long AdventureStartTime = 90;
     public long adventureStartTime
@@ -62,6 +70,62 @@ public class TextAdventure : INotifyPropertyChanged
     {
         get => AdventureCoolDown;
         set { SetField(ref AdventureCoolDown, value, nameof(adventureCoolDown)); }
+    }
+    [JsonIgnore]
+    public String CustomGameCommand = "!heist";
+    public String customGameCommand
+    {
+        get => CustomGameCommand;
+        set { SetField(ref CustomGameCommand, value, nameof(customGameCommand)); }
+    }
+    [JsonIgnore]
+    public Boolean CustomGameStartByModOnly = false;
+    public Boolean customGameStartByModOnly
+    {
+        get => CustomGameStartByModOnly;
+        set { SetField(ref CustomGameStartByModOnly, value, nameof(customGameStartByModOnly)); }
+    }
+    [JsonIgnore]
+    public int Customadventurejoincost = 50;
+    public int customadventurejoincost
+    {
+        get => Customadventurejoincost;
+        set { SetField(ref Customadventurejoincost, value, nameof(customadventurejoincost)); }
+    }
+    [JsonIgnore]
+    public int Customadventurecooldowntime = 20;
+    public int customadventurecooldowntime
+    {
+        get => Customadventurecooldowntime;
+        set { SetField(ref Customadventurecooldowntime, value, nameof(customadventurecooldowntime)); }
+    }
+    [JsonIgnore]
+    public int Customadventurejointime = 90;
+    public int customadventurejointime
+    {
+        get => Customadventurejointime;
+        set { SetField(ref Customadventurejointime, value, nameof(customadventurejointime)); }
+    }
+    [JsonIgnore]
+    public String CustomGameStartMessage = "$user has initiated a bank heist! Type '!heist' to join! It costs $cost";
+    public String customGameStartMessage
+    {
+        get => CustomGameStartMessage;
+        set { SetField(ref CustomGameStartMessage, value, nameof(customGameStartMessage)); }
+    }
+    [JsonIgnore]
+    public String CustomGameEndMessage = "$user manages to be the only one to make it out alive and runs away with $amount!";
+    public String customGameEndMessage
+    {
+        get => CustomGameEndMessage;
+        set { SetField(ref CustomGameEndMessage, value, nameof(customGameEndMessage)); }
+    }
+
+    public void startAdventuringCustom(List<String> users, int startTimerInMS)
+    {
+        allowUserAddsCustom = true;
+        usersCustom = users;
+        startTimerInMSCustom = startTimerInMS;
     }
 
     public void startAdventuring(List<String> users, int startTimerInMS)
@@ -151,6 +215,23 @@ public class TextAdventure : INotifyPropertyChanged
         allowUserAdds = false;
     }
 
+    public void startCustom(String user)
+    {
+        allowUserAddsCustom = true;
+        usersCustom.Clear();
+        addUserCustom(user);
+        try
+        {
+            Thread.Sleep((int)startTimerInMSCustom);
+        }
+        catch (Exception e)
+        {
+            Utils.errorReport(e);
+            Debug.WriteLine(e.ToString());
+        }
+        allowUserAddsCustom = false;
+    }
+
     public int addUser(String user)
     {
         foreach (String s in users)
@@ -163,6 +244,26 @@ public class TextAdventure : INotifyPropertyChanged
         if (allowUserAdds)
         {
             users.Add(user);
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public int addUserCustom(String user)
+    {
+        foreach (String s in users)
+        {
+            if (s.Equals(user, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return -1;
+            }
+        }
+        if (allowUserAdds)
+        {
+            usersCustom.Add(user);
             return 1;
         }
         else
@@ -199,6 +300,11 @@ public class TextAdventure : INotifyPropertyChanged
             users.Remove(userToRemove);
         }
         return listToReturn;
+    }
+
+    public String selectWinnerCustom()
+    {
+        return usersCustom[new Random().Next(usersCustom.Count - 1)]; ;
     }
 
     public String winningMessage(List<String> winners)

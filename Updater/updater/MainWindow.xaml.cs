@@ -173,11 +173,16 @@ namespace updater
                 File.Delete(dudebotdirectory + "README.txt");
             }
             File.Copy(Path.GetTempPath() + @"DudeBot\README.txt", dudebotdirectory + "README.txt");
-            if (File.Exists(dudebotdirectory + @"bin\dudebotupdater.exe"))
+            if (File.Exists(dudebotdirectory + @"bin\en_US.aff"))
             {
-                File.Delete(dudebotdirectory + @"bin\dudebotupdater.exe");
+                File.Delete(dudebotdirectory + @"bin\en_US.aff");
             }
-            File.Copy(Path.GetTempPath() + @"DudeBot\bin\dudebotupdater.exe", dudebotdirectory + @"bin\dudebotupdater.exe");
+            File.Copy(Path.GetTempPath() + @"DudeBot\bin\dudebotupdater.exe", dudebotdirectory + @"bin\en_US.aff");
+            if (File.Exists(dudebotdirectory + @"bin\en_US.dic"))
+            {
+                File.Delete(dudebotdirectory + @"bin\en_US.dic");
+            }
+            File.Copy(Path.GetTempPath() + @"DudeBot\bin\dudebotupdater.exe", dudebotdirectory + @"bin\en_US.dic");
             // TODO : Add new files as needed
         }
 

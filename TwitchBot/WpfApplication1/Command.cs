@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
+using WMPLib;
 using WpfApplication1;
 
 public class Command 
 {
     public String output { get; set; }
     public String commandType { get; set; }
-    public int level { get; set; }
+    public int level { get; set; } = 0;
     public String[] input { get; set; }
     public Boolean toggle { get; set; }
     public int volumeLevel { get; set; } = 100;
@@ -30,9 +32,10 @@ public class Command
     {
         try
         {
-            MainWindow.bot.myplayer.URL = output;
-            MainWindow.bot.myplayer.settings.volume = volumeLevel;
-            MainWindow.bot.myplayer.controls.play();
+            WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
+            myplayer.URL = output;
+            myplayer.settings.volume = volumeLevel;
+            myplayer.controls.play();
         }
         catch (Exception e)
         {

@@ -1,0 +1,17 @@
+01/09/2018 00:19:02 - DudeBot 3.0.0 Error : System.NotSupportedException: This type of CollectionView does not support changes to its SourceCollection from a thread different from the Dispatcher thread.
+   at System.Windows.Data.CollectionView.OnCollectionChanged(Object sender, NotifyCollectionChangedEventArgs args)
+   at System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+   at System.Collections.ObjectModel.ObservableCollection`1.ClearItems()
+   at TwitchBot.copyToSupporters() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 105901/09/2018 00:19:12 - DudeBot 3.0.0 Error : System.NotSupportedException: This type of CollectionView does not support changes to its SourceCollection from a thread different from the Dispatcher thread.
+   at System.Windows.Data.CollectionView.OnCollectionChanged(Object sender, NotifyCollectionChangedEventArgs args)
+   at System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+   at System.Collections.ObjectModel.ObservableCollection`1.ClearItems()
+   at TwitchBot.copyToSupporters() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 105901/09/2018 00:19:22 - DudeBot 3.0.0 Error : System.NotSupportedException: This type of CollectionView does not support changes to its SourceCollection from a thread different from the Dispatcher thread.
+   at System.Windows.Data.CollectionView.OnCollectionChanged(Object sender, NotifyCollectionChangedEventArgs args)
+   at System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+   at System.Collections.ObjectModel.ObservableCollection`1.ClearItems()
+   at TwitchBot.copyToSupporters() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 105901/09/2018 00:19:32 - DudeBot 3.0.0 Error : System.NotSupportedException: This type of CollectionView does not support changes to its SourceCollection from a thread different from the Dispatcher thread.
+   at System.Windows.Data.CollectionView.OnCollectionChanged(Object sender, NotifyCollectionChangedEventArgs args)
+   at System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+   at System.Collections.ObjectModel.ObservableCollection`1.ClearItems()
+   at TwitchBot.copyToSupporters() in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 1059

@@ -117,3 +117,7 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\WpfApplication
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\DudeBot.exe
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\DudeBot.pdb
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\WpfApplication1.csprojResolveAssemblyReference.cache
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Hunspellx64.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Hunspellx86.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\NHunspell.dll
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\NHunspell.pdb

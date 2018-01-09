@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using TwitchLib.Services;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.PubSub;
-using WMPLib;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TwitchLib.Interfaces;
@@ -44,8 +43,7 @@ public class TwitchBot : INotifyPropertyChanged
         return new List<String>(result);
         // Add TO AS NEEDED
     }
-    [JsonIgnore]
-    public WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
+
     [JsonIgnore]
     public TwitchClient client;
     [JsonIgnore]
@@ -229,18 +227,43 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref AdventureToggle, value, nameof(adventureToggle)); }
     }
     [JsonIgnore]
+    public Boolean CustomGameAdventure = true;
+    public Boolean customGameAdventure
+    {
+        get => CustomGameAdventure;
+        set { SetField(ref CustomGameAdventure, value, nameof(customGameAdventure)); }
+    }
+    [JsonIgnore]
     public Boolean StartAdventure = false;
+    [JsonIgnore]
     public Boolean startAdventure
     {
         get => StartAdventure;
         set { SetField(ref StartAdventure, value, nameof(startAdventure)); }
     }
     [JsonIgnore]
+    public Boolean StartAdventureCustom = false;
+    [JsonIgnore]
+    public Boolean startAdventureCustom
+    {
+        get => StartAdventureCustom;
+        set { SetField(ref StartAdventureCustom, value, nameof(startAdventureCustom)); }
+    }
+    [JsonIgnore]
     public Boolean WaitForAdventureCoolDown = false;
+    [JsonIgnore]
     public Boolean waitForAdventureCoolDown
     {
         get => WaitForAdventureCoolDown;
         set { SetField(ref WaitForAdventureCoolDown, value, nameof(waitForAdventureCoolDown)); }
+    }
+    [JsonIgnore]
+    public Boolean WaitForAdventureCoolDownCustom = false;
+    [JsonIgnore]
+    public Boolean waitForAdventureCoolDownCustom
+    {
+        get => WaitForAdventureCoolDownCustom;
+        set { SetField(ref WaitForAdventureCoolDownCustom, value, nameof(waitForAdventureCoolDownCustom)); }
     }
     [JsonIgnore]
     public Boolean RaffleInProgress = false;
@@ -384,6 +407,14 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref Users, value, nameof(users)); }
     }
     [JsonIgnore]
+    public List<BotUser> Supporters = new List<BotUser>();
+    [JsonIgnore]
+    public List<BotUser> supporters
+    {
+        get => Supporters;
+        set { SetField(ref Supporters, value, nameof(supporters)); }
+    }
+    [JsonIgnore]
     public List<String> RaffleUsers = new List<String>();
     public List<String> raffleUsers
     {
@@ -470,7 +501,7 @@ public class TwitchBot : INotifyPropertyChanged
     {
         try
         {
-            channel = streamer; 
+            channel = streamer;
             credentials = new ConnectionCredentials(botName, oauth);
             client = new TwitchClient(credentials, channel);
             api = new TwitchAPI(Utils.twitchClientID);
@@ -505,6 +536,7 @@ public class TwitchBot : INotifyPropertyChanged
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
             writeToEventLog("DudeBot Version: " + Utils.version + "\nRelease Date: " + Utils.releaseDate);
             textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
+            textAdventure.startAdventuringCustom(new List<String>(), textAdventure.customadventurejointime * 1000);
             resetAllCommands();
             threads();
             cleverbotSession = await CleverbotSession.NewSessionAsync(Utils.cleverbotIOuser, Utils.cleverbotIOkey);
@@ -538,7 +570,7 @@ public class TwitchBot : INotifyPropertyChanged
     public void writeToEventLog(String str)
     {
         eventlog += Utils.getTime() + "---\n" + str + "\n\n";
-        
+
     }
 
     private void onBeingHosted(object sender, OnBeingHostedArgs e)
@@ -719,7 +751,7 @@ public class TwitchBot : INotifyPropertyChanged
         String noEmoteMessage = e.ChatMessage.EmoteReplacedMessage; // TODO : FIX
         processMessage(s, message, noEmoteMessage);
     }
-    
+
     public void botDisconnect()
     {
         client.Disconnect();
@@ -879,7 +911,7 @@ public class TwitchBot : INotifyPropertyChanged
             }
         }
     }
-    
+
     public void saveThread()
     {
         while (true)
@@ -901,6 +933,30 @@ public class TwitchBot : INotifyPropertyChanged
             {
             }
         }
+    }
+
+    public void customAdventureThread(String sender)
+    {
+        textAdventure.startCustom(sender);
+        String winner = textAdventure.selectWinnerCustom();
+        String winMessage = textAdventure.customGameEndMessage;
+        if (winMessage.Contains("$user"))
+        {
+            winMessage = winMessage.Replace("$user", winner);
+        }
+        int winningAmount = (textAdventure.usersCustom.Count * textAdventure.customadventurejoincost);
+        if (winMessage.Contains("$amount"))
+        {
+            winMessage = winMessage.Replace("$amount", winningAmount.ToString());
+        }
+        client.SendMessage(winMessage);
+        if (currency.toggle)
+        {
+            client.SendMessage(currency.bonus(winner, winningAmount));
+        }
+        startAdventureCustom = false;
+        textAdventure.lastAdventureCustom = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        waitForAdventureCoolDownCustom = true;
     }
 
     public void adventureThread(String sender)
@@ -952,14 +1008,9 @@ public class TwitchBot : INotifyPropertyChanged
         waitForAdventureCoolDown = true;
     }
 
-    public void sfxThread(String message, String sender)
-    {
-        soundEffect.sfxCOMMANDS(message, channel, getBotUser(sender), sfxCommandList);
-    }
-
     public void imageThread(String message, String sender)
     {
-        image.imageCOMMANDS(message, channel, getBotUser(sender), imageCommandList);
+        image.imageCOMMANDS(message, channel, getBotUser(sender), imageCommandList, this);
     }
 
     public void rouletteThread(String sender)
@@ -1000,11 +1051,15 @@ public class TwitchBot : INotifyPropertyChanged
     { // Resets all bot startup data
         gameStartTime = 0;
         waitForAdventureCoolDown = false;
+        waitForAdventureCoolDownCustom = false;
         minigameTriggered = false;
         startAdventure = false;
+        StartAdventureCustom = false;
         textAdventure.allowUserAdds = true;
         textAdventure.enoughPlayers = false;
+        textAdventure.allowUserAddsCustom = true;
         textAdventure.startTimerInMS = 0;
+        textAdventure.startTimerInMSCustom = 0;
         image.imageStartTime = (long)0;
         image.userCoolDowns.Clear();
         soundEffect.SFXstartTime = 0;
@@ -1083,8 +1138,7 @@ public class TwitchBot : INotifyPropertyChanged
         {
             if (temp.StartsWith(sfxCommandList[i].input[0]))
             {
-                var t = new Thread(() => sfxThread(message, sender));
-                t.Start();
+                soundEffect.sfxCOMMANDS(message, channel, getBotUser(sender), sfxCommandList, this);
             }
         }
 
@@ -2336,6 +2390,93 @@ public class TwitchBot : INotifyPropertyChanged
                 }
             }
         }
+        if (message.Equals(textAdventure.customGameCommand, StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (customGameAdventure)
+            {
+                if (waitForAdventureCoolDownCustom)
+                {
+                    if (textAdventure.lastAdventureCustom + (textAdventure.customadventurecooldowntime * 60000) <= DateTimeOffset.Now.ToUnixTimeMilliseconds())
+                    {
+                        waitForAdventureCoolDownCustom = false;
+                    }
+                    else
+                    {
+                        double timeLeft = Math.Abs(Math.Ceiling((Double)((DateTimeOffset.Now.ToUnixTimeMilliseconds()
+                                - (textAdventure.lastAdventureCustom + (textAdventure.customadventurecooldowntime * 60000)))
+                                / 60000)));
+                        if (timeLeft == 0.0)
+                        {
+                            timeLeft = 1.0;
+                        }
+                        if (timeLeft == 1.0)
+                        {
+                            client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
+                            + timeLeft + " minute, " + sender + "!");
+                        }
+                        else
+                        {
+                            client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
+                            + timeLeft + " minutes, " + sender + "!");
+                        }
+                        return;
+                    }
+                }
+                if (!waitForAdventureCoolDownCustom)
+                {
+                    if (!startAdventureCustom)
+                    {
+                        if (textAdventure.customGameStartByModOnly && !(Utils.checkIfUserIsOP(sender, channel, streamer, users) || sender.Equals(Utils.botMaker)
+                            || sender.Equals(streamer)))
+                        {
+                            return;
+                        }
+                        startAdventureCustom = true;
+                        String startMessage = textAdventure.customGameStartMessage;
+                        if (startMessage.Contains("$user"))
+                        {
+                            startMessage.Replace("$user", sender);
+                        }
+                        if (startMessage.Contains("$cost"))
+                        {
+                            startMessage.Replace("$cost", textAdventure.customadventurejoincost.ToString());
+                        }
+                        client.SendMessage(startMessage);
+                        var t = new Thread(() => customAdventureThread(sender));
+                        t.Start();
+                        return;
+                    }
+                    if (startAdventureCustom)
+                    {
+                        try
+                        {
+                            BotUser b = getBotUser(sender);
+                            if (b != null && b.points < textAdventure.customadventurejoincost)
+                            {
+                                client.SendMessage("You need " + textAdventure.customadventurejoincost + " " + currency.currencyName + " to join the game, " + sender + "!");
+                                return;
+                            }
+                            int choice = (textAdventure.addUserCustom(sender));
+                            if (choice == 0)
+                            {
+                                client.SendMessage("Please try again in a little bit, " + sender + "!");
+                                startAdventureCustom = false;
+                            }
+                            else if (choice == 1)
+                            {
+                                b.points -= textAdventure.customadventurejoincost;
+                            }
+                        }
+                        catch (Exception e1)
+                        {
+                            Utils.errorReport(e1);
+                            Console.WriteLine(e1.ToString());
+                        }
+                    }
+                    return;
+                }
+            }
+        }
         // Change Bot Color
         if (message.Trim().StartsWith("!botcolor ") || message.Trim().StartsWith("!colorbot "))
         {
@@ -3240,6 +3381,7 @@ public class TwitchBot : INotifyPropertyChanged
         {
             String num = File.ReadAllText(Utils.accuracyFile);
             response = response.Replace("$accuracy", num);
+            response = response.Replace("%", "");
         }
         return response;
     }
