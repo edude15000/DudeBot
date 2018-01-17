@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TwitchLib.Events.Client;
 
 public class RequestSystem : INotifyPropertyChanged
 {
@@ -391,6 +392,69 @@ public class RequestSystem : INotifyPropertyChanged
         get => OpenCFLinkInsteadOfYoutube;
         set { SetField(ref OpenCFLinkInsteadOfYoutube, value, nameof(openCFLinkInsteadOfYoutube)); }
     }
+    [JsonIgnore]
+    public Boolean CustomSetlistEnabled = false;
+    public Boolean customSetlistEnabled
+    {
+        get => CustomSetlistEnabled;
+        set { SetField(ref CustomSetlistEnabled, value, nameof(customSetlistEnabled)); }
+    }
+    [JsonIgnore]
+    public String GoogleSheetSetlistId = "";
+    public String googleSheetSetlistId
+    {
+        get => GoogleSheetSetlistId;
+        set { SetField(ref GoogleSheetSetlistId, value, nameof(googleSheetSetlistId)); }
+    }
+    [JsonIgnore]
+    public Boolean CheckBothColumnsForSetlist = false;
+    public Boolean checkBothColumnsForSetlist
+    {
+        get => CheckBothColumnsForSetlist;
+        set { SetField(ref CheckBothColumnsForSetlist, value, nameof(checkBothColumnsForSetlist)); }
+    }
+    [JsonIgnore]
+    public Boolean AutoPromoteToVipOnSub = false;
+    public Boolean autoPromoteToVipOnSub
+    {
+        get => AutoPromoteToVipOnSub;
+        set { SetField(ref AutoPromoteToVipOnSub, value, nameof(autoPromoteToVipOnSub)); }
+    }
+    [JsonIgnore]
+    public Boolean AutoPromoteToDonatorOnSub = false;
+    public Boolean autoPromoteToDonatorOnSub
+    {
+        get => AutoPromoteToDonatorOnSub;
+        set { SetField(ref AutoPromoteToDonatorOnSub, value, nameof(autoPromoteToDonatorOnSub)); }
+    }
+    [JsonIgnore]
+    public Boolean AutoPromoteToVipOnBitDonation = false;
+    public Boolean autoPromoteToVipOnBitDonation
+    {
+        get => AutoPromoteToVipOnBitDonation;
+        set { SetField(ref AutoPromoteToVipOnBitDonation, value, nameof(autoPromoteToVipOnBitDonation)); }
+    }
+    [JsonIgnore]
+    public Boolean AutoPromoteToDonatorOnBitDonation = false;
+    public Boolean autoPromoteToDonatorOnBitDonation
+    {
+        get => AutoPromoteToDonatorOnBitDonation;
+        set { SetField(ref AutoPromoteToDonatorOnBitDonation, value, nameof(autoPromoteToDonatorOnBitDonation)); }
+    }
+    [JsonIgnore]
+    public int AutoPromoteToDonatorOnBitDonationMinimum = 1;
+    public int autoPromoteToDonatorOnBitDonationMinimum
+    {
+        get => AutoPromoteToDonatorOnBitDonationMinimum;
+        set { SetField(ref AutoPromoteToDonatorOnBitDonationMinimum, value, nameof(autoPromoteToDonatorOnBitDonationMinimum)); }
+    }
+    [JsonIgnore]
+    public int AutoPromoteToVipOnBitDonationMinimum = 1;
+    public int autoPromoteToVipOnBitDonationMinimum
+    {
+        get => AutoPromoteToVipOnBitDonationMinimum;
+        set { SetField(ref AutoPromoteToVipOnBitDonationMinimum, value, nameof(autoPromoteToVipOnBitDonationMinimum)); }
+    }
     public String cfUserName = "";
     public String cfPassword = "";
     [JsonIgnore]
@@ -622,14 +686,16 @@ public class RequestSystem : INotifyPropertyChanged
             entry.failMessage = "Your requested song does not have dynamic difficulty";
             return false;
         }
-        foreach (String s in bannedKeywords)
-        {
-            if (entry.artist.Contains(s) || entry.title.Contains(s))
+        if (bannedKeywords != null && bannedKeywords.Length > 0) {
+            foreach (String s in bannedKeywords)
             {
-                entry = new CDLCEntry();
-                entry.failed = true;
-                entry.failMessage = "Your requested song contains '" + s + "' which is a banned keyword and may not be requested";
-                return false;
+                if (entry.artist.Contains(s) || entry.title.Contains(s))
+                {
+                    entry = new CDLCEntry();
+                    entry.failed = true;
+                    entry.failMessage = "Your requested song contains '" + s + "' which is a banned keyword and may not be requested";
+                    return false;
+                }
             }
         }
         return true;
@@ -698,6 +764,69 @@ public class RequestSystem : INotifyPropertyChanged
             {
             }
         }
+        else if (customSetlistEnabled && googleSheetSetlistId != "")
+        {
+            List<String> setListSongs = new List<String>();
+            if (checkBothColumnsForSetlist)
+            {
+                setListSongs = bot.googleCustomSetlist.readColumnAandB(googleSheetSetlistId);
+            }
+            else
+            {
+                setListSongs = bot.googleCustomSetlist.readColumnA(googleSheetSetlistId);
+            }
+            if (setListSongs.Count > 0)
+            {
+                song = song.Replace("-", "");
+                song = Regex.Replace(song, @"\(.*?\)", "");
+                song = Regex.Replace(song, @"\s{2,}", " ");
+                song = Utils.replaceAcronyms(song);
+                // TODO : FIX noEmoteMessage
+                Boolean foundSong = false;
+                foreach (String str in setListSongs)
+                {
+                    String song2 = str.Replace("-", "");
+                    song2 = Regex.Replace(song2, @"\(.*?\)", "");
+                    song2 = Regex.Replace(song2, @"\s{2,}", " ");
+                    song2 = Utils.replaceAcronyms(song2);
+                    if (Utils.LevenshteinDistance(Utils.formatSongTitle(song2), Utils.formatSongTitle(song)) < 4)
+                    {
+                        foundSong = true;
+                        s.cfSongName = str;
+                        s.name = str;
+                        break;
+                    }
+                }
+                if (!foundSong)
+                {
+                    String newSong = Utils.autoCorrect(song);
+                    if (!song.Equals(newSong))
+                    {
+                        song = newSong;
+                        foreach (String str in setListSongs)
+                        {
+                            String song2 = str.Replace("-", "");
+                            song2 = Regex.Replace(song2, @"\(.*?\)", "");
+                            song2 = Regex.Replace(song2, @"\s{2,}", " ");
+                            song2 = Utils.replaceAcronyms(song2);
+                            if (Utils.LevenshteinDistance(Utils.formatSongTitle(song2), Utils.formatSongTitle(song)) < 4)
+                            {
+                                foundSong = true;
+                                s.cfSongName = str;
+                                s.name = str;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!foundSong)
+                {
+                    bot.client.SendMessage("You requested a song that does not exist in the streamer's setlist. Please check https://docs.google.com/spreadsheets/d/"
+                        + googleSheetSetlistId + " and try requesting again, " + requestedby + "!");
+                    return false;
+                }
+            }
+        }
         if (place < 0)
         {
             songList.Add(s);
@@ -762,9 +891,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void checkSongPositionCOMMAND(String message, String channel, String sender)
+    public void checkSongPositionCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, songPositionComm, channel))
+        if (bot.checkUserLevel(sender, songPositionComm.level, channel, e))
         {
             for (int i = 0; i < songPositionComm.input.Length; i++)
             {
@@ -797,10 +926,10 @@ public class RequestSystem : INotifyPropertyChanged
                         }
                         bot.client.SendMessage("Y" + response.ToLower().Substring(1) + sender + "!");
                     }
-                    catch (Exception e)
+                    catch (Exception e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
@@ -839,9 +968,9 @@ public class RequestSystem : INotifyPropertyChanged
         return songs;
     }
 
-    public void addDonatorCOMMAND(String message, String channel, String sender, String noEmoteMessage)
+    public void addDonatorCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, adddonatorComm, channel))
+        if (bot.checkUserLevel(sender, adddonatorComm.level, channel, e))
         {
             for (int i = 0; i < adddonatorComm.input.Length; i++)
             {
@@ -937,10 +1066,10 @@ public class RequestSystem : INotifyPropertyChanged
                             writeToCurrentSong(channel, false);
                         }
                     }
-                    catch (IOException e)
+                    catch (IOException e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
@@ -983,9 +1112,9 @@ public class RequestSystem : INotifyPropertyChanged
         writeToCurrentSong(bot.channel, true);
     }
 
-    public void removeMySong(String message, String channel, String sender)
+    public void removeMySong(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, removeSongComm, channel))
+        if (bot.checkUserLevel(sender, removeSongComm.level, channel, e))
         {
             for (int i = 0; i < removeSongComm.input.Length; i++)
             {
@@ -1022,9 +1151,9 @@ public class RequestSystem : INotifyPropertyChanged
         bot.client.SendMessage("You have no requests in the list, " + sender + "!");
     }
 
-    public void editMySongCOMMAND(String message, String channel, String sender, String noEmoteMessage)
+    public void editMySongCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, editSongComm, channel))
+        if (bot.checkUserLevel(sender, editSongComm.level, channel, e))
         {
             for (int i = 0; i < editSongComm.input.Length; i++)
             {
@@ -1047,13 +1176,13 @@ public class RequestSystem : INotifyPropertyChanged
                             }
                         }
                     }
-                    editRequesterSong(message, channel, sender, noEmoteMessage);
+                    editRequesterSong(message, channel, sender, noEmoteMessage, e);
                 }
             }
         }
     }
 
-    public void editRequesterSong(String message, String channel, String sender, String noEmoteMessage)
+    public void editRequesterSong(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
@@ -1066,7 +1195,7 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 if (i == 0)
                 {
-                    if (!Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users)
+                    if (!e.ChatMessage.IsModerator
                         && !sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) && !sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.client.SendMessage("Your song is currently playing. Please have a mod edit it, " + sender + "!");
@@ -1087,9 +1216,9 @@ public class RequestSystem : INotifyPropertyChanged
         bot.client.SendMessage("You have no requests in the list, " + sender + "!");
     }
 
-    public void chooseRandomFavorite(String message, String channel, String sender, String noEmoteMessage)
+    public void chooseRandomFavorite(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, favSongComm, channel))
+        if (bot.checkUserLevel(sender, favSongComm.level, channel, e))
         {
             for (int i = 0; i < favSongComm.input.Length; i++)
             {
@@ -1104,7 +1233,7 @@ public class RequestSystem : INotifyPropertyChanged
                                 Boolean check = true;
                                 if (!checkIfUserAlreadyHasSong(sender))
                                 {
-                                    if (mustFollowToRequest && !Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users) && !sender.Equals(Utils.botMaker))
+                                    if (mustFollowToRequest && !e.ChatMessage.IsModerator && !sender.Equals(Utils.botMaker) && !sender.Equals(bot.streamer))
                                     {
                                         bot.checkAtBeginningAsync(false);
                                         BotUser u = bot.getBotUser(sender);
@@ -1131,10 +1260,10 @@ public class RequestSystem : INotifyPropertyChanged
                                                 }
                                                 favSongsPlayedThisStream.Add(favSongs[index]);
                                             }
-                                            catch (IOException e)
+                                            catch (IOException e1)
                                             {
-                                                Utils.errorReport(e);
-                                                Debug.WriteLine(e.ToString());
+                                                Utils.errorReport(e1);
+                                                Debug.WriteLine(e1.ToString());
                                             }
                                         }
                                         else
@@ -1182,9 +1311,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void getNextSongCOMMAND(String message, String channel, String sender)
+    public void getNextSongCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, getNextComm, channel))
+        if (bot.checkUserLevel(sender, getNextComm.level, channel, e))
         {
             for (int i = 0; i < getNextComm.input.Length; i++)
             {
@@ -1194,10 +1323,10 @@ public class RequestSystem : INotifyPropertyChanged
                     {
                         bot.client.SendMessage(getNextSongTitle(channel));
                     }
-                    catch (Exception e)
+                    catch (Exception e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
@@ -1256,9 +1385,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void randomizerCommand(String message, String channel, String sender)
+    public void randomizerCommand(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, randomComm, channel))
+        if (bot.checkUserLevel(sender, randomComm.level, channel, e))
         {
             for (int i = 0; i < randomComm.input.Length; i++)
             {
@@ -1269,10 +1398,10 @@ public class RequestSystem : INotifyPropertyChanged
                         randomizer(channel);
                         writeToCurrentSong(channel, false);
                     }
-                    catch (Exception e)
+                    catch (Exception e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
@@ -1361,9 +1490,9 @@ public class RequestSystem : INotifyPropertyChanged
         songHistory.Insert(0, Utils.getDate() + " " + Utils.getTime() + " - " + lastSong);
     }
 
-    public void getCurrentSongCOMMAND(String message, String channel, String sender)
+    public void getCurrentSongCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, getCurrentComm, channel))
+        if (bot.checkUserLevel(sender, getCurrentComm.level, channel, e))
         {
             for (int i = 0; i < getCurrentComm.input.Length; i++)
             {
@@ -1373,19 +1502,19 @@ public class RequestSystem : INotifyPropertyChanged
                     {
                         bot.client.SendMessage("Playing: " + getCurrentSongTitle(channel));
                     }
-                    catch (Exception e)
+                    catch (Exception e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
         }
     }
 
-    public void triggerRequestsCOMMAND(String message, String channel, String sender)
+    public void triggerRequestsCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, triggerRequestsComm, channel))
+        if (bot.checkUserLevel(sender, triggerRequestsComm.level, channel, e))
         {
             for (int i = 0; i < triggerRequestsComm.input.Length; i++)
             {
@@ -1406,9 +1535,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void clearCOMMAND(String message, String channel, String sender)
+    public void clearCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, clearComm, channel))
+        if (bot.checkUserLevel(sender, clearComm.level, channel, e))
         {
             for (int i = 0; i < clearComm.input.Length; i++)
             {
@@ -1423,10 +1552,10 @@ public class RequestSystem : INotifyPropertyChanged
                         bot.client.SendMessage("Song list has been cleared!");
                         writeToCurrentSong(channel, false);
                     }
-                    catch (IOException e)
+                    catch (IOException e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
@@ -1444,9 +1573,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void nextCOMMAND(String message, String channel, String sender)
+    public void nextCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, nextComm, channel))
+        if (bot.checkUserLevel(sender, nextComm.level, channel, e))
         {
             for (int i = 0; i < nextComm.input.Length; i++)
             {
@@ -1465,10 +1594,10 @@ public class RequestSystem : INotifyPropertyChanged
                         }
                         writeToCurrentSong(channel, true);
                     }
-                    catch (Exception e)
+                    catch (Exception e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
@@ -1550,9 +1679,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void editCOMMAND(String message, String channel, String sender, String noEmoteMessage)
+    public void editCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, editComm, channel))
+        if (bot.checkUserLevel(sender, editComm.level, channel, e))
         {
             for (int i = 0; i < editComm.input.Length; i++)
             {
@@ -1571,19 +1700,19 @@ public class RequestSystem : INotifyPropertyChanged
                             writeToCurrentSong(channel, false);
                         }
                     }
-                    catch (IOException e)
+                    catch (IOException e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
         }
     }
 
-    public void addvipCOMMAND(String message, String channel, String sender, String noEmoteMessage)
+    public void addvipCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, addvipComm, channel))
+        if (bot.checkUserLevel(sender, addvipComm.level, channel, e))
         {
             for (int i = 0; i < addvipComm.input.Length; i++)
             {
@@ -1677,19 +1806,19 @@ public class RequestSystem : INotifyPropertyChanged
                             writeToCurrentSong(channel, false);
                         }
                     }
-                    catch (IOException e)
+                    catch (IOException e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
         }
     }
 
-    public void addtopCOMMAND(String message, String channel, String sender, String noEmoteMessage)
+    public void addtopCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, addtopComm, channel))
+        if (bot.checkUserLevel(sender, addtopComm.level, channel, e))
         {
             for (int i = 0; i < addtopComm.input.Length; i++)
             {
@@ -1785,19 +1914,19 @@ public class RequestSystem : INotifyPropertyChanged
                             writeToCurrentSong(channel, false);
                         }
                     }
-                    catch (IOException e)
+                    catch (IOException e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
         }
     }
 
-    public void getTotalSongCOMMAND(String message, String channel, String sender)
+    public void getTotalSongCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, getTotalComm, channel))
+        if (bot.checkUserLevel(sender, getTotalComm.level, channel, e))
         {
             for (int i = 0; i < getTotalComm.input.Length; i++)
             {
@@ -1809,19 +1938,19 @@ public class RequestSystem : INotifyPropertyChanged
                         bot.client.SendMessage("The total number of songs in the queue is: "
                                 + getNumberOfSongs());
                     }
-                    catch (IOException e)
+                    catch (IOException e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
         }
     }
 
-    public void songlistCOMMAND(String message, String channel, String sender)
+    public void songlistCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, songlistComm, channel))
+        if (bot.checkUserLevel(sender, songlistComm.level, channel, e))
         {
             for (int i = 0; i < songlistComm.input.Length; i++)
             {
@@ -1859,10 +1988,10 @@ public class RequestSystem : INotifyPropertyChanged
                                     + bot.spreadsheetId);
                         }
                     }
-                    catch (IOException e)
+                    catch (IOException e1)
                     {
-                        Utils.errorReport(e);
-                        Debug.WriteLine(e.ToString());
+                        Utils.errorReport(e1);
+                        Debug.WriteLine(e1.ToString());
                     }
                 }
             }
@@ -1895,9 +2024,9 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void requestCOMMAND(String message, String channel, String sender, String noEmoteMessage)
+    public void requestCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (bot.checkUserLevel(sender, requestComm, channel))
+        if (bot.checkUserLevel(sender, requestComm.level, channel, e))
         {
             for (int i = 0; i < requestComm.input.Length; i++)
             {
@@ -2003,7 +2132,7 @@ public class RequestSystem : INotifyPropertyChanged
                                     Boolean check = true;
                                     if (!checkIfUserAlreadyHasSong(sender))
                                     {
-                                        if (mustFollowToRequest && !Utils.checkIfUserIsOP(sender, channel, bot.streamer, bot.users) && !sender.Equals(Utils.botMaker))
+                                        if (mustFollowToRequest && !e.ChatMessage.IsModerator && !sender.Equals(Utils.botMaker))
                                         {
                                             bot.checkAtBeginningAsync(false);
                                             BotUser u = bot.getBotUser(sender);
@@ -2050,11 +2179,11 @@ public class RequestSystem : INotifyPropertyChanged
                                                             return;
                                                         }
                                                     }
-                                                    catch (Exception e)
+                                                    catch (Exception e1)
                                                     {
                                                         bot.client.SendMessage("Failed to get video, please try again later.");
-                                                        Debug.WriteLine(e);
-                                                        Utils.errorReport(e);
+                                                        Debug.WriteLine(e1);
+                                                        Utils.errorReport(e1);
                                                         return;
                                                     }
                                                 }
@@ -2075,10 +2204,10 @@ public class RequestSystem : INotifyPropertyChanged
                                                     }
                                                 }
                                             }
-                                            catch (IOException e)
+                                            catch (IOException e1)
                                             {
-                                                Utils.errorReport(e);
-                                                Debug.WriteLine(e.ToString());
+                                                Utils.errorReport(e1);
+                                                Debug.WriteLine(e1.ToString());
                                             }
                                         }
                                         else
@@ -2234,7 +2363,7 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if (songList.Count > 0)
         {
-            List<String> str = Utils.getAllViewers(bot.streamer);
+            List<String> str = bot.getAllViewers(bot.streamer);
             for (int i = 0; i < songList.Count; i++)
             {
                 songList[i].requesterIsHere = "";
@@ -2330,9 +2459,9 @@ public class RequestSystem : INotifyPropertyChanged
         return false;
     }
 
-    public void removeSongCOMMAND(String sender, String channel, String streamer, List<BotUser> users, String message, String temp)
+    public void removeSongCOMMAND(String sender, String channel, String streamer, List<BotUser> users, String message, String temp, OnMessageReceivedArgs e)
     {
-        if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+        if (sender.Equals(streamer) || e.ChatMessage.IsModerator
                         || sender.Equals(Utils.botMaker))
         {
             int number = -1;
@@ -2359,10 +2488,10 @@ public class RequestSystem : INotifyPropertyChanged
             return;
         }
     }
-
-    public void promoteSongCommand(String sender, String channel, String streamer, List<BotUser> users, String message, String noEmoteMessage)
+    
+    public void promoteSongCommand(String sender, String channel, String streamer, List<BotUser> users, String message, String noEmoteMessage, OnMessageReceivedArgs e)
     {
-        if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+        if (sender.Equals(streamer) || e.ChatMessage.IsModerator
                     || sender.Equals(Utils.botMaker))
         {
             String user = Utils.getFollowingText(message);

@@ -107,7 +107,7 @@ public class TextAdventure : INotifyPropertyChanged
         set { SetField(ref Customadventurejointime, value, nameof(customadventurejointime)); }
     }
     [JsonIgnore]
-    public String CustomGameStartMessage = "$user has initiated a bank heist! Type '!heist' to join! It costs $cost";
+    public String CustomGameStartMessage = "$user has initiated a bank heist! Type '!heist' to join! It costs $cost to join!";
     public String customGameStartMessage
     {
         get => CustomGameStartMessage;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using TwitchLib.Events.Client;
 
 public class Quote : INotifyPropertyChanged
 {
@@ -53,7 +54,7 @@ public class Quote : INotifyPropertyChanged
         bot.read();
     }
 
-    public void quotesSystem(String message, String channel, String sender, String streamer, List<BotUser> users)
+    public void quotesSystem(String message, String channel, String sender, String streamer, List<BotUser> users, OnMessageReceivedArgs e)
 
     {
         String temp = message.ToLower();
@@ -94,7 +95,7 @@ public class Quote : INotifyPropertyChanged
         {
             if (quotesModOnly)
             {
-                if (sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+                if (sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || e.ChatMessage.IsModerator
                         || sender.Equals(Utils.botMaker))
                 {
                     addQuote(Utils.getFollowingText(message), channel, sender);
@@ -109,7 +110,7 @@ public class Quote : INotifyPropertyChanged
         else if (message.Trim().ToLower().StartsWith("!removequote ")
                 || message.Trim().ToLower().StartsWith("!deletequote "))
         {
-            if (sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+            if (sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || e.ChatMessage.IsModerator
                     || sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
             {
                 removeQuote(message, channel, sender);
@@ -119,7 +120,7 @@ public class Quote : INotifyPropertyChanged
         else if (message.Trim().ToLower().StartsWith("!editquote ")
                 || message.Trim().ToLower().StartsWith("!changequote "))
         {
-            if (sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+            if (sender.Equals(bot.streamer, StringComparison.InvariantCultureIgnoreCase) || e.ChatMessage.IsModerator
                     || sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
             {
                 editQuote(message, channel, sender);

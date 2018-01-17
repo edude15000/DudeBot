@@ -17,9 +17,8 @@ namespace updater
             InitializeComponent();
             Show();
             
-            if (!Directory.GetCurrentDirectory().Contains("bin"))
+            if (Directory.GetCurrentDirectory().Contains("bin"))
             {
-                Environment.Exit(0);
                 Application.Current.Shutdown();
             }
             else
@@ -134,7 +133,7 @@ namespace updater
                 p.StartInfo.FileName = dudebotdirectory += @"\DudeBot.exe";
                 p.Start();
             }
-            Environment.Exit(0);
+            Application.Current.Shutdown();
         }
 
         public static void DeleteDirectory(string target_dir)
@@ -177,12 +176,12 @@ namespace updater
             {
                 File.Delete(dudebotdirectory + @"bin\en_US.aff");
             }
-            File.Copy(Path.GetTempPath() + @"DudeBot\bin\dudebotupdater.exe", dudebotdirectory + @"bin\en_US.aff");
+            File.Copy(Path.GetTempPath() + @"DudeBot\bin\en_US.aff", dudebotdirectory + @"bin\en_US.aff");
             if (File.Exists(dudebotdirectory + @"bin\en_US.dic"))
             {
                 File.Delete(dudebotdirectory + @"bin\en_US.dic");
             }
-            File.Copy(Path.GetTempPath() + @"DudeBot\bin\dudebotupdater.exe", dudebotdirectory + @"bin\en_US.dic");
+            File.Copy(Path.GetTempPath() + @"DudeBot\bin\en_US.dic", dudebotdirectory + @"bin\en_US.dic");
             // TODO : Add new files as needed
         }
 

@@ -14,6 +14,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TwitchLib.Interfaces;
 using Cleverbot.Net;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 public class TwitchBot : INotifyPropertyChanged
 {
@@ -53,10 +55,13 @@ public class TwitchBot : INotifyPropertyChanged
     [JsonIgnore]
     public GoogleHandler google;
     [JsonIgnore]
+    public GoogleHandler googleCustomSetlist;
+    [JsonIgnore]
     private static TwitchAPI api;
     [JsonIgnore]
     private static FollowerService service;
-
+    [JsonIgnore]
+    private static List<String> backupUsersInChat = new List<String>();
     [JsonIgnore]
     public String Oauth;
     public String oauth
@@ -94,6 +99,13 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref FollowerMessage, value, nameof(followerMessage)); }
     }
     [JsonIgnore]
+    public String FollowerMessageCommand = "";
+    public String followerMessageCommand
+    {
+        get => FollowerMessageCommand;
+        set { SetField(ref FollowerMessageCommand, value, nameof(followerMessageCommand)); }
+    }
+    [JsonIgnore]
     public String SubMessage = "$user just subscribed to the stream! Thank you!";
     public String subMessage
     {
@@ -101,11 +113,25 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref SubMessage, value, nameof(subMessage)); }
     }
     [JsonIgnore]
+    public String SubMessageCommand = "";
+    public String subMessageCommand
+    {
+        get => SubMessageCommand;
+        set { SetField(ref SubMessageCommand, value, nameof(subMessageCommand)); }
+    }
+    [JsonIgnore]
     public String ResubMessage = "$user just resubscribed for $months months! Thank you!";
     public String resubMessage
     {
         get => ResubMessage;
         set { SetField(ref ResubMessage, value, nameof(resubMessage)); }
+    }
+    [JsonIgnore]
+    public String ResubMessageCommand = "";
+    public String resubMessageCommand
+    {
+        get => ResubMessageCommand;
+        set { SetField(ref ResubMessageCommand, value, nameof(resubMessageCommand)); }
     }
     [JsonIgnore]
     public int RaidViewersRequired = 5;
@@ -122,11 +148,39 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref HostMessage, value, nameof(hostMessage)); }
     }
     [JsonIgnore]
+    public String HostMessageCommand = "";
+    public String hostMessageCommand
+    {
+        get => HostMessageCommand;
+        set { SetField(ref HostMessageCommand, value, nameof(hostMessageCommand)); }
+    }
+    [JsonIgnore]
+    public String BitMessage = "Just received $bits bits from $user. That brings their total to $totalbits bits!";
+    public String bitMessage
+    {
+        get => BitMessage;
+        set { SetField(ref BitMessage, value, nameof(bitMessage)); }
+    }
+    [JsonIgnore]
+    public String BitMessageCommand = "";
+    public String bitMessageCommand
+    {
+        get => BitMessageCommand;
+        set { SetField(ref BitMessageCommand, value, nameof(bitMessageCommand)); }
+    }
+    [JsonIgnore]
     public String RaidMessage = "We are getting raided! Thanks for the $viewers viewer raid! $shoutout";
     public String raidMessage
     {
         get => RaidMessage;
         set { SetField(ref RaidMessage, value, nameof(raidMessage)); }
+    }
+    [JsonIgnore]
+    public String RaidMessageCommand = "";
+    public String raidMessageCommand
+    {
+        get => RaidMessageCommand;
+        set { SetField(ref RaidMessageCommand, value, nameof(raidMessageCommand)); }
     }
     [JsonIgnore]
     public String SubOnlyRequests = "Only sub requests are being accepted right now, $user";
@@ -540,7 +594,16 @@ public class TwitchBot : INotifyPropertyChanged
             resetAllCommands();
             threads();
             cleverbotSession = await CleverbotSession.NewSessionAsync(Utils.cleverbotIOuser, Utils.cleverbotIOkey);
-            client.SendMessage(startupMessage);
+            try
+            {
+                client.SendMessage(startupMessage);
+            }
+            catch (Exception)
+            {
+                Thread.Sleep(1000);
+                client.Connect();
+                client.SendMessage(startupMessage);
+            }
         }
         catch (Exception e1)
         {
@@ -554,7 +617,7 @@ public class TwitchBot : INotifyPropertyChanged
         List<BotUser> list = new List<BotUser>();
         foreach (BotUser botUser in users)
         {
-            if (botUser.time > 1)
+            if (botUser.time > 1 || botUser.mod || botUser.moneyDonated > 0 || botUser.months > 0 || botUser.numRequests > 0 || botUser.bitsDonated > 0 || botUser.follower || botUser.sub)
             {
                 list.Add(botUser);
             }
@@ -565,32 +628,123 @@ public class TwitchBot : INotifyPropertyChanged
     private void onUserLeft(object sender, OnUserLeftArgs e)
     {
         writeToEventLog("PART: " + e.Username);
+        if (backupUsersInChat.Contains(e.Username))
+        {
+            backupUsersInChat.Remove(e.Username);
+        }
+    }
+
+    public List<String> getAllViewers(String streamer)
+    {
+        List<String> users = new List<String>();
+        String info = Utils.callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
+        if (info.Equals(""))
+        {
+            return backupUsersInChat;
+        }
+        try
+        {
+            var a = JsonConvert.DeserializeObject<dynamic>(info);
+            a = a["chatters"];
+            JArray viewers = a["viewers"];
+            JArray staff = a["staff"];
+            JArray admins = a["admins"];
+            JArray global_mods = a["global_mods"];
+            JArray moderators = a["moderators"];
+            if (moderators != null)
+            {
+                int len = moderators.Count;
+                String[] items = moderators.Select(jv => (String)jv).ToArray();
+                for (int i = 0; i < len; i++)
+                {
+                    if (!users.Contains(items[i]))
+                    {
+                        users.Add(items[i].ToString());
+                    }
+                }
+            }
+            if (viewers != null)
+            {
+                int len = viewers.Count;
+                String[] items = viewers.Select(jv => (String)jv).ToArray();
+                for (int i = 0; i < len; i++)
+                {
+                    if (!users.Contains(items[i]))
+                    {
+                        users.Add(items[i].ToString());
+                    }
+                }
+            }
+            if (staff != null)
+            {
+                int len = staff.Count;
+                String[] items = staff.Select(jv => (String)jv).ToArray();
+                for (int i = 0; i < len; i++)
+                {
+                    if (!users.Contains(items[i]))
+                    {
+                        users.Add(items[i].ToString());
+                    }
+                }
+            }
+            if (admins != null)
+            {
+                int len = admins.Count;
+                String[] items = admins.Select(jv => (String)jv).ToArray();
+                for (int i = 0; i < len; i++)
+                {
+                    if (!users.Contains(items[i]))
+                    {
+                        users.Add(items[i].ToString());
+                    }
+                }
+            }
+            if (global_mods != null)
+            {
+                int len = global_mods.Count;
+                String[] items = global_mods.Select(jv => (String)jv).ToArray();
+                for (int i = 0; i < len; i++)
+                {
+                    if (!users.Contains(items[i]))
+                    {
+                        users.Add(items[i].ToString());
+                    }
+                }
+            }
+        }
+        catch (Exception e1)
+        {
+            Utils.errorReport(e1);
+            Console.WriteLine(e1.ToString());
+        }
+        return users;
     }
 
     public void writeToEventLog(String str)
     {
         eventlog += Utils.getTime() + "---\n" + str + "\n\n";
-
     }
 
     private void onBeingHosted(object sender, OnBeingHostedArgs e)
     {
         if (autoShoutoutOnHost && !e.IsAutoHosted)
         {
-            String message = "";
+            String message = "", message2 = "";
             if (e.Viewers < raidViewersRequired)
             {
                 message = hostMessage;
+                message2 = hostMessageCommand;
                 writeToEventLog("HOST: " + e.HostedByChannel + " (" + e.Viewers + " viewers)");
             }
             else
             {
                 message = raidMessage;
+                message2 = raidMessageCommand;
                 writeToEventLog("RAID: " + e.HostedByChannel + " (" + e.Viewers + " viewers)");
             }
             if (message.Contains("shoutout"))
             {
-                message = message.Replace("shoutout", userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true));
+                message = message.Replace("shoutout", userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true, null));
             }
             else if (message.Contains("$user"))
             {
@@ -604,23 +758,60 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 client.SendMessage(message);
             }
+            if (!message2.Equals(""))
+            {
+                if (message2.Contains("shoutout"))
+                {
+                    message2 = message2.Replace("shoutout", userVariables("$shoutout", "#" + streamer, streamer, e.HostedByChannel, "!shoutout " + e.HostedByChannel, true, null));
+                }
+                else if (message2.Contains("$user"))
+                {
+                    message2 = message2.Replace("$user", e.HostedByChannel);
+                }
+                if (message2.Contains("shoutout"))
+                {
+                    message2 = message2.Replace("$viewers", e.Viewers.ToString());
+                }
+                if (!message2.StartsWith("!"))
+                {
+                    message2 = "!" + message2;
+                }
+                processMessage(null, message2, streamer);
+            }
         }
     }
 
     private void onReSubscriber(object sender, OnReSubscriberArgs e)
     {
         String message = resubMessage;
-        if (resubMessage.Contains("$user"))
+        if (message.Contains("$user"))
         {
             message = message.Replace("$user", e.ReSubscriber.DisplayName);
         }
-        if (resubMessage.Contains("$months"))
+        if (message.Contains("$months"))
         {
             message = message.Replace("$months", e.ReSubscriber.Months.ToString());
         }
         if (!message.Equals(""))
         {
             client.SendMessage(message);
+        }
+        if (!resubMessageCommand.Equals(""))
+        {
+            message = resubMessageCommand;
+            if (message.Contains("$user"))
+            {
+                message = message.Replace("$user", e.ReSubscriber.DisplayName);
+            }
+            if (message.Contains("$months"))
+            {
+                message = message.Replace("$months", e.ReSubscriber.Months.ToString());
+            }
+            if (!message.StartsWith("!"))
+            {
+                message = "!" + message;
+            }
+            processMessage(null, message, streamer);
         }
         foreach (BotUser botUser in users)
         {
@@ -634,17 +825,115 @@ public class TwitchBot : INotifyPropertyChanged
                 break;
             }
         }
+        if (requestSystem.autoPromoteToDonatorOnSub)
+        {
+            autoPromoteToDonator(e.ReSubscriber.DisplayName);
+        }
+        else if (requestSystem.autoPromoteToDonatorOnSub)
+        {
+            autoPromoteToVIP(e.ReSubscriber.DisplayName);
+        }
     }
 
-    private void onPubSubBitsReceived(object sender, OnBitsReceivedArgs e) // TODO : Bits message, test
+    private void onPubSubBitsReceived(object sender, OnBitsReceivedArgs e)
     {
-        client.SendMessage("Just received " + e.BitsUsed + " bits from " + e.Username + ". That brings their total to " + e.TotalBitsUsed + " bits!");
-        writeToEventLog("BITS RECEIVED: " + e.Username + " (" + e.TotalBitsUsed + " bits)");
+        String message = bitMessage;
+        if (message.Contains("$user"))
+        {
+            message.Replace("$user", e.Username);
+        }
+        if (message.Contains("$bits"))
+        {
+            message.Replace("$bits", e.BitsUsed.ToString());
+        }
+        if (message.Contains("$totalbits"))
+        {
+            message.Replace("$totalbits", e.TotalBitsUsed.ToString());
+        }
+        client.SendMessage(message);
+        if (!bitMessageCommand.Equals(""))
+        {
+            message = bitMessageCommand;
+            if (message.Contains("$user"))
+            {
+                message.Replace("$user", e.Username);
+            }
+            if (message.Contains("$bits"))
+            {
+                message.Replace("$bits", e.BitsUsed.ToString());
+            }
+            if (message.Contains("$totalbits"))
+            {
+                message.Replace("$totalbits", e.TotalBitsUsed.ToString());
+            }
+            if (!message.StartsWith("!"))
+            {
+                message = "!" + message;
+            }
+            processMessage(null, message, streamer);
+        }
+        writeToEventLog("BITS RECEIVED: " + e.Username + " (" + e.BitsUsed + " bits)");
+        BotUser user = getBotUser(e.Username);
+        if (user != null)
+        {
+            user.bitsDonated = e.TotalBitsUsed;
+        }
+        if (requestSystem.autoPromoteToDonatorOnBitDonation && e.BitsUsed >= requestSystem.autoPromoteToDonatorOnBitDonationMinimum)
+        {
+            autoPromoteToDonator(e.Username);
+        }
+        else if (requestSystem.autoPromoteToVipOnBitDonation && e.BitsUsed >= requestSystem.autoPromoteToVipOnBitDonationMinimum)
+        {
+            autoPromoteToVIP(e.Username);
+        }
+    }
+
+    public void autoPromoteToVIP(String user)
+    {
+        for (int j = 0; j < requestSystem.songList.Count; j++)
+        {
+            Song s = requestSystem.songList[j];
+            if (s.requester.Equals(user, StringComparison.InvariantCultureIgnoreCase) && s.level.Equals(""))
+            {
+                requestSystem.songList.RemoveAt(j);
+                requestSystem.addVip(channel, s.name, user, null);
+                client.SendMessage("Song '" + s.name + "' has been promoted to VIP, " + user + "!");
+                return;
+            }
+        }
+    }
+
+    public void autoPromoteToDonator(String user)
+    {
+        for (int j = 0; j < requestSystem.songList.Count; j++)
+        {
+            Song s = requestSystem.songList[j];
+            if (s.requester.Equals(user, StringComparison.InvariantCultureIgnoreCase) && s.level.Equals(""))
+            {
+                requestSystem.songList.RemoveAt(j);
+                requestSystem.addDonator(channel, s.name, user, null);
+                client.SendMessage("Song '" + s.name + "' has been promoted to $$$, " + user + "!");
+                return;
+            }
+        }
+        for (int j = 0; j < requestSystem.songList.Count; j++)
+        {
+            Song s = requestSystem.songList[j];
+            if (s.requester.Equals(user, StringComparison.InvariantCultureIgnoreCase) && s.level.Equals("VIP"))
+            {
+                requestSystem.songList.RemoveAt(j);
+                requestSystem.addDonator(channel, s.name, user, null);
+                client.SendMessage("VIP Song '" + s.name + "' has been promoted to $$$, " + user + "!");
+                return;
+            }
+        }
     }
 
     private void onNewFollower(object sender, OnNewFollowersDetectedArgs e)
     {
-        if (!followerMessage.Equals("")) {
+        if (!followerMessage.Equals(""))
+        {
+            String message = followerMessageCommand;
             if (followerMessage.Contains("$user"))
             {
                 List<String> str = new List<String>();
@@ -658,6 +947,24 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 client.SendMessage(followerMessage);
             }
+        }
+        if (!followerMessageCommand.Equals(""))
+        {
+            String message = followerMessageCommand;
+            if (message.Contains("$user"))
+            {
+                List<String> str = new List<String>();
+                foreach (IFollow follower in e.NewFollowers)
+                {
+                    str.Add(follower.User.Name);
+                }
+                message = message.Replace("$user", String.Join(", ", str));
+            }
+            if (!message.StartsWith("!"))
+            {
+                message = "!" + message;
+            }
+            processMessage(null, message, streamer);
         }
         foreach (IFollow follower in e.NewFollowers)
         {
@@ -746,10 +1053,7 @@ public class TwitchBot : INotifyPropertyChanged
 
     private void onMessageReceived(object sender, OnMessageReceivedArgs e)
     {
-        String s = e.ChatMessage.Username;
-        String message = e.ChatMessage.Message;
-        String noEmoteMessage = e.ChatMessage.EmoteReplacedMessage; // TODO : FIX
-        processMessage(s, message, noEmoteMessage);
+        processMessage(e, "", "");
     }
 
     public void botDisconnect()
@@ -782,6 +1086,19 @@ public class TwitchBot : INotifyPropertyChanged
                 client.SendMessage(streamer + " : " + subMessage);
             }
         }
+        if (!subMessageCommand.Equals(""))
+        {
+            String message = subMessageCommand;
+            if (message.Contains("$user"))
+            {
+                message = message.Replace("$user", e.Subscriber.DisplayName);
+            }
+            if (!message.StartsWith("!"))
+            {
+                message = "!" + message;
+            }
+            processMessage(null, message, streamer);
+        }
         foreach (BotUser botUser in users)
         {
             if (botUser.username.Equals(e.Subscriber.DisplayName, StringComparison.InvariantCultureIgnoreCase))
@@ -793,6 +1110,14 @@ public class TwitchBot : INotifyPropertyChanged
                 writeToEventLog("SUB: " + e.Subscriber.DisplayName);
                 break;
             }
+        }
+        if (requestSystem.autoPromoteToDonatorOnSub)
+        {
+            autoPromoteToDonator(e.Subscriber.DisplayName);
+        }
+        else if (requestSystem.autoPromoteToDonatorOnSub)
+        {
+            autoPromoteToVIP(e.Subscriber.DisplayName);
         }
     }
 
@@ -807,6 +1132,10 @@ public class TwitchBot : INotifyPropertyChanged
         if (spreadsheetId != "")
         {
             google = new GoogleHandler(spreadsheetId);
+        }
+        if (requestSystem.googleSheetSetlistId != "")
+        {
+            googleCustomSetlist = new GoogleHandler(requestSystem.googleSheetSetlistId);
         }
         textAdventure.setUpText();
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
@@ -856,38 +1185,41 @@ public class TwitchBot : INotifyPropertyChanged
         {
             try
             {
-                if ((DateTimeOffset.Now.ToUnixTimeMilliseconds() - start_time) >= (timerTotal * 60000))
+                if (timerCommandList.Count > 0)
                 {
-                    start_time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                    if (timerCommandList[i].output.Equals("$songlist"))
+                    if ((DateTimeOffset.Now.ToUnixTimeMilliseconds() - start_time) >= (timerTotal * 60000))
                     {
-                        try
+                        start_time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                        if (timerCommandList[i].output.Equals("$songlist"))
                         {
-                            requestSystem.songlistTimer(channel);
+                            try
+                            {
+                                requestSystem.songlistTimer(channel);
+                            }
+                            catch (Exception e)
+                            {
+                                Utils.errorReport(e);
+                                Console.WriteLine(e.ToString());
+                            }
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Utils.errorReport(e);
-                            Console.WriteLine(e.ToString());
+                            client.SendMessage(timerCommandList[i].output);
                         }
-                    }
-                    else
-                    {
-                        client.SendMessage(timerCommandList[i].output);
-                    }
-                    i++;
-                    if (i >= timerCommandList.Count - 1)
-                    {
-                        i = 0;
+                        i++;
+                        if (i >= timerCommandList.Count - 1)
+                        {
+                            i = 0;
+                        }
                     }
                 }
-                Thread.Sleep(1000);
             }
             catch (Exception e)
             {
                 Utils.errorReport(e);
                 Console.WriteLine(e.ToString());
             }
+            Thread.Sleep(5000);
         }
     }
 
@@ -902,7 +1234,7 @@ public class TwitchBot : INotifyPropertyChanged
                     break;
                 }
                 Thread.Sleep(60000);
-                currency.bonusall(Utils.getAllViewers(streamer), true, 0);
+                currency.bonusall(getAllViewers(streamer), true, 0);
             }
             catch (Exception e)
             {
@@ -947,7 +1279,7 @@ public class TwitchBot : INotifyPropertyChanged
         int winningAmount = (textAdventure.usersCustom.Count * textAdventure.customadventurejoincost);
         if (winMessage.Contains("$amount"))
         {
-            winMessage = winMessage.Replace("$amount", winningAmount.ToString());
+            winMessage = winMessage.Replace("$amount", winningAmount.ToString() + " " + currency.currencyName);
         }
         client.SendMessage(winMessage);
         if (currency.toggle)
@@ -1008,9 +1340,9 @@ public class TwitchBot : INotifyPropertyChanged
         waitForAdventureCoolDown = true;
     }
 
-    public void imageThread(String message, String sender)
+    public void imageThread(String message, String sender, OnMessageReceivedArgs e)
     {
-        image.imageCOMMANDS(message, channel, getBotUser(sender), imageCommandList, this);
+        image.imageCOMMANDS(message, channel, getBotUser(sender), imageCommandList, this, e);
     }
 
     public void rouletteThread(String sender)
@@ -1060,7 +1392,7 @@ public class TwitchBot : INotifyPropertyChanged
         textAdventure.allowUserAddsCustom = true;
         textAdventure.startTimerInMS = 0;
         textAdventure.startTimerInMSCustom = 0;
-        image.imageStartTime = (long)0;
+        image.imageStartTime = 0;
         image.userCoolDowns.Clear();
         soundEffect.SFXstartTime = 0;
         soundEffect.userCoolDowns.Clear();
@@ -1114,8 +1446,28 @@ public class TwitchBot : INotifyPropertyChanged
         Utils.saveData(this);
     }
     
-    public void processMessage(String sender, String message, String noEmoteMessage)
+    public void processMessage(OnMessageReceivedArgs e, String mes, String sen)
     {
+        String message = "";
+        String sender = "";
+        String noEmoteMessage = "";
+        Boolean mod = false;
+        if (e != null) {
+            message = e.ChatMessage.Message;
+            sender = e.ChatMessage.Username;
+            noEmoteMessage = e.ChatMessage.EmoteReplacedMessage;
+            mod = e.ChatMessage.IsModerator;
+        }
+        else
+        {
+            message = mes;
+            sender = sen;
+        }
+        if (sender.Equals(streamer))
+        {
+            mod = true;
+        }
+
         if (!message.StartsWith("!"))
         {
             return;
@@ -1138,7 +1490,7 @@ public class TwitchBot : INotifyPropertyChanged
         {
             if (temp.StartsWith(sfxCommandList[i].input[0]))
             {
-                soundEffect.sfxCOMMANDS(message, channel, getBotUser(sender), sfxCommandList, this);
+                soundEffect.sfxCOMMANDS(message, channel, getBotUser(sender), sfxCommandList, this, e);
             }
         }
 
@@ -1147,29 +1499,29 @@ public class TwitchBot : INotifyPropertyChanged
         {
             if (temp.StartsWith(imageCommandList[i].input[0]))
             {
-                var t = new Thread(() => imageThread(message, sender));
+                var t = new Thread(() => imageThread(message, sender, e));
                 t.Start();
             }
         }
         // USER COMMANDS
         for (int i = 0; i < userCommandList.Count; i++)
         {
-            if (temp.StartsWith(userCommandList[i].input[0] + " ")
+            String temp2 = temp + " ";
+            if (temp2.StartsWith(userCommandList[i].input[0] + " ")
                     || temp.Equals(userCommandList[i].input[0], StringComparison.InvariantCultureIgnoreCase))
             {
-
-                userCOMMANDS(message, channel, sender);
+                userCOMMANDS(message, channel, sender, e);
                 return;
             }
         }
         // USER TIMER COMMANDS
         for (int i = 0; i < timerCommandList.Count; i++)
         {
-            if (temp.StartsWith(timerCommandList[i].input[0] + " ")
+            String temp2 = temp + " ";
+            if (temp2.StartsWith(timerCommandList[i].input[0] + " ")
                     || temp.Equals(timerCommandList[i].input[0], StringComparison.InvariantCultureIgnoreCase))
             {
-
-                userCOMMANDS(message, channel, sender);
+                userCOMMANDS(message, channel, sender, e);
                 return;
             }
         }
@@ -1213,7 +1565,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.requestCOMMAND(message, channel, sender, noEmoteMessage);
+                    requestSystem.requestCOMMAND(message, channel, sender, noEmoteMessage, e);
                 }
                 catch (Exception e1)
                 {
@@ -1230,7 +1582,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.nextCOMMAND(message, channel, sender);
+                    requestSystem.nextCOMMAND(message, channel, sender, e);
                 }
                 catch (Exception e1)
                 {
@@ -1247,7 +1599,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.clearCOMMAND(message, channel, sender);
+                    requestSystem.clearCOMMAND(message, channel, sender, e);
                 }
                 catch (IOException e1)
                 {
@@ -1264,7 +1616,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.editCOMMAND(message, channel, sender, noEmoteMessage);
+                    requestSystem.editCOMMAND(message, channel, sender, noEmoteMessage, e);
                 }
                 catch (Exception e1)
                 {
@@ -1281,7 +1633,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.addvipCOMMAND(message, channel, sender, noEmoteMessage);
+                    requestSystem.addvipCOMMAND(message, channel, sender, noEmoteMessage, e);
                 }
                 catch (Exception e1)
                 {
@@ -1298,7 +1650,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.addtopCOMMAND(message, channel, sender, noEmoteMessage);
+                    requestSystem.addtopCOMMAND(message, channel, sender, noEmoteMessage, e);
                 }
                 catch (Exception e1)
                 {
@@ -1315,7 +1667,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.getTotalSongCOMMAND(message, channel, sender);
+                    requestSystem.getTotalSongCOMMAND(message, channel, sender, e);
                 }
                 catch (Exception e1)
                 {
@@ -1332,7 +1684,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.songlistCOMMAND(message, channel, sender);
+                    requestSystem.songlistCOMMAND(message, channel, sender, e);
                 }
                 catch (Exception e1)
                 {
@@ -1349,7 +1701,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.getCurrentSongCOMMAND(message, channel, sender);
+                    requestSystem.getCurrentSongCOMMAND(message, channel, sender, e);
                 }
                 catch (Exception e1)
                 {
@@ -1366,7 +1718,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.triggerRequestsCOMMAND(message, channel, sender);
+                    requestSystem.triggerRequestsCOMMAND(message, channel, sender, e);
                 }
                 catch (IOException e1)
                 {
@@ -1383,7 +1735,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.getNextSongCOMMAND(message, channel, sender);
+                    requestSystem.getNextSongCOMMAND(message, channel, sender, e);
                 }
                 catch (Exception e1)
                 {
@@ -1457,7 +1809,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase)
                     || sender.Equals(streamer, StringComparison.InvariantCultureIgnoreCase)
-                        || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                        || mod)
                 {
                     if (message.Equals("!bonus", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -1504,7 +1856,7 @@ public class TwitchBot : INotifyPropertyChanged
             if (currency.toggle)
             {
                 if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || sender.Equals(streamer, StringComparison.InvariantCultureIgnoreCase)
-                        || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                        || mod)
                 {
                     String temp2 = Utils.getFollowingText(message).Trim();
                     String neg = "";
@@ -1518,11 +1870,11 @@ public class TwitchBot : INotifyPropertyChanged
                         if (neg.Equals("-"))
                         {
                             client.SendMessage(currency.bonusall(
-                                    Utils.getAllViewers(streamer), false, -1 * Int32.Parse(temp2)));
+                                    getAllViewers(streamer), false, -1 * Int32.Parse(temp2)));
                         }
                         else
                         {
-                            client.SendMessage(currency.bonusall(Utils.getAllViewers(streamer), false, Int32.Parse(temp2)));
+                            client.SendMessage(currency.bonusall(getAllViewers(streamer), false, Int32.Parse(temp2)));
                         }
                     }
                     else
@@ -1537,7 +1889,7 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Trim().Equals("!gamble on", StringComparison.InvariantCultureIgnoreCase))
         {
             if (sender.Equals(Utils.botMaker) || sender.Equals(streamer)
-                    || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                    || mod)
             {
                 try
                 {
@@ -1554,7 +1906,7 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Trim().Equals("!gamble off", StringComparison.InvariantCultureIgnoreCase))
         {
             if (sender.Equals(Utils.botMaker) || sender.Equals(streamer)
-                    || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                    || mod)
             {
                 try
                 {
@@ -1627,26 +1979,29 @@ public class TwitchBot : INotifyPropertyChanged
                 {
                     try
                     {
-                        if (currency.vipsong(sender) == 1)
+                        int option = currency.vipsong(sender);
+                        if (option == 1)
                         {
                             requestSystem.addVip(channel, Utils.getFollowingText(message), sender, noEmoteMessage);
-
                             client.SendMessage(sender + " cashed in " + currency.vipSongCost
                                     + " " + currency.currencyName + " for a VIP song! '"
                                     + Utils.getFollowingText(message)
                                     + "' has been added as a VIP song to the song list!");
                         }
-                        else if (currency.vipsong(sender) == 0)
+                        else if (option == 0)
                         {
-
                             client.SendMessage("You need " + currency.vipSongCost + " "
                                     + currency.currencyName + " to buy a VIP song, " + sender + "!");
                         }
-                        else
+                        else if (option == -1)
                         {
-
                             client.SendMessage("You may redeem a VIP song once every "
                                     + currency.vipRedeemCoolDownMinutes + " minutes, " + sender + "!");
+                        }
+                        else if (option == -2)
+                        {
+                            double timeLeft = Utils.getMinsRemaining(currency.vipCooldownOverallTracker, currency.vipRedeemCoolDownMinutesOverall);
+                            client.SendMessage("The VIP redeem command is on cooldown, please wait " + timeLeft + " minutes, " + sender + "!");
                         }
                     }
                     catch (Exception e1)
@@ -1760,7 +2115,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.editMySongCOMMAND(message, channel, sender, noEmoteMessage);
+                    requestSystem.editMySongCOMMAND(message, channel, sender, noEmoteMessage, e);
                 }
                 catch (IOException e1)
                 {
@@ -1777,7 +2132,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.removeMySong(message, channel, sender);
+                    requestSystem.removeMySong(message, channel, sender, e);
                 }
                 catch (IOException e1)
                 {
@@ -1794,7 +2149,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.addDonatorCOMMAND(message, channel, sender, noEmoteMessage);
+                    requestSystem.addDonatorCOMMAND(message, channel, sender, noEmoteMessage, e);
                 }
                 catch (Exception e1)
                 {
@@ -1809,7 +2164,7 @@ public class TwitchBot : INotifyPropertyChanged
         {
             if (temp.Equals(requestSystem.songPositionComm.input[i], StringComparison.InvariantCultureIgnoreCase))
             {
-                requestSystem.checkSongPositionCOMMAND(message, channel, sender);
+                requestSystem.checkSongPositionCOMMAND(message, channel, sender, e);
                 return;
             }
         }
@@ -1820,7 +2175,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.randomizerCommand(message, channel, sender);
+                    requestSystem.randomizerCommand(message, channel, sender, e);
                 }
                 catch (Exception e1)
                 {
@@ -1837,7 +2192,7 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 try
                 {
-                    requestSystem.chooseRandomFavorite(message, channel, sender, noEmoteMessage);
+                    requestSystem.chooseRandomFavorite(message, channel, sender, noEmoteMessage, e);
                 }
                 catch (Exception e1)
                 {
@@ -1853,7 +2208,7 @@ public class TwitchBot : INotifyPropertyChanged
                 || message.ToLower().Equals("!regnext", StringComparison.InvariantCultureIgnoreCase)
                 || message.ToLower().Equals("!regularnext", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+            if (sender.Equals(streamer) || mod)
             {
                 try
                 {
@@ -1886,7 +2241,7 @@ public class TwitchBot : INotifyPropertyChanged
         {
             if (temp.Equals(getViewerComm.input[i]))
             {
-                viewerCOMMAND(message, channel, sender);
+                viewerCOMMAND(message, channel, sender, e);
                 return;
             }
         }
@@ -1894,7 +2249,7 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Equals("!undonext", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!undoskip", StringComparison.InvariantCultureIgnoreCase))
         {
             if (sender.Equals(Utils.botMaker) || sender.Equals(streamer)
-                    || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                    || mod)
             {
                 if (requestSystem.lastSong != null)
                 {
@@ -1902,7 +2257,7 @@ public class TwitchBot : INotifyPropertyChanged
                     {
                         requestSystem.doNotWriteToHistory = true;
                         requestSystem.addtopCOMMAND(requestSystem.addtopComm.input[0] + " " + requestSystem.lastSong,
-                                channel, sender, noEmoteMessage);
+                                channel, sender, noEmoteMessage, e);
                         requestSystem.songsPlayedThisStream -= 1;
                         requestSystem.songsPlayedTotal -= 1;
                     }
@@ -1940,7 +2295,7 @@ public class TwitchBot : INotifyPropertyChanged
         {
             try
             {
-                quote.quotesSystem(message, channel, sender, streamer, users);
+                quote.quotesSystem(message, channel, sender, streamer, users, e);
             }
             catch (Exception e1)
             {
@@ -2037,7 +2392,7 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Equals("!startraffle", StringComparison.InvariantCultureIgnoreCase))
         {
             if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || sender.Equals(streamer, StringComparison.InvariantCultureIgnoreCase)
-                    || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                    || mod)
             {
                 if (raffleInProgress)
                 {
@@ -2118,7 +2473,7 @@ public class TwitchBot : INotifyPropertyChanged
         // Minigame
         if (message.StartsWith("!minigame") || message.StartsWith("!startgame"))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+            if (sender.Equals(streamer) || mod
                     || sender.Equals(Utils.botMaker))
             {
                 if (message.Equals("!minigame on"))
@@ -2214,7 +2569,7 @@ public class TwitchBot : INotifyPropertyChanged
 
         if (message.Trim().StartsWith("!endgame"))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+            if (sender.Equals(streamer) || mod
                     || sender.Equals(Utils.botMaker))
             {
                 if (message.Trim().Equals("!endgame", StringComparison.InvariantCultureIgnoreCase) || message.Trim().Equals("!cancelgame", StringComparison.InvariantCultureIgnoreCase))
@@ -2295,8 +2650,7 @@ public class TwitchBot : INotifyPropertyChanged
         // Text Adventure
         if (message.Equals("!adventure on", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (Utils.checkIfUserIsOP(sender, channel, streamer, users) || sender.Equals(Utils.botMaker)
-                    || sender.Equals(streamer))
+            if (sender.Equals(Utils.botMaker) || sender.Equals(streamer) || mod)
             {
                 if (!adventureToggle)
                 {
@@ -2312,8 +2666,7 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (message.Equals("!adventure off", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (Utils.checkIfUserIsOP(sender, channel, streamer, users) || sender.Equals(Utils.botMaker)
-                    || sender.Equals(streamer))
+            if (sender.Equals(Utils.botMaker) || sender.Equals(streamer) || mod)
             {
                 if (adventureToggle)
                 {
@@ -2339,9 +2692,7 @@ public class TwitchBot : INotifyPropertyChanged
                     }
                     else
                     {
-                        double timeLeft = Math.Abs(Math.Ceiling((Double)((DateTimeOffset.Now.ToUnixTimeMilliseconds()
-                                - (textAdventure.lastAdventure + (textAdventure.adventureCoolDown * 60000)))
-                                / 60000)));
+                        double timeLeft = Utils.getMinsRemaining(textAdventure.lastAdventure, textAdventure.adventureCoolDown);
                         if (timeLeft == 0.0)
                         {
                             timeLeft = 1.0;
@@ -2426,8 +2777,7 @@ public class TwitchBot : INotifyPropertyChanged
                 {
                     if (!startAdventureCustom)
                     {
-                        if (textAdventure.customGameStartByModOnly && !(Utils.checkIfUserIsOP(sender, channel, streamer, users) || sender.Equals(Utils.botMaker)
-                            || sender.Equals(streamer)))
+                        if (textAdventure.customGameStartByModOnly && !(sender.Equals(Utils.botMaker) || sender.Equals(streamer)))
                         {
                             return;
                         }
@@ -2435,11 +2785,11 @@ public class TwitchBot : INotifyPropertyChanged
                         String startMessage = textAdventure.customGameStartMessage;
                         if (startMessage.Contains("$user"))
                         {
-                            startMessage.Replace("$user", sender);
+                            startMessage = startMessage.Replace("$user", sender);
                         }
                         if (startMessage.Contains("$cost"))
                         {
-                            startMessage.Replace("$cost", textAdventure.customadventurejoincost.ToString());
+                            startMessage = startMessage.Replace("$cost", textAdventure.customadventurejoincost.ToString() + " " + currency.currencyName);
                         }
                         client.SendMessage(startMessage);
                         var t = new Thread(() => customAdventureThread(sender));
@@ -2480,8 +2830,7 @@ public class TwitchBot : INotifyPropertyChanged
         // Change Bot Color
         if (message.Trim().StartsWith("!botcolor ") || message.Trim().StartsWith("!colorbot "))
         {
-            if (Utils.checkIfUserIsOP(sender, channel, streamer, users) || sender.Equals(Utils.botMaker)
-                    || sender.Equals(streamer))
+            if (sender.Equals(Utils.botMaker) || sender.Equals(streamer) || mod)
             {
                 String[] colors = { "Blue", "BlueViolet", "CadetBlue", "Chocolate", "Coral", "DodgerBlue", "Firebrick",
                     "GoldenRod", "Green", "HotPink", "OrangeRed", "Red", "SeaGreen", "SpringGreen", "YellowGreen" };
@@ -2514,13 +2863,13 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Trim().ToLower().StartsWith("!removesong ")
                 || message.Trim().ToLower().StartsWith("!deletesong "))
         {
-            requestSystem.removeSongCOMMAND(sender, channel, streamer, users, message, temp);
+            requestSystem.removeSongCOMMAND(sender, channel, streamer, users, message, temp, e);
         }
 
         if (message.Trim().ToLower().StartsWith("!editcom !")
                 || message.Trim().ToLower().StartsWith("!updatecom !"))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+            if (sender.Equals(streamer) || mod
                     || sender.Equals(Utils.botMaker))
             {
                 String comm, response;
@@ -2553,7 +2902,7 @@ public class TwitchBot : INotifyPropertyChanged
         if (message.Trim().ToLower().StartsWith("!removecom !")
                 || message.Trim().ToLower().StartsWith("!deletecom !"))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+            if (sender.Equals(streamer) || mod
                     || sender.Equals(Utils.botMaker))
             {
                 String comm;
@@ -2583,7 +2932,7 @@ public class TwitchBot : INotifyPropertyChanged
 
         if (message.Trim().ToLower().StartsWith("!addcom !"))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
+            if (sender.Equals(streamer) || mod
                     || sender.Equals(Utils.botMaker))
             {
                 String comm, response;
@@ -2616,8 +2965,7 @@ public class TwitchBot : INotifyPropertyChanged
 
         if (message.Equals("!promote", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
-                    || sender.Equals(Utils.botMaker))
+            if (sender.Equals(streamer) || mod || sender.Equals(Utils.botMaker))
             {
                 client.SendMessage("To promote a user's song, type '!promote @user', " + sender + "!");
                 return;
@@ -2625,7 +2973,7 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (message.Trim().ToLower().StartsWith("!promote "))
         {
-            requestSystem.promoteSongCommand(sender, channel, streamer, users, message, noEmoteMessage);
+            requestSystem.promoteSongCommand(sender, channel, streamer, users, message, noEmoteMessage, e);
         }
 
         if (message.Trim().ToLower().Equals("!subcredits", StringComparison.InvariantCultureIgnoreCase))
@@ -2636,7 +2984,7 @@ public class TwitchBot : INotifyPropertyChanged
 
         if (message.Trim().ToLower().StartsWith("!givecredits"))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+            if (sender.Equals(streamer) || mod)
             {
                 if (message.Equals("!givecredits", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -2703,8 +3051,7 @@ public class TwitchBot : INotifyPropertyChanged
 
         if (message.Equals("!addfav", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users)
-                    || sender.Equals(Utils.botMaker))
+            if (sender.Equals(streamer) || mod || sender.Equals(Utils.botMaker))
             {
                 requestSystem.addCurrentSongToFavList();
                 return;
@@ -2736,7 +3083,7 @@ public class TwitchBot : INotifyPropertyChanged
                             {
                                 b.points -= rewardCommandList[i].costToUse;
                                 client.SendMessage(userVariables(rewardCommandList[i].output, channel, sender,
-                                    rewardCommandList[i].output, rewardCommandList[i].output, false));
+                                    rewardCommandList[i].output, rewardCommandList[i].output, false, e));
                                 return;
                             }
                             else
@@ -2751,7 +3098,7 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (message.Trim().ToLower().Equals("!modcoms", StringComparison.InvariantCultureIgnoreCase) || message.Trim().ToLower().Equals("!modcommands", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (sender.Equals(streamer) || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+            if (sender.Equals(streamer) || mod)
             {
                 client.SendMessage("Mod Command Guide: " + Utils.modCommandsLink);
                 return;
@@ -2802,8 +3149,8 @@ public class TwitchBot : INotifyPropertyChanged
     public String getRandomUser(String channel)
     {
         Random rand = new Random();
-        int index = rand.Next(Utils.getAllViewers(streamer).Count);
-        return Utils.getAllViewers(streamer)[index].ToString();
+        int index = rand.Next(getAllViewers(streamer).Count);
+        return getAllViewers(streamer)[index].ToString();
     }
 
     public void botInfoCOMMAND(String message, String channel, String sender)
@@ -2880,76 +3227,21 @@ public class TwitchBot : INotifyPropertyChanged
         }
     }
 
-    public Boolean checkUserLevelCustomCommands(String sender, int level, String channel)
+    public Boolean checkUserLevel(String sender, int level, String channel, OnMessageReceivedArgs e)
     {
-        int holder = 0;
-        if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
+        if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || level == 0 || sender.Equals(streamer))
         {
             return true;
         }
-        if (level == 0)
+        if (level == 1 && (e.ChatMessage.IsModerator || e.ChatMessage.IsSubscriber || sender.Equals(streamer)))
         {
             return true;
         }
-        if (sender.Equals(streamer))
+        if (level == 2 && e.ChatMessage.IsModerator)
         {
             return true;
         }
-        foreach (BotUser botUser in users)
-        {
-            if (botUser.username.Equals(sender, StringComparison.InvariantCultureIgnoreCase) && botUser.sub)
-            {
-                holder = 1;
-                break;
-            }
-        }
-        if (level <= holder)
-        {
-            return true;
-        }
-        if (Utils.checkIfUserIsOP(sender, channel, streamer, users))
-        {
-            holder = 2;
-        }
-        if (level <= holder)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean checkUserLevel(String sender, Command command, String channel)
-    {
-        int holder = 0;
-        if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase))
-        {
-            return true;
-        }
-        if (command.level == 0)
-        {
-            return true;
-        }
-        if (sender.Equals(streamer, StringComparison.InvariantCultureIgnoreCase))
-        {
-            return true;
-        }
-        foreach (BotUser botUser in users)
-        {
-            if (botUser.username.Equals(sender, StringComparison.InvariantCultureIgnoreCase) && botUser.sub)
-            {
-                holder = 1;
-                break;
-            }
-        }
-        if (command.level <= holder)
-        {
-            return true;
-        }
-        if (Utils.checkIfUserIsOP(sender, channel, streamer, users))
-        {
-            holder = 2;
-        }
-        if (command.level <= holder)
+        if (level == 4 && e.ChatMessage.IsSubscriber)
         {
             return true;
         }
@@ -2998,9 +3290,9 @@ public class TwitchBot : INotifyPropertyChanged
         }
     }
 
-    public void viewerCOMMAND(String message, String channel, String sender)
+    public void viewerCOMMAND(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
-        if (checkUserLevel(sender, getViewerComm, channel))
+        if (checkUserLevel(sender, getViewerComm.level, channel, e))
         {
             for (int i = 0; i < getViewerComm.input.Length; i++)
             {
@@ -3008,19 +3300,19 @@ public class TwitchBot : INotifyPropertyChanged
                 if (temp.Equals(getViewerComm.input[i]))
                 {
                     client.SendMessage("Current viewer count: "
-                            + Utils.getAllViewers(streamer).Count);
+                            + getAllViewers(streamer).Count);
                 }
             }
         }
     }
 
-    public void userCOMMANDS(String message, String channel, String sender)
+    public void userCOMMANDS(String message, String channel, String sender, OnMessageReceivedArgs e)
     {
         for (int i = 0; i < userCommandList.Count; i++)
         {
-            String temp = message.ToLower();
-            if (temp.StartsWith(userCommandList[i].input[0])
-                    && checkUserLevelCustomCommands(sender, userCommandList[i].level, channel))
+            String temp = message.ToLower() + " ";
+            if (temp.StartsWith(userCommandList[i].input[0] + " ")
+                    && checkUserLevel(sender, userCommandList[i].level, channel, e))
             {
                 BotUser b = getBotUser(sender);
                 if (userCommandList[i].costToUse == 0 || b.points >= userCommandList[i].costToUse)
@@ -3030,22 +3322,24 @@ public class TwitchBot : INotifyPropertyChanged
                         b.points -= userCommandList[i].costToUse;
                     }
                     client.SendMessage(userVariables(userCommandList[i].output, channel, sender,
-                        Utils.getFollowingText(message), message, false));
+                        Utils.getFollowingText(message), message, false, e));
+                    break;
                 }
             }
         }
         for (int i = 0; i < timerCommandList.Count; i++)
         {
-            String temp = message.ToLower();
-            if (temp.Equals(timerCommandList[i].input[0]))
+            String temp = message.ToLower() + " ";
+            if (temp.StartsWith(timerCommandList[i].input[0] + " "))
             {
                 client.SendMessage(userVariables(timerCommandList[i].output, channel, sender,
-                        Utils.getFollowingText(message), message, false));
+                        Utils.getFollowingText(message), message, false, e));
+                break;
             }
         }
     }
 
-    public String userVariables(String response, String channel, String sender, String followingText, String message, Boolean ev)
+    public String userVariables(String response, String channel, String sender, String followingText, String message, Boolean ev, OnMessageReceivedArgs e)
     {
         if (followingText.StartsWith("@"))
         {
@@ -3053,7 +3347,7 @@ public class TwitchBot : INotifyPropertyChanged
         }
         if (response.Contains("$viewers"))
         {
-            response = response.Replace("$viewers", Utils.getAllViewers(streamer).Count.ToString());
+            response = response.Replace("$viewers", getAllViewers(streamer).Count.ToString());
         }
         if (response.Contains("$user"))
         {
@@ -3076,10 +3370,10 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 response = response.Replace("$length", requestSystem.getNumberOfSongs());
             }
-            catch (IOException e)
+            catch (IOException e1)
             {
-                Utils.errorReport(e);
-                Console.WriteLine(e.ToString());
+                Utils.errorReport(e1);
+                Console.WriteLine(e1.ToString());
             }
         }
         if (response.Contains("$randomuser"))
@@ -3190,8 +3484,13 @@ public class TwitchBot : INotifyPropertyChanged
         {
             if ((message != followingText) || ev)
             {
-                if (sender.Equals(Utils.botMaker) || sender.Equals(streamer)
-                        || Utils.checkIfUserIsOP(sender, channel, streamer, users))
+                Boolean mod = false;
+                if (e != null)
+                {
+                    mod = e.ChatMessage.IsModerator;
+                }
+                if (sender.Equals(Utils.botMaker) || sender.Equals(streamer) || sender.Equals(botName)
+                        || mod)
                 {
                     String info = Utils.callURL("https://api.twitch.tv/kraken/channels/" + followingText);
                     var a = JsonConvert.DeserializeObject<dynamic>(info);
@@ -3517,7 +3816,7 @@ public class TwitchBot : INotifyPropertyChanged
 
     public Boolean checkIfUserIsHere(String user, String channel)
     {
-        foreach (String userName in Utils.getAllViewers(streamer))
+        foreach (String userName in getAllViewers(streamer))
         {
             if (user.Equals(userName))
             {
@@ -3531,13 +3830,17 @@ public class TwitchBot : INotifyPropertyChanged
     {
         String login = e.Username;
         writeToEventLog("JOIN: " + login);
+        if (!backupUsersInChat.Contains(login))
+        {
+            backupUsersInChat.Add(login);
+        }
         if (!containsUser(users, login))
         {
             users.Add(new BotUser(login, 0, false, false, false, 0, 0, null, 0, 0, 0));
         }
         if (events.ContainsKey(login))
         {
-            client.SendMessage(userVariables(events[login], channel, login, events[login], events[login], true));
+            client.SendMessage(userVariables(events[login], channel, login, events[login], events[login], true, null));
         }
     }
 

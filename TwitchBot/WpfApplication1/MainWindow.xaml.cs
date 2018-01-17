@@ -52,10 +52,10 @@ namespace WpfApplication1
                         else
                         {
                             String message = bot.userVariables(c.output, bot.channel, bot.streamer,
-                                    Utils.getFollowingText(c.output), c.output, false);
+                                    Utils.getFollowingText(c.output), c.output, false, null);
                             if (c.output.StartsWith("!"))
                             {
-                                bot.processMessage(bot.streamer, message, bot.streamer);
+                                bot.processMessage(null, message, bot.streamer);
                             }
                             else
                             {
@@ -1116,6 +1116,10 @@ namespace WpfApplication1
         public void colorChange_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as ComboBox;
+            if (cb.SelectedValue == null)
+            {
+                cb.SelectedIndex = 3;
+            }
             String color = cb.SelectedValue.ToString();
             int num = cb.SelectedIndex;
             color = color.Substring(color.IndexOf(":") + 1).Trim();
@@ -1154,6 +1158,10 @@ namespace WpfApplication1
         public void textColorChange_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as ComboBox;
+            if (cb.SelectedValue == null)
+            {
+                cb.SelectedIndex = 1;
+            }
             String color = cb.SelectedValue.ToString();
             color = color.Substring(color.IndexOf(":") + 1).Trim();
             SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
@@ -1202,6 +1210,10 @@ namespace WpfApplication1
         public void textblockcolor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as ComboBox;
+            if (cb.SelectedValue == null)
+            {
+                cb.SelectedIndex = 0;
+            }
             String color = cb.SelectedValue.ToString();
             color = color.Substring(color.IndexOf(":") + 1).Trim();
             SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
@@ -1242,6 +1254,10 @@ namespace WpfApplication1
         private void fontStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as ComboBox;
+            if (cb.SelectedValue == null)
+            {
+                cb.SelectedIndex = 0;
+            }
             String txt = cb.SelectedValue.ToString();
             txt = txt.Substring(txt.IndexOf(":") + 1).Trim();
             foreach (TextBox tb in FindLogicalChildren<TextBox>(this))
@@ -1261,6 +1277,10 @@ namespace WpfApplication1
         private void buttonColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = sender as ComboBox;
+            if (cb.SelectedValue == null)
+            {
+                cb.SelectedIndex = 0;
+            }
             String color = cb.SelectedValue.ToString();
             color = color.Substring(color.IndexOf(":") + 1).Trim();
             SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
@@ -1275,6 +1295,11 @@ namespace WpfApplication1
         
         private async void loaded(Object sender, RoutedEventArgs e)
         {
+            colorChange.SelectedIndex = 3;
+            textColorChange.SelectedIndex = 1;
+            textblockcolor.SelectedIndex = 0;
+            fontStyle.SelectedIndex = 0;
+            buttonColor.SelectedIndex = 0;
             if (File.Exists(Utils.readmeFile))
             {
                 readmetextbox.Text = File.ReadAllText(Utils.readmeFile);
@@ -1506,7 +1531,7 @@ namespace WpfApplication1
             if (messageBoxResult == MessageDialogResult.Affirmative)
             {
                 Thread.Sleep(1000);
-                bot.requestSystem.clearCOMMAND(bot.requestSystem.clearComm.input[0], bot.channel, bot.streamer);
+                bot.requestSystem.clearCOMMAND(bot.requestSystem.clearComm.input[0], bot.channel, bot.streamer, null);
                 writeToConfig(null, null);
             }
         }
@@ -2125,27 +2150,37 @@ namespace WpfApplication1
 
         private void sortSubsByUserName(object sender, RoutedEventArgs e)
         {
-            // TODO
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.username).ToList());
+            copyToSupporters();
+            writeToConfig(null, null);
         }
         
         private void sortSubsByBits(object sender, RoutedEventArgs e)
         {
-            // TODO
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.bitsDonated).ToList());
+            copyToSupporters();
+            writeToConfig(null, null);
         }
 
         private void sortSubsByMoney(object sender, RoutedEventArgs e)
         {
-            // TODO
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.moneyDonated).ToList());
+            copyToSupporters();
+            writeToConfig(null, null);
         }
 
         private void sortSubsByMonths(object sender, RoutedEventArgs e)
         {
-            // TODO
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.months).ToList());
+            copyToSupporters();
+            writeToConfig(null, null);
         }
 
         private void sortSubsBySubbed(object sender, RoutedEventArgs e)
         {
-            // TODO
+            bot.users = new List<BotUser>(bot.users.OrderBy(o => o.sub).ToList());
+            copyToSupporters();
+            writeToConfig(null, null);
         }
 
         public void copyToSupporters()

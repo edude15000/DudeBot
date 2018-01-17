@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TwitchLib.Events.Client;
 
 public class SoundEffect : INotifyPropertyChanged
 {
@@ -37,14 +38,14 @@ public class SoundEffect : INotifyPropertyChanged
     [JsonIgnore]
     public Dictionary<String, long> userCoolDowns { get; set; } = new Dictionary<String, long>();
 
-    public void sfxCOMMANDS(String message, String channel, BotUser b, List<Command> comList, TwitchBot bot)
+    public void sfxCOMMANDS(String message, String channel, BotUser b, List<Command> comList, TwitchBot bot, OnMessageReceivedArgs e)
     {
         for (int i = 0; i < comList.Count; i++)
         {
             String temp = message.ToLower();
             if (temp.StartsWith(comList[i].input[0]))
             {
-                if (!bot.checkUserLevel(b.username, comList[i], channel))
+                if (!bot.checkUserLevel(b.username, comList[i].level, channel, e))
                 {
                     return;
                 }

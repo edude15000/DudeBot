@@ -118,6 +118,21 @@ public class Currency : INotifyPropertyChanged
         get => VipRedeemCoolDownMinutes;
         set { SetField(ref VipRedeemCoolDownMinutes, value, nameof(vipRedeemCoolDownMinutes)); }
     }
+    [JsonIgnore]
+    public int VipRedeemCoolDownMinutesOverall = 0;
+    public int vipRedeemCoolDownMinutesOverall
+    {
+        get => VipRedeemCoolDownMinutesOverall;
+        set { SetField(ref VipRedeemCoolDownMinutesOverall, value, nameof(vipRedeemCoolDownMinutesOverall)); }
+    }
+    [JsonIgnore]
+    public int VipCooldownOverallTracker = 0;
+    [JsonIgnore]
+    public int vipCooldownOverallTracker
+    {
+        get => VipCooldownOverallTracker;
+        set { SetField(ref VipCooldownOverallTracker, value, nameof(vipCooldownOverallTracker)); }
+    }
     public Dictionary<String, Int32> ranks { get; set; } = new Dictionary<String, Int32>();
     [JsonIgnore]
     public List<BotUser> users;
@@ -254,7 +269,6 @@ public class Currency : INotifyPropertyChanged
     {
         try
         {
-            int points = 0;
             BotUser botUser;
             if ((botUser = getBotUser(user)) != null)
             {
@@ -269,10 +283,20 @@ public class Currency : INotifyPropertyChanged
                         return -1;
                     }
                 }
-                points = botUser.points;
-                if (points >= vipSongCost)
+                if (vipCooldownOverallTracker != 0)
                 {
-                    botUser.points = points - vipSongCost;
+                    if (vipCooldownOverallTracker + (vipRedeemCoolDownMinutesOverall * 60000) <= Environment.TickCount)
+                    {
+                        vipCooldownOverallTracker = 0;
+                    }
+                    else
+                    {
+                        return -2;
+                    }
+                }
+                if (botUser.points >= vipSongCost)
+                {
+                    botUser.points -= vipSongCost;
                     botUser.vipCoolDown = Environment.TickCount;
                     return 1;
                 }

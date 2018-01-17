@@ -17,37 +17,50 @@ public class YoutubeHandler
     
     public Video searchYoutubeByID(String videoId)
     {
-        var videoRequest = youtubeService.Videos.List("snippet,statistics,contentDetails");
-        videoRequest.Id = videoId;
-        VideoListResponse listResponse = videoRequest.Execute();
-        IList<Video> videoList = listResponse.Items;
-        return videoList[0];
+        try
+        {
+            var videoRequest = youtubeService.Videos.List("snippet,statistics,contentDetails");
+            videoRequest.Id = videoId;
+            VideoListResponse listResponse = videoRequest.Execute();
+            IList<Video> videoList = listResponse.Items;
+            return videoList[0];
+        }
+        catch (Exception)
+        {
+        }
+        return null;
     }
-    
+
     public Video searchYoutubeByTitle(String title, int maxDuration)
     {
-        var searchListRequest = youtubeService.Search.List("id,snippet");
-        title = title.Replace("-", "");
-        title = Regex.Replace(title, @"\(.*?\)", "");
-        title = Regex.Replace(title, @"\s{2,}", " ");
-        searchListRequest.Q = title;
-        searchListRequest.MaxResults = 2;
-        var searchListResponse = searchListRequest.Execute();
-        if (searchListResponse.Items[0] == null)
+        try
         {
-            return null;
-        }
-        String id = searchListResponse.Items[0].Id.VideoId;
-        Video vid = searchYoutubeByID(id);
-        if (Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > 2700 || Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > (maxDuration * 60))
-        {
-            if (searchListResponse.Items[1] == null)
+            var searchListRequest = youtubeService.Search.List("id,snippet");
+            title = title.Replace("-", "");
+            title = Regex.Replace(title, @"\(.*?\)", "");
+            title = Regex.Replace(title, @"\s{2,}", " ");
+            searchListRequest.Q = title;
+            searchListRequest.MaxResults = 2;
+            var searchListResponse = searchListRequest.Execute();
+            if (searchListResponse.Items[0] == null)
             {
                 return null;
             }
-            id = searchListResponse.Items[1].Id.VideoId;
+            String id = searchListResponse.Items[0].Id.VideoId;
+            Video vid = searchYoutubeByID(id);
+            if (Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > 2700 || Utils.getDurationOfVideoInSeconds(vid.ContentDetails.Duration) > (maxDuration * 60))
+            {
+                if (searchListResponse.Items[1] == null)
+                {
+                    return null;
+                }
+                id = searchListResponse.Items[1].Id.VideoId;
+            }
+            return searchYoutubeByID(id);
         }
-		return searchYoutubeByID(id);
+        catch (Exception)
+        {
+        }
+        return null;
     }
-    
 }

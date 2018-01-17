@@ -24,17 +24,14 @@ public class GoogleHandler
         using (var stream =
                 new FileStream(@"bin\client_secret.json", FileMode.Open, FileAccess.Read))
         {
-            string credPath = System.Environment.GetFolderPath(
-                System.Environment.SpecialFolder.Personal);
+            string credPath = Environment.GetFolderPath(
+                Environment.SpecialFolder.Personal);
             credPath = Path.Combine(credPath, ".credentials/sheets.googleapis.com-dotnet-quickstart.json");
-            
-
             credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleClientSecrets.Load(stream).Secrets,
                 Scopes,
                 "user",
                 CancellationToken.None
-                //new FileDataStore(credPath, true)
                 ).Result;
         }
 
@@ -126,6 +123,61 @@ public class GoogleHandler
             Debug.WriteLine(e.ToString());
         }
         return null;
+    }
+
+    public List<String> readColumnA(String setlistSheetID)
+    {
+        List<String> list = new List<String>();
+        try
+        {
+            ValueRange result = service.Spreadsheets.Values.Get(spreadsheetId, "A1:A10000").Execute();
+            foreach (IList<Object> str in result.Values)
+            {
+                if (str[0] != null)
+                {
+                    String s = str[0].ToString();
+                    if (s != null && s != "")
+                    {
+                        if (s.Length >= 8)
+                        {
+                            list.Add(s);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+        }
+        return list;
+    }
+
+    public List<String> readColumnAandB(String setlistSheetID)
+    {
+        List<String> list = new List<String>();
+        try
+        {
+            ValueRange result = service.Spreadsheets.Values.Get(spreadsheetId, "A1:B10000").Execute();
+            foreach (IList<Object> str in result.Values)
+            {
+                if (str[0] != null && str[1] != null) {
+                    String s = str[0].ToString();
+                    String s2 = str[1].ToString();
+                    if (s != null && s != "" && s2 != null && s2 != "")
+                    {
+                        if ((s + " " + s2).Length >= 8)
+                        {
+                            list.Add(s + " " + s2);
+                            list.Add(s2 + " " + s);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+        }
+        return list;
     }
 
     public void writeToGoogleSheets(Boolean updateAllSongs, ObservableCollection<Song> songs, List<String> songHistory)

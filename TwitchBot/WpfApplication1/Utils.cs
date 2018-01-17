@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using Newtonsoft.Json.Linq;
-using System.Linq;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Collections.ObjectModel;
 using NHunspell;
+using Newtonsoft.Json.Linq;
 
 public class Utils
 {
-    public static String version = "3.0.0"; // UPDATE AS NECESSARY
-    public static String releaseDate = "1/7/2018"; // UPDATE AS NECESSARY
+    public static String version = "3.1.0"; // UPDATE AS NECESSARY
+    public static String releaseDate = "1/17/2018"; // UPDATE AS NECESSARY
     public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
     public static String currentSongFile = @"bin\currentsong.txt";
@@ -29,6 +28,7 @@ public class Utils
     public static String cleverbotIOkey = "woNIQmZTDYfvm0uAg2QWyumoNfKjH37h";
     public static String modCommandsLink = "https://docs.google.com/document/d/1gc-Vabwssk6ekx3PpTVZvswmA5QEczX7WuKvnXX5AV0/edit?usp=sharing";
     public static String accuracyFile = @"bin\output\accuracy.txt";
+    public static String backupUserDataFile = Path.GetTempPath() + @"\userData.json";
 
     public static List<String> genericEmoteList = new List<String>
     {
@@ -146,6 +146,11 @@ public class Utils
         return str.ToLower();
     }
 
+    public static double getMinsRemaining(double tracker, double timeInMins)
+    {
+        return Math.Abs(Math.Ceiling(((DateTimeOffset.Now.ToUnixTimeMilliseconds() - (tracker + (timeInMins * 60000))) / 60000)));
+    }
+
     public static int getDurationOfVideoInSeconds(String time)
     {
         TimeSpan youTubeDuration = System.Xml.XmlConvert.ToTimeSpan(time);
@@ -190,6 +195,23 @@ public class Utils
             StreamReader r = new StreamReader(userDataFile);
             string json = r.ReadToEnd();
             r.Close();
+            try
+            {
+                JContainer.Parse(json);
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    r = new StreamReader(backupUserDataFile);
+                    json = r.ReadToEnd();
+                    r.Close();
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
             return JsonConvert.DeserializeObject<TwitchBot>(json);
         }
         catch (Exception e)
@@ -199,16 +221,35 @@ public class Utils
         }
         return null;
     }
-
+    
     public static void saveData(TwitchBot twitchBot)
     {
+        StreamWriter sw = new StreamWriter(userDataFile);
         try
         {
             string json = JsonConvert.SerializeObject(twitchBot, Formatting.Indented);
-            StreamWriter sw = new StreamWriter(userDataFile);
+            try
+            {
+                JContainer.Parse(json);
+            }
+            catch (Exception)
+            {
+                StreamReader r = new StreamReader(backupUserDataFile);
+                json = r.ReadToEnd();
+                r.Close();
+                sw.Write(json);
+                sw.Close();
+                saveSongs(twitchBot.requestSystem.songList);
+                return;
+            }
             sw.Write(json);
             sw.Close();
             saveSongs(twitchBot.requestSystem.songList);
+            if (File.Exists(backupUserDataFile))
+            {
+                File.Delete(backupUserDataFile);
+            }
+            copyFile(userDataFile, backupUserDataFile);
         }
         catch (Exception)
         {
@@ -216,10 +257,14 @@ public class Utils
             try
             {
                 string json = JsonConvert.SerializeObject(twitchBot, Formatting.Indented);
-                StreamWriter sw = new StreamWriter(userDataFile);
                 sw.Write(json);
                 sw.Close();
                 saveSongs(twitchBot.requestSystem.songList);
+                if (File.Exists(backupUserDataFile))
+                {
+                    File.Delete(backupUserDataFile);
+                }
+                copyFile(userDataFile, backupUserDataFile);
             }
             catch (Exception e)
             {
@@ -237,7 +282,7 @@ public class Utils
         }
         catch (IOException e)
         {
-            Utils.errorReport(e);
+            errorReport(e);
             Debug.WriteLine(e.ToString());
         }
     }
@@ -483,38 +528,6 @@ public class Utils
         Random rand = new Random();
         return rand.Next(x);
     }
-
-    public static Boolean checkIfUserIsOP(String user, String channel, String streamer, List<BotUser> users)
-    {
-        foreach (BotUser u in users)
-        {
-            if (u.username.Equals(user, StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (u.mod == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    String info = callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
-                    try
-                    {
-                        String info2 = info.Substring(info.IndexOf('['), info.IndexOf(']'));
-                        if (info2.Contains(user))
-                        {
-                            u.mod = true;
-                            return true;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        return false;
-    }
     
     public static String callURL(String uri)
     {
@@ -545,89 +558,7 @@ public class Utils
             return "";
         }
     }
-
-    public static List<String> getAllViewers(String streamer)
-    {
-        List<String> users = new List<String>();
-        String info = callURL("http://tmi.twitch.tv/group/user/" + streamer + "/chatters");
-        try
-        {
-            var a = JsonConvert.DeserializeObject<dynamic>(info);
-            a = a["chatters"];
-            JArray viewers = a["viewers"];
-            JArray staff = a["staff"];
-            JArray admins = a["admins"];
-            JArray global_mods = a["global_mods"];
-            JArray moderators = a["moderators"];
-            if (moderators != null)
-            {
-                int len = moderators.Count;
-                String[] items = moderators.Select(jv => (String)jv).ToArray();
-                for (int i = 0; i < len; i++)
-                {
-                    if (!users.Contains(items[i]))
-                    {
-                        users.Add(items[i].ToString());
-                    }
-                }
-            }
-            if (viewers != null)
-            {
-                int len = viewers.Count;
-                String[] items = viewers.Select(jv => (String)jv).ToArray();
-                for (int i = 0; i < len; i++)
-                {
-                    if (!users.Contains(items[i]))
-                    {
-                        users.Add(items[i].ToString());
-                    }
-                }
-            }
-            if (staff != null)
-            {
-                int len = staff.Count;
-                String[] items = staff.Select(jv => (String)jv).ToArray();
-                for (int i = 0; i < len; i++)
-                {
-                    if (!users.Contains(items[i]))
-                    {
-                        users.Add(items[i].ToString());
-                    }
-                }
-            }
-            if (admins != null)
-            {
-                int len = admins.Count;
-                String[] items = admins.Select(jv => (String)jv).ToArray();
-                for (int i = 0; i < len; i++)
-                {
-                    if (!users.Contains(items[i]))
-                    {
-                        users.Add(items[i].ToString());
-                    }
-                }
-            }
-            if (global_mods != null)
-            {
-                int len = global_mods.Count;
-                String[] items = global_mods.Select(jv => (String)jv).ToArray();
-                for (int i = 0; i < len; i++)
-                {
-                    if (!users.Contains(items[i]))
-                    {
-                        users.Add(items[i].ToString());
-                    }
-                }
-            }
-        }
-        catch (Exception e1)
-        {
-            errorReport(e1);
-            Debug.WriteLine(e1.ToString());
-        }
-        return users;
-    }
-
+    
     public static String getFollowingText(String message)
     {
         return message.Substring(message.IndexOf(" ") + 1);
