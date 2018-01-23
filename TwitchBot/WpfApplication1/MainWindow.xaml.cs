@@ -236,7 +236,72 @@ namespace WpfApplication1
                 await this.ShowMessageAsync("Warning", "Please enter the override input and output!");
             }
         }
-        
+
+        public async void addscenario(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(editAdventureName.Text) && !string.IsNullOrWhiteSpace(editAdventureStartMessage.Text) && 
+                !string.IsNullOrWhiteSpace(editAdventureEveryoneLosesMessage.Text) && !string.IsNullOrWhiteSpace(editAdventureOneWinnerMessage.Text) &&
+                !string.IsNullOrWhiteSpace(editAdventureMultipleWinnersMessage.Text))
+            {
+                foreach (AdventureScenario c in bot.adventureScenarioList)
+                {
+                    if (c.name.Equals(editAdventureName.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        c.startMessage = editAdventureStartMessage.Text;
+                        c.allLosersMessage = editAdventureEveryoneLosesMessage.Text;
+                        c.oneWinnerMessage = editAdventureOneWinnerMessage.Text;
+                        c.multipleWinnersMessage = editAdventureMultipleWinnersMessage.Text;
+                        editAdventureName.Text = "";
+                        editAdventureStartMessage.Text = "";
+                        editAdventureEveryoneLosesMessage.Text = "";
+                        editAdventureOneWinnerMessage.Text = "";
+                        editAdventureMultipleWinnersMessage.Text = "";
+                        writeToConfig(null, null);
+                        return;
+                    }
+                }
+                AdventureScenario d = new AdventureScenario(editAdventureName.Text, editAdventureStartMessage.Text, editAdventureEveryoneLosesMessage.Text, 
+                    editAdventureOneWinnerMessage.Text, editAdventureMultipleWinnersMessage.Text);
+                bot.adventureScenarioList.Add(d);
+                editAdventureName.Text = "";
+                editAdventureStartMessage.Text = "";
+                editAdventureEveryoneLosesMessage.Text = "";
+                editAdventureOneWinnerMessage.Text = "";
+                editAdventureMultipleWinnersMessage.Text = "";
+                writeToConfig(null, null);
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "Please enter all of the scenario information!");
+            }
+        }
+
+        public async void removescenario(Object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(formatCommand(editAdventureName.Text)))
+            {
+                foreach (AdventureScenario c in bot.adventureScenarioList)
+                {
+                    if (c.name.Equals(editAdventureName.Text, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        bot.adventureScenarioList.Remove(c);
+                        writeToConfig(null, null);
+                        break;
+                    }
+                }
+                editAdventureName.Text = "";
+                editAdventureStartMessage.Text = "";
+                editAdventureEveryoneLosesMessage.Text = "";
+                editAdventureOneWinnerMessage.Text = "";
+                editAdventureMultipleWinnersMessage.Text = "";
+                writeToConfig(null, null);
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "To delete or edit a scenario, click on it in the box and then press the desired button!");
+            }
+        }
+
         public async void addreward(Object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(formatCommand(editRewardName.Text)))
@@ -446,6 +511,8 @@ namespace WpfApplication1
                 await this.ShowMessageAsync("Warning", "Please enter the song!");
             }
         }
+
+
         
         [STAThread]
         public void playSound(Object sender, RoutedEventArgs e)
@@ -1705,7 +1772,19 @@ namespace WpfApplication1
             Application.Current.Shutdown();
             Environment.Exit(0);
         }
-        
+
+        private void editScenarioButtonClick(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = (sender as TextBlock);
+            object datacontext = textBlock.DataContext;
+            AdventureScenario c = (AdventureScenario)datacontext;
+            editAdventureStartMessage.Text = c.startMessage;
+            editAdventureEveryoneLosesMessage.Text = c.allLosersMessage;
+            editAdventureOneWinnerMessage.Text = c.oneWinnerMessage;
+            editAdventureMultipleWinnersMessage.Text = c.multipleWinnersMessage;
+            editAdventureName.Text = c.name;
+        }
+
         private void editCommandButtonClick(object sender, MouseButtonEventArgs e)
         {
             TextBlock textBlock = (sender as TextBlock);

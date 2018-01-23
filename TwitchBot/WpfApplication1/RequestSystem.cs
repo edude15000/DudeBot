@@ -119,6 +119,13 @@ public class RequestSystem : INotifyPropertyChanged
         set { SetField(ref FormattedTotalTime, value, nameof(formattedTotalTime)); }
     }
     [JsonIgnore]
+    public Boolean OnlyDisplayLinkList = false;
+    public Boolean onlyDisplayLinkList
+    {
+        get => OnlyDisplayLinkList;
+        set { SetField(ref OnlyDisplayLinkList, value, nameof(onlyDisplayLinkList)); }
+    }
+    [JsonIgnore]
     public int SongListLength = 0;
     public int songListLength
     {
@@ -321,6 +328,13 @@ public class RequestSystem : INotifyPropertyChanged
     {
         get => SongsPlayedTotal;
         set { SetField(ref SongsPlayedTotal, value, nameof(songsPlayedTotal)); }
+    }
+    [JsonIgnore]
+    public int RegSongCost = 0;
+    public int regSongCost
+    {
+        get => RegSongCost;
+        set { SetField(ref RegSongCost, value, nameof(regSongCost)); }
     }
     [JsonIgnore]
     public Boolean CheckCustomsForge = false;
@@ -701,7 +715,7 @@ public class RequestSystem : INotifyPropertyChanged
         return true;
     }
 
-    public Boolean addSongToList(String song, String requestedby, String level, int place, String noEmoteMessage, Boolean checkCF)
+    public Boolean addSongToList(String song, String requestedby, String level, int place, String noEmoteMessage, Boolean checkCF, Boolean costsPoints)
     {
         CDLCEntry entry = null;
         Song s = new Song(song, requestedby, level, bot);
@@ -825,6 +839,19 @@ public class RequestSystem : INotifyPropertyChanged
                         + googleSheetSetlistId + " and try requesting again, " + requestedby + "!");
                     return false;
                 }
+            }
+        }
+        if (costsPoints)
+        {
+            BotUser sender = bot.getBotUser(requestedby);
+            if (sender != null && sender.points >= regSongCost)
+            {
+                sender.points -= regSongCost;
+            }
+            else
+            {
+                bot.client.SendMessage("You need at least " + regSongCost + " " + bot.currency.currencyName + " to request a song, " + sender.username + "!");
+                return false;
             }
         }
         if (place < 0)
@@ -1080,11 +1107,11 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true);
+            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            if (addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true))
+            if (addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false))
             {
                 songList[0].level = "$$$";
             }
@@ -1099,7 +1126,7 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 if (!songList[i].level.Equals("$$$"))
                 {
-                    if (addSongToList(song, requestedby, "$$$", i, noEmoteMessage, true))
+                    if (addSongToList(song, requestedby, "$$$", i, noEmoteMessage, true, false))
                     {
                         songList[0].level = "$$$";
                     }
@@ -1107,7 +1134,7 @@ public class RequestSystem : INotifyPropertyChanged
                     return;
                 }
             }
-            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true);
+            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false);
         }
         writeToCurrentSong(bot.channel, true);
     }
@@ -1203,7 +1230,66 @@ public class RequestSystem : INotifyPropertyChanged
                     }
                 }
                 String previousSong = songList[i].name;
-                if (addSongToList(Utils.getFollowingText(message), sender, songList[i].level, songList[i].index, noEmoteMessage, true))
+                String input = Utils.getFollowingText(message);
+                String youtubeID = null;
+                Video ytvid = null;
+                try
+                {
+                    if (message.Contains("www.") || message.Contains("http://") || message.Contains("http://www.")
+                            || message.Contains(".com") || message.Contains("https://"))
+                    {
+                        if (message.Contains("www.youtube.com/watch?v=")
+                                || message.Contains("www.youtube.com/watch?v="))
+                        {
+                            youtubeID = message.Substring(message.IndexOf("=") + 1);
+                            try
+                            {
+                                ytvid = bot.youtube.searchYoutubeByID(youtubeID);
+                                if (ytvid == null)
+                                {
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
+                                    return;
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                bot.client.SendMessage("Invalid youtube URL, " + sender);
+                                return;
+                            }
+                        }
+                        else if (message.Contains("https://youtu.be/"))
+                        {
+                            youtubeID = message.Substring(message.LastIndexOf("/") + 1);
+                            try
+                            {
+                                ytvid = bot.youtube.searchYoutubeByID(youtubeID);
+                                if (ytvid == null)
+                                {
+                                    bot.client.SendMessage("Invalid youtube URL, " + sender);
+                                    return;
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                bot.client.SendMessage("Invalid youtube URL, " + sender);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            bot.client.SendMessage("Invalid Request, " + sender);
+                            return;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                }
+                if (ytvid != null)
+                {
+                    input = ytvid.Snippet.Title;
+                }
+                if (addSongToList(input, sender, songList[i].level, songList[i].index, noEmoteMessage, true, false))
                 {
                     songList.Remove(songList[i]);
                     bot.client.SendMessage("Your next request '" + previousSong
@@ -1548,6 +1634,15 @@ public class RequestSystem : INotifyPropertyChanged
                     {
                         clear(channel, Utils.songListFile);
                         clear(channel, Utils.songListTextFile);
+                        if (regSongCost > 0) {
+                            for (int j = 1; j < songList.Count; j++)
+                            {
+                                if (songList[i].level.Equals("")) {
+                                    BotUser u = bot.getBotUser(songList[i].requester);
+                                    u.points += regSongCost;
+                                }
+                            }
+                        }
                         songList.Clear();
                         bot.client.SendMessage("Song list has been cleared!");
                         writeToCurrentSong(channel, false);
@@ -1959,6 +2054,12 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     try
                     {
+                        if (OnlyDisplayLinkList)
+                        {
+                            bot.client.SendMessage("The full setlist can be found here: https://docs.google.com/spreadsheets/d/"
+                                   + bot.spreadsheetId);
+                            return;
+                        }
                         if (Int32.Parse(getNumberOfSongs()) == 0)
                         {
                             bot.client.SendMessage("The song list is empty!");
@@ -2084,6 +2185,10 @@ public class RequestSystem : INotifyPropertyChanged
                             {
                                 youtubeID = message.Substring(message.IndexOf("=") + 1);
                             }
+                            if (youtubeID.Contains("&"))
+                            {
+                                youtubeID = youtubeID.Substring(0, youtubeID.IndexOf("&"));
+                            }
                             try
                             {
                                 ytvid = bot.youtube.searchYoutubeByID(youtubeID);
@@ -2132,7 +2237,11 @@ public class RequestSystem : INotifyPropertyChanged
                                     Boolean check = true;
                                     if (!checkIfUserAlreadyHasSong(sender))
                                     {
-                                        if (mustFollowToRequest && !e.ChatMessage.IsModerator && !sender.Equals(Utils.botMaker))
+                                        if (sender.Equals(bot.streamer) || sender.Equals(Utils.botMaker))
+                                        {
+                                            check = true;
+                                        }
+                                        else if (mustFollowToRequest && !e.ChatMessage.IsModerator && !sender.Equals(Utils.botMaker))
                                         {
                                             bot.checkAtBeginningAsync(false);
                                             BotUser u = bot.getBotUser(sender);
@@ -2424,7 +2533,7 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if ((Int32.Parse(getNumberOfSongs()) == 0))
         {
-            if (addSongToList(newSong, sender, "", -1, noEmoteMessage, true))
+            if (addSongToList(newSong, sender, "", -1, noEmoteMessage, true, false))
             {
                 bot.client.SendMessage("Since there are no songs in the song list, song '" + newSong
                         + "' has been added to the song list, " + sender + "!");
@@ -2468,12 +2577,13 @@ public class RequestSystem : INotifyPropertyChanged
             try
             {
                 number = Int32.Parse(Utils.getFollowingText(message));
+                number -= 1;
                 if (Int32.Parse(getNumberOfSongs()) == 0)
                 {
                     bot.client.SendMessage("The song list is empty, " + sender + "!");
                     return;
                 }
-                if (Int32.Parse(getNumberOfSongs()) < number || number == 0)
+                if (Int32.Parse(getNumberOfSongs()) <= number || number < 0)
                 {
                     bot.client.SendMessage("Song #" + number + " does not exist, " + sender + "!");
                     return;
@@ -2484,7 +2594,9 @@ public class RequestSystem : INotifyPropertyChanged
                 bot.client.SendMessage("To remove a song, it must be in the form '!removesong #'");
                 return;
             }
+            String s = songList[number].name;
             songList.RemoveAt(number);
+            bot.client.SendMessage("Song #" + (number + 1) + ", '" + s + "' has been removed from the queue, " + sender + "!");
             return;
         }
     }
@@ -2522,6 +2634,11 @@ public class RequestSystem : INotifyPropertyChanged
                     {
                         songList.RemoveAt(j);
                         bot.requestSystem.addVip(channel, s.name, user, noEmoteMessage);
+                        BotUser u = bot.getBotUser(user);
+                        if (u != null)
+                        {
+                            u.points += regSongCost;
+                        }
                         bot.client.SendMessage("Song '" + s.name + "' has been promoted to VIP, "
                                 + sender + "!");
                         return;
@@ -2536,10 +2653,23 @@ public class RequestSystem : INotifyPropertyChanged
 
     public void addSong(String channel, String song, String requestedby, String noEmoteMessage)
     {
-        if (addSongToList(song, requestedby, "", -1, noEmoteMessage, true))
+        Boolean costs = false;
+        if (regSongCost > 0)
         {
-            bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
-                    + requestedby + "!");
+            costs = true;
+        }
+        if (addSongToList(song, requestedby, "", -1, noEmoteMessage, true, costs))
+        {
+            if (costs)
+            {
+                bot.client.SendMessage(requestedby + " has cashed in " + regSongCost + " " + bot.currency.currencyName + " and the song '" + song + 
+                    "' has been added to the song list!");
+            }
+            else
+            {
+                bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
+                        + requestedby + "!");
+            }
             bot.addUserRequestAmount(requestedby, true);
             writeToCurrentSong(channel, false);
         }
@@ -2554,18 +2684,18 @@ public class RequestSystem : INotifyPropertyChanged
         }
         if (place >= songList.Count)
         {
-            addSongToList(song, requestedby, "", -1, noEmoteMessage, checkCF);
+            addSongToList(song, requestedby, "", -1, noEmoteMessage, checkCF, false);
         }
         else
         {
-            addSongToList(song, requestedby, "", place, noEmoteMessage, checkCF);
+            addSongToList(song, requestedby, "", place, noEmoteMessage, checkCF, false);
         }
         writeToCurrentSong(bot.channel, true);
     }
 
     public void addTop(String channel, String song, String requestedby, String noEmoteMessage)
     {
-        addSongToList(song, requestedby, "$$$", 0, noEmoteMessage, true);
+        addSongToList(song, requestedby, "$$$", 0, noEmoteMessage, true, false);
         writeToCurrentSong(bot.channel, true);
     }
 
@@ -2573,11 +2703,11 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            addSongToList(song, requestedby, "VIP", 0, noEmoteMessage, true);
+            addSongToList(song, requestedby, "VIP", 0, noEmoteMessage, true, false);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            if (addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true))
+            if (addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true, false))
             {
                 songList[0].level = "VIP";
             }
@@ -2593,12 +2723,12 @@ public class RequestSystem : INotifyPropertyChanged
                 Song s = songList[i];
                 if (s.level.Equals(""))
                 {
-                    addSongToList(song, requestedby, "VIP", i, noEmoteMessage, true);
+                    addSongToList(song, requestedby, "VIP", i, noEmoteMessage, true, false);
                     writeToCurrentSong(bot.channel, true);
                     return;
                 }
             }
-            addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true);
+            addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true, false);
         }
         writeToCurrentSong(bot.channel, true);
     }

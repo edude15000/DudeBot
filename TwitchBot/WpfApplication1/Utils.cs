@@ -11,8 +11,8 @@ using Newtonsoft.Json.Linq;
 
 public class Utils
 {
-    public static String version = "3.1.0"; // UPDATE AS NECESSARY
-    public static String releaseDate = "1/17/2018"; // UPDATE AS NECESSARY
+    public static String version = "3.1.2"; // UPDATE AS NECESSARY
+    public static String releaseDate = "1/22/2018"; // UPDATE AS NECESSARY
     public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
     public static String currentSongFile = @"bin\currentsong.txt";

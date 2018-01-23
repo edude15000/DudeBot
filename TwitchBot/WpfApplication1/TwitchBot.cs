@@ -454,6 +454,13 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref CommandList, value, nameof(commandList)); }
     }
     [JsonIgnore]
+    public List<AdventureScenario> AdventureScenarioList = new List<AdventureScenario>();
+    public List<AdventureScenario> adventureScenarioList
+    {
+        get => AdventureScenarioList;
+        set { SetField(ref AdventureScenarioList, value, nameof(adventureScenarioList)); }
+    }
+    [JsonIgnore]
     public List<BotUser> Users = new List<BotUser>();
     public List<BotUser> users
     {
@@ -589,7 +596,7 @@ public class TwitchBot : INotifyPropertyChanged
             setClasses();
             Console.WriteLine("DudeBot Version: " + Utils.version + " Release Date: " + Utils.releaseDate);
             writeToEventLog("DudeBot Version: " + Utils.version + "\nRelease Date: " + Utils.releaseDate);
-            textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000);
+            textAdventure.startAdventuring(new List<String>(), (int)textAdventure.adventureStartTime * 1000, adventureScenarioList);
             textAdventure.startAdventuringCustom(new List<String>(), textAdventure.customadventurejointime * 1000);
             resetAllCommands();
             threads();
@@ -898,6 +905,11 @@ public class TwitchBot : INotifyPropertyChanged
                 requestSystem.songList.RemoveAt(j);
                 requestSystem.addVip(channel, s.name, user, null);
                 client.SendMessage("Song '" + s.name + "' has been promoted to VIP, " + user + "!");
+                BotUser u = getBotUser(user);
+                if (u != null)
+                {
+                    u.points += requestSystem.regSongCost;
+                }
                 return;
             }
         }
@@ -1137,7 +1149,10 @@ public class TwitchBot : INotifyPropertyChanged
         {
             googleCustomSetlist = new GoogleHandler(requestSystem.googleSheetSetlistId);
         }
-        textAdventure.setUpText();
+        if (adventureScenarioList.Count == 0)
+        {
+            adventureScenarioList = textAdventure.stockAdventures();
+        }
         requestSystem.formattedTotalTime = requestSystem.formatTotalTime();
         requestSystem.songListLength = requestSystem.songList.Count;
         requestSystem.songsPlayedThisStream = 0;
@@ -1971,7 +1986,70 @@ public class TwitchBot : INotifyPropertyChanged
             }
             return;
         }
-        if (message.ToLower().StartsWith("!vipsong") && !message.ToLower().Equals("!vipsong", StringComparison.InvariantCultureIgnoreCase))
+
+        if (message.ToLower().Equals("!vipsong", StringComparison.InvariantCultureIgnoreCase))
+        {
+            if (currency.toggle)
+            {
+                if (currency.vipSongToggle)
+                {
+                    try
+                    {
+                        Song song = null;
+                        foreach (Song s in requestSystem.songList)
+                        {
+                            if (s.requester.Equals(sender, StringComparison.InvariantCultureIgnoreCase) && s.level.Equals(""))
+                            {
+                                song = s;
+                                break;
+                            }
+                        }
+                        if (song == null)
+                        {
+                            client.SendMessage("You can promote your next song in the queue to a VIP song by typing '!vipsong', " +
+                                "or you can request a new VIP song by typing '!vipsong artist - song'. A VIP song costs " + currency.vipSongCost
+                                    + " " + currency.currencyName + " to redeem, " + sender + "!");
+                            return;
+                        }
+                        int option = currency.vipsong(sender);
+                        if (option == 1)
+                        {
+                            requestSystem.songList.Remove(song);
+                            requestSystem.addVip(channel, song.name, sender, noEmoteMessage);
+                            client.SendMessage(sender + " cashed in " + currency.vipSongCost
+                                    + " " + currency.currencyName + " to upgrade their next song '" + song.name + "' to a VIP song!");
+                        }
+                        else if (option == 0)
+                        {
+                            client.SendMessage("You need " + currency.vipSongCost + " "
+                                    + currency.currencyName + " to buy a VIP song, " + sender + "!");
+                        }
+                        else if (option == -1)
+                        {
+                            client.SendMessage("You may redeem a VIP song once every "
+                                    + currency.vipRedeemCoolDownMinutes + " minutes, " + sender + "!");
+                        }
+                        else if (option == -2)
+                        {
+                            double timeLeft = Utils.getMinsRemaining(currency.vipCooldownOverallTracker, currency.vipRedeemCoolDownMinutesOverall);
+                            client.SendMessage("The VIP redeem command is on cooldown, please wait " + timeLeft + " minutes, " + sender + "!");
+                        }
+                    }
+                    catch (Exception e1)
+                    {
+                        Utils.errorReport(e1);
+                        Console.WriteLine(e1.ToString());
+                    }
+                }
+                else
+                {
+                    client.SendMessage("VIP Songs are currently turned off, " + sender + "!");
+                }
+                return;
+            }
+        }
+
+        if (message.ToLower().StartsWith("!vipsong"))
         {
             if (currency.toggle)
             {
@@ -2715,7 +2793,11 @@ public class TwitchBot : INotifyPropertyChanged
                     if (!startAdventure)
                     {
                         startAdventure = true;
-                        client.SendMessage(textAdventure.getText().Replace("$user", sender)
+                        if (textAdventure.choice == null)
+                        { 
+                            return;
+                        }
+                        client.SendMessage(textAdventure.choice.startMessage.Replace("$user", sender)
                             + " Type '!adventure' or '!join' to join!");
                         var t = new Thread(() => adventureThread(sender));
                         t.Start();
@@ -2762,12 +2844,12 @@ public class TwitchBot : INotifyPropertyChanged
                         }
                         if (timeLeft == 1.0)
                         {
-                            client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
+                            client.SendMessage("We must prepare ourselves before another " + textAdventure.customGameCommand.Replace("!", "") + ". Please try again in "
                             + timeLeft + " minute, " + sender + "!");
                         }
                         else
                         {
-                            client.SendMessage("We must prepare ourselves before another adventure. Please try again in "
+                            client.SendMessage("We must prepare ourselves before another " + textAdventure.customGameCommand.Replace("!", "") + ". Please try again in "
                             + timeLeft + " minutes, " + sender + "!");
                         }
                         return;
@@ -3229,7 +3311,7 @@ public class TwitchBot : INotifyPropertyChanged
 
     public Boolean checkUserLevel(String sender, int level, String channel, OnMessageReceivedArgs e)
     {
-        if (sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) || level == 0 || sender.Equals(streamer))
+        if (level == 0 || sender.Equals(streamer))
         {
             return true;
         }

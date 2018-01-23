@@ -237,6 +237,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AdventureScenario.cs" />
     <Compile Include="CDLCEntry.cs" />
     <Compile Include="CDLCEntryList.cs" />
     <Compile Include="CDLCFlags.cs" />

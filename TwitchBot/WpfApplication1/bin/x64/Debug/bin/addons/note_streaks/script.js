@@ -21,7 +21,7 @@ function refresh() {
 	}
 
 	//JSON query the addon service
-	$.getJSON("http://localhost:9938", function(data) {
+	$.getJSON("http://127.0.0.1:9938", function(data) {
 		//If data was successfully gotten
 		if(data.success) {
 			//Get memory readout
@@ -64,7 +64,7 @@ function showPopup(streak) {
 	if(streak == 0) return;
 
 	//Set the text and make it visible
-	$("h1.streak").text(streak+" NOTE STREAK!").css("display","block").css("animation-name","popup-animation-rainbow");
+	$("h1.streak").text(streak+" NOTE STREAK!").css("display","block").css("animation-name","popup-animation"+(streak > 100 ? "-rainbow" : ""));
 
 	//Allow re-showing after 3.5 seconds (animation duration + 500ms)
 	setTimeout(function() {

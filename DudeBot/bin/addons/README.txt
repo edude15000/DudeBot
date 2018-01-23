@@ -77,4 +77,4 @@ $.getJSON("http://localhost:9938", function(data) {
 
 	//songDetails.numArrangements (int)
 	//The number of arrangements the song has
-}, "json");
+});

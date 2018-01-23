@@ -190,6 +190,11 @@
                                     </StackPanel>
 
                                     <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                        <TextBlock FontSize="14" Text="Only display Google Sheets link " />
+                                        <CheckBox x:Name="onlyDisplayLinkList" VerticalAlignment="Center" FontSize="14" IsChecked="{Binding requestSystem.onlyDisplayLinkList, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
                                         <TextBlock FontSize="14" Text="Whispers to requester " />
                                         <CheckBox x:Name="whisperCheckbox" VerticalAlignment="Center" FontSize="14" IsChecked="{Binding requestSystem.whisperToUser, UpdateSourceTrigger=PropertyChanged}"/>
                                     </StackPanel>
@@ -1486,55 +1491,83 @@
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
                             <Border Padding="10 0 10 0">
                                 <StackPanel>
-                                    
-                                    <StackPanel Orientation="Horizontal">
+
+                                    <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
                                         <TextBlock FontSize="20" FontWeight="Bold" Text="Currency System " />
                                         <CheckBox VerticalAlignment="Center" x:Name="currencyToggle" FontSize="14" Checked="currency_changed" Unchecked="currency_changed" IsChecked="{Binding currency.toggle, UpdateSourceTrigger=PropertyChanged}"/>
                                     </StackPanel>
 
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Currency Name" />
-                                    <TextBox x:Name="currencyName" FontSize="14" Text="{Binding currency.currencyName, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GroupBox  Header="Currency Settings">
+                                        <StackPanel>
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Currency Name" />
+                                            <TextBox x:Name="currencyName" FontSize="14" Text="{Binding currency.currencyName, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Command Command" />
-                                    <TextBox x:Name="currencyCommand" FontSize="14" Text="{Binding currency.currencyCommand, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Command Command" />
+                                            <TextBox x:Name="currencyCommand" FontSize="14" Text="{Binding currency.currencyCommand, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Payout per minute (Viewers)" />
-                                    <Controls:NumericUpDown x:Name="currencyPerMinute" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.currencyPerMinute, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Payout per minute (Viewers)" />
+                                            <Controls:NumericUpDown x:Name="currencyPerMinute" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.currencyPerMinute, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Payout per minute (Subs)" />
-                                    <Controls:NumericUpDown x:Name="currencyPerMinuteSubs" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.currencyPerMinuteSubs, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Payout per minute (Subs)" />
+                                            <Controls:NumericUpDown x:Name="currencyPerMinuteSubs" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.currencyPerMinuteSubs, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center" FontSize="14" Text="Gamble on / off " />
-                                        <CheckBox x:Name="gambleToggle" VerticalAlignment="Center" FontSize="14" Checked="gamble_changed" Unchecked="gamble_changed" IsChecked="{Binding currency.gambleToggle, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
+
+                                    <GroupBox  Header="Gambling Settings">
+                                        <StackPanel>
+
+                                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" FontSize="14" Text="Gamble on / off " />
+                                                <CheckBox x:Name="gambleToggle" VerticalAlignment="Center" FontSize="14" Checked="gamble_changed" Unchecked="gamble_changed" IsChecked="{Binding currency.gambleToggle, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Max Gamble" />
+                                            <Controls:NumericUpDown x:Name="maxGamble" Minimum = "1" Maximum = "1000000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.maxGamble, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Gamble Cool Down (minutes)" />
+                                            <Controls:NumericUpDown x:Name="gambleCoolDown" Minimum = "1" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.gambleCoolDownMinutes, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </StackPanel>
+                                    </GroupBox>
+
+                                    <GroupBox  Header="Standard Request Settings">
+                                        <StackPanel>
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Standard requests COST" />
+                                            <Controls:NumericUpDown x:Name="regSongCost" Minimum = "0" Maximum = "100000" Interval = "1" HorizontalAlignment="Left" Value="{Binding requestSystem.regSongCost, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                        </StackPanel>
+                                    </GroupBox>
+
+                                    <GroupBox  Header="VIP Song Settings">
+                                        <StackPanel>
+
+                                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                                <TextBlock HorizontalAlignment="Right" FontSize="14" Text="VIP Songs on / off " />
+                                                <CheckBox x:Name="vipsongtoggle" FontSize="14" Checked="vipsongcheck" Unchecked="vipsongcheck" IsChecked="{Binding currency.vipSongToggle, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="!vipsong COST" />
+                                            <Controls:NumericUpDown x:Name="vipsongcost" Minimum = "1" Maximum = "100000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipSongCost, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="VIP Song Redeem Cool Down Per User (minutes)" />
+                                            <Controls:NumericUpDown x:Name="vipRedeemCoolDownMinutes" Minimum = "0" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipRedeemCoolDownMinutes, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="VIP Song Redeem Cool Down Overall (minutes)" />
+                                            <Controls:NumericUpDown x:Name="vipRedeemCoolDownMinutesOverall" Minimum = "0" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipRedeemCoolDownMinutesOverall, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </StackPanel>
+                                    </GroupBox>
+
+                                    <GroupBox  Header="Sub Credit Settings">
+                                        <StackPanel>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Sub Credit Song Redeem Cost" />
+                                            <Controls:NumericUpDown x:Name="subCreditRedeemCost" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.subCreditRedeemCost, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <TextBlock Padding="0 10 0 0" VerticalAlignment="Center" FontSize="14" Text="Sub Credit Rewarded Per Sub" />
+                                            <Controls:NumericUpDown x:Name="creditsPerSub" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.creditsPerSub, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </StackPanel>
+                                    </GroupBox>
                                     
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Max Gamble" />
-                                    <Controls:NumericUpDown x:Name="maxGamble" Minimum = "1" Maximum = "1000000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.maxGamble, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Gamble Cool Down (minutes)" />
-                                    <Controls:NumericUpDown x:Name="gambleCoolDown" Minimum = "1" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.gambleCoolDownMinutes, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-                                        <TextBlock HorizontalAlignment="Right" FontSize="14" Text="VIP Songs on / off " />
-                                        <CheckBox x:Name="vipsongtoggle" FontSize="14" Checked="vipsongcheck" Unchecked="vipsongcheck" IsChecked="{Binding currency.vipSongToggle, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </StackPanel>
-                                    
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="!vipsong COST" />
-                                    <Controls:NumericUpDown x:Name="vipsongcost" Minimum = "1" Maximum = "100000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipSongCost, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="VIP Song Redeem Cool Down Per User (minutes)" />
-                                    <Controls:NumericUpDown x:Name="vipRedeemCoolDownMinutes" Minimum = "0" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipRedeemCoolDownMinutes, UpdateSourceTrigger=PropertyChanged}"/>
-                                    
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="VIP Song Redeem Cool Down Overall (minutes)" />
-                                    <Controls:NumericUpDown x:Name="vipRedeemCoolDownMinutesOverall" Minimum = "0" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipRedeemCoolDownMinutesOverall, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Sub Credit Song Redeem Cost" />
-                                    <Controls:NumericUpDown x:Name="subCreditRedeemCost" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.subCreditRedeemCost, UpdateSourceTrigger=PropertyChanged}"/>
-
-                                    <TextBlock Padding="0 10 0 0" VerticalAlignment="Center" FontSize="14" Text="Sub Credit Rewarded Per Sub" />
-                                    <Controls:NumericUpDown x:Name="creditsPerSub" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.creditsPerSub, UpdateSourceTrigger=PropertyChanged}"/>
-
                                     <Button Margin="0 10 0 0" Style="{DynamicResource SquareButtonStyle}" x:Name="GO2" Content="Apply" Click="writeToConfig" />
 
                                 </StackPanel>
@@ -1810,70 +1843,185 @@
             </TabItem>
 
             <TabItem Header="Games" FontSize="14">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
-                    <Border Padding="10 0 10 0">
-                        <StackPanel>
-                            
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="20" FontWeight="Bold" Text="Guessing Game " />
-                                <CheckBox VerticalAlignment="Center" x:Name="minigameToggle" FontSize="14" Checked="minigame_changed" Unchecked="minigame_changed" IsChecked="{Binding minigameOn, UpdateSourceTrigger=PropertyChanged}"/>
-                            </StackPanel>
+                <TabControl x:Name="gametabholder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightBlue">
+                    <TabControl.Template>
+                        <ControlTemplate TargetType="TabControl">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="39"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TabPanel x:Name="HeaderPanel"
+                              Panel.ZIndex ="1" 
+                              KeyboardNavigation.TabIndex="1"
+                              Grid.Column="0"
+                              Grid.Row="0"
+                              IsItemsHost="true"/>
+                                <ContentPresenter x:Name="PART_SelectedContentHost"
+                                          ContentSource="SelectedContent" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </TabControl.Template>
+                    <TabItem Header="Games" FontSize="14">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                            <Border Padding="10 0 10 0">
+                                <StackPanel>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Guessing Timer (seconds)" />
-                            <Controls:NumericUpDown x:Name="minigametimer" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding minigameTimer, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GroupBox Header="Guessing Game">
+                                        <StackPanel>
 
-                            <TextBlock Padding="0 10 0 0" TextWrapping="Wrap" FontSize="14" Text="Game Payout (Leave at 0 to payout winning guess amount)" />
-                            <Controls:NumericUpDown x:Name="guessingGamePayout" Minimum = "0" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding guessingGamePayout, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                                <TextBlock FontSize="20" FontWeight="Bold" Text="Guessing Game " />
+                                                <CheckBox VerticalAlignment="Center" x:Name="minigameToggle" FontSize="14" Checked="minigame_changed" Unchecked="minigame_changed" IsChecked="{Binding minigameOn, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
 
-                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-                                <TextBlock FontSize="20" FontWeight="Bold" Text="Adventure Game " />
-                                <CheckBox VerticalAlignment="Center" x:Name="adventureToggle" FontSize="14" Checked="adventure_changed" Unchecked="adventure_changed" IsChecked="{Binding adventureToggle, UpdateSourceTrigger=PropertyChanged}"/>
-                            </StackPanel>
-                            
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Cool Down Time (minutes)" />
-                            <Controls:NumericUpDown x:Name="adventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureCoolDown, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Guessing Timer (seconds)" />
+                                            <Controls:NumericUpDown x:Name="minigametimer" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding minigameTimer, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="User Join Time (seconds)" />
-                            <Controls:NumericUpDown x:Name="adventurejointime" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureStartTime, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Padding="0 10 0 0" TextWrapping="Wrap" FontSize="14" Text="Game Payout (Leave at 0 to payout winning guess amount)" />
+                                            <Controls:NumericUpDown x:Name="guessingGamePayout" Minimum = "0" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding guessingGamePayout, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Minimum Reward" />
-                            <Controls:NumericUpDown x:Name="adventureminreward" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMin, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </StackPanel>
+                                    </GroupBox>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Maximum Reward: " />
-                            <Controls:NumericUpDown x:Name="adventuremaxreward" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMax, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GroupBox Header="Adventure Game">
+                                        <StackPanel>
 
-                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-                                <TextBlock FontSize="20" FontWeight="Bold" Text="Custom Game " />
-                                <CheckBox VerticalAlignment="Center" x:Name="customGameAdventure" FontSize="14" IsChecked="{Binding customGameAdventure, UpdateSourceTrigger=PropertyChanged}"/>
-                            </StackPanel>
-                            
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Game Command" />
-                            <TextBox x:Name="customGameCommand" Controls:TextBoxHelper.ClearTextButton="True" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameCommand, UpdateSourceTrigger=PropertyChanged}" />
+                                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                                <TextBlock FontSize="20" FontWeight="Bold" Text="Adventure Game " />
+                                                <CheckBox VerticalAlignment="Center" x:Name="adventureToggle" FontSize="14" Checked="adventure_changed" Unchecked="adventure_changed" IsChecked="{Binding adventureToggle, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
 
-                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
-                                <TextBlock FontSize="14" Text="Start By Streamer Only " />
-                                <CheckBox VerticalAlignment="Center" x:Name="customGameStartByModOnly" FontSize="14" IsChecked="{Binding textAdventure.customGameStartByModOnly, UpdateSourceTrigger=PropertyChanged}"/>
-                            </StackPanel>
-                            
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Cool Down Time (minutes)" />
-                            <Controls:NumericUpDown x:Name="customadventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurecooldowntime, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Cool Down Time (minutes)" />
+                                            <Controls:NumericUpDown x:Name="adventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureCoolDown, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="User Join Time (seconds)" />
-                            <Controls:NumericUpDown x:Name="customadventurejointime" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurejointime, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="User Join Time (seconds)" />
+                                            <Controls:NumericUpDown x:Name="adventurejointime" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventureStartTime, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Cost To Join" />
-                            <Controls:NumericUpDown x:Name="customadventurejoincost" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurejoincost, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Minimum Reward" />
+                                            <Controls:NumericUpDown x:Name="adventureminreward" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMin, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Game Start Message" />
-                            <TextBox x:Name="customGameStartMessage" Controls:TextBoxHelper.ClearTextButton="True" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameStartMessage, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Maximum Reward: " />
+                                            <Controls:NumericUpDown x:Name="adventuremaxreward" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.adventurePointsMax, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Game End Message" />
-                            <TextBox x:Name="customGameEndMessage" Controls:TextBoxHelper.ClearTextButton="True" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameEndMessage, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                    </GroupBox>
 
-                            <Button Margin="0 10 0 0" Style="{DynamicResource SquareButtonStyle}" x:Name="GO1_Copy" Content="Apply" Click="writeToConfig" />
-                        </StackPanel>
-                    </Border>
-                </ScrollViewer>
+                                    <GroupBox Header="Custom Adventure Game">
+                                        <StackPanel>
+
+                                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                                <TextBlock FontSize="20" FontWeight="Bold" Text="Custom Game " />
+                                                <CheckBox VerticalAlignment="Center" x:Name="customGameAdventure" FontSize="14" IsChecked="{Binding customGameAdventure, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Game Command" />
+                                            <TextBox x:Name="customGameCommand" Controls:TextBoxHelper.ClearTextButton="True" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameCommand, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                                <TextBlock FontSize="14" Text="Start By Streamer Only " />
+                                                <CheckBox VerticalAlignment="Center" x:Name="customGameStartByModOnly" FontSize="14" IsChecked="{Binding textAdventure.customGameStartByModOnly, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Cool Down Time (minutes)" />
+                                            <Controls:NumericUpDown x:Name="customadventurecooldowntime" Minimum = "1" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurecooldowntime, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="User Join Time (seconds)" />
+                                            <Controls:NumericUpDown x:Name="customadventurejointime" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurejointime, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Cost To Join" />
+                                            <Controls:NumericUpDown x:Name="customadventurejoincost" Minimum = "1" Maximum = "10000" Interval = "1" HorizontalAlignment="Left" Value="{Binding textAdventure.customadventurejoincost, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Game Start Message" />
+                                            <TextBox x:Name="customGameStartMessage" Controls:TextBoxHelper.ClearTextButton="True" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameStartMessage, UpdateSourceTrigger=PropertyChanged}" />
+
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Game End Message" />
+                                            <TextBox x:Name="customGameEndMessage" Controls:TextBoxHelper.ClearTextButton="True" FontSize="14" TextWrapping="Wrap" Text="{Binding textAdventure.customGameEndMessage, UpdateSourceTrigger=PropertyChanged}" />
+
+                                        </StackPanel>
+                                    </GroupBox>
+
+                                    <Button Margin="0 10 0 0" Style="{DynamicResource SquareButtonStyle}" x:Name="GO1_Copy" Content="Apply" Click="writeToConfig" />
+                                </StackPanel>
+                            </Border>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Header="Adventure-Scenarios" FontSize="14">
+                        <Border Padding="10 0 10 10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="8*"/>
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Adventure Name" TextWrapping="Wrap" x:Name="editAdventureName" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="0" />
+                                    <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Adventure Start Message" TextWrapping="Wrap" x:Name="editAdventureStartMessage" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="1" />
+                                    <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Adventure Everyone Loses Message" TextWrapping="Wrap" x:Name="editAdventureEveryoneLosesMessage" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="1" Grid.Row="1" />
+                                    <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Adventure One Winner Message" TextWrapping="Wrap" x:Name="editAdventureOneWinnerMessage" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="2" Grid.Row="1" />
+                                    <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Adventure Multiple Winners Message" TextWrapping="Wrap" x:Name="editAdventureMultipleWinnersMessage" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="3" Grid.Row="1" />
+
+                                    <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Add/Edit" Click="addscenario" Grid.Column="1" Grid.Row="0" />
+                                    <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removescenario" Grid.Column="2" Grid.Row="0"/>
+                                </Grid>
+
+                                <Grid Grid.Row="2" >
+                                    <DataGrid x:Name="adventuresdatagrid" GridLinesVisibility="All" ItemsSource="{Binding adventureScenarioList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CanUserSortColumns="False" >
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn x:Name="scenarioName" Header="Name" Width=".08*" >
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding name}" ToolTipService.ToolTip="Click to edit scenario name." MouseLeftButtonDown="editScenarioButtonClick" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn x:Name="scenarioStartMessage" Header="Start Message" Width=".25*" >
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding startMessage}" ToolTipService.ToolTip="Click to edit scenario start message." MouseLeftButtonDown="editScenarioButtonClick" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn x:Name="scenarioAllLosersMessage" Header="All Losers Message" Width=".25*" >
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding allLosersMessage}" ToolTipService.ToolTip="Click to edit scenario no winners message." MouseLeftButtonDown="editScenarioButtonClick" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn x:Name="scenarioOneWinnerMessage" Header="One Winner Message" Width=".25*" >
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding oneWinnerMessage}" ToolTipService.ToolTip="Click to edit scenario one winner message." MouseLeftButtonDown="editScenarioButtonClick" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn x:Name="scenarioMultipleWinnersMessage" Header="Multiple Winners Message" Width=".25*" >
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding multipleWinnersMessage}" ToolTipService.ToolTip="Click to edit scenario multiple winners message." MouseLeftButtonDown="editScenarioButtonClick" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </TabItem>
+
+
+                </TabControl>
             </TabItem>
 
             <TabItem Header="Raffle" FontSize="14">

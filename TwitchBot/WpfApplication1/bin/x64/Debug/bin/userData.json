@@ -151,8 +151,9 @@
     "ylrequests": true,
     "maxSongLength": true,
     "subOnlyRequests": "Only subs can request right now, $user!",
-    "formattedTotalTime": "00:03:37",
-    "songListLength": 1,
+    "formattedTotalTime": "00:11:08",
+    "onlyDisplayLinkList": false,
+    "songListLength": 3,
     "maxSonglistLength": 100,
     "numOfSongsToDisplay": 8,
     "numOfSongsInQueuePerUser": 1,
@@ -164,6 +165,7 @@
       " zxcv"
     ],
     "songHistory": [
+      "01/18/2018 14:26:06 - オーバーロード ED  |  Overlord Ending - FULL",
       "01/12/2018 17:29:48 - Beach House - PPP",
       "01/02/2018 19:36:48 - The Eagles Hotel California Lyrics",
       "01/02/2018 19:36:46 - The Eagles Hotel California Lyrics",
@@ -409,26 +411,65 @@
     },
     "songList": [
       {
-        "name": "lll",
+        "name": "a",
         "requester": "edude15000",
         "requesterIsHere": "[IN CHAT]",
         "level": "",
-        "youtubeLink": "http://www.youtube.com/watch?v=j6TsX_7xlkU",
-        "youtubeTitle": "オーバーロード ED  |  Overlord Ending - FULL",
-        "durationInSeconds": 217,
+        "youtubeLink": "http://www.youtube.com/watch?v=eISomx-VMow",
+        "youtubeTitle": "GOT7 \"A\" M/V",
+        "durationInSeconds": 207,
         "index": 1,
         "tuning": "",
         "customsForgeLink": "",
         "parts": "",
         "dlcCreator": "",
-        "formattedDuration": "00:03:37",
+        "formattedDuration": "00:03:27",
+        "officialSong": false,
+        "cfSongName": "",
+        "cfSongArtist": "",
+        "cfAlbum": ""
+      },
+      {
+        "name": "a",
+        "requester": "edude15000",
+        "requesterIsHere": "[IN CHAT]",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=eISomx-VMow",
+        "youtubeTitle": "GOT7 \"A\" M/V",
+        "durationInSeconds": 207,
+        "index": 2,
+        "tuning": "",
+        "customsForgeLink": "",
+        "parts": "",
+        "dlcCreator": "",
+        "formattedDuration": "00:03:27",
+        "officialSong": false,
+        "cfSongName": "",
+        "cfSongArtist": "",
+        "cfAlbum": ""
+      },
+      {
+        "name": "Over the Horizon 2016: Samsung Galaxy Brand Sound by Dirty Loops",
+        "requester": "edude15000",
+        "requesterIsHere": "[IN CHAT]",
+        "level": "",
+        "youtubeLink": "http://www.youtube.com/watch?v=4-siHP8YjhI",
+        "youtubeTitle": "Over the Horizon 2016: Samsung Galaxy Brand Sound by Dirty Loops",
+        "durationInSeconds": 254,
+        "index": 3,
+        "tuning": "",
+        "customsForgeLink": "",
+        "parts": "",
+        "dlcCreator": "",
+        "formattedDuration": "00:04:14",
         "officialSong": false,
         "cfSongName": "",
         "cfSongArtist": "",
         "cfAlbum": ""
       }
     ],
-    "songsPlayedTotal": 47,
+    "songsPlayedTotal": 48,
+    "regSongCost": 0,
     "checkCustomsForge": true,
     "checkCustomsForgeLead": false,
     "checkCustomsForgeRhythm": false,
@@ -2641,6 +2682,78 @@
       "overrideType": 0
     }
   ],
+  "adventureScenarioList": [
+    {
+      "startMessage": "$user wants to get a posse together to raid some space pirates.",
+      "allLosersMessage": "Sadly, the spaceship everyone was on exploded, and the crew is now dead in space.",
+      "oneWinnerMessage": "Many casualties occured, but $user was lucky enough to escape with space coins!",
+      "multipleWinnersMessage": "$users were able to successfully raid a group of space pirates and escaped with space coins!",
+      "name": "spacepirates"
+    },
+    {
+      "startMessage": "$user wants to be a badass and raid the castle of undead hoes.",
+      "allLosersMessage": "Everyone died, they were no match for the hoes.",
+      "oneWinnerMessage": "$user ran away while the hoes were distracted by the rest of group and manage to aquire some loots.",
+      "multipleWinnersMessage": "$users were too badass and decimated the hoes while the rest were slaughtered.",
+      "name": "undeadhoes"
+    },
+    {
+      "startMessage": "$user wants to be the captain of the a starship designed to find intelligent life on distant worlds.",
+      "allLosersMessage": "Sadly there is no intelligent life out there only brain slugs, the whole crew is dead.",
+      "oneWinnerMessage": "The spaceship crashes on a distant planet with only $user left, they find a utopia of sexy ladies and dudes that grant them riches.",
+      "multipleWinnersMessage": "$users were actually corperate spies sent to sabatoge the mission, they succeeded and now reap the rewards.",
+      "name": "starship"
+    },
+    {
+      "startMessage": "$user wants to expose everyone to magical goo to make them super heroes.",
+      "allLosersMessage": "Everyone dies cause magical goo is just your ordinary toxic waste.",
+      "oneWinnerMessage": "$user was able to survive the harmful effects of the goo while the rest must endure the lives of misable abominations. $user steals their wallets.",
+      "multipleWinnersMessage": "$users become the most powerful beings in the universe and instead of using their powers for good they just use them for profit.",
+      "name": "magicalgoo"
+    },
+    {
+      "startMessage": "$user wants to get revenge on the jedi.",
+      "allLosersMessage": "The jedi use thier cunning and force push spam to defeat everyone.",
+      "oneWinnerMessage": "At last $user has their revenge, at last the galaxy is theirs!",
+      "multipleWinnersMessage": "At last $users have their revenge, at last the galaxy is theirs!",
+      "name": "jedirevenge"
+    },
+    {
+      "startMessage": "$user wants to get a mega rock band together for a amazing arena show.",
+      "allLosersMessage": "People went and saw the latest pop act and didn't bother, congratulations everyone you killed rock.",
+      "oneWinnerMessage": "$user was singed by the record label and abandoned their bandmates to sell out.",
+      "multipleWinnersMessage": "$users have formed the greatest rock band known to mankind and are planning a space tour.",
+      "name": "rockband"
+    },
+    {
+      "startMessage": "$user wants to slay the dragon and get it's loot.",
+      "allLosersMessage": "The dragon decimated the party, dragons are dicks.",
+      "oneWinnerMessage": "$user was valient and true, nothing could stop them in slaying the dragon, ashame what happened to the rest.",
+      "multipleWinnersMessage": "$users deciced to go to the pub instead while everyone else was decimated but it was free ale night so it wasn't all bad.",
+      "name": "dragon"
+    },
+    {
+      "startMessage": "$user wants to overthrow the evil king.",
+      "allLosersMessage": "The petty uprising was crushed before it even began, hail to the king baby.",
+      "oneWinnerMessage": "$user dethroned the king and rather then set up a republic took the crown for themselves and betrayed all those who help them.",
+      "multipleWinnersMessage": "$users were exiled but set up their own kingdom, a better kingdom with black jack and hookers.",
+      "name": "evilking"
+    },
+    {
+      "startMessage": "$user wants to get a road trip together to go to Vegas and win big.",
+      "allLosersMessage": "Everyone lost all their money and are now forced to do horrible demeaning things to make it back home.",
+      "oneWinnerMessage": "$user won big at the black jack tables but everyone else owed mobsters money and are now burried somewhere in the desert.",
+      "multipleWinnersMessage": "$users all won showcases and are living it large in their own private suites.",
+      "name": "vegastrip"
+    },
+    {
+      "startMessage": "$user wants to take over the world.",
+      "allLosersMessage": "Too late, Pinky and Brain have already done so.",
+      "oneWinnerMessage": "$user using a deadly 'lazer' was able to hold the world hostage and everyone submitted to them as supreme ruler.",
+      "multipleWinnersMessage": "$users created an army of robotic badgers that brought the world to it's knees and gained them total supremacy.",
+      "name": "conquerworld"
+    }
+  ],
   "users": [
     {
       "username": "MarluxiaPetals",
@@ -4774,12 +4887,12 @@
       "receivedFollowPayout": true,
       "mod": true,
       "gaveSpot": false,
-      "time": 650,
+      "time": 672,
       "bitsDonated": 0,
       "moneyDonated": 0,
       "subCredits": 0,
-      "points": 1004,
-      "numRequests": 347,
+      "points": 775,
+      "numRequests": 359,
       "months": 0,
       "gambleCoolDown": 0,
       "vipCoolDown": 0
@@ -4810,11 +4923,11 @@
       "receivedFollowPayout": true,
       "mod": false,
       "gaveSpot": false,
-      "time": 886,
+      "time": 909,
       "bitsDonated": 0,
       "moneyDonated": 0,
       "subCredits": 0,
-      "points": 986,
+      "points": 1009,
       "numRequests": 0,
       "months": 0,
       "gambleCoolDown": 0,
