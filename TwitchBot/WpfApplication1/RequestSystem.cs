@@ -42,6 +42,14 @@ public class RequestSystem : INotifyPropertyChanged
     [JsonIgnore]
     public TwitchBot bot;
     [JsonIgnore]
+    public Dictionary<String, int> RandomNextUserSongWaits = new Dictionary<string, int>();
+    [JsonIgnore]
+    public Dictionary<String, int> randomNextUserSongWaits
+    {
+        get => RandomNextUserSongWaits;
+        set { SetField(ref RandomNextUserSongWaits, value, nameof(randomNextUserSongWaits)); }
+    }
+    [JsonIgnore]
     public Boolean VipSongToggle = true;
     public Boolean vipSongToggle
     {
@@ -328,6 +336,13 @@ public class RequestSystem : INotifyPropertyChanged
     {
         get => SongsPlayedTotal;
         set { SetField(ref SongsPlayedTotal, value, nameof(songsPlayedTotal)); }
+    }
+    [JsonIgnore]
+    public int MiniumSongsWaitPerUserOnRandom = 5;
+    public int miniumSongsWaitPerUserOnRandom
+    {
+        get => MiniumSongsWaitPerUserOnRandom;
+        set { SetField(ref MiniumSongsWaitPerUserOnRandom, value, nameof(miniumSongsWaitPerUserOnRandom)); }
     }
     [JsonIgnore]
     public int RegSongCost = 0;
@@ -1447,12 +1462,19 @@ public class RequestSystem : INotifyPropertyChanged
 
     public void randomizer(String channel)
     {
-        if (Int32.Parse(getNumberOfSongs()) > 2)
+        if (Int32.Parse(getNumberOfSongs()) > 1)
         {
-            Random rand = new Random();
-            int randInt = rand.Next(Int32.Parse(getNumberOfSongs()) - 1) + 1;
-            Song s = songList[randInt];
-            songList.RemoveAt(randInt);
+            Song s = null;
+            for (int i = 0; i < 10; i++) {
+                Random rand = new Random();
+                int randInt = rand.Next(Int32.Parse(getNumberOfSongs()) - 1) + 1;
+                s = songList[randInt];
+                if (!randomNextUserSongWaits.ContainsKey(s.requester) || (randomNextUserSongWaits.ContainsKey(s.requester) && randomNextUserSongWaits[s.requester] == 0))
+                {
+                    break;
+                }
+            }
+            songList.Remove(s);
             if (songList[1].level.Equals("VIP"))
             {
                 s.level = "VIP";
@@ -1464,10 +1486,27 @@ public class RequestSystem : INotifyPropertyChanged
             songList[0] = s;
             bot.client.SendMessage(getNextSong(channel));
             writeToCurrentSong(bot.channel, true);
+            if (randomNextUserSongWaits.ContainsKey(s.requester))
+            {
+                randomNextUserSongWaits.Remove(s.requester);
+            }
+            randomNextUserSongWaits.Add(s.requester, miniumSongsWaitPerUserOnRandom);
         }
         else
         {
-            bot.client.SendMessage("Song list must have 3 or more songs to choose a random one!");
+            bot.client.SendMessage("Song list must have 2 or more songs to choose a random one!");
+        }
+    }
+
+    public void decrementRandomNextEligiblity()
+    {
+        List<string> keys = new List<string>(randomNextUserSongWaits.Keys);
+        foreach (string key in keys)
+        { 
+            if (randomNextUserSongWaits[key] > 0)
+            {
+                randomNextUserSongWaits[key] -= 1;
+            }
         }
     }
 
@@ -2486,6 +2525,7 @@ public class RequestSystem : INotifyPropertyChanged
 
     public String getNextSong(String channel)
     {
+        decrementRandomNextEligiblity();
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
             return "There are no songs in the queue!";

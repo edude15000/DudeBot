@@ -11,8 +11,8 @@ using Newtonsoft.Json.Linq;
 
 public class Utils
 {
-    public static String version = "3.1.2"; // UPDATE AS NECESSARY
-    public static String releaseDate = "1/22/2018"; // UPDATE AS NECESSARY
+    public static String version = "3.2.0"; // UPDATE AS NECESSARY
+    public static String releaseDate = "1/24/2018"; // UPDATE AS NECESSARY
     public static String twitchClientID = "c203ik5st5i3kde6amsageei2snaj1v";
     public static String botMaker = "edude15000";
     public static String currentSongFile = @"bin\currentsong.txt";
@@ -562,6 +562,44 @@ public class Utils
     public static String getFollowingText(String message)
     {
         return message.Substring(message.IndexOf(" ") + 1);
+    }
+
+    public static List<String> getBadWordList()
+    {
+        List<String> list = new List<String>();
+        try
+        {
+            string webData = new WebClient().DownloadString("http://www.bannedwordlist.com/lists/swearWords.txt");
+            webData = webData.Replace("\r\n", ",");
+            list = new List<String>(webData.Split(','));
+            list.Remove("balls");
+            list.Remove("bloody");
+            list.Remove("boob");
+            list.Remove("bum");
+            list.Remove("butt");
+            list.Remove("coon");
+            list.Remove("crap");
+            list.Remove("damn");
+            list.Remove("feck");
+            list.Remove("flange");
+            list.Remove("hell");
+            list.Remove("jerk");
+            list.Remove("knobend");
+            list.Remove("knob end");
+            list.Remove("lmao");
+            list.Remove("lmfao");
+            list.Remove("omg");
+            list.Remove("piss");
+            list.Remove("poop");
+            list.Remove("sex");
+            list.Remove("s hit");
+            list.Remove("spunk");
+            list.Remove("tosser");
+            list.Remove("turd");
+            list.Remove("wtf");
+        }
+        catch (Exception) { }
+        return list;
     }
 
     public static int LevenshteinDistance(string s, string t)

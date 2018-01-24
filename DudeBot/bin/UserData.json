@@ -33,12 +33,16 @@
   "timerTotal": 10,
   "minigameTriggered": false,
   "guessingGamePayout": 0,
+  "allowLinks": true,
+  "allowedLinks": null,
+  "profanityBlackList": null,
   "timeFinished": false,
   "minigameOn": true,
   "adventureToggle": true,
   "customGameAdventure": true,
   "raffleInProgress": false,
   "autoShoutoutOnHost": true,
+  "genericProfanityFilterEnabled": true,
   "openRockSnifferOnStartUp": false,
   "textAdventure": {
     "adventureStartTime": 90,
@@ -430,6 +434,7 @@
       }
     ],
     "songsPlayedTotal": 47,
+    "miniumSongsWaitPerUserOnRandom": 5,
     "regSongCost": 0,
     "checkCustomsForge": true,
     "checkCustomsForgeLead": false,
@@ -4967,6 +4972,8 @@
     "!redeem",
     "!redeeminfo"
   ],
+  "linkTimeoutMessage": "Please get permission from a mod before posting links, $user!",
+  "profanityTimeoutMessage": "Please be more respectful, $user!",
   "events": {},
   "getViewerComm": {
     "output": null,

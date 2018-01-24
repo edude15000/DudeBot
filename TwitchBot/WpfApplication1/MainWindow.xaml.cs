@@ -1220,6 +1220,14 @@ namespace WpfApplication1
             {
                 tb.Background = brush;
             }
+            foreach (GroupBox tb in FindLogicalChildren<GroupBox>(this))
+            {
+                var drawingcolor = System.Drawing.Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+                var myColor = System.Windows.Forms.ControlPaint.Dark(drawingcolor);
+                tb.Background = new SolidColorBrush(Color.FromArgb(myColor.A, myColor.R, myColor.G, myColor.B));
+                myColor = System.Windows.Forms.ControlPaint.Light(drawingcolor);
+                tb.BorderBrush = new SolidColorBrush(Color.FromArgb(myColor.A, myColor.R, myColor.G, myColor.B));
+            }
         }
 
         public void textColorChange_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1633,7 +1641,7 @@ namespace WpfApplication1
             writeToConfig(null, null);
         }
 
-        private void moveup(Object sender, RoutedEventArgs e)
+        private void moveup(Object sender, MouseButtonEventArgs e)
         {
             FrameworkElement fe = sender as FrameworkElement;
             Song c = ((Song)fe.DataContext);
@@ -1652,30 +1660,57 @@ namespace WpfApplication1
                     bot.requestSystem.insertSong(a.name, a.requester, i-1, "", false);
                     bot.requestSystem.songList[i - 1].level = topSongLevel;
                     bot.requestSystem.songList[i].level = bottomSongLevel;
+                    writeToConfig(null, null);
                     break;
                 }
             }
-            writeToConfig(null, null);
+        }
+
+        private void movetotop(Object sender, MouseButtonEventArgs e)
+        {
+            FrameworkElement fe = sender as FrameworkElement;
+            Song c = ((Song)fe.DataContext);
+            try
+            {
+                bot.requestSystem.songList.Remove(c);
+                if (bot.requestSystem.songList.Count > 0)
+                {
+                    c.level = bot.requestSystem.songList[0].level;
+                }
+                bot.requestSystem.songList.Insert(0, c);
+                bot.requestSystem.setIndexesForSongs();
+                writeToConfig(null, null);
+            }
+            catch (Exception) { }
         }
 
         private async void deleteSong(Object sender, RoutedEventArgs e)
         {
-            MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
-            var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
-            MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Remove Song", "Are you sure you want to remove this song?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
-            if (messageBoxResult == MessageDialogResult.Affirmative) { 
-                FrameworkElement fe = sender as FrameworkElement;
-                Song c = ((Song)fe.DataContext);
+            if (!string.IsNullOrWhiteSpace(formatCommand(editSong.Text)))
+            {
                 foreach (Song s in bot.requestSystem.songList)
                 {
-                    if (s.name.Equals(c.name, StringComparison.InvariantCultureIgnoreCase))
+                    if (s.name.Equals(editSong.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        bot.requestSystem.songList.Remove(s);
-                        bot.requestSystem.writeToCurrentSong(bot.channel, true);
-                        break;
+                        MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
+                        var msgbox_settings = new MetroDialogSettings { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+                        MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Remove Song", "Are you sure you want to remove this song?", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
+                        if (messageBoxResult == MessageDialogResult.Affirmative)
+                        {
+                            bot.requestSystem.songList.Remove(s);
+                            bot.requestSystem.writeToCurrentSong(bot.channel, true);
+                            break;
+                        }
                     }
                 }
+                editSong.Text = "";
+                editRequester.Text = "";
+                songplace.Value = 1;
                 writeToConfig(null, null);
+            }
+            else
+            {
+                await this.ShowMessageAsync("Warning", "To delete or edit a song, click on it in the box and then press the desired button!");
             }
         }
         
@@ -2318,7 +2353,7 @@ namespace WpfApplication1
             {
                 return "";
             }
-            return String.Join(", ", ((String[])value));
+            return String.Join(",", ((String[])value));
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -2338,7 +2373,7 @@ namespace WpfApplication1
             {
                 return "";
             }
-            return String.Join(", ", ((List<String>)value));
+            return String.Join(",", ((List<String>)value));
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

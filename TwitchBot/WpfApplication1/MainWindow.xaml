@@ -220,6 +220,9 @@
                                     <TextBlock Padding="0 10 0 0" FontSize="14" Text="Default song duration" />
                                     <Controls:NumericUpDown x:Name="defaultMinsSong" Minimum = "1" Maximum = "10" Interval = "1" HorizontalAlignment="Left" Value="{Binding requestSystem.defaultMinsSong, UpdateSourceTrigger=PropertyChanged}" />
 
+                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Minimum songs users must wait before being eligible for randomnext command" />
+                                    <Controls:NumericUpDown x:Name="miniumSongsWaitPerUserOnRandom" Minimum = "0" Maximum = "10" Interval = "1" HorizontalAlignment="Left" Value="{Binding requestSystem.miniumSongsWaitPerUserOnRandom, UpdateSourceTrigger=PropertyChanged}" />
+
                                     <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
                                         <TextBlock TextWrapping="Wrap" FontSize="14" Text="Only estimate time based on requesters in chat " />
                                         <CheckBox x:Name="inChatEstimateTime" FontSize="14" VerticalAlignment="Center" IsChecked="{Binding requestSystem.inChatEstimateTime, UpdateSourceTrigger=PropertyChanged}" />
@@ -705,6 +708,53 @@
                 </TabControl>
             </TabItem>
 
+            <TabItem Header="Moderation" FontSize="14">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                    <Border Padding="10 0 10 0">
+                        <StackPanel>
+                            <TextBlock Padding="0 0 0 10" FontSize="20" FontWeight="Bold" Text="Moderation System" />
+
+                            <GroupBox  Header="Link Settings">
+                                <StackPanel>
+                                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                        <TextBlock FontSize="14" Text="Allow Links " />
+                                        <CheckBox x:Name="allowLinks" VerticalAlignment="Center" FontSize="14" IsChecked="{Binding allowLinks, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    </StackPanel>
+
+                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Allowed Links" />
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type allowed link domains list here &#x0a;(example: youtube, facebook)" x:Name="allowedLinks" FontSize="14" Text="{Binding Path=allowedLinks, Converter={StaticResource ListToStringConverter}}" />
+
+                                    <TextBlock Margin="0 10 0 0" FontSize="14" Text="Link Timeout Message" VerticalAlignment="Center" />
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="linkTimeoutMessage" FontSize="14" Text="{Binding linkTimeoutMessage, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </StackPanel>
+                            </GroupBox>
+
+                            <GroupBox Header="Spam Protection">
+                                <StackPanel>
+                                    <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                        <TextBlock FontSize="14" Text="Generic Profanity Filter " />
+                                        <CheckBox x:Name="genericProfanityFilterEnabled" VerticalAlignment="Center" FontSize="14" IsChecked="{Binding genericProfanityFilterEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    </StackPanel>
+
+                                    <TextBlock Padding="0 10 0 0" FontSize="14" Text="Custom Profanity Blacklist" />
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Type custom profanity blacklist here &#x0a;(example: nipples, dogpoop)" x:Name="profanityBlackList" FontSize="14" Text="{Binding Path=profanityBlackList, Converter={StaticResource ListToStringConverter}}" />
+
+                                    <TextBlock Margin="0 10 0 0" FontSize="14" Text="Profanity Timeout Message" VerticalAlignment="Center" />
+                                    <TextBox TextWrapping="Wrap" Controls:TextBoxHelper.ClearTextButton="True" x:Name="profanityTimeoutMessage" FontSize="14" Text="{Binding profanityTimeoutMessage, UpdateSourceTrigger=PropertyChanged}" />
+
+
+
+                                </StackPanel>
+                            </GroupBox>
+
+                            <Button Margin="0 10 0 0" FontSize="14" Style="{DynamicResource SquareButtonStyle}" x:Name="GO6" Content="Apply" Click="writeToConfig" />
+
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+            </TabItem>
+
             <TabItem Header="Supporters" FontSize="14">
                 <Border Padding="10 10 10 10">
                     <DataGrid x:Name="subsdatagrid" GridLinesVisibility="All" ItemsSource="{Binding supporters, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CanUserSortColumns="False" >
@@ -816,12 +866,13 @@
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="10*"/>
                                 </Grid.ColumnDefinitions>
-                                <Controls:NumericUpDown x:Name="songplace" Controls:TextBoxHelper.Watermark="Queue Number" Value="1"  Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="6" />
+                                <Controls:NumericUpDown x:Name="songplace" Controls:TextBoxHelper.Watermark="Queue Number" Value="1"  Minimum = "1" Maximum = "1000" Interval = "1" Grid.Column="5" />
                                 <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Song Name" TextWrapping="Wrap" x:Name="editSong" Text="" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
-                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Requester Name" TextWrapping="Wrap" x:Name="editRequester" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="4" />
+                                <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Requester Name" TextWrapping="Wrap" x:Name="editRequester" Text="" VerticalScrollBarVisibility="Auto" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="3" />
 
-                                <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to insert new song into list at given position, will push following songs down." IsDefault="True" Content="Add" Click="addsong" Grid.Column="7" />
-                                <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to edit song at given position in list, will overwrite song at given queue number." Content="Edit" Click="editsong" Grid.Column="8" />
+                                <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to insert new song into list at given position, will push following songs down." IsDefault="True" Content="Add" Click="addsong" Grid.Column="6" />
+                                <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to edit song at given position in list, will overwrite song at given queue number." Content="Edit" Click="editsong" Grid.Column="7" />
+                                <Button Style="{DynamicResource SquareButtonStyle}" ToolTipService.ToolTip="Click to remove song." Content="Delete" Click="deleteSong" Grid.Column="8" />
 
                                 <DataGrid x:Name="songdatagrid" GridLinesVisibility="All" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding requestSystem.songList, UpdateSourceTrigger=PropertyChanged}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" >
                                     <DataGrid.Columns >
@@ -872,23 +923,10 @@
                                         <DataGridTemplateColumn x:Name="moveupcolumn" Header="Move Up" Width=".1*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Button Width="35" Height="35" Style="{DynamicResource MetroCircleButtonStyle}" Click="moveup" CommandParameter="{Binding}" ToolTipService.ToolTip="Click to move this song up in the list.">
-                                                        <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                                    <Button Width="35" Height="35" Style="{DynamicResource MetroCircleButtonStyle}"  CommandParameter="{Binding}" ToolTipService.ToolTip="Left click to move this song up in the list, right click to move it to the top.">
+                                                        <Rectangle MouseLeftButtonDown="moveup" MouseRightButtonDown="movetotop" Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                                             <Rectangle.OpacityMask>
                                                                 <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_arrow_up}" />
-                                                            </Rectangle.OpacityMask>
-                                                        </Rectangle>
-                                                    </Button>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn x:Name="deletecolumn" Header="Remove" Width=".1*">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Width="35" Height="35" HorizontalAlignment="Center" Style="{DynamicResource MetroCircleButtonStyle}" Click="deleteSong" CommandParameter="{Binding}" ToolTipService.ToolTip="Click to remove song from the list.">
-                                                        <Rectangle Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                                                            <Rectangle.OpacityMask>
-                                                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
                                                             </Rectangle.OpacityMask>
                                                         </Rectangle>
                                                     </Button>

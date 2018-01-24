@@ -16,6 +16,7 @@ using TwitchLib.Interfaces;
 using Cleverbot.Net;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public class TwitchBot : INotifyPropertyChanged
 {
@@ -260,6 +261,27 @@ public class TwitchBot : INotifyPropertyChanged
         set { SetField(ref GuessingGamePayout, value, nameof(guessingGamePayout)); }
     }
     [JsonIgnore]
+    public Boolean AllowLinks = true;
+    public Boolean allowLinks
+    {
+        get => AllowLinks;
+        set { SetField(ref AllowLinks, value, nameof(allowLinks)); }
+    }
+    [JsonIgnore]
+    public String[] AllowedLinks;
+    public String[] allowedLinks
+    {
+        get => AllowedLinks;
+        set { SetField(ref AllowedLinks, value, nameof(allowedLinks)); }
+    }
+    [JsonIgnore]
+    public String[] ProfanityBlackList;
+    public String[] profanityBlackList
+    {
+        get => ProfanityBlackList;
+        set { SetField(ref ProfanityBlackList, value, nameof(profanityBlackList)); }
+    }
+    [JsonIgnore]
     public Boolean TimeFinished = false;
     public Boolean timeFinished
     {
@@ -332,6 +354,13 @@ public class TwitchBot : INotifyPropertyChanged
     {
         get => AutoShoutoutOnHost;
         set { SetField(ref AutoShoutoutOnHost, value, nameof(autoShoutoutOnHost)); }
+    }
+    [JsonIgnore]
+    public Boolean GenericProfanityFilterEnabled = true;
+    public Boolean genericProfanityFilterEnabled
+    {
+        get => GenericProfanityFilterEnabled;
+        set { SetField(ref GenericProfanityFilterEnabled, value, nameof(genericProfanityFilterEnabled)); }
     }
     [JsonIgnore]
     public Boolean OpenRockSnifferOnStartUp = false;
@@ -488,6 +517,20 @@ public class TwitchBot : INotifyPropertyChanged
     {
         get => ExtraCommandNames;
         set { SetField(ref ExtraCommandNames, value, nameof(extraCommandNames)); }
+    }
+    [JsonIgnore]
+    public String LinkTimeoutMessage = "Please get permission from a mod before posting links, $user!";
+    public String linkTimeoutMessage
+    {
+        get => LinkTimeoutMessage;
+        set { SetField(ref LinkTimeoutMessage, value, nameof(linkTimeoutMessage)); }
+    }
+    [JsonIgnore]
+    public String ProfanityTimeoutMessage = "Please be more respectful, $user!";
+    public String profanityTimeoutMessage
+    {
+        get => ProfanityTimeoutMessage;
+        set { SetField(ref ProfanityTimeoutMessage, value, nameof(profanityTimeoutMessage)); }
     }
     [JsonIgnore]
     public Dictionary<String, String> Events = new Dictionary<String, String>();
@@ -1482,10 +1525,13 @@ public class TwitchBot : INotifyPropertyChanged
         {
             mod = true;
         }
-
-        if (!message.StartsWith("!"))
+        if (!sender.Equals(Utils.botMaker, StringComparison.InvariantCultureIgnoreCase) && !sender.Equals(streamer, StringComparison.InvariantCultureIgnoreCase) 
+            && !mod && !message.StartsWith("!"))
         {
-            return;
+            if (!moderation(message, sender))
+            {
+                return;
+            }
         }
         if (sender.Equals(botName, StringComparison.InvariantCultureIgnoreCase))
         {
@@ -3186,7 +3232,70 @@ public class TwitchBot : INotifyPropertyChanged
                 return;
             }
         }
+    }
 
+    private Boolean moderation(string message, string sender)
+    {
+        message = message.ToLower();
+        if (genericProfanityFilterEnabled)
+        {
+            List<String> list = Utils.getBadWordList();
+            foreach (String str in list)
+            {
+                if (message.Contains(str))
+                {
+                    client.SendMessage("/timeout " + sender + " 1");
+                    client.SendMessage(profanityTimeoutMessage.Replace("$user", sender));
+                    return false;
+                }
+            }
+        }
+        if (profanityBlackList != null)
+        {
+            foreach (String str in profanityBlackList)
+            {
+                if (message.Contains(str))
+                {
+                    client.SendMessage("/timeout " + sender + " 1");
+                    client.SendMessage(profanityTimeoutMessage.Replace("$user", sender));
+                    return false;
+                }
+            }
+        }
+        bool isUri = false;
+        if (message.Contains("http:") || message.Contains("https:") || message.Contains("www.") || message.Contains(".com") ||
+            message.Contains(".edu") || message.Contains(".org") || message.Contains(".net") || message.Contains(".int") ||
+            message.Contains(".gov") || message.Contains(".mil") || message.Contains(".co.uk"))
+        {
+            isUri = true;
+        }
+        if (!allowLinks && isUri)
+        {
+            if (allowedLinks == null || (allowedLinks != null && allowedLinks.Length == 0))
+            {
+                client.SendMessage("/timeout " + sender + " 1");
+                client.SendMessage(linkTimeoutMessage.Replace("$user", sender));
+                return false;
+            }
+            foreach (String str in allowedLinks)
+            {
+                if ((allowedLinks.Contains("youtube") || allowedLinks.Contains("Youtube")) && message.Contains("youtu"))
+                {
+                    return true;
+                }
+                if (message.Contains(str.ToLower()))
+                {
+                    return true;
+                }
+            }
+            client.SendMessage("/timeout " + sender + " 1");
+            client.SendMessage(linkTimeoutMessage.Replace("$user", sender));
+            return false;
+        }
+
+        // TODO : spam check
+
+        return true;
     }
 
     [STAThread]
