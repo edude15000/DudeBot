@@ -923,7 +923,7 @@
                                         <DataGridTemplateColumn x:Name="moveupcolumn" Header="Move Up" Width=".1*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <Button Width="35" Height="35" Style="{DynamicResource MetroCircleButtonStyle}"  CommandParameter="{Binding}" ToolTipService.ToolTip="Left click to move this song up in the list, right click to move it to the top.">
+                                                    <Button Width="35" Height="35" Style="{DynamicResource MetroCircleButtonStyle}"  CommandParameter="{Binding}" ToolTipService.ToolTip="Left click to move this song up in the list, right click to move it to the the next position.">
                                                         <Rectangle MouseLeftButtonDown="moveup" MouseRightButtonDown="movetotop" Width="20" Height="20" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                                             <Rectangle.OpacityMask>
                                                                 <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_arrow_up}" />
@@ -1826,6 +1826,47 @@
                         </Border>
                     </TabItem>
 
+                    <TabItem Header="StreamLabs-Currency-Import" FontSize="14">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" >
+                            <Border Padding="10 0 10 0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" >
+                                        <TextBlock FontSize="20" FontWeight="Bold" Text="StreamLabs Currency Importer" />
+                                    </Grid>
+                                    
+                                    <Grid Grid.Row="1" >
+                                        <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                            <TextBlock Text="If user exists in Streamlabs and DudeBot, &#x0a;keep record from DudeBot (Leave unchecked for Streamlabs) " />
+                                            <CheckBox x:Name="importFromStreamlabsCheckBox" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="70*"/>
+                                            <ColumnDefinition Width="30*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBox Controls:TextBoxHelper.ClearTextButton="True" Controls:TextBoxHelper.Watermark="Streamlabs CSV file path goes here after uploading" TextWrapping="Wrap" x:Name="streamlabsCSVPath" IsEnabled="False" HorizontalScrollBarVisibility="Auto" Grid.Column="0" />
+                                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Upload Streamlabs CSV" Click="uploadStreamlabsCSV" Grid.Column="1" />
+                                   
+                                    </Grid>
+
+                                    <Grid Grid.Row="3">
+                                        <Button Style="{DynamicResource SquareButtonStyle}" IsDefault="True" Content="Import CSV to DudeBot" Click="runCSVImport" />
+                                    </Grid>
+
+                                </Grid>
+                            </Border>
+                        </ScrollViewer>
+                    </TabItem>
 
                 </TabControl>
             </TabItem>

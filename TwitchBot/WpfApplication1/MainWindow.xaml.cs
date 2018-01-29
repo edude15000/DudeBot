@@ -1673,11 +1673,11 @@ namespace WpfApplication1
             try
             {
                 bot.requestSystem.songList.Remove(c);
-                if (bot.requestSystem.songList.Count > 0)
+                if (bot.requestSystem.songList.Count > 1)
                 {
                     c.level = bot.requestSystem.songList[0].level;
                 }
-                bot.requestSystem.songList.Insert(0, c);
+                bot.requestSystem.songList.Insert(1, c);
                 bot.requestSystem.setIndexesForSongs();
                 writeToConfig(null, null);
             }
@@ -1996,7 +1996,72 @@ namespace WpfApplication1
                 editResponseImage.Text = filename;
             }
         }
-        
+
+        public void uploadStreamlabsCSV(object sender, EventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.DefaultExt = ".csv";
+            dlg.Filter = "CSV Files (*.csv)|*.csv";
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                streamlabsCSVPath.Text = filename;
+            }
+        }
+
+        public async void runCSVImport(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(formatCommand(streamlabsCSVPath.Text)))
+            {
+                await this.ShowMessageAsync("Incorrect Path!", "Streamlabs CSV Path is incorrect. Please reupload it and try again.");
+                return;
+            }
+            String user = null, points = null, hours = null;
+            try
+            {
+                using (var fs = File.OpenRead(streamlabsCSVPath.Text))
+                using (var reader = new StreamReader(fs))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+                        if (!values[0].Equals("Name"))
+                        {
+                            user = values[0];
+                            points = values[1];
+                            hours = values[2];
+                            if (user != null && points != null && hours != null) {
+                                BotUser newuser = bot.getBotUser(user);
+                                if (newuser == null)
+                                {
+                                    bot.users.Add(new BotUser(user, 0, false, false, false, Int32.Parse(points), Int32.Parse(hours) * 60, null, 0, 0, 0));
+                                }
+                                else
+                                {
+                                    if (importFromStreamlabsCheckBox.IsChecked == false)
+                                    {
+                                        newuser.points = Int32.Parse(points);
+                                        newuser.time = Int32.Parse(hours) * 60;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    reader.Close();
+                }
+                bot.removeAllUselessUsers();
+                Utils.saveData(bot);
+                await this.ShowMessageAsync("Successfully Imported", "Streamlabs points have been successfully imported.");
+            }
+            catch (Exception f)
+            {
+                MessageBox.Show(f.StackTrace);
+                await this.ShowMessageAsync("Importing Failed", "Failed to import points, please try again later.");
+            }
+        }
+
         public String formatCommand(String str)
         {
             if (!str.StartsWith("!"))

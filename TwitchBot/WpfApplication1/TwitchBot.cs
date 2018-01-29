@@ -16,7 +16,6 @@ using TwitchLib.Interfaces;
 using Cleverbot.Net;
 using Newtonsoft.Json.Linq;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 public class TwitchBot : INotifyPropertyChanged
 {
@@ -662,12 +661,12 @@ public class TwitchBot : INotifyPropertyChanged
         }
     }
 
-    private void removeAllUselessUsers()
+    public void removeAllUselessUsers()
     {
         List<BotUser> list = new List<BotUser>();
         foreach (BotUser botUser in users)
         {
-            if (botUser.time > 1 || botUser.mod || botUser.moneyDonated > 0 || botUser.months > 0 || botUser.numRequests > 0 || botUser.bitsDonated > 0 || botUser.follower || botUser.sub)
+            if (botUser.time > 10 || botUser.points > 10 || botUser.mod || botUser.moneyDonated > 0 || botUser.months > 0 || botUser.numRequests > 0 || botUser.bitsDonated > 0 || botUser.follower || botUser.sub)
             {
                 list.Add(botUser);
             }
@@ -2929,7 +2928,7 @@ public class TwitchBot : INotifyPropertyChanged
                         try
                         {
                             BotUser b = getBotUser(sender);
-                            if (b != null && b.points < textAdventure.customadventurejoincost)
+                            if (b == null || (b != null && b.points < textAdventure.customadventurejoincost))
                             {
                                 client.SendMessage("You need " + textAdventure.customadventurejoincost + " " + currency.currencyName + " to join the game, " + sender + "!");
                                 return;
