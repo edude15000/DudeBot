@@ -620,6 +620,7 @@ public class TwitchBot : INotifyPropertyChanged
             client.OnMessageReceived += onMessageReceived;
             client.OnWhisperReceived += onWhisperReceived;
             client.OnNewSubscriber += onNewSubscriber;
+            client.OnGiftedSubscription += Client_OnGiftedSubscription;
             client.OnUserJoined += onUserJoined;
             client.OnUserLeft += onUserLeft;
             client.OnReSubscriber += onReSubscriber;
@@ -658,6 +659,54 @@ public class TwitchBot : INotifyPropertyChanged
         {
             Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
+        }
+    }
+
+    private void Client_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
+    {
+        if (!subMessage.Equals(""))
+        {
+            if (subMessage.Contains("$user"))
+            {
+                client.SendMessage(subMessage.Replace("$user", e.GiftedSubscription.DisplayName));
+            }
+            else
+            {
+                client.SendMessage(streamer + " : " + subMessage);
+            }
+        }
+        if (!subMessageCommand.Equals(""))
+        {
+            String message = subMessageCommand;
+            if (message.Contains("$user"))
+            {
+                message = message.Replace("$user", e.GiftedSubscription.DisplayName);
+            }
+            if (!message.StartsWith("!"))
+            {
+                message = "!" + message;
+            }
+            processMessage(null, message, streamer);
+        }
+        foreach (BotUser botUser in users)
+        {
+            if (botUser.username.Equals(e.GiftedSubscription.DisplayName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                botUser.subCredits += currency.creditsPerSub;
+                botUser.sub = true;
+                botUser.points += autoSubPayout;
+                botUser.months = 1;
+                writeToEventLog("SUB: " + e.GiftedSubscription.DisplayName);
+                break;
+            }
+        }
+        if (requestSystem.autoPromoteToDonatorOnSub)
+        {
+            autoPromoteToDonator(e.GiftedSubscription.DisplayName);
+        }
+        else if (requestSystem.autoPromoteToDonatorOnSub)
+        {
+            autoPromoteToVIP(e.GiftedSubscription.DisplayName);
         }
     }
 
@@ -1058,16 +1107,18 @@ public class TwitchBot : INotifyPropertyChanged
         if (onstart)
         {
             var channelFollowers = await api.Channels.v5.GetAllFollowersAsync(channel_id);
-            foreach (BotUser user in users)
+            foreach (var u in channelFollowers)
             {
-                foreach (var u in channelFollowers)
+                foreach (BotUser user in users)
                 {
+                
                     if (u.User.Name.Equals(user.username, StringComparison.InvariantCultureIgnoreCase))
                     {
                         user.follower = true;
                         break;
                     }
                 }
+                users.Add(new BotUser(u.User.Name, 0, false, true, false, 0, 0, null, 0, 0, 0));
             }
         }
         else
@@ -3539,7 +3590,7 @@ public class TwitchBot : INotifyPropertyChanged
         {
             response = response.Replace("$viewers", getAllViewers(streamer).Count.ToString());
         }
-        if (response.Contains("$user"))
+        if (response.Contains("$user ") || response.EndsWith("$user"))
         {
             response = response.Replace("$user", sender);
         }

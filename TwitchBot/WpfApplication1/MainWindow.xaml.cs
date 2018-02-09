@@ -511,8 +511,6 @@ namespace WpfApplication1
                 await this.ShowMessageAsync("Warning", "Please enter the song!");
             }
         }
-
-
         
         [STAThread]
         public void playSound(Object sender, RoutedEventArgs e)
@@ -2083,6 +2081,11 @@ namespace WpfApplication1
             MessageDialogResult messageBoxResult = await this.ShowMessageAsync("Reset Confirmation", "Are you sure you want to reset DudeBot? All user data will be deleted, but this will fix any problems with DudeBot. This will close the bot and you will need to reopen it.", MessageDialogStyle.AffirmativeAndNegative, msgbox_settings);
             if (messageBoxResult == MessageDialogResult.Affirmative)
             {
+                try
+                {
+                    File.Delete(Utils.backupUserDataFile);
+                }
+                catch (Exception) { }
                 StreamWriter strm = File.CreateText(Utils.userDataFile);
                 strm.Flush();
                 strm.Close();

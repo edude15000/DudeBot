@@ -51,30 +51,29 @@ public class SoundEffect : INotifyPropertyChanged
                 }
                 if (SFXstartTime == 0 || (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= SFXstartTime + (SFXOverallCoolDown * 1000)))
                 {
-                    for (int j = 0; j < userCoolDowns.Count; j++)
+                    if (userCoolDowns.ContainsKey(b.username))
                     {
-                        if (userCoolDowns[b.username] != 0)
+                        for (int j = 0; j < userCoolDowns.Count; j++)
                         {
-                            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= userCoolDowns[b.username] + (sfxTimer * 1000))
+                            if (userCoolDowns[b.username] != 0)
                             {
-                                if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
+                                if (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= userCoolDowns[b.username] + (sfxTimer * 1000))
                                 {
-                                    if (comList[i].costToUse != 0)
+                                    if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
                                     {
-                                        b.points -= comList[i].costToUse;
+                                        if (comList[i].costToUse != 0)
+                                        {
+                                            b.points -= comList[i].costToUse;
+                                        }
+                                        comList[i].playSound();
+                                        if (userCoolDowns.ContainsKey(b.username))
+                                        {
+                                            userCoolDowns.Remove(b.username);
+                                        }
+                                        userCoolDowns.Add(b.username, DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                                        SFXstartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                     }
-                                    comList[i].playSound();
-                                    if (userCoolDowns.ContainsKey(b.username))
-                                    {
-                                        userCoolDowns.Remove(b.username);
-                                    }
-                                    userCoolDowns.Add(b.username, DateTimeOffset.Now.ToUnixTimeMilliseconds());
-                                    SFXstartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                 }
-                                return;
-                            }
-                            else
-                            {
                                 return;
                             }
                         }
@@ -98,6 +97,4 @@ public class SoundEffect : INotifyPropertyChanged
             }
         }
     }
-
-    
 }

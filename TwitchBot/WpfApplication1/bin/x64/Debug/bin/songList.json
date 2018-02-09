@@ -150,5 +150,43 @@
     "cfSongName": "",
     "cfSongArtist": "",
     "cfAlbum": ""
+  },
+  {
+    "name": "hotel california",
+    "requester": "edude15000",
+    "requesterIsHere": "[IN CHAT]",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=Sm3b4_XLCOU",
+    "youtubeTitle": "The Eagles Hotel California Lyrics",
+    "durationInSeconds": 393,
+    "index": 9,
+    "tuning": "E_STANDARD",
+    "customsForgeLink": "https://drive.google.com/drive/folders/11ZywvGzk_xVJjwd0GHGSp--BczR7xbLJ?usp=sharing",
+    "parts": "ALL",
+    "dlcCreator": "GetTheLedOut",
+    "formattedDuration": "00:06:33",
+    "officialSong": false,
+    "cfSongName": "Hotel California",
+    "cfSongArtist": "Eagles",
+    "cfAlbum": "Hotel California"
+  },
+  {
+    "name": "byob",
+    "requester": "edude15000",
+    "requesterIsHere": "[IN CHAT]",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=zUzd9KyIDrM",
+    "youtubeTitle": "System Of A Down - B.Y.O.B.",
+    "durationInSeconds": 263,
+    "index": 10,
+    "tuning": "OTHER",
+    "customsForgeLink": "http://www.theriffrepeater.com/rocksmith-2014-dlc-128-system-of-a-down-pack/",
+    "parts": "LEAD, BASS, VOCALS",
+    "dlcCreator": "CustomsForge",
+    "formattedDuration": "00:04:23",
+    "officialSong": true,
+    "cfSongName": "B.Y.O.B.",
+    "cfSongArtist": "System of a Down",
+    "cfAlbum": "Mezmerize"
   }
 ]

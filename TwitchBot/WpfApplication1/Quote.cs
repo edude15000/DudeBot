@@ -55,7 +55,6 @@ public class Quote : INotifyPropertyChanged
     }
 
     public void quotesSystem(String message, String channel, String sender, String streamer, List<BotUser> users, OnMessageReceivedArgs e)
-
     {
         String temp = message.ToLower();
         if (message.Equals("!totalquotes", StringComparison.InvariantCultureIgnoreCase) || message.Equals("!quotestotal", StringComparison.InvariantCultureIgnoreCase))
@@ -88,8 +87,12 @@ public class Quote : INotifyPropertyChanged
             if (Utils.isInteger(Utils.getFollowingText(message)))
             {
                 getQuoteByID(Int32.Parse(Utils.getFollowingText(message)), channel);
-                return;
             }
+            else
+            {
+                getQuoteByKeyword(Utils.getFollowingText(message), channel);
+            }
+            return;
         }
         else if (temp.StartsWith("!addquote ") || temp.StartsWith("!quoteadd "))
         {
@@ -222,7 +225,6 @@ public class Quote : INotifyPropertyChanged
         bot.client.SendMessage("Quote " + quote + " has been added, " + sender + "!");
     }
 
-
     public String formatQuote(String quote)
     {
         try
@@ -275,5 +277,18 @@ public class Quote : INotifyPropertyChanged
             bot.client.SendMessage("Quote #" + ID + ": " + quotes[ID]);
         }
     }
-}
+    
+    private void getQuoteByKeyword(string keyword, string channel)
+    {
+        for (int i = 0; i < quotes.Count; i++)
+        {
+            if (quotes[i].Contains(keyword))
+            {
+                bot.client.SendMessage("Quote #" + i + ": " + quotes[i]);
+                return;
+            }
+        }
+        getRandomQuote(channel);
+    }
 
+}

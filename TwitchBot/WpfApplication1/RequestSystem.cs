@@ -755,7 +755,7 @@ public class RequestSystem : INotifyPropertyChanged
                     song = newSong;
                     entry = getSongFromIgnition(song); // TODO : FIX noEmoteMessage
                 }
-                if (entry == null)
+                if (entry == null || (entry != null && entry.failMessage.Equals("Your requested song does not exist for Rocksmith yet")))
                 {
                     bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
                     return false;
@@ -2309,7 +2309,7 @@ public class RequestSystem : INotifyPropertyChanged
                                                                     Utils.getFollowingText(message), maxSongLengthInMinutes);
                                                             if (v == null)
                                                             {
-                                                                bot.client.SendMessage(temp
+                                                                bot.client.SendMessage(Utils.getFollowingText(temp)
                                                                     + " is longer than " + maxSongLengthInMinutes
                                                                     + " minutes, which is the limit for standard requests, "
                                                                     + sender);
@@ -2320,7 +2320,7 @@ public class RequestSystem : INotifyPropertyChanged
                                                         }
                                                         if ((maxSongLengthInMinutes * 60) < (Utils.getDurationOfVideoInSeconds(time)))
                                                         {
-                                                            bot.client.SendMessage(temp
+                                                            bot.client.SendMessage(Utils.getFollowingText(temp)
                                                                     + " is longer than " + maxSongLengthInMinutes
                                                                     + " minutes, which is the limit for standard requests, "
                                                                     + sender);

@@ -66,30 +66,28 @@ public class Image : INotifyPropertyChanged
                 if (imageStartTime == 0
                         || (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= imageStartTime + (imageOverallCoolDown * 1000)))
                 {
-                    for (int j = 0; j < userCoolDowns.Count; j++)
-                    {
-                        if (userCoolDowns[b.username] != 0)
+                    if (userCoolDowns.ContainsKey(b.username)) {
+                        for (int j = 0; j < userCoolDowns.Count; j++)
                         {
-                            if (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= userCoolDowns[b.username] + (imageCoolDown * 1000))
+                            if (userCoolDowns[b.username] != 0)
                             {
-                                if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
+                                if (DateTimeOffset.Now.ToUnixTimeMilliseconds() >= userCoolDowns[b.username] + (imageCoolDown * 1000))
                                 {
-                                    if (comList[i].costToUse != 0)
+                                    if (comList[i].costToUse == 0 || b.points >= comList[i].costToUse)
                                     {
-                                        b.points -= comList[i].costToUse;
+                                        if (comList[i].costToUse != 0)
+                                        {
+                                            b.points -= comList[i].costToUse;
+                                        }
+                                        comList[i].playImage();
+                                        imageStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                                        if (userCoolDowns.ContainsKey(b.username))
+                                        {
+                                            userCoolDowns.Remove(b.username);
+                                        }
+                                        userCoolDowns[b.username] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                     }
-                                    comList[i].playImage();
-                                    imageStartTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                                    if (userCoolDowns.ContainsKey(b.username))
-                                    {
-                                        userCoolDowns.Remove(b.username);
-                                    }
-                                    userCoolDowns[b.username] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                                 }
-                                return;
-                            }
-                            else
-                            {
                                 return;
                             }
                         }
