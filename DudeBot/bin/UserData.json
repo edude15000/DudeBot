@@ -143,8 +143,8 @@
     ]
   },
   "requestSystem": {
-    "cfUserName": "Edude15000",
-    "cfPassword": "123321evan",
+    "cfUserName": "",
+    "cfPassword": "",
     "vipSongToggle": true,
     "mustFollowToRequest": true,
     "requestsTrigger": true,
