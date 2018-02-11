@@ -6034,8 +6034,7 @@
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.YouTube.v3.Data.ChannelSnippet">
-            <summary>Basic details about a channel, including title, description and thumbnails. Next available id:
-            15.</summary>
+            <summary>Basic details about a channel, including title, description and thumbnails.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.ChannelSnippet.Country">
             <summary>The country of the channel.</summary>
@@ -7582,6 +7581,21 @@
         <member name="P:Google.Apis.YouTube.v3.Data.MonitorStreamInfo.ETag">
             <summary>The ETag of the item.</summary>
         </member>
+        <member name="T:Google.Apis.YouTube.v3.Data.Nonprofit">
+            <summary>Nonprofit information.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.Nonprofit.NonprofitId">
+            <summary>Id of the nonprofit.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.Nonprofit.NonprofitLegalName">
+            <summary>Legal name of the nonprofit.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.Nonprofit.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.NonprofitId.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
         <member name="T:Google.Apis.YouTube.v3.Data.PageInfo">
             <summary>Paging details for lists of resources, including total number of items available and number of
             resources returned in a single page.</summary>
@@ -8251,9 +8265,16 @@
             <summary>A rendered string that displays the purchase amount and currency (e.g., "$1.00"). The string is
             rendered for the given language.</summary>
         </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.IsSuperChatForGood">
+            <summary>True if this event is a Super Chat for Good purchase.</summary>
+        </member>
         <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.MessageType">
             <summary>The tier for the paid message, which is based on the amount of money spent to purchase the
             message.</summary>
+        </member>
+        <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.Nonprofit">
+            <summary>If this event is a Super Chat for Good purchase, this field will contain information about the
+            charity the purchase is donated to.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.SuperChatEventSnippet.SupporterDetails">
             <summary>Details about the supporter.</summary>
@@ -8361,7 +8382,7 @@
             player.</summary>
         </member>
         <member name="P:Google.Apis.YouTube.v3.Data.Video.ProcessingDetails">
-             <summary>The processingProgress object encapsulates information about YouTube's progress in processing the
+             <summary>The processingDetails object encapsulates information about YouTube's progress in processing the
              uploaded video file. The properties in the object identify the current processing status and an estimate of
              the time remaining until YouTube finishes processing the video. This part also indicates whether different
              types of data or content, such as file details or thumbnail images, are available for the video.

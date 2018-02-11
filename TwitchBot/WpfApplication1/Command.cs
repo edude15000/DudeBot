@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
-using System.Threading;
 using WMPLib;
 using WpfApplication1;
 
@@ -14,6 +14,8 @@ public class Command
     public int volumeLevel { get; set; } = 100;
     public int costToUse { get; set; } = 0;
     public int overrideType { get; set; } = 0;
+    [JsonIgnore]
+    public WindowsMediaPlayer myplayer;
 
     public Command(String[] input, int level, String output, String commandType, Boolean toggle)
     {
@@ -32,7 +34,7 @@ public class Command
     {
         try
         {
-            WindowsMediaPlayer myplayer = new WindowsMediaPlayer();
+            myplayer = new WindowsMediaPlayer();
             myplayer.URL = output;
             myplayer.settings.volume = volumeLevel;
             myplayer.controls.play();

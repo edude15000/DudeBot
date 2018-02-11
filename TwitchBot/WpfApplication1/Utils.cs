@@ -105,6 +105,20 @@ public class Utils
         return str;
     }
 
+    public static String getChannelID(String channel)
+    {
+        String info = callURL("https://api.twitch.tv/kraken/channels/" + channel);
+        var a = JsonConvert.DeserializeObject<dynamic>(info);
+        try
+        {
+            return a["_id"];
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     public static string autoCorrect(String song)
     {
         String[] wordList = song.Split(' ');

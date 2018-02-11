@@ -1265,7 +1265,7 @@ namespace WpfApplication1
             }
             foreach (TextBlock tb in FindLogicalChildren<TextBlock>(this))
             {
-                if (!tb.Name.Equals("tb_a") && !tb.Name.Equals("tb_b") && !tb.Name.Equals("tb_c") && !tb.Name.Equals("tb_d") && !tb.Name.Equals("tb_e") && !tb.Name.Equals("tb_f"))
+                if (!tb.Name.Equals("streamUptimeText") && !tb.Name.Equals("tb_a") && !tb.Name.Equals("tb_b") && !tb.Name.Equals("tb_c") && !tb.Name.Equals("tb_d") && !tb.Name.Equals("tb_e") && !tb.Name.Equals("tb_f"))
                 {
                     tb.Foreground = brush;
                 }
@@ -1359,7 +1359,7 @@ namespace WpfApplication1
             SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
             foreach (Button tb in FindLogicalChildren<Button>(this))
             {
-                if (!tb.Name.Equals("kill") && !tb.Name.Equals("open") && !tb.Name.Equals("flyoutbutton") && !tb.Name.Equals("b_a") && !tb.Name.Equals("b_b") && !tb.Name.Equals("b_c") && !tb.Name.Equals("b_d") && !tb.Name.Equals("b_e") && !tb.Name.Equals("b_f") && !tb.Name.Equals("websitebutton") && !tb.Name.Equals("discordbutton"))
+                if (!tb.Name.Equals("streamUptimeText") && !tb.Name.Equals("kill") && !tb.Name.Equals("open") && !tb.Name.Equals("flyoutbutton") && !tb.Name.Equals("b_a") && !tb.Name.Equals("b_b") && !tb.Name.Equals("b_c") && !tb.Name.Equals("b_d") && !tb.Name.Equals("b_e") && !tb.Name.Equals("b_f") && !tb.Name.Equals("websitebutton") && !tb.Name.Equals("discordbutton"))
                 {
                     tb.Background = brush;
                 }
@@ -1801,7 +1801,6 @@ namespace WpfApplication1
             { 
                 killBot(null, null);
             }
-            Process.GetCurrentProcess().CloseMainWindow();
             Application.Current.Shutdown();
             Environment.Exit(0);
         }
@@ -2398,7 +2397,7 @@ namespace WpfApplication1
                 }
             }
         }
-
+        
         private async void clearFavorites_Click(object sender, RoutedEventArgs e)
         {
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;

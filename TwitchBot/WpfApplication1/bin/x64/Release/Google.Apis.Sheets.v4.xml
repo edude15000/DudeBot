@@ -325,6 +325,10 @@
             <summary>The A1 notation of a range to search for a logical table of data. Values will be appended
             after the last row of the table.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.IncludeValuesInResponse">
+            <summary>Determines if the update response should include the values of the cells that were
+            appended. By default, responses do not include the updated values.</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.ResponseValueRenderOption">
             <summary>Determines how values in the response should be rendered. The default render option is
             ValueRenderOption.FORMATTED_VALUE.</summary>
@@ -354,10 +358,6 @@
             <summary>Determines how dates, times, and durations in the response should be rendered. This is
             ignored if response_value_render_option is FORMATTED_VALUE. The default dateTime render option is
             [DateTimeRenderOption.SERIAL_NUMBER].</summary>
-        </member>
-        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.IncludeValuesInResponse">
-            <summary>Determines if the update response should include the values of the cells that were
-            appended. By default, responses do not include the updated values.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.Body">
             <summary>Gets or sets the body of this request.</summary>
@@ -2805,6 +2805,21 @@
         <member name="P:Google.Apis.Sheets.v4.Data.HistogramChartSpec.ETag">
             <summary>The ETag of the item.</summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Google.Apis.Sheets.v4.Data.HistogramRule" -->
+        <member name="P:Google.Apis.Sheets.v4.Data.HistogramRule.End">
+            <summary>Optional. The maximum value at which items will be placed into buckets of constant size. Values
+            above end will be lumped into a single bucket.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.HistogramRule.Interval">
+            <summary>Required. The size of the buckets that will be created. Must be positive.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.HistogramRule.Start">
+            <summary>Optional. The minimum value at which items will be placed into buckets of constant size. Values
+            below start will be lumped into a single bucket.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.HistogramRule.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
         <member name="T:Google.Apis.Sheets.v4.Data.HistogramSeries">
             <summary>A histogram series containing the series color and data.</summary>
         </member>
@@ -2889,6 +2904,43 @@
             <summary>The thickness of the line, in px.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.LineStyle.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.ManualRule">
+             <summary>Allows you to manually organize the values in a source data column into buckets with names of your
+             choosing. For example, a pivot table that aggregates population by state:
+            
+             +-------+-------------------+ | State | SUM of Population | +-------+-------------------+ | AK    |
+             0.7 | | AL    |               4.8 | | AR    |               2.9 | ... +-------+-------------------+ could be
+             turned into a pivot table that aggregates population by time zone by providing a list of groups (e.g. groupName
+             = 'Central', items = ['AL', 'AR', 'IA', ...]) to a manual group rule. Note that a similar effect could be
+             achieved by adding a time zone column to the source data and adjusting the pivot table.
+            
+             +-----------+-------------------+ | Time Zone | SUM of Population | +-----------+-------------------+ | Central
+             |             106.3 | | Eastern   |             151.9 | | Mountain  |              17.4 | ...
+             +-----------+-------------------+</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.ManualRule.Groups">
+            <summary>The list of group names and the corresponding items from the source data that map to each group
+            name.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.ManualRule.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.ManualRuleGroup">
+            <summary>A group name and a list of items from the source data that should be placed in the group with this
+            name.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.ManualRuleGroup.GroupName">
+            <summary>The group name, which must be a string. Each group in a given ManualRule must have a unique group
+            name.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.ManualRuleGroup.Items">
+            <summary>The items in the source data that should be placed into this group. Each item may be a string,
+            number, or boolean. Items may appear in at most one group within a given ManualRule. Items that do not
+            appear in any group will appear on their own.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.ManualRuleGroup.ETag">
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.MatchedDeveloperMetadata">
@@ -3102,6 +3154,33 @@
         <member name="T:Google.Apis.Sheets.v4.Data.PivotGroup">
             <summary>A single grouping (either row or column) in a pivot table.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.PivotGroup.GroupRule">
+            <summary>The group rule to apply to this row/column group.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.PivotGroup.Label">
+             <summary>The labels to use for the row/column groups which can be customized. For example, in the following
+             pivot table, the row label is `Region` (which could be renamed to `State`) and the column label is `Product`
+             (which could be renamed `Item`). Pivot tables created before December 2017 do not have header labels. If
+             you'd like to add header labels to an existing pivot table, please delete the existing pivot table and then
+             create a new pivot table with same parameters.
+            
+             +--------------+---------+-------+ | SUM of Units | Product |       | | Region       | Pen     | Paper |
+             +--------------+---------+-------+ | New York     |     345 |    98 | | Oregon       |     234 |   123 | |
+             Tennessee    |     531 |   415 | +--------------+---------+-------+ | Grand Total  |    1110 |   636 |
+             +--------------+---------+-------+</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.PivotGroup.RepeatHeadings">
+             <summary>True if the headings in this pivot group should be repeated. This is only valid for row groupings
+             and will be ignored by columns.
+            
+             By default, we minimize repitition of headings by not showing higher level headings where they are the same.
+             For example, even though the third row below corresponds to "Q1 Mar", "Q1" is not shown because it is
+             redundant with previous rows. Setting repeat_headings to true would cause "Q1" to be repeated for "Feb" and
+             "Mar".
+            
+             +--------------+ | Q1     | Jan | |        | Feb | |        | Mar | +--------+-----+ | Q1 Total     |
+             +--------------+</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.Data.PivotGroup.ShowTotals">
             <summary>True if the pivot table should include the totals for this grouping.</summary>
         </member>
@@ -3122,6 +3201,21 @@
             <summary>Metadata about values in the grouping.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.PivotGroup.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.PivotGroupRule">
+            <summary>An optional setting on a PivotGroup that defines buckets for the values in the source data column
+            rather than breaking out each individual value. Only one PivotGroup with a group rule may be added for each
+            column in the source data, though on any given column you may add both a PivotGroup that has a rule and a
+            PivotGroup that does not.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.PivotGroupRule.HistogramRule">
+            <summary>A HistogramRule.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.PivotGroupRule.ManualRule">
+            <summary>A ManualRule.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.PivotGroupRule.ETag">
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.PivotGroupSortValueBucket">
@@ -3180,6 +3274,12 @@
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.PivotValue">
             <summary>The definition of how a value in a pivot table should be calculated.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.PivotValue.CalculatedDisplayType">
+            <summary>If specified, indicates that pivot values should be displayed as the result of a calculation with
+            another pivot value. For example, if calculated_display_type is specified as PERCENT_OF_GRAND_TOTAL, all the
+            pivot values will be displayed as the percentage of the grand total. In the Sheets UI, this is referred to
+            as "Show As" in the value section of a pivot table.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.PivotValue.Formula">
             <summary>A custom formula to calculate the value.  The formula must start with an `=` character.</summary>
@@ -4181,6 +4281,26 @@
         <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartColumnStyle.ETag">
             <summary>The ETag of the item.</summary>
         </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.WaterfallChartCustomSubtotal">
+            <summary>A custom subtotal column for a waterfall chart series.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartCustomSubtotal.DataIsSubtotal">
+            <summary>True if the data point at subtotal_index is the subtotal. If false, the subtotal will be computed
+            and appear after the data point.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartCustomSubtotal.Label">
+            <summary>A label for the subtotal column.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartCustomSubtotal.SubtotalIndex">
+            <summary>The 0-based index of a data point within the series. If data_is_subtotal is true, the data point at
+            this index is the subtotal. Otherwise, the subtotal appears after the data point with this index. A series
+            can have multiple subtotals at arbitrary indices, but subtotals do not affect the indices of the data
+            points. For example, if a series has 3 data points, their indices will always be 0, 1, and 2, regardless of
+            how many subtotals exist on the series or what data points they are associated with.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartCustomSubtotal.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
         <member name="T:Google.Apis.Sheets.v4.Data.WaterfallChartDomain">
             <summary>The domain of a waterfall chart.</summary>
         </member>
@@ -4195,6 +4315,10 @@
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.WaterfallChartSeries">
             <summary>A single series of data for a waterfall chart.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.CustomSubtotals">
+            <summary>Custom subtotal columns appearing in this series. The order in which subtotals are defined is not
+            significant. Only one subtotal may be defined for each data point.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.WaterfallChartSeries.Data">
             <summary>The data being visualized in this series.</summary>

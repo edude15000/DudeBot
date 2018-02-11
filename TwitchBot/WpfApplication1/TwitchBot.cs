@@ -16,6 +16,7 @@ using TwitchLib.Interfaces;
 using Cleverbot.Net;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Windows.Threading;
 
 public class TwitchBot : INotifyPropertyChanged
 {
@@ -49,7 +50,11 @@ public class TwitchBot : INotifyPropertyChanged
     [JsonIgnore]
     public TwitchClient client;
     [JsonIgnore]
-    ConnectionCredentials credentials;
+    public TwitchClient streamerClient;
+    [JsonIgnore]
+    ConnectionCredentials botCredentials;
+    [JsonIgnore]
+    ConnectionCredentials streamerCredentials;
     [JsonIgnore]
     public YoutubeHandler youtube = new YoutubeHandler();
     [JsonIgnore]
@@ -63,11 +68,25 @@ public class TwitchBot : INotifyPropertyChanged
     [JsonIgnore]
     private static List<String> backupUsersInChat = new List<String>();
     [JsonIgnore]
+    public String Version;
+    public String version
+    {
+        get => Utils.version;
+        set { SetField(ref Version, value, nameof(version)); }
+    }
+    [JsonIgnore]
     public String Oauth;
     public String oauth
     {
         get => Oauth;
         set { SetField(ref Oauth, value, nameof(oauth)); }
+    }
+    [JsonIgnore]
+    public String StreamerOauth;
+    public String streamerOauth
+    {
+        get => StreamerOauth;
+        set { SetField(ref StreamerOauth, value, nameof(streamerOauth)); }
     }
     [JsonIgnore]
     public String Streamer;
@@ -89,6 +108,14 @@ public class TwitchBot : INotifyPropertyChanged
     {
         get => BotName;
         set { SetField(ref BotName, value, nameof(botName)); }
+    }
+    [JsonIgnore]
+    public Boolean StreamOnline = false;
+    [JsonIgnore]
+    public Boolean streamOnline
+    {
+        get => StreamOnline;
+        set { SetField(ref StreamOnline, value, nameof(streamOnline)); }
     }
     public Boolean reloadedAllFollowers { get; set; } = false;
     [JsonIgnore]
@@ -599,22 +626,39 @@ public class TwitchBot : INotifyPropertyChanged
         get => Eventlog;
         set { SetField(ref Eventlog, value, nameof(eventlog)); }
     }
+    [JsonIgnore]
+    public LiveStreamMonitor liveStreamMonitor;
+    [JsonIgnore]
+    public MessageThrottler messageThrottler;
+    [JsonIgnore]
+    public int streamTimer = 0;
+    [JsonIgnore]
+    public String ConvertedUptime = "Stream Uptime: 0 seconds";
+    [JsonIgnore]
+    public String convertedUptime
+    {
+        get => ConvertedUptime;
+        set { SetField(ref ConvertedUptime, value, nameof(convertedUptime)); }
+    }
+    [JsonIgnore]
+    TwitchPubSub pubsub;
+    DispatcherTimer dispatcherTimer = new DispatcherTimer();
 
     public async void botStartUpAsync()
     {
         try
         {
             channel = streamer;
-            credentials = new ConnectionCredentials(botName, oauth);
-            client = new TwitchClient(credentials, channel);
+            botCredentials = new ConnectionCredentials(botName, oauth);
+            client = new TwitchClient(botCredentials, channel);
             api = new TwitchAPI(Utils.twitchClientID);
             service = new FollowerService(api);
             service.OnNewFollowersDetected += onNewFollower;
+            liveStreamMonitor = new LiveStreamMonitor(api, 60, "", true, true);
+            liveStreamMonitor.OnStreamOnline += LiveStreamMonitor_OnStreamOnline;
+            liveStreamMonitor.OnStreamOffline += LiveStreamMonitor_OnStreamOffline;
             service.SetChannelByName(channel);
             await service.StartService();
-            TwitchPubSub pubsub = new TwitchPubSub();
-            pubsub.OnBitsReceived += onPubSubBitsReceived;
-            pubsub.Connect();
             client.OnJoinedChannel += onJoinedChannel;
             channelEmotes = client.ChannelEmotes;
             client.OnMessageReceived += onMessageReceived;
@@ -624,8 +668,17 @@ public class TwitchBot : INotifyPropertyChanged
             client.OnUserJoined += onUserJoined;
             client.OnUserLeft += onUserLeft;
             client.OnReSubscriber += onReSubscriber;
-            client.OverrideBeingHostedCheck = true;
-            client.OnBeingHosted += onBeingHosted;
+            messageThrottler = new MessageThrottler(client, 20, new TimeSpan(0, 0, 30));
+            if (streamerOauth != "" && streamerOauth != null)
+            {
+                streamerCredentials = new ConnectionCredentials(streamer, streamerOauth);
+                streamerClient = new TwitchClient(streamerCredentials, channel);
+                streamerClient.OnBeingHosted += onBeingHosted;
+                pubsub = new TwitchPubSub();
+                pubsub.OnPubSubServiceConnected += onPubSubConnected;
+                pubsub.OnBitsReceived += onPubSubBitsReceived;
+                pubsub.Connect();
+            }
             if (!reloadedAllFollowers)
             {
                 checkAtBeginningAsync(true);
@@ -660,6 +713,36 @@ public class TwitchBot : INotifyPropertyChanged
             Console.WriteLine(e1.ToString());
             Utils.errorReport(e1);
         }
+    }
+
+    private void onPubSubConnected(object sender, EventArgs e)
+    {
+        String id = Utils.getChannelID(channel);
+        if (id != null) {
+            pubsub.ListenToBitsEvents(id);
+        }
+    }
+
+    private void LiveStreamMonitor_OnStreamOffline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOfflineArgs e)
+    {
+        dispatcherTimer.Stop();
+        streamOnline = false;
+        streamTimer = 0;
+        requestSystem.songsPlayedThisStream = 0;
+    }
+
+    private void LiveStreamMonitor_OnStreamOnline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOnlineArgs e)
+    {
+        streamOnline = true;
+        dispatcherTimer.Tick += dispatcherTimer_Tick;
+        dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+        dispatcherTimer.Start();
+    }
+
+    private void dispatcherTimer_Tick(object sender, EventArgs e)
+    {
+        streamTimer += 1;
+        convertedUptime = "Stream Uptime: " + Utils.timeConversion(streamTimer);
     }
 
     private void Client_OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
@@ -1090,7 +1173,7 @@ public class TwitchBot : INotifyPropertyChanged
             writeToEventLog("FOLLOW: " + follower.User.Name);
         }
     }
-
+    
     public async void checkAtBeginningAsync(Boolean onstart)
     {
         String channel_id = "";
@@ -1111,7 +1194,6 @@ public class TwitchBot : INotifyPropertyChanged
             {
                 foreach (BotUser user in users)
                 {
-                
                     if (u.User.Name.Equals(user.username, StringComparison.InvariantCultureIgnoreCase))
                     {
                         user.follower = true;
@@ -1315,7 +1397,7 @@ public class TwitchBot : INotifyPropertyChanged
                             client.SendMessage(timerCommandList[i].output);
                         }
                         i++;
-                        if (i >= timerCommandList.Count - 1)
+                        if (i >= timerCommandList.Count)
                         {
                             i = 0;
                         }
