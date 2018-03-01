@@ -338,6 +338,15 @@ public class RequestSystem : INotifyPropertyChanged
         set { SetField(ref SongsPlayedTotal, value, nameof(songsPlayedTotal)); }
     }
     [JsonIgnore]
+    public int MaximumVipRedeemsPerStream = 100;
+    public int maximumVipRedeemsPerStream
+    {
+        get => MaximumVipRedeemsPerStream;
+        set { SetField(ref MaximumVipRedeemsPerStream, value, nameof(maximumVipRedeemsPerStream)); }
+    }
+    [JsonIgnore]
+    public int numberVipRedeemsThisStream = 0;
+    [JsonIgnore]
     public int MiniumSongsWaitPerUserOnRandom = 5;
     public int miniumSongsWaitPerUserOnRandom
     {
@@ -422,6 +431,13 @@ public class RequestSystem : INotifyPropertyChanged
         set { SetField(ref OpenCFLinkInsteadOfYoutube, value, nameof(openCFLinkInsteadOfYoutube)); }
     }
     [JsonIgnore]
+    public Boolean AddToQueueEvenIfNotAvailable = false;
+    public Boolean addToQueueEvenIfNotAvailable
+    {
+        get => AddToQueueEvenIfNotAvailable;
+        set { SetField(ref AddToQueueEvenIfNotAvailable, value, nameof(addToQueueEvenIfNotAvailable)); }
+    }
+    [JsonIgnore]
     public Boolean CustomSetlistEnabled = false;
     public Boolean customSetlistEnabled
     {
@@ -488,6 +504,8 @@ public class RequestSystem : INotifyPropertyChanged
     public String cfPassword = "";
     [JsonIgnore]
     public String laravel_session = "";
+    [JsonIgnore]
+    public long lastTimeSongListCommandWasUsed = DateTimeOffset.Now.ToUnixTimeMilliseconds() - 15000;
     [JsonIgnore]
     public String community_pass_hash = "";
     [JsonIgnore]
@@ -580,7 +598,7 @@ public class RequestSystem : INotifyPropertyChanged
         return false;
     }
 
-    public CDLCEntry getSongFromIgnition(String songname)
+    public CDLCEntry getSongFromIgnition(String songname, Boolean pickForMe)
     {
         if (!laravel_session.Equals("") && !community_pass_hash.Equals("") && !ipsconnect.Equals(""))
         {
@@ -612,6 +630,23 @@ public class RequestSystem : INotifyPropertyChanged
                 }
                 else
                 {
+                    if (pickForMe)
+                    {
+                        List<CDLCEntry> songs = new List<CDLCEntry>();
+                        foreach (CDLCEntry e in results)
+                        {
+                            if (checkEntryForInfo(e))
+                            {
+                                songs.Add(e);
+                            }
+                        }
+                        if (songs.Count == 0)
+                        {
+                            return entry;
+                        }
+                        int rInt = new Random().Next(0, songs.Count - 1);
+                        return songs[rInt];
+                    }
                     if (results.data.First().artist.Equals(songname, StringComparison.InvariantCultureIgnoreCase))
                     {
                         entry = results.data.First();
@@ -730,7 +765,7 @@ public class RequestSystem : INotifyPropertyChanged
         return true;
     }
 
-    public Boolean addSongToList(String song, String requestedby, String level, int place, String noEmoteMessage, Boolean checkCF, Boolean costsPoints)
+    public String addSongToList(String song, String requestedby, String level, int place, String noEmoteMessage, Boolean checkCF, Boolean costsPoints, Boolean pickForMe)
     {
         CDLCEntry entry = null;
         Song s = new Song(song, requestedby, level, bot);
@@ -738,11 +773,14 @@ public class RequestSystem : INotifyPropertyChanged
         {
             try
             {
-                entry = getSongFromIgnition(song); // TODO : FIX noEmoteMessage
+                entry = getSongFromIgnition(song, pickForMe); // TODO : FIX noEmoteMessage
                 if (entry == null)
                 {
-                    bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
-                    return false;
+                    if (!addToQueueEvenIfNotAvailable)
+                    {
+                        bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                        return null;
+                    }
                 }
                 String newSong = song;
                 if (entry.failMessage.Equals("Your requested song does not exist for Rocksmith yet"))
@@ -753,35 +791,45 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     entry = null;
                     song = newSong;
-                    entry = getSongFromIgnition(song); // TODO : FIX noEmoteMessage
+                    entry = getSongFromIgnition(song, pickForMe); // TODO : FIX noEmoteMessage
                 }
                 if (entry == null || (entry != null && entry.failMessage.Equals("Your requested song does not exist for Rocksmith yet")))
                 {
-                    bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
-                    return false;
+                    if (!addToQueueEvenIfNotAvailable)
+                    {
+                        bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                        return null;
+                    }
                 }
                 foreach (Song checkedSong in songList)
                 {
                     if (checkedSong.cfSongArtist.Equals(entry.artist, StringComparison.InvariantCultureIgnoreCase) && checkedSong.cfSongName.Equals(entry.title, StringComparison.InvariantCultureIgnoreCase))
                     {
                         bot.client.SendMessage("Your requested song is already in the request queue, " + requestedby + "!");
-                        return false;
+                        return null;
                     }
                 }
                 if (entry.failed)
                 {
-                    if (entry.failMessage == "")
+                    if (!addToQueueEvenIfNotAvailable)
                     {
-                        bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                        if (entry.failMessage == "")
+                        {
+                            bot.client.SendMessage("Your request either does not yet exist for Rocksmith for the streamer's preferred instrument or the tuning of the request is out of the streamer's preferred range. Please refine your search or request a different song, " + requestedby + "!");
+                        }
+                        else
+                        {
+                            bot.client.SendMessage(entry.failMessage + ", " + requestedby + "!");
+                        }
+                        return null;
                     }
-                    else
-                    {
-                        bot.client.SendMessage(entry.failMessage + ", " + requestedby + "!");
-                    }
-                    return false;
                 }
                 else
                 {
+                    if (pickForMe)
+                    {
+                        entry.noInfo = false;
+                    }
                     s.setEntry(entry, search);
                     if (s.officialSong)
                     {
@@ -852,7 +900,7 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     bot.client.SendMessage("You requested a song that does not exist in the streamer's setlist. Please check https://docs.google.com/spreadsheets/d/"
                         + googleSheetSetlistId + " and try requesting again, " + requestedby + "!");
-                    return false;
+                    return null;
                 }
             }
         }
@@ -866,8 +914,22 @@ public class RequestSystem : INotifyPropertyChanged
             else
             {
                 bot.client.SendMessage("You need at least " + regSongCost + " " + bot.currency.currencyName + " to request a song, " + sender.username + "!");
-                return false;
+                return null;
             }
+        }
+        if (entry == null || (entry != null && entry.failMessage.Equals("Your requested song does not exist for Rocksmith yet")))
+        {
+            if (editSongComm != null && editSongComm.input[0] != null)
+            {
+                bot.client.SendMessage("NOTE: " + bot.streamer + ", the requested song '" + s.name + "' could not be found on CustomsForge. " +
+                    "Please tell the requester to change their request by doing the command " + editSongComm.input[0] + " [new song]");
+            }
+            else
+            {
+                bot.client.SendMessage("NOTE: " + bot.streamer + ", the requested song '" + s.name + "' could not be found on CustomsForge. " +
+                    "Please tell the requester to change their request!");
+            }
+            s.tuning = "**NOT FOUND ON CF**";
         }
         if (place < 0)
         {
@@ -877,7 +939,7 @@ public class RequestSystem : INotifyPropertyChanged
         {
             songList.Insert(place, s);
         }
-        return true;
+        return s.name;
     }
     
     public int getNumRequests(String sender)
@@ -1122,11 +1184,11 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false);
+            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false, false);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            if (addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false))
+            if (addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false, false) != null)
             {
                 songList[0].level = "$$$";
             }
@@ -1141,7 +1203,7 @@ public class RequestSystem : INotifyPropertyChanged
             {
                 if (!songList[i].level.Equals("$$$"))
                 {
-                    if (addSongToList(song, requestedby, "$$$", i, noEmoteMessage, true, false))
+                    if (addSongToList(song, requestedby, "$$$", i, noEmoteMessage, true, false, false) != null)
                     {
                         songList[0].level = "$$$";
                     }
@@ -1149,7 +1211,7 @@ public class RequestSystem : INotifyPropertyChanged
                     return;
                 }
             }
-            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false);
+            addSongToList(song, requestedby, "$$$", -1, noEmoteMessage, true, false, false);
         }
         writeToCurrentSong(bot.channel, true);
     }
@@ -1304,7 +1366,7 @@ public class RequestSystem : INotifyPropertyChanged
                 {
                     input = ytvid.Snippet.Title;
                 }
-                if (addSongToList(input, sender, songList[i].level, songList[i].index, noEmoteMessage, true, false))
+                if (addSongToList(input, sender, songList[i].level, songList[i].index, noEmoteMessage, true, false, false) != null)
                 {
                     songList.Remove(songList[i]);
                     bot.client.SendMessage("Your next request '" + previousSong
@@ -1353,11 +1415,11 @@ public class RequestSystem : INotifyPropertyChanged
                                                 int index = rand.Next(favSongs.Count);
                                                 if (favSongsPlayedThisStream.Contains(favSongs[index]))
                                                 {
-                                                    addSong(channel, "streamer's Choice", sender, noEmoteMessage);
+                                                    addSong(channel, "streamer's Choice", sender, noEmoteMessage, false);
                                                 }
                                                 else
                                                 {
-                                                    addSong(channel, favSongs[index] + " (FAV)", sender, noEmoteMessage);
+                                                    addSong(channel, favSongs[index] + " (FAV)", sender, noEmoteMessage, false);
                                                 }
                                                 favSongsPlayedThisStream.Add(favSongs[index]);
                                             }
@@ -1369,7 +1431,7 @@ public class RequestSystem : INotifyPropertyChanged
                                         }
                                         else
                                         {
-                                            addSong(channel, "streamer's Choice", sender, noEmoteMessage);
+                                            addSong(channel, "streamer's Choice", sender, noEmoteMessage, false);
                                         }
                                     }
                                     else
@@ -1599,6 +1661,26 @@ public class RequestSystem : INotifyPropertyChanged
             }
         }
         return TimeSpan.FromSeconds(totalSeconds).ToString(@"hh\:mm\:ss");
+    }
+
+    public String formatTotalTimeWithWords()
+    {
+        int totalSeconds = 0;
+        for (int i = 0; i < songList.Count; i++)
+        {
+            if (!inChatEstimateTime || (inChatEstimateTime && !songList[i].requesterIsHere.Equals("")))
+            {
+                if (songList[i].durationInSeconds == 0)
+                {
+                    totalSeconds += (60 * defaultMinsSong);
+                }
+                else
+                {
+                    totalSeconds += songList[i].durationInSeconds;
+                }
+            }
+        }
+        return Utils.timeConversion(totalSeconds);
     }
 
     public void clear(String channel, String file)
@@ -2091,6 +2173,10 @@ public class RequestSystem : INotifyPropertyChanged
                 String temp = message.ToLower();
                 if (temp.Equals(songlistComm.input[i]))
                 {
+                    if (!(sender.Equals(bot.streamer) || e.ChatMessage.IsModerator) && lastTimeSongListCommandWasUsed + 15000 > DateTimeOffset.Now.ToUnixTimeMilliseconds())
+                    {
+                        return;
+                    }
                     try
                     {
                         if (OnlyDisplayLinkList)
@@ -2127,6 +2213,7 @@ public class RequestSystem : INotifyPropertyChanged
                             bot.client.SendMessage("The full setlist can be found here: https://docs.google.com/spreadsheets/d/"
                                     + bot.spreadsheetId);
                         }
+                        lastTimeSongListCommandWasUsed = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }
                     catch (IOException e1)
                     {
@@ -2166,6 +2253,11 @@ public class RequestSystem : INotifyPropertyChanged
 
     public void requestCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e)
     {
+        Boolean pickForMe = false;
+        if (message.ToLower().StartsWith("!pickforme "))
+        {
+            pickForMe = true;
+        }
         if (bot.checkUserLevel(sender, requestComm.level, channel, e))
         {
             for (int i = 0; i < requestComm.input.Length; i++)
@@ -2201,7 +2293,8 @@ public class RequestSystem : INotifyPropertyChanged
                     }
                     bot.client.SendMessage(result);
                 }
-                else if (temp.StartsWith(requestComm.input[i]) && temp.Contains(requestComm.input[i] + " "))
+                else if (temp.StartsWith(requestComm.input[i]) || temp.StartsWith("!pickforme ") && temp.Contains(requestComm.input[i] + " ") ||
+                    temp.ToLower().Contains("!pickforme "))
                 {
                     String youtubeID = null;
                     Video ytvid = null;
@@ -2298,7 +2391,7 @@ public class RequestSystem : INotifyPropertyChanged
                                                     try
                                                     {
                                                         String time;
-                                                        if (ytvid != null)
+                                                        if (ytvid != null && ytvid.Id != null)
                                                         {
                                                             time = ytvid.ContentDetails.Duration;
                                                             temp = ytvid.Snippet.Title;
@@ -2307,24 +2400,19 @@ public class RequestSystem : INotifyPropertyChanged
                                                         {
                                                             Video v = bot.youtube.searchYoutubeByTitle(
                                                                     Utils.getFollowingText(message), maxSongLengthInMinutes);
-                                                            if (v == null)
+                                                            if (v != null && v.Id == null)
                                                             {
-                                                                bot.client.SendMessage(Utils.getFollowingText(temp)
+                                                                time = v.ContentDetails.Duration;
+                                                                temp = v.Snippet.Title;
+                                                                if ((maxSongLengthInMinutes * 60) < (Utils.getDurationOfVideoInSeconds(time)))
+                                                                {
+                                                                    bot.client.SendMessage(Utils.getFollowingText(temp)
                                                                     + " is longer than " + maxSongLengthInMinutes
                                                                     + " minutes, which is the limit for standard requests, "
                                                                     + sender);
-                                                                return;
+                                                                    return;
+                                                                }
                                                             }
-                                                            time = v.ContentDetails.Duration;
-                                                            temp = v.Snippet.Title;
-                                                        }
-                                                        if ((maxSongLengthInMinutes * 60) < (Utils.getDurationOfVideoInSeconds(time)))
-                                                        {
-                                                            bot.client.SendMessage(Utils.getFollowingText(temp)
-                                                                    + " is longer than " + maxSongLengthInMinutes
-                                                                    + " minutes, which is the limit for standard requests, "
-                                                                    + sender);
-                                                            return;
                                                         }
                                                     }
                                                     catch (Exception e1)
@@ -2337,14 +2425,14 @@ public class RequestSystem : INotifyPropertyChanged
                                                 }
                                                 if (ytvid != null)
                                                 {
-                                                    addSong(channel, ytvid.Snippet.Title, sender, noEmoteMessage);
+                                                    addSong(channel, ytvid.Snippet.Title, sender, noEmoteMessage, pickForMe);
                                                     return;
                                                 }
                                                 else
                                                 {
                                                     if (direquests)
                                                     {
-                                                        addSong(channel, Utils.getFollowingText(message), sender, noEmoteMessage);
+                                                        addSong(channel, Utils.getFollowingText(message), sender, noEmoteMessage, pickForMe);
                                                     }
                                                     else
                                                     {
@@ -2399,6 +2487,10 @@ public class RequestSystem : INotifyPropertyChanged
                         bot.client.SendMessage("Song limit of " + maxSonglistLength
                                 + " has been reached, please try again later.");
                     }
+                }
+                if (pickForMe)
+                {
+                    break;
                 }
             }
         }
@@ -2573,7 +2665,7 @@ public class RequestSystem : INotifyPropertyChanged
     {
         if ((Int32.Parse(getNumberOfSongs()) == 0))
         {
-            if (addSongToList(newSong, sender, "", -1, noEmoteMessage, true, false))
+            if (addSongToList(newSong, sender, "", -1, noEmoteMessage, true, false, false) != null)
             {
                 bot.client.SendMessage("Since there are no songs in the song list, song '" + newSong
                         + "' has been added to the song list, " + sender + "!");
@@ -2691,14 +2783,15 @@ public class RequestSystem : INotifyPropertyChanged
         }
     }
 
-    public void addSong(String channel, String song, String requestedby, String noEmoteMessage)
+    public void addSong(String channel, String song, String requestedby, String noEmoteMessage, Boolean pickForMe)
     {
         Boolean costs = false;
         if (regSongCost > 0)
         {
             costs = true;
         }
-        if (addSongToList(song, requestedby, "", -1, noEmoteMessage, true, costs))
+        String s = addSongToList(song, requestedby, "", -1, noEmoteMessage, true, costs, pickForMe);
+        if (s != null)
         {
             if (costs)
             {
@@ -2707,7 +2800,7 @@ public class RequestSystem : INotifyPropertyChanged
             }
             else
             {
-                bot.client.SendMessage("Song '" + song + "' has been added to the song list, "
+                bot.client.SendMessage("Song '" + s + "' has been added to the song list, "
                         + requestedby + "!");
             }
             bot.addUserRequestAmount(requestedby, true);
@@ -2724,30 +2817,30 @@ public class RequestSystem : INotifyPropertyChanged
         }
         if (place >= songList.Count)
         {
-            addSongToList(song, requestedby, "", -1, noEmoteMessage, checkCF, false);
+            addSongToList(song, requestedby, "", -1, noEmoteMessage, checkCF, false, false);
         }
         else
         {
-            addSongToList(song, requestedby, "", place, noEmoteMessage, checkCF, false);
+            addSongToList(song, requestedby, "", place, noEmoteMessage, checkCF, false, false);
         }
         writeToCurrentSong(bot.channel, true);
     }
 
     public void addTop(String channel, String song, String requestedby, String noEmoteMessage)
     {
-        addSongToList(song, requestedby, "$$$", 0, noEmoteMessage, true, false);
+        addSongToList(song, requestedby, "$$$", 0, noEmoteMessage, true, false, false);
         writeToCurrentSong(bot.channel, true);
     }
 
-    public void addVip(String channel, String song, String requestedby, String noEmoteMessage)
+    public Boolean addVip(String channel, String song, String requestedby, String noEmoteMessage)
     {
         if (Int32.Parse(getNumberOfSongs()) == 0)
         {
-            addSongToList(song, requestedby, "VIP", 0, noEmoteMessage, true, false);
+            addSongToList(song, requestedby, "VIP", 0, noEmoteMessage, true, false, false);
         }
         else if (Int32.Parse(getNumberOfSongs()) == 1)
         {
-            if (addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true, false))
+            if (addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true, false, false) != null)
             {
                 songList[0].level = "VIP";
             }
@@ -2763,14 +2856,18 @@ public class RequestSystem : INotifyPropertyChanged
                 Song s = songList[i];
                 if (s.level.Equals(""))
                 {
-                    addSongToList(song, requestedby, "VIP", i, noEmoteMessage, true, false);
+                    if (addSongToList(song, requestedby, "VIP", i, noEmoteMessage, true, false, false) == null)
+                    {
+                        return false;
+                    }
                     writeToCurrentSong(bot.channel, true);
-                    return;
+                    return true;
                 }
             }
-            addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true, false);
+            addSongToList(song, requestedby, "VIP", -1, noEmoteMessage, true, false, false);
         }
         writeToCurrentSong(bot.channel, true);
+        return true;
     }
 
     public void addCurrentSongToFavList()

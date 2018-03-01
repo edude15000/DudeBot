@@ -244,6 +244,7 @@
     <Compile Include="CustomsForgeLogin.xaml.cs">
       <DependentUpon>CustomsForgeLogin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="JoinEvent.cs" />
     <Compile Include="IgnitionSearch.cs" />
     <Compile Include="ImagesWindow.xaml.cs">
       <DependentUpon>ImagesWindow.xaml</DependentUpon>

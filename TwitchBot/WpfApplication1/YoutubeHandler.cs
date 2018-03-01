@@ -44,7 +44,9 @@ public class YoutubeHandler
             var searchListResponse = searchListRequest.Execute();
             if (searchListResponse.Items[0] == null)
             {
-                return null;
+                Video a = new Video();
+                a.Id = null;
+                return a;
             }
             String id = searchListResponse.Items[0].Id.VideoId;
             Video vid = searchYoutubeByID(id);

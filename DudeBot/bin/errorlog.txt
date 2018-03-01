@@ -1,0 +1,46 @@
+02/10/2018 23:49:43 - DudeBot 3.3.0 Error : System.MissingMethodException: Method not found: 'Void Google.Apis.YouTube.v3.YouTubeService..ctor(Initializer)'.
+   at YoutubeHandler..ctor()
+   at TwitchBot..ctor()
+   at CreateTwitchBot()
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean& createdFromNonDefaultCreator)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at Utils.loadData()02/10/2018 23:49:58 - DudeBot 3.3.0 Error : System.MissingMethodException: Method not found: 'Void Google.Apis.YouTube.v3.YouTubeService..ctor(Initializer)'.
+   at YoutubeHandler..ctor()
+   at TwitchBot..ctor()
+   at CreateTwitchBot()
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean& createdFromNonDefaultCreator)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at Utils.loadData()02/11/2018 01:52:23 - DudeBot 3.4.0 Error : System.TypeInitializationException: The type initializer for 'WpfApplication1.App' threw an exception. ---> System.InvalidOperationException: The calling thread must be STA, because many UI components require this.
+   at System.Windows.Input.InputManager..ctor()
+   at System.Windows.Input.InputManager.GetCurrentInputManagerImpl()
+   at System.Windows.Input.KeyboardNavigation..ctor()
+   at System.Windows.FrameworkElement.FrameworkServices..ctor()
+   at System.Windows.FrameworkElement.EnsureFrameworkServices()
+   at System.Windows.FrameworkElement..ctor()
+   at System.Windows.Controls.Control..ctor()
+   at System.Windows.Window..ctor()
+   at MahApps.Metro.Controls.MetroWindow..ctor()
+   at WpfApplication1.App..cctor()
+   --- End of inner exception stack trace ---
+   at Command.playImage()02/22/2018 23:25:00 - DudeBot 3.4.0 Error : System.Exception: Error: API credentials incorrect
+   at Cleverbot.Net.Io.Api.CleverbotUserAgent.<PostAsync>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Cleverbot.Net.Io.Api.CleverbotCreateApi.<GetResponseAsync>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Cleverbot.Net.CleverbotSession.<NewSessionAsync>d__13.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at TwitchBot.<botStartUpAsync>d__360.MoveNext()

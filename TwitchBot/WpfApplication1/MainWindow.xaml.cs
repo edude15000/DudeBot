@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Linq;
 using System.Windows.Data;
+using DudeBot;
 
 namespace WpfApplication1
 {
@@ -404,18 +405,18 @@ namespace WpfApplication1
         {
             if (!string.IsNullOrWhiteSpace(editEventUser.Text) && !string.IsNullOrWhiteSpace(editEventMessage.Text))
             {
-                foreach (KeyValuePair<String, String> s in bot.events)
+                foreach (JoinEvent s in bot.eventsList)
                 {
-                    if (s.Key.Equals(editEventUser.Text, StringComparison.InvariantCultureIgnoreCase))
+                    if (s.userJoin.Equals(editEventUser.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        bot.events[s.Key] = editEventMessage.Text;
+                        s.message = editEventMessage.Text;
                         editEventUser.Text = "";
                         editEventMessage.Text = "";
                         writeToConfig(null, null);
                         return;
                     }
                 }
-                bot.events.Add(editEventUser.Text, editEventMessage.Text);
+                bot.eventsList.Add(new JoinEvent(editEventUser.Text, editEventMessage.Text));
                 editEventUser.Text = "";
                 editEventMessage.Text = "";
                 writeToConfig(null, null);
@@ -635,6 +636,14 @@ namespace WpfApplication1
                     if (c.input[0].Equals(editCommandTimed.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
                         c.output = editResponseTimed.Text;
+                        if (editToggleTimed.IsChecked == true)
+                        {
+                            c.toggle = true;
+                        }
+                        else
+                        {
+                            c.toggle = false;
+                        }
                         bot.resetAllCommands();
                         editCommandTimed.Text = "";
                         editResponseTimed.Text = "";
@@ -644,7 +653,12 @@ namespace WpfApplication1
                     }
                 }
                 String[] str = { formatCommand(editCommandTimed.Text) };
-                bot.commandList.Add(new Command(str, 0, editResponseTimed.Text, "timer", true));
+                Boolean toggled = false;
+                if (editToggleTimed.IsChecked == true)
+                {
+                    toggled = true;
+                }
+                bot.commandList.Add(new Command(str, 0, editResponseTimed.Text, "timer", toggled));
                 bot.resetAllCommands();
                 editCommandTimed.Text = "";
                 editResponseTimed.Text = "";
@@ -733,11 +747,11 @@ namespace WpfApplication1
         {
             if (!string.IsNullOrWhiteSpace(editEventUser.Text))
             {
-                foreach (KeyValuePair<String, String> b in bot.events)
+                foreach (DudeBot.JoinEvent b in bot.eventsList)
                 {
-                    if (b.Key.Equals(editEventUser.Text, StringComparison.InvariantCultureIgnoreCase))
+                    if (b.userJoin.Equals(editEventUser.Text, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        bot.events.Remove(b.Key);
+                        bot.eventsList.Remove(b);
                         break;
                     }
                 }
@@ -1761,7 +1775,7 @@ namespace WpfApplication1
                 bot.requestSystem.songList[(int)songplace.Value - 1] = newsong;
                 if (bot.requestSystem.checkCustomsForge)
                 {
-                    bot.requestSystem.songList[(int)songplace.Value - 1].setEntry(bot.requestSystem.getSongFromIgnition(editSong.Text), bot.requestSystem.search);
+                    bot.requestSystem.songList[(int)songplace.Value - 1].setEntry(bot.requestSystem.getSongFromIgnition(editSong.Text, false), bot.requestSystem.search);
                 }
                 editSong.Text = "";
                 editRequester.Text = "";
@@ -1903,9 +1917,9 @@ namespace WpfApplication1
         {
             TextBlock textBlock = (sender as TextBlock);
             object datacontext = textBlock.DataContext;
-            KeyValuePair<String, String> c = (KeyValuePair<String, String>)datacontext;
-            editEventUser.Text = c.Key;
-            editEventMessage.Text = c.Value;
+            JoinEvent c = (JoinEvent)datacontext;
+            editEventUser.Text = c.userJoin;
+            editEventMessage.Text = c.message;
         }
 
         private void editSongButtonClick(object sender, MouseButtonEventArgs e)

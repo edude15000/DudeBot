@@ -1590,6 +1590,9 @@
 
                                             <TextBlock Padding="0 10 0 0" FontSize="14" Text="!vipsong COST" />
                                             <Controls:NumericUpDown x:Name="vipsongcost" Minimum = "1" Maximum = "100000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipSongCost, UpdateSourceTrigger=PropertyChanged}"/>
+                                           
+                                            <TextBlock Padding="0 10 0 0" FontSize="14" Text="Maximum VIP Song Redeems Per Stream" />
+                                            <Controls:NumericUpDown x:Name="maximumVipRedeemsPerStream" Minimum = "0" Maximum = "100" Interval = "1" HorizontalAlignment="Left" Value="{Binding requestSystem.maximumVipRedeemsPerStream, UpdateSourceTrigger=PropertyChanged}" />
 
                                             <TextBlock Padding="0 10 0 0" FontSize="14" Text="VIP Song Redeem Cool Down Per User (minutes)" />
                                             <Controls:NumericUpDown x:Name="vipRedeemCoolDownMinutes" Minimum = "0" Maximum = "1000" Interval = "1" HorizontalAlignment="Left" Value="{Binding currency.vipRedeemCoolDownMinutes, UpdateSourceTrigger=PropertyChanged}"/>
@@ -2166,19 +2169,19 @@
                                     <Button Style="{DynamicResource SquareButtonStyle}" Content="Delete" Click="removeevent" Grid.Column="3" />
                                 </Grid>
                                 <Grid Grid.Row="2">
-                                    <DataGrid x:Name="eventsdatagrid" GridLinesVisibility="All" ItemsSource="{Binding events, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" >
+                                    <DataGrid x:Name="eventsdatagrid" GridLinesVisibility="All" ItemsSource="{Binding eventsList, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" >
                                         <DataGrid.Columns >
                                             <DataGridTemplateColumn x:Name="eventUserName" Header="Joining User" Width=".18*">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock TextWrapping="Wrap" Text="{Binding Key}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="editEventsButtonClick" />
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding userJoin}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="editEventsButtonClick" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
                                             <DataGridTemplateColumn x:Name="eventMessage" Header="Response" Width=".85*">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock TextWrapping="Wrap" Text="{Binding Value}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="editEventsButtonClick" />
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding message}" ToolTipService.ToolTip="Click to edit event." MouseLeftButtonDown="editEventsButtonClick" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -2318,6 +2321,11 @@
                             <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
                                 <TextBlock TextWrapping="Wrap" FontSize="14" Text="Open CustomsForge link instead of Youtube link by double clicking on song in queue " />
                                 <CheckBox x:Name="openCFLinkInsteadOfYoutube" FontSize="14" VerticalAlignment="Center" IsChecked="{Binding requestSystem.openCFLinkInsteadOfYoutube, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
+                                <TextBlock TextWrapping="Wrap" FontSize="14" Text="Add request to queue even if not available on CustomsForge " />
+                                <CheckBox x:Name="addToQueueEvenIfNotAvailable" FontSize="14" VerticalAlignment="Center" IsChecked="{Binding requestSystem.addToQueueEvenIfNotAvailable, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
 
                             <StackPanel Margin="0 0 0 10" Orientation="Horizontal">

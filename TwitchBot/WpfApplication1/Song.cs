@@ -52,6 +52,10 @@ public class Song
                 cfAlbum = entry.album;
                 cfSongArtist = entry.artist;
                 cfSongName = entry.title;
+                if (entry.artist != null && entry.title != null)
+                {
+                    name = entry.artist + " - " + entry.title;
+                }
             }
             catch
             {
