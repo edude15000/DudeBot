@@ -120,3 +120,4 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\Hunspellx86.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\NHunspell.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\NHunspell.pdb
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Debug\WpfApplication1.csproj.CopyComplete

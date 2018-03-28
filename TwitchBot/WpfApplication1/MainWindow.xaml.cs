@@ -49,6 +49,7 @@ namespace WpfApplication1
                         if (c.output.Equals("!next", StringComparison.InvariantCultureIgnoreCase))
                         {
                             bot.requestSystem.nextSongAuto(bot.channel, false);
+                            break;
                         }
                         else
                         {
@@ -1775,7 +1776,7 @@ namespace WpfApplication1
                 bot.requestSystem.songList[(int)songplace.Value - 1] = newsong;
                 if (bot.requestSystem.checkCustomsForge)
                 {
-                    bot.requestSystem.songList[(int)songplace.Value - 1].setEntry(bot.requestSystem.getSongFromIgnition(editSong.Text, false), bot.requestSystem.search);
+                    bot.requestSystem.songList[(int)songplace.Value - 1].setEntry(bot.requestSystem.getSongFromIgnition(editSong.Text, false), bot.requestSystem.search, false);
                 }
                 editSong.Text = "";
                 editRequester.Text = "";

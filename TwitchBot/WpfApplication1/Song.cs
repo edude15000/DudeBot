@@ -35,7 +35,7 @@ public class Song
         
     }
 
-    public void setEntry(CDLCEntry entry, IgnitionSearch iS)
+    public void setEntry(CDLCEntry entry, IgnitionSearch iS, Boolean pickForMe)
     {
         if (entry != null && !entry.noInfo)
         {
@@ -52,7 +52,7 @@ public class Song
                 cfAlbum = entry.album;
                 cfSongArtist = entry.artist;
                 cfSongName = entry.title;
-                if (entry.artist != null && entry.title != null)
+                if (pickForMe && entry.artist != null && entry.title != null)
                 {
                     name = entry.artist + " - " + entry.title;
                 }

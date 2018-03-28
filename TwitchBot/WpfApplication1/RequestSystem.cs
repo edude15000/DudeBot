@@ -605,9 +605,10 @@ public class RequestSystem : INotifyPropertyChanged
             try
             {
                 search = new IgnitionSearch(cfUserName, laravel_session, community_pass_hash, ipsconnect);
-                songname = songname.Replace("-", "");
+                songname = songname.Replace("-", " ");
                 songname = Regex.Replace(songname, @"\(.*?\)", "");
                 songname = Regex.Replace(songname, @"\s{2,}", " ");
+                songname = songname.Replace("X Kid", "X-Kid");
                 songname = Utils.replaceAcronyms(songname);
                 CDLCEntry entry = null;
                 if (songname.ToLower().EndsWith("choice") || songname.ToLower().Contains("streamer") || songname.ToLower().Contains(bot.streamer.ToLower()))
@@ -830,7 +831,7 @@ public class RequestSystem : INotifyPropertyChanged
                     {
                         entry.noInfo = false;
                     }
-                    s.setEntry(entry, search);
+                    s.setEntry(entry, search, pickForMe);
                     if (s.officialSong)
                     {
                         bot.client.SendMessage("NOTE: '" + song + "' is an official song and has been added to the queue. " + requestedby + " please check with " + bot.streamer + " to make sure they have the song!");
@@ -917,7 +918,7 @@ public class RequestSystem : INotifyPropertyChanged
                 return null;
             }
         }
-        if (entry == null || (entry != null && entry.failMessage.Equals("Your requested song does not exist for Rocksmith yet")))
+        if (checkCF && checkCustomsForge && cfUserName != "" && cfPassword != "" && entry == null || (entry != null && entry.failMessage.Equals("Your requested song does not exist for Rocksmith yet")))
         {
             if (editSongComm != null && editSongComm.input[0] != null)
             {
@@ -1396,11 +1397,19 @@ public class RequestSystem : INotifyPropertyChanged
                                 Boolean check = true;
                                 if (!checkIfUserAlreadyHasSong(sender))
                                 {
-                                    if (mustFollowToRequest && !e.ChatMessage.IsModerator && !sender.Equals(Utils.botMaker) && !sender.Equals(bot.streamer))
+                                    if (sender.Equals(bot.streamer) || sender.Equals(Utils.botMaker) || e.ChatMessage.IsModerator || sender.Equals(Utils.botMaker))
+                                    {
+                                        check = true;
+                                    }
+                                    else if (mustFollowToRequest)
                                     {
                                         bot.checkAtBeginningAsync(false);
                                         BotUser u = bot.getBotUser(sender);
-                                        if (u != null && !u.follower)
+                                        if (u == null)
+                                        {
+                                            check = false;
+                                        }
+                                        else if (u.follower == false)
                                         {
                                             check = false;
                                         }
@@ -2369,16 +2378,20 @@ public class RequestSystem : INotifyPropertyChanged
                                     Boolean check = true;
                                     if (!checkIfUserAlreadyHasSong(sender))
                                     {
-                                        if (sender.Equals(bot.streamer) || sender.Equals(Utils.botMaker))
+                                        if (sender.Equals(bot.streamer) || sender.Equals(Utils.botMaker) || e.ChatMessage.IsModerator || sender.Equals(Utils.botMaker))
                                         {
                                             check = true;
                                         }
-                                        else if (mustFollowToRequest && !e.ChatMessage.IsModerator && !sender.Equals(Utils.botMaker))
+                                        else if (mustFollowToRequest)
                                         {
                                             bot.checkAtBeginningAsync(false);
                                             BotUser u = bot.getBotUser(sender);
-                                            if (u != null && !u.follower)
+                                            if (u == null)
                                             { 
+                                                check = false;
+                                            }
+                                            else if (u.follower == false)
+                                            {
                                                 check = false;
                                             }
                                         }

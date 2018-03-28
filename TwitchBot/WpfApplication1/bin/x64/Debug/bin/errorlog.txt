@@ -1,0 +1,11 @@
+03/06/2018 12:14:07 - DudeBot 3.5.1 Error : System.IO.IOException: The process cannot access the file 'C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Debug\bin\userData.json' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path)
+   at Utils.saveData(TwitchBot twitchBot) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\Utils.cs:line 242
+   at TwitchBot.addUserRequestAmount(String sender, Boolean op) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\TwitchBot.cs:line 1672
+   at RequestSystem.addSong(String channel, String song, String requestedby, String noEmoteMessage, Boolean pickForMe) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\RequestSystem.cs:line 2806
+   at RequestSystem.requestCOMMAND(String message, String channel, String sender, String noEmoteMessage, OnMessageReceivedArgs e) in C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\RequestSystem.cs:line 2435

@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "name": "A Day To Remember - Best Of Me",
+    "requester": "edude15000",
+    "requesterIsHere": "[IN CHAT]",
+    "level": "",
+    "youtubeLink": "http://www.youtube.com/watch?v=GdLYCjTACpQ",
+    "youtubeTitle": "Green Day - \"X-Kid\" - Album: ¡TRE!",
+    "durationInSeconds": 251,
+    "index": 1,
+    "tuning": "OTHER",
+    "customsForgeLink": "https://www.dropbox.com/s/pm9n2p4gxxew964/Day-To-Remember-A_Best-Of-Me_v1_DD_p.psarc?dl=0",
+    "parts": "ALL",
+    "dlcCreator": "mikeyruc123",
+    "formattedDuration": "00:04:11",
+    "officialSong": false,
+    "cfSongName": "Best Of Me",
+    "cfSongArtist": "A Day To Remember",
+    "cfAlbum": "Common Courtesy"
+  }
+]

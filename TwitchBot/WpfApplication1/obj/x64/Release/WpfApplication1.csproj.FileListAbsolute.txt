@@ -121,3 +121,4 @@ C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Hunspellx64.dl
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\Hunspellx86.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\NHunspell.dll
 C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\bin\x64\Release\NHunspell.pdb
+C:\git\DudeBotWorkspace\TwitchBot\WpfApplication1\obj\x64\Release\WpfApplication1.csproj.CopyComplete
